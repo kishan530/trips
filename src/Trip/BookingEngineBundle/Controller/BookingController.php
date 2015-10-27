@@ -50,7 +50,7 @@ class BookingController extends Controller
     }
     
     /**
-	 * 
+	 * Starting point for the application
 	 */
     public function indexAction(){
     	return $this->getHome('TripSiteManagementBundle:Default:index.html.twig');
