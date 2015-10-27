@@ -1,0 +1,259 @@
+{% extends 'TripSiteManagementBundle:Default:index.html.twig' %}
+{% block navTabs %}
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li><a href="#tab_01" aria-controls="tab_01" role="tab" data-toggle="tab"><i class="icon-sedan3"></i>  Cars</a></li>
+                            <!--<li><a href="#tab_02" aria-controls="tab_02" role="tab" data-toggle="tab"><i class="icon-hotel68"></i>  Hotels</a></li>-->
+                            <li><a href="#tab_03" aria-controls="tab_03" role="tab" data-toggle="tab"><i class="icon-bag"></i>  Packages</a></li>
+                            
+                            <li class="active"><a href="#tab_04" aria-controls="tab_04" role="tab" data-toggle="tab"><i class="icon-travel25"></i>  Offers</a></li>
+                            
+                        </ul>
+                     <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane" id="tab_01">
+                            {{ form_start(form) }}
+				           {{ form_errors(form, { 'global_errors': true }) }}
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <h3>  Book Your Cab Now</h3>
+                                    </div>
+                                </div>
+                                <div class="row tripNav">
+                                    <span>
+                                         <label for="oneway" class="tripSel">
+                                             <input type="radio" name="tripType" value="oneway" id="oneway" style="display:none"> 
+                                             One Way
+                                         </label>
+                                    </span>
+                                    <span>
+                                        <label for="roundtrip">
+                                            <input type="radio" name="tripType" value="roundtrip" id="roundtrip" style="display:none">
+                                            Round Trip
+                                        </label>
+                                    </span>
+                                    <span>
+                                         <label for="multicity">
+                                            <input type="radio" name="tripType" value="multicity" id="multicity" style="display:none">
+                                            Multicity
+                                        </label>
+                                    </span>
+                                </div>
+  <div class="row" id="genaral">
+                                    <div class="form-group make-margin fil col-md-6 col-sm-6 col-xs-12">
+                                         {{ form_label(form.leavingFrom) }}
+                                         <div class="dropdown">
+                                             {{ form_widget(form.leavingFrom) }}
+                                        </div>
+                                       
+                                    </div>
+                                    {#
+                                    <div class="form-group make-margin fil col-md-2 col-sm-2 col-xs-2">
+                                         <i class="fa fa-arrow-left"></i><i class="fa fa-arrow-right"></i>
+                                    </div>
+                                    #}
+                                    <div class="form-group make-margin fil col-md-6 col-sm-6 col-xs-12">
+                                         {{ form_label(form.goingTo) }}
+                                         <div class="dropdown">
+                                             {{ form_widget(form.goingTo) }}                
+                                        </div>
+                                    </div>
+                                    <div class="form-group make-margin fil col-md-6 col-sm-6 col-xs-12">
+                                        {{ form_label(form.date) }} 
+                                        <div class="input-group">
+                                            {{ form_widget(form.date) }} 
+                                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group make-margin fil col-md-6 col-sm-6 col-xs-12">
+                                         {{ form_label(form.returnDate) }}
+                                        <div class="input-group">
+                                            {{ form_widget(form.returnDate) }}          
+                                            
+                                              
+                                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div> 
+                                </div>
+                                    <div style="display:none" class="row" id="multipleCity">
+                                    
+                                    
+                                         {% macro information_prototype(multiCity) %}
+                                    
+                                    
+                                            <div class="form-group make-margin fil col-md-4 col-sm-4 col-xs-12">
+                                                 {{ form_label(multiCity.leavingFrom) }}
+                                                 <div class="dropdown">
+                                                     {{ form_widget(multiCity.leavingFrom) }}
+                                                </div>
+
+                                            </div>
+                                    
+                                            <div class="form-group make-margin fil col-md-4 col-sm-4 col-xs-12">
+                                                                                                     
+                                                    {{ form_label(multiCity.goingTo) }}
+                                                   
+                                                    <div class="dropdown">
+                                                    {{ form_widget(multiCity.goingTo) }}
+                                                   </div>
+                                             </div>
+                                            <div class="form-group make-margin fil col-md-4 col-sm-4 col-xs-12">
+                                                 {{ form_label(multiCity.date) }}
+                                                 <div class="input-group">
+                                                     {{ form_widget(multiCity.date) }}
+                                                </div>
+
+                                            </div>
+                                           
+                                        {% endmacro %}
+                                         <div id="city-fields-list"
+                                                data-prototype="{{ _self.information_prototype(form.multiple.vars.prototype)|e }}">
+                                            {% for multiCity in form.multiple %}
+                                             <div class="form-group make-margin fil col-md-4 col-sm-4 col-xs-12">
+                                                 {{ form_label(multiCity.leavingFrom) }}
+                                                 <div class="dropdown">
+                                                     {{ form_widget(multiCity.leavingFrom) }}
+                                                </div>
+
+                                            </div>
+                                    
+                                            <div class="form-group make-margin fil col-md-4 col-sm-4 col-xs-12">
+                                                                                                     
+                                                    {{ form_label(multiCity.goingTo) }}
+                                                   
+                                                    <div class="dropdown">
+                                                    {{ form_widget(multiCity.goingTo) }}
+                                                   </div>
+                                             </div>
+                                            <div class="form-group make-margin fil col-md-4 col-sm-4 col-xs-12">
+                                                 {{ form_label(multiCity.date) }}
+                                                 <div class="input-group">
+                                                     {{ form_widget(multiCity.date) }}
+                                                </div>
+
+                                            </div>
+                                            {% endfor %}
+                                    </div>
+                                    
+                                     <div class="form-group make-margin fil col-md-6 col-sm-6 col-xs-12">
+                                        <div class="row">
+                                          <div class="col-md-6 col-sm-6 col-xs-6">
+                                            {{ form_label(form.numDays) }}
+                                         </div>
+                                         <div class="col-md-6 col-sm-6 col-xs-6">
+                                                 <div class="input-group">
+                                                     <a class="days input-group-addon" id="decrement" value="1" href="#">-</a> 
+                                                        {{ form_widget(form.numDays) }}
+                                                      <a class="days input-group-addon" id="increment" href="#">+</a>
+                                                </div>
+                                         </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group make-margin fil col-md-6 col-sm-6 col-xs-12">
+                                     <a href="#" id="add-another-city">Add another city</a>
+                                    
+                                    </div>
+                                </div>
+                                <div class="row">
+                                     <div class="form-group make-margin fil col-md-6 col-sm-6 col-xs-12">
+                                        <div class="row">
+                                              <div class="col-md-6 col-sm-6 col-xs-6">
+                                                {{ form_label(form.numAdult) }}
+                                             </div>
+                                             <div class="col-md-6 col-sm-6 col-xs-6">
+                                                     <div class="input-group">
+                                                         <a class="adults input-group-addon" id="decrement" value="1" href="#">-</a> 
+                                                            {{ form_widget(form.numAdult) }}
+                                                         <a class="adults input-group-addon" id="increment" href="#">+</a>
+                                                    </div>
+                                             </div>
+                                         </div>
+                                    </div>
+                                     <div class="form-group make-margin fil col-md-6 col-sm-6 col-xs-12">
+                                        <div class="row">
+                                              <div class="col-md-6 col-sm-6 col-xs-6">
+                                                {{ form_label(form.preferTime) }}
+                                              </div>
+                                             <div class="col-md-6 col-sm-6 col-xs-6">
+                                                {{ form_widget(form.preferTime) }}
+                                             </div>
+                                         </div>
+                                    </div>
+                                   </div>
+                                <div class="row">
+                                    <div class="form-group col-md-12 col-sm-6 col-xs-12">
+                                        <button type="submit" class="btn btn-primary btn-block"><i class="icon-search"></i> Search </button>
+                                    </div>
+                                </div>
+                                {{ form_end(form) }}
+                                
+                            </div><!-- end tab-pane -->
+
+                            <div role="tabpanel" class="tab-pane" id="tab_03">
+                                <h6>WHEN WOULD YOU LIKE TO GO?</h6>
+                                <form class="bookform form-inline row">
+                                    <div class="form-group col-md-12 col-sm-6 col-xs-12">
+                                        <input type="text" class="form-control" placeholder=" Destination: Country, City,Airport...">
+                                    </div>
+                                    <div class="form-group col-md-12 col-sm-6 col-xs-12">
+                                        <input type="text" class="form-control" placeholder=" Hotel: TUNAI, HAWAI...">
+                                    </div>
+                                    <div class="form-group col-md-12 col-sm-6 col-xs-12">
+                                        <input type="text" class="form-control" placeholder=" Time: May, Jun, Jully...">
+                                    </div>
+
+                                    <div class="form-group col-md-12 col-sm-6 col-xs-12">
+                                        <button type="submit" class="btn btn-primary btn-block"><i class="icon-search"></i> BOOK NOW</button>
+                                    </div>
+                                </form>
+                            </div><!-- end tab-pane -->
+
+                            <div role="tabpanel" class="tab-pane" id="tab_02">
+                                 <h3>Where Woulf You Like To Go?</h3>
+                                       {{ form_start(hotelForm) }}
+                                        {{ form_errors(hotelForm, { 'global_errors': true }) }}
+                                
+                                
+                                <div class="row">                                
+                                   
+                                    <div class="form-group make-margin fil col-md-12 col-sm-12 col-xs-12">
+                                         {{ form_label(hotelForm.goingTo) }}
+                                         <div class="dropdown">
+                                             {{ form_widget(hotelForm.goingTo) }}                
+                                        </div>
+                                    </div>
+                                    <div class="form-group make-margin fil col-md-6 col-sm-6 col-xs-12">
+                                        {{ form_label(hotelForm.date) }} 
+                                        <div class="input-group">
+                                            {{ form_widget(hotelForm.date) }} 
+                                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group make-margin fil col-md-6 col-sm-6 col-xs-12">
+                                         {{ form_label(hotelForm.returnDate) }}
+                                        <div class="input-group">
+                                            {{ form_widget(hotelForm.returnDate) }}          
+                                            
+                                              
+                                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div> 
+                                    
+                                    <div class="form-group col-md-12 col-sm-6 col-xs-12">
+                                        <button type="submit" class="btn btn-primary btn-block"><i class="icon-search"></i> BOOK NOW</button>
+                                    </div>
+                                </div>
+                                   
+                               {{ form_end(hotelForm) }}
+                            </div><!-- end tab-pane -->
+
+                             <div role="tabpanel" class="tab-pane active" id="tab_04">
+                                <h3>Get <i class="fa fa-inr"></i> 600 OFF on First Ride</h3>
+                                <div class="row">
+                                    <div class="col-md-12 col-xs-12 text-center">
+                                        <h3>Use This Coupon Code</h3>
+                                        <h4><span>FIRSTRIDE</span></h4>
+                                            
+                                    </div>
+                                </div>
+                            </div><!-- end tab-pane -->
+                        </div><!-- end tab-content -->
+                        {% endblock %}

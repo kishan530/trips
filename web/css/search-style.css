@@ -1,0 +1,575 @@
+.image-cover img,.related-post .post .post-media .image-style img,.blog-page__content .post .post-media .image-style img {
+position:absolute;
+width:100%;
+max-width:none!important;
+top:50%;
+left:50%;
+-webkit-transform:translate(-50%,-50%);
+-moz-transform:translate(-50%,-50%);
+-ms-transform:translate(-50%,-50%);
+-o-transform:translate(-50%,-50%);
+transform:translate(-50%,-50%);
+} 
+
+img {
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle;
+    border: 0;
+}
+
+.flight-item .item-price-more .price .amount, .trip-item .item-price-more .price .amount, .attraction-item .item-price-more .price .amount, .hotel-item .item-price-more .price .amount {
+    display: block;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 24px;
+    color: #f26722;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.filter-page {
+margin-bottom:60px;
+}
+
+.filter-page__content {
+margin-bottom:150px;
+}
+
+.filter-item-wrapper {
+width:100%;
+}
+.flight-item{
+    font-family: 'LatoRegular', serif;
+    font-size: 17px;
+    color: #000;
+    font-weight: normal;
+}
+
+.flight-item,.trip-item,.attraction-item,.hotel-item {
+background-color:#fff;
+overflow:hidden;
+-webkit-box-shadow:none;
+-moz-box-shadow:none;
+box-shadow:none;
+}
+
+.flight-item .item-media,.trip-item .item-media,.attraction-item .item-media,.hotel-item .item-media {
+position:relative;
+width:30%;
+float:left;
+}
+
+.oddClass{
+    background: #f2edcc;
+}
+
+.flight-item .item-media .image-cover,.trip-item .item-media .image-cover,.attraction-item .item-media .image-cover,.hotel-item .item-media .image-cover {
+padding-top:66.66%;
+overflow:hidden;
+}
+
+.flight-item .item-media .trip-icon,.trip-item .item-media .trip-icon,.attraction-item .item-media .trip-icon,.hotel-item .item-media .trip-icon {
+position:absolute;
+width:40px;
+height:40px;
+overflow:hidden;
+top:0;
+left:14px;
+}
+
+.flight-item .item-body,.trip-item .item-body,.attraction-item .item-body,.hotel-item .item-body {
+position:relative;
+width:50%;
+float:left;
+overflow:hidden;
+overflow-x:auto;
+padding:18px 34px;
+        text-transform: capitalize;
+}
+
+.flight-item .item-body .item-title h2,.trip-item .item-body .item-title h2,.attraction-item .item-body .item-title h2,.hotel-item .item-body .item-title h2 {
+font-size:20px;
+font-weight:600;
+margin:0;
+"Open Sans", sans-serif;
+    line-height: 1.5em;
+    text-transform: capitalize;
+}
+
+.flight-item .item-body .item-title h2 a,.trip-item .item-body .item-title h2 a,.attraction-item .item-body .item-title h2 a,.hotel-item .item-body .item-title h2 a {
+display:block;
+text-overflow:ellipsis;
+overflow:hidden;
+white-space:nowrap;
+color: #2d67b2;
+}
+
+.flight-item .item-body .item-hotel-star,.trip-item .item-body .item-hotel-star,.attraction-item .item-body .item-hotel-star,.hotel-item .item-body .item-hotel-star {
+font-size:11px;
+color:#FFD34E;
+}
+
+.flight-item .item-body .item-address,.trip-item .item-body .item-address,.attraction-item .item-body .item-address,.hotel-item .item-body .item-address {
+font-weight:600;
+font-size:13px;
+color:#000;
+margin-top:5px;
+}
+
+.flight-item .item-body .item-list ul,.trip-item .item-body .item-list ul,.attraction-item .item-body .item-list ul,.hotel-item .item-body .item-list ul {
+padding-left:16px;
+color:#000;
+margin:5px 0 0;
+}
+
+.flight-item .item-body .item-table,.trip-item .item-body .item-table,.attraction-item .item-body .item-table,.hotel-item .item-body .item-table {
+width:100%;
+min-width:440px;
+font-weight:600;
+font-size:13px;
+margin-top:14px;
+}
+
+.flight-item .item-body .item-table thead tr th,.trip-item .item-body .item-table thead tr th,.attraction-item .item-body .item-table thead tr th,.hotel-item .item-body .item-table thead tr th {
+font-weight:600;
+color:#000;
+}
+
+.flight-item .item-body .item-table tbody tr td,.trip-item .item-body .item-table tbody tr td,.attraction-item .item-body .item-table tbody tr td,.hotel-item .item-body .item-table tbody tr td {
+font-weight:600;
+vertical-align:top;
+padding:6px 0;
+}
+
+.flight-item .item-body .item-table tbody tr td ul li .awe-icon,.trip-item .item-body .item-table tbody tr td ul li .awe-icon,.attraction-item .item-body .item-table tbody tr td ul li .awe-icon,.hotel-item .item-body .item-table tbody tr td ul li .awe-icon {
+font-size:10px;
+margin-left:5px;
+margin-right:5px;
+}
+
+.flight-item .item-body .item-table tbody tr td .date,.trip-item .item-body .item-table tbody tr td .date,.attraction-item .item-body .item-table tbody tr td .date,.hotel-item .item-body .item-table tbody tr td .date {
+display:block;
+font-size:11px;
+color:#666;
+}
+
+.flight-item .item-body .item-footer,.trip-item .item-body .item-footer,.attraction-item .item-body .item-footer,.hotel-item .item-body .item-footer {
+margin-top:35px;
+overflow:hidden;
+}
+
+.flight-item .item-body .item-footer .item-rate,.trip-item .item-body .item-footer .item-rate,.attraction-item .item-body .item-footer .item-rate,.hotel-item .item-body .item-footer .item-rate {
+float:left;
+font-size:18px;
+font-weight:700;
+color:#B1B1B1;
+}
+
+.flight-item .item-body .item-footer .item-icon,.trip-item .item-body .item-footer .item-icon,.attraction-item .item-body .item-footer .item-icon,.hotel-item .item-body .item-footer .item-icon {
+float:right;
+color:#666;
+}
+
+.flight-item .item-body .item-footer .item-icon .awe-icon,.trip-item .item-body .item-footer .item-icon .awe-icon,.attraction-item .item-body .item-footer .item-icon .awe-icon,.hotel-item .item-body .item-footer .item-icon .awe-icon {
+font-size:13px;
+margin-left:15px;
+}
+
+.flight-item .item-price-more,.trip-item .item-price-more,.attraction-item .item-price-more,.hotel-item .item-price-more {
+position:relative;
+width:20%;
+float:right;
+overflow:hidden;
+margin:10px 0;
+padding:0 30px;
+}
+
+.flight-item .item-price-more:after,.trip-item .item-price-more:after,.attraction-item .item-price-more:after,.hotel-item .item-price-more:after {
+content:'';
+display:block;
+position:absolute;
+width:0;
+top:0;
+bottom:0;
+left:0;
+border-left: 1px solid #D4D4D4;
+}
+
+.flight-item .item-price-more .price,.trip-item .item-price-more .price,.attraction-item .item-price-more .price,.hotel-item .item-price-more .price {
+position:relative;
+font-style:italic;
+font-size:14px;
+color:#B1B1B1;
+-webkit-transition:all .3s ease;
+-moz-transition:all .3s ease;
+-ms-transition:all .3s ease;
+-o-transition:all .3s ease;
+transition:all .3s ease;
+}
+
+.flight-item .item-price-more .price del,.trip-item .item-price-more .price del,.attraction-item .item-price-more .price del,.hotel-item .item-price-more .price del {
+position:absolute;
+display:block;
+color:#B1B1B1;
+}
+
+.flight-item .item-price-more .price del .amount,.trip-item .item-price-more .price del .amount,.attraction-item .item-price-more .price del .amount,.hotel-item .item-price-more .price del .amount {
+font-size:14px;
+font-weight:600;
+color:#B1B1B1;
+}
+
+.flight-item .item-price-more a,.trip-item .item-price-more a,.attraction-item .item-price-more a,.hotel-item .item-price-more a {
+        margin-top: 9px;
+}
+
+.flight-item:hover .item-price-more .price del .amount,.trip-item:hover .item-price-more .price del .amount,.attraction-item:hover .item-price-more .price del .amount,.hotel-item:hover .item-price-more .price del .amount {
+color:#B1B1B1;
+}
+
+.flight-item .item-media {
+width:20%;
+}
+
+.flight-item .item-media .image-cover {
+}
+
+.flight-item .item-media .image-cover img {
+width:auto!important;
+height:auto !important;
+top:50%;
+left:50%;
+-webkit-transform:translate(-50%,-50%);
+-moz-transform:translate(-50%,-50%);
+-ms-transform:translate(-50%,-50%);
+-o-transform:translate(-50%,-50%);
+transform:translate(-50%,-50%);
+}
+.btn-book{
+    color: #000000;
+    background-color: #f8da15;
+    border: none;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+.flight-item .item-body {
+width:60%;
+}
+
+.flight-item .item-price-more {
+padding:10px 30px;
+}
+
+.flight-item .item-price-more .price {
+font-style:normal;
+font-size:11px;
+color:#666;
+}
+
+.mfp-container {
+padding:0 15px;
+}
+
+
+
+.widget ul {
+list-style:none;
+padding:0;
+}
+
+.page-sidebar .sidebar-title {
+position:relative;
+overflow:hidden;
+border-top: 2px solid #f26722;
+border-bottom:1px solid #DFDFDF;
+margin-bottom:15px;
+padding:18px 0;
+}
+
+.page-sidebar .sidebar-title h2 {
+font-weight:400;
+font-size:20px;
+color:#000;
+float:left;
+margin:0;
+}
+
+.page-sidebar .sidebar-title .clear-filter {
+float:right;
+padding-top:3px;
+}
+
+.page-sidebar .sidebar-title .clear-filter a {
+font-weight:600;
+font-size:12px;
+color:#7D7D7D;
+}
+
+.page-sidebar .sidebar-title .clear-filter a:after {
+content:'×';
+display:inline-block;
+font-size:20px;
+vertical-align:middle;
+margin-left:5px;
+}
+
+.page-sidebar .widget {
+border-bottom:1px solid #DFDFDF;
+margin-bottom:15px;
+}
+
+.page-sidebar .widget h3 {
+position:relative;
+font-size: 16px;
+color:#000;
+margin-top:0;
+margin-bottom:10px;
+text-transform:uppercase;
+}
+
+.page-sidebar .widget_search input {
+width:100%;
+border:1px solid #E7E7E7;
+background:none;
+}
+
+.page-sidebar .widget_has_thumbnail .image-wrap {
+padding-top:30%;
+}
+
+.page-sidebar .widget_has_thumbnail .content {
+margin-top:5px;
+}
+
+.page-sidebar .widget_has_thumbnail .content a {
+font-family:Lato, sans-serif;
+font-weight:700;
+font-size:14px;
+color:#666;
+}
+
+.page-sidebar .widget_latest_post ul li,.page-sidebar .widget_rss ul li,.page-sidebar .widget_meta ul li,.page-sidebar .widget_pages ul li,.page-sidebar .widget_nav_menu ul li,.page-sidebar .widget_categories ul li,.page-sidebar .widget_archive ul li {
+font-family:Lato, sans-serif;
+font-weight:700;
+font-size:14px;
+color:#666;
+margin-left:12px;
+}
+
+.page-sidebar .widget_latest_post ul li:before,.page-sidebar .widget_rss ul li:before,.page-sidebar .widget_meta ul li:before,.page-sidebar .widget_pages ul li:before,.page-sidebar .widget_nav_menu ul li:before,.page-sidebar .widget_categories ul li:before,.page-sidebar .widget_archive ul li:before {
+content:'';
+font-size:24px;
+font-weight:400;
+display:inline-block;
+margin-right:10px;
+width:8px;
+height:8px;
+background-color:#ddd;
+-webkit-border-radius:50%;
+-moz-border-radius:50%;
+-ms-border-radius:50%;
+-o-border-radius:50%;
+border-radius:50%;
+position:relative;
+top:0;
+-webkit-transition:all .3s ease;
+-moz-transition:all .3s ease;
+-ms-transition:all .3s ease;
+-o-transition:all .3s ease;
+transition:all .3s ease;
+}
+
+
+.page-sidebar .widget_recent_comments ul li {
+font-weight:700;
+font-size:14px;
+color:#666;
+margin-left:12px;
+}
+
+
+.widget_has_radio_checkbox ul li {
+padding:6px 0;
+}
+
+.widget_has_radio_checkbox ul li label {
+position:relative;
+display:block;
+-webkit-user-select:none;
+-moz-user-select:none;
+user-select:none;
+margin:0;
+}
+
+.widget_has_radio_checkbox ul li label .rating {
+font-size:12px;
+color:#666;
+}
+
+.widget_has_radio_checkbox ul li label .rating .fa {
+font-size:11px;
+color:#B1B1B1;
+}
+
+.widget_price_filter .price-slider-wrapper {
+padding-top:5px;
+margin-bottom:16px;
+}
+
+.widget_price_filter .price-slider {
+height:3px;
+}
+
+.widget_price_filter .price-slider .ui-slider-handle {
+height:10px;
+}
+
+.widget_price_filter .price_slider_amount {
+font-weight:600;
+font-size:16px;
+color:#A5A5A5;
+margin-top:15px;
+}
+
+.widget_has_radio_checkbox_text .widget_content {
+margin-bottom:32px;
+}
+
+.widget_has_radio_checkbox_text .widget_content label {
+position:relative;
+display:inline-block;
+font-size:16px;
+color: #f26722;
+-webkit-user-select:none;
+-moz-user-select:none;
+user-select:none;
+margin:0 24px 0 0;
+padding:6px 0;
+}
+
+.widget_has_radio_checkbox_text .widget_content label.from,.widget_has_radio_checkbox_text .widget_content label.to {
+margin-right:0;
+width:100%;
+font-size:13px;
+margin-top:5px;
+}
+
+.widget_has_radio_checkbox_text .widget_content label .form-item {
+position:relative;
+margin-top:8px;
+}
+
+.widget_has_radio_checkbox_text .widget_content label .form-item input {
+height:36px;
+line-height:36px;
+-webkit-border-radius:2px;
+-moz-border-radius:2px;
+-ms-border-radius:2px;
+-o-border-radius:2px;
+border-radius:2px;
+width:100%;
+padding-right:32px;
+}
+
+.widget_has_radio_checkbox_text .widget_content label .form-item .awe-icon {
+position:absolute;
+font-size:14px;
+color:#A6A6A6;
+top:10px;
+right:10px;
+}
+
+#page-wrap.dark .page-sidebar .widget,#page-wrap.dark .page-sidebar .sidebar-title {
+border-bottom-color:#000;
+}
+
+h1 a,.h1 a,h2 a,.h2 a,h3 a,.h3 a,h4 a,.h4 a,h5 a,.h5 a,h6 a,.h6 a,.trip-flight-hotel__table tbody tr .item-media .item-format a,#footer-page .widget_recent_comments ul li span a,#footer-page .widget_contact_info .widget_content a,.related-post .post .post-meta a,.blog-page__content .post .post-meta a,#comments a,.login-register-page__content .login-register-link a,.page-sidebar .widget_recent_comments ul li span a {
+color:inherit;
+}
+
+mark,.mark,.ui-datepicker .ui-datepicker-header .ui-datepicker-prev:hover,.ui-datepicker .ui-datepicker-header .ui-datepicker-next:hover,.toggle-menu-responsive.toggle-active .item,.awe-navigation-hamburger .toggle-menu-responsive:hover .item,.trip-flight-hotel__table tbody tr:hover .item-price,.travelling-tabs__time .month .item.hover-active a:before,.page-sidebar .widget_latest_post ul li:hover:before,.page-sidebar .widget_rss ul li:hover:before,.page-sidebar .widget_meta ul li:hover:before,.page-sidebar .widget_pages ul li:hover:before,.page-sidebar .widget_nav_menu ul li:hover:before,.page-sidebar .widget_categories ul li:hover:before,.page-sidebar .widget_archive ul li:hover:before,.checkout-page__content .coupon .form-row.form-row-last .button:hover,.checkout-page__content #payment > .payment_methods li input[type="radio"]:checked ~ label:before,.cart-footer .cart-subtotal .coupon-code .button:hover,.cart-footer .shipping-handling .check-shipping-rate .form-submit .button:hover,.cart-footer .cart-submit .update-cart:hover,.room-type-popup .calendar-body tbody .item-calendar.item-active,#page-wrap.dark #header-page,#page-wrap.dark #header-page .header-page__inner,#page-wrap.dark .awe-search-tabs .ui-tabs-nav:before,#page-wrap.dark #comments .comment-abs a:hover,#page-wrap.dark .post-footer .cat-box .cat a:hover,#page-wrap.dark .post-footer .tag-box .tag a:hover,#page-wrap.dark .tagcloud a:hover,#page-wrap.dark .login-register-page__content form:after,#page-wrap.dark ~ .ui-datepicker .ui-datepicker-header .ui-datepicker-prev:hover,#page-wrap.dark ~ .ui-datepicker .ui-datepicker-header .ui-datepicker-next:hover,.body-dark .room-type-popup .calendar-body tbody .item-calendar.item-active {
+background-color:#0091ea;
+}
+    
+.owl-carousel .owl-controls,.awe-search-tabs-2 .awe-search-tabs__content .ui-tabs-panel .form-elements,.awe-search-tabs-2 .awe-search-tabs__content .ui-tabs-panel .form-actions,.related-post .owl-carousel .owl-controls,#reviews #comments .commentlist li .comment-box .comment-body .description p {
+margin:0;
+}
+
+.owl-carousel .owl-controls .owl-buttons > div,.travelling-tabs__region .item > a,.travelling-tabs__time .season .item a,.flight-item .item-body .item-table tbody tr td ul li,.trip-item .item-body .item-table tbody tr td ul li,.attraction-item .item-body .item-table tbody tr td ul li,.hotel-item .item-body .item-table tbody tr td ul li {
+display:inline-block;
+}
+
+
+.owl-carousel .owl-controls .owl-buttons > div:hover .fa,.accordion .ui-state-active,.accordion .ui-widget-content .ui-state-active,.awe-navigation .menu-list li:hover > a,.awe-navigation .menu-list li.current-menu-parent > a,.awe-navigation .menu-list li.current-menu-item > a,.awe-navigation-responsive .menu-list li a:hover,.awe-navigation-responsive .menu-list li.current-menu-parent > a,.awe-navigation-responsive .menu-list li.current-menu-item > a,.awe-navigation-responsive .menu-list .submenu-toggle:hover .fa,.search-box .searchtoggle.searchtoggle-active,.search-box .searchtoggle:hover,.awe-services__list li:hover .awe-icon-arrow-right,.awe-masonry .awe-masonry__item .item-title h2 a:hover,.trip-flight-hotel__table tbody tr:hover .item-title h2 a,.trip-flight-hotel__table tbody tr:hover .item-rate,.breadcrumb ul li a:hover,.breadcrumb ul li span,#footer-page .widget_rss ul li a:hover,#footer-page .widget_meta ul li a:hover,#footer-page .widget_pages ul li a:hover,#footer-page .widget_nav_menu ul li a:hover,#footer-page .widget_categories ul li a:hover,#footer-page .widget_recent_entries ul li a:hover,#footer-page .widget_archive ul li a:hover,#footer-page .widget_recent_comments ul li span a:hover,.related-post .post .post-meta a:hover,.blog-page__content .post .post-meta a:hover,#comments cite.fn a:hover,.login-register-page__content form .terms-conditions:hover,.login-register-page__content form .forgot-password:hover,.login-register-page__content .login-register-link a:hover,.travelling-tabs__region .item:hover span,.travelling-tabs__time .month .item.hover-active a,.your-destinations .your-destinations__bar .view-switcher .view-item a:hover,.your-destinations .your-destinations__bar .view-switcher .view-item.view-active a,.destination-list__content .destinations-item .item-body .item-title h2 a:hover,.destination-list__content .destinations-item:hover .item-body .item-title h2 a,.destination-list__content .destinations-item:hover .item-body .item-footer ul li h6,.destination-list__content .destinations-item:hover .item-price-more .price,.destination-list__content .destinations-item:hover .item-price-more .price .amount,.page-top .list-link li a:hover,.page-top .list-link li.current a,.flight-item .item-body .item-title h2 a:hover,.trip-item .item-body .item-title h2 a:hover,.attraction-item .item-body .item-title h2 a:hover,.hotel-item .item-body .item-title h2 a:hover,.flight-item:hover .item-body .item-title h2 a,.trip-item:hover .item-body .item-title h2 a,.attraction-item:hover .item-body .item-title h2 a,.hotel-item:hover .item-body .item-title h2 a,.flight-item:hover .item-body .item-footer ul li h6,.trip-item:hover .item-body .item-footer ul li h6,.attraction-item:hover .item-body .item-footer ul li h6,.hotel-item:hover .item-body .item-footer ul li h6,.flight-item:hover .item-price-more .price,.trip-item:hover .item-price-more .price,.attraction-item:hover .item-price-more .price,.hotel-item:hover .item-price-more .price,.flight-item:hover .item-price-more .price .amount,.trip-item:hover .item-price-more .price .amount,.attraction-item:hover .item-price-more .price .amount,.hotel-item:hover .item-price-more .price .amount,.flight-popup-tabs .flight-popup__map-content .flight-popup__map-content-list .map-item.map-active .item-title h2,.flight-popup-tabs .flight-popup__map-content .flight-popup__map-content-list .map-item:hover .item-title h2,.page-sidebar .sidebar-title .clear-filter a:hover,.page-sidebar .widget_has_thumbnail .content a:hover,.page-sidebar .widget_latest_post ul li:hover > a,.page-sidebar .widget_rss ul li:hover > a,.page-sidebar .widget_meta ul li:hover > a,.page-sidebar .widget_pages ul li:hover > a,.page-sidebar .widget_nav_menu ul li:hover > a,.page-sidebar .widget_categories ul li:hover > a,.page-sidebar .widget_archive ul li:hover > a,.page-sidebar .widget_recent_comments ul li:hover > a,.widget_has_radio_checkbox ul li label > input[type="radio"]:checked ~ .awe-icon-check,.widget_has_radio_checkbox ul li label > input[type="checkbox"]:checked ~ .awe-icon-check,.widget_has_radio_checkbox_text .widget_content label > input[type="radio"]:checked ~ .awe-icon-check,.widget_has_radio_checkbox_text .widget_content label > input[type="checkbox"]:checked ~ .awe-icon-check,.checkout-page__sidebar ul li:hover a,.woocommerce-error a:hover,.woocommerce-info a:hover,.woocommerce-message a:hover,.billing-info .billing-table td a:hover,.cart-detail .cart-detail-table tbody th,.cart-content .cart-table tbody td .quantity .plus:hover,.cart-content .cart-table tbody td .quantity .minus:hover,.product-detail__info .product-email a:hover,.room-type-table tbody td.room-type .room-title h4 a:hover,#reviews #add_review form .comment-form-rating .item label,.services-on-flight .item label > input[type="radio"]:checked ~ .awe-icon-check,.services-on-flight .item label > input[type="checkbox"]:checked ~ .awe-icon-check,.booking-info .add-room-type > a:hover,.sale-flight-popup .mfp-close:hover,.room-type-popup .mfp-close:hover,.room-type-popup .calendar-header .calendar-prev:hover,.room-type-popup .calendar-header .calendar-next:hover,#page-wrap.dark .awe-navigation .menu-list li .sub-menu li:hover > a,#page-wrap.dark .awe-navigation .menu-list li .sub-menu li.current-menu-parent > a,#page-wrap.dark .awe-navigation .menu-list li .sub-menu li.current-menu-item > a,#page-wrap.dark .heading-content h2,#page-wrap.dark .tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor,#page-wrap.dark .awe-search-tabs__content .ui-tabs-panel .form-elements label,#page-wrap.dark .awe-services__list li:hover .awe-icon-arrow-right,#page-wrap.dark .checkout-page__top .title h1,#page-wrap.dark .page-sidebar .widget_has_thumbnail .content a:hover,#page-wrap.dark .page-sidebar .widget_latest_post ul li a:hover,#page-wrap.dark .page-sidebar .widget_rss ul li a:hover,#page-wrap.dark .page-sidebar .widget_meta ul li a:hover,#page-wrap.dark .page-sidebar .widget_pages ul li a:hover,#page-wrap.dark .page-sidebar .widget_nav_menu ul li a:hover,#page-wrap.dark .page-sidebar .widget_categories ul li a:hover,#page-wrap.dark .page-sidebar .widget_archive ul li a:hover,#page-wrap.dark .related-post .post .post-title h1,#page-wrap.dark .blog-page__content .post .post-title h1,#page-wrap.dark #comments cite.fn a:hover,#page-wrap.dark .about-author .author-name h3,#page-wrap.dark .minicart-wrap .minicart-body .minicart-list li .product-name a:hover,#page-wrap.dark .minicart-wrap .minicart-body .minicart-list li .product-remove a:hover,#page-wrap.dark .travelling-tabs__region .item:hover span,#page-wrap.dark .purpose-slider .item:hover span,#page-wrap.dark .travelling-tabs__advance-filter label,#page-wrap.dark .travelling-tabs__price .budget-level label,#page-wrap.dark .travelling-tabs__price .currency label,#page-wrap.dark .travelling-tabs__time .season .item.hover-active a span,#page-wrap.dark .travelling-tabs__time .month .item.hover-active a,#page-wrap.dark .flight-item .item-price-more .price > .amount,#page-wrap.dark .flight-item .item-price-more .price ins .amount,#page-wrap.dark .trip-item .item-price-more .price > .amount,#page-wrap.dark .trip-item .item-price-more .price ins .amount,#page-wrap.dark .attraction-item .item-price-more .price > .amount,#page-wrap.dark .attraction-item .item-price-more .price ins .amount,#page-wrap.dark .hotel-item .item-price-more .price > .amount,#page-wrap.dark .hotel-item .item-price-more .price ins .amount,#page-wrap.dark .flight-item .item-body .item-title h2 a,#page-wrap.dark .trip-item .item-body .item-title h2 a,#page-wrap.dark .attraction-item .item-body .item-title h2 a,#page-wrap.dark .hotel-item .item-body .item-title h2 a,#page-wrap.dark .destination-list__content .destinations-item .item-price-more .price .amount,#page-wrap.dark .destination-list__content .destinations-item:hover .item-body .item-footer ul li h6,#page-wrap.dark .destination-list__content .destinations-item .item-body .item-title h2 a,#page-wrap.dark ~ .ui-datepicker .ui-datepicker-header .ui-datepicker-title,#page-wrap.dark .product-detail__info .product-address:hover,#page-wrap.dark .product-detail__info .product-email a:hover,#page-wrap.dark .room-type-table tbody td.room-type .room-title h4,#page-wrap.dark .product-tabs__content .ui-tabs-panel .check-availability .form-elements label,#page-wrap.dark .trip-flight-hotel__table tbody tr:hover .item-title h2 a,.body-dark .room-type-popup .form-elements label {
+color:#0091ea;
+    background: none !important;
+}
+
+
+
+
+.awe-services__list li:last-child,.page-sidebar .widget:last-child,.page-sidebar .widget_latest_post ul li:last-child,.page-sidebar .widget_rss ul li:last-child,.page-sidebar .widget_meta ul li:last-child,.page-sidebar .widget_pages ul li:last-child,.page-sidebar .widget_nav_menu ul li:last-child,.page-sidebar .widget_categories ul li:last-child,.page-sidebar .widget_archive ul li:last-child,.page-sidebar .widget_recent_comments ul li:last-child,.initiative-table tbody tr:last-child,#page-wrap.dark .sale-flights-tabs__table tr .sale-flights-tabs__item-flight .image-wrap,.body-dark .sale-flights-tabs__table tr .sale-flights-tabs__item-flight .image-wrap {
+border:0;
+}
+
+
+.awe-search-tabs .ui-tabs-nav:after,.awe-search-tabs-2 .ui-tabs-nav:after,.trip-flight-hotel-tabs .ui-tabs-nav:after,.breadcrumb ul li:last-child a:after,.related-post .post .post-meta .cat ul li:last-child a:after,.blog-page__content .post .post-meta .cat ul li:last-child a:after,.travelling-tabs .ui-tabs-nav:after,.travelling-tabs__time .month .item:last-child:after,.flight-item .item-body .item-table tbody tr td ul li:last-child .awe-icon,.trip-item .item-body .item-table tbody tr td ul li:last-child .awe-icon,.attraction-item .item-body .item-table tbody tr td ul li:last-child .awe-icon,.hotel-item .item-body .item-table tbody tr td ul li:last-child .awe-icon,.widget_has_radio_checkbox ul li label > input[type="radio"],.widget_has_radio_checkbox ul li label > input[type="checkbox"],.widget_has_radio_checkbox_text .widget_content label > input[type="radio"],.widget_has_radio_checkbox_text .widget_content label > input[type="checkbox"],.checkout-page__content #payment > .payment_methods li input[type="radio"],.services-on-flight .item label > input[type="radio"],.services-on-flight .item label > input[type="checkbox"] {
+display:none;
+}
+
+.related-post,.blog-page__content,.page-sidebar {
+margin-top:37px;
+margin-bottom:84px;
+}
+.widget ul li > label,.ticket-price thead th span {
+font-size:12px;
+font-weight:600;
+color:#666;
+}
+
+.page-sidebar .widget_search form,.page-sidebar .widget_follow_us .awe-social {
+margin-bottom:16px;
+}
+
+.page-sidebar .widget_has_thumbnail ul li,.booking-info .form-select-date {
+margin-bottom:20px;
+}
+
+.page-sidebar .widget_latest_post ul li a,.page-sidebar .widget_rss ul li a,.page-sidebar .widget_meta ul li a,.page-sidebar .widget_pages ul li a,.page-sidebar .widget_nav_menu ul li a,.page-sidebar .widget_categories ul li a,.page-sidebar .widget_archive ul li a,.page-sidebar .widget_recent_comments ul li span {
+display:inline-block;
+color:inherit;
+padding-top:8px;
+padding-bottom:8px;
+}
+
+.page-sidebar .widget_latest_post ul li ul li,.page-sidebar .widget_rss ul li ul li,.page-sidebar .widget_meta ul li ul li,.page-sidebar .widget_pages ul li ul li,.page-sidebar .widget_nav_menu ul li ul li,.page-sidebar .widget_categories ul li ul li,.page-sidebar .widget_archive ul li ul li,.page-sidebar .widget_recent_comments ul li ul li {
+margin-left:18px;
+}
+
+.widget_has_radio_checkbox ul li label .awe-icon-check,.widget_has_radio_checkbox_text .widget_content label .awe-icon-check,.services-on-flight .item label .awe-icon-check {
+position:relative;
+font-size:7px;
+width:15px;
+height:15px;
+line-height:11px;
+text-align:center;
+border:2px solid #A6A6A6;
+color:transparent;
+top:-2px;
+margin-right:8px;
+}
+
+#page-wrap.dark .widget_has_radio_checkbox_text .widget_content label .awe-icon-check,#page-wrap.dark .awe-services__list li .awe-icon-check,#page-wrap.dark .travelling-tabs .ui-tabs-nav li .ui-tabs-anchor,#page-wrap.dark #comments .commentlist > .comment .comment-box,#page-wrap.dark .page-top .list-link li a:before,#page-wrap.dark .widget_has_radio_checkbox ul li label .awe-icon-check,#page-wrap.dark .flight-item .item-price-more:after,#page-wrap.dark .trip-item .item-price-more:after,#page-wrap.dark .attraction-item .item-price-more:after,#page-wrap.dark .hotel-item .item-price-more:after,#page-wrap.dark .destination-list__content .destinations-item .item-price-more:after,#page-wrap.dark .initiative-table tbody tr .item-thumb:after,#page-wrap.dark .services-on-flight .item label .awe-icon-check,.body-dark .sale-flight-popup .sale-flights-tabs__table tr .sale-flights-tabs__item-choose:after {
+border-color:#444;
+}
+
+
+#page-wrap.dark .page-sidebar .widget_has_thumbnail .content a,#page-wrap.dark .page-sidebar .widget_latest_post ul li a,#page-wrap.dark .page-sidebar .widget_rss ul li a,#page-wrap.dark .page-sidebar .widget_meta ul li a,#page-wrap.dark .page-sidebar .widget_pages ul li a,#page-wrap.dark .page-sidebar .widget_nav_menu ul li a,#page-wrap.dark .page-sidebar .widget_categories ul li a,#page-wrap.dark .page-sidebar .widget_archive ul li a,#page-wrap.dark .minicart-wrap .minicart-body .minicart-list li .product-name a {
+color:#ddd;
+}

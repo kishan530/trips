@@ -1,0 +1,19 @@
+{% extends 'TripBookingEngineBundle:Default:booking.html.twig' %}
+ {% block details %}
+
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <img src="{{ asset('images/hotels/'~service.imagePath) }}" alt="" class="img-responsive">
+                                            </div><!-- end col -->
+                                            <div class="col-sm-12">
+                                                <h6>{{ service.name }}</h6>
+
+                                                <ul class="clearfix">
+                                                   
+                                                     <li><span>Check In:</span> {{ filter.date }}</li>
+                                                      <li><span>Check out:</span> {{ filter.returnDate }}</li>
+                                                     <li><span>Price:</span> {{ service.price }}</li>
+                                                </ul>
+                                            </div><!-- end col -->
+                                        </div><!-- end row -->
+{% endblock %}

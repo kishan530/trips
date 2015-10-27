@@ -1,0 +1,23 @@
+parameters:
+     security.authentication.success_handler.class: Trip\SecurityBundle\Controller\LoginSuccessHandler
+services:
+#    trip_security.example:
+#        class: Trip\SecurityBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+     trip.registration.form.type:
+        class: Trip\SecurityBundle\Form\Type\RegistrationFormType
+        arguments: [%fos_user.model.user.class%]
+        tags:
+            - { name: form.type, alias: trip_registration }
+
+     security.authentication.customized_success_handler:
+          class: %security.authentication.success_handler.class%
+          arguments:  [@router, @security.context]
+          tags:
+            - { name: 'monolog.logger', channel: 'security' }
+     fos_facebook.user.login:
+        class:  Trip\SecurityBundle\Controller\FacebookProvider
+        arguments:
+            facebook: "@fos_facebook.api"
+            userManager: "@fos_user.user_manager"
+            validator: "@validator"

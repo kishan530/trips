@@ -1,0 +1,109 @@
+{% extends 'page.html.twig' %}
+{% block javascripts %}
+<script>
+$("select").change(function() {
+			$("#search").submit();						
+		});
+    $("input").change(function() {
+			$("#search").submit();						
+		});
+		 $("input").blur(function() {
+			$("#search").submit();						
+		});
+</script>
+{% endblock %}
+{% block stylesheets %}
+    <!-- Default Styles -->
+    <link href="{{ asset('css/search-style.css') }}" rel="stylesheet">
+ <link href="{{ asset('css/awe-booking-font.css') }}" rel="stylesheet">
+{% endblock %}
+{% block body %}
+
+    <section class="section clearfix">
+        <div class="container">
+            <div class="row">
+                <div id="fullwidth" class="col-sm-12">
+
+                    
+                    
+                    <div class="row">
+  <div class="col-md-9 col-md-push-3">
+    <div class="filter-page__content">
+      <div class="filter-item-wrapper">
+          
+          {% for key,hotel in result %}
+        <div class="flight-item border-box">
+          <div class="item-media">
+            <div class="image-cover"><img src="{{ asset('images/hotels/'~hotel.imagePath) }}" alt="" style="height: 100%; width: auto;"></div>
+          </div>
+          <div class="item-body">
+            <div class="item-title">
+              <h2><a href="flight-detail.html">{{ hotel.name }}</a></h2>
+            </div>
+            <div class="item-address">
+             {{ hotel.address.location }}, {{ hotel.address.city }}
+            </div>
+            
+          </div>
+          <div class="item-price-more">
+            <div class="price"><span class="amount"> <i class="fa fa-inr"></i> {{ hotel.price }}</span> per night</div>
+            <a href="{{ path('trip_booking_engine_confirm') }}?selected={{ key }}" class="awe-btn awe-btn btn btn-primary btn-normal btn-sm">Book now</a>
+          </div>
+        </div>
+          
+          {% endfor %}
+      </div>
+        
+    </div>
+  </div>
+  <div class="col-md-3 col-md-pull-9 border-box sidebar-filter">
+    <div class="page-sidebar">
+      <div class="sidebar-title">
+        <h2>Hotels</h2>
+        <div class="clear-filter"><a href="#">Clear all</a></div>
+      </div>
+        {{ form_start(form) }}
+        {{ form_errors(form, { 'global_errors': true }) }}
+        <div class="widget">
+                 
+        <h3>Going To</h3>
+                                    <div class="form-group make-margin">
+                                         <div class="dropdown">
+                                             {{ form_widget(form.goingTo) }}                                            
+                                        </div>
+                                    </div>
+            <div class="clearfix"></div>
+        </div>
+         <div class="widget">
+                  <div class="clearfix"></div>
+                
+<h3>Date</h3>
+                                 <div class="form-group make-margin">
+                                         <div class="dropdown">
+                                              {{ form_widget(form.date) }}                                            
+                                        </div>
+                                    </div>
+        <h3>ReturnDate</h3>
+                                    <div class="form-group make-margin">
+                                         <div class="dropdown">
+                                             {{ form_widget(form.returnDate) }}                                            
+                                        </div>
+                                    </div>
+            <div class="clearfix"></div>
+        </div>
+          <div class="clearfix"></div>
+     
+        
+        {{ form_end(form) }}
+    </div>
+  </div>
+</div>
+                    
+                    
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

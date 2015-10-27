@@ -1,0 +1,217 @@
+{% extends 'page.html.twig' %}
+{% block javascripts %}
+<script>
+     $('.adults').click(function(e){		
+			e.preventDefault(); //STOP default action 
+			 var id = $(this).attr('id');
+			 var value = parseInt($(this).attr('value'));
+			 var adults =parseInt( $('#trip_search_numAdult').val());
+			 if (isNaN(adults)) { 
+				 adults= 0
+	            } 
+			 if(id=='decrement'){
+				 adults-=1;
+				 if(adults>=value) $('#trip_search_numAdult').val(adults); else exit();
+			  }else{
+				adults+=1;
+			    if(adults<=20)  $('#trip_search_numAdult').val(adults); else exit();
+				}
+          //$("#search").submit();	
+	    });
+        $('.days').click(function(e){		
+			e.preventDefault(); //STOP default action 
+			 var id = $(this).attr('id');
+			 var value = parseInt($(this).attr('value'));
+			 var days =parseInt( $('#trip_search_numDays').val());
+			 if (isNaN(days)) { 
+				 days= 0
+	            } 
+			 if(id=='decrement'){
+				 days-=1;
+				 if(days>=value) $('#trip_search_numDays').val(days); else exit();
+			  }else{
+				days+=1;
+			    if(days<=20)  $('#trip_search_numDays').val(days); else exit();
+				}
+            // $("#search").submit();	
+	    });
+$("select").change(function() {
+			//$("#search").submit();						
+		});
+    $("input").change(function() {
+			//$("#search").submit();						
+		});
+		 $("input").blur(function() {
+		//	$("#search").submit();						
+		});
+</script>
+{% endblock %}
+{% block stylesheets %}
+    <!-- Default Styles -->
+    <link href="{{ asset('css/search-style.css') }}" rel="stylesheet">
+ <link href="{{ asset('css/awe-booking-font.css') }}" rel="stylesheet">
+{% endblock %}
+{% block body %}
+
+    <section class="section clearfix">
+        <div class="container">
+            <div class="row">
+                <div id="fullwidth" class="col-sm-12">
+
+                    
+                    
+                    <div class="row">
+  <div class="col-md-9 col-md-push-3">
+    <div class="filter-page__content">
+      <div class="filter-item-wrapper">
+          
+          {% for key,vehicle in result %}
+        <div class="flight-item border-box {% if loop.index is even %} oddClass {% endif %}">
+          <div class="item-media">
+            <div class="image-cover"><img src="{{ asset('images/cars/'~vehicle.imgPath) }}" alt="" style="height: 100%; width: auto;"></div>
+          </div>
+          <div class="item-body">
+            <div class="item-title">
+              <h2><a href="#">{{ vehicle.model }}</a></h2>
+            </div>
+           <div class="col-md-6"><span>{{ vehicle.capcity }}</span></div>
+            <div class="col-md-6">
+                    <ul class="list-inline">
+                        {% if tripType=='multicity' %}
+                            {% for from in vehicle.lFrom %}
+                                <li>{{ from }} {% if loop.last is same as(false) %} <i class="fa fa-long-arrow-right"></i> {% endif %}</li>
+                            {% endfor %}                                                  
+                           {# <li>{{ vehicle.to }} </li> #}
+                        {% else %}
+                        <li> {{ vehicle.lFrom }} {% if tripType=='roundtrip' %} <i class="fa fa-long-arrow-left"></i>{% endif %}<i class="fa fa-long-arrow-right"></i></li>
+                          <li>{{ vehicle.to }} </li>
+                        {% endif %}
+                      
+                    </ul>
+              </div>
+                  
+          </div>
+          <div class="item-price-more">
+            <div class="price"><span class="amount"> <i class="fa fa-inr"></i> {% if tripType=='roundtrip' %} {{ vehicle.returnPrice }} {% else %} {{ vehicle.price }}{% endif %}</span></div>
+               {% if tripType=='multicity' %}
+              <span> {{ vehicle.mileage }}  </span>
+              {% endif %}
+            <a href="{{ path('trip_booking_engine_confirm') }}?selected={{ key }}" class="awe-btn awe-btn btn btn-book btn-normal btn-md"><i class="fa fa-shopping-cart"></i> Book now</a>
+          </div>
+        </div>
+          
+          {% endfor %}
+      </div>
+        
+    </div>
+  </div>
+  <div class="col-md-3 col-md-pull-9 border-box sidebar-filter">
+    <div class="page-sidebar">
+      <div class="sidebar-title">
+        <h2>Cars</h2>  <!-- <button type="submit" class="btn btn-primary btn-block btn-sm"> Apply</button>-->
+      </div>
+        {{ form_start(form) }}
+        {{ form_errors(form, { 'global_errors': true }) }}
+        <div {% if tripType=='multicity' %} style="display:none;" {% endif %}>
+      <div class="widget widget_has_radio_checkbox_text">
+        <h3>Trip Type</h3>
+        <div class="widget_content"><label><input type="radio"  name="tripType" value="oneway" {% if tripType=='oneway' %} checked {% endif %}> <i class="awe-icon awe-icon-check"></i> One Way</label><label><input type="radio"  name="tripType" value="roundtrip" {% if tripType=='roundtrip' %} checked {% endif %}> <i class="awe-icon awe-icon-check"></i>Round Trip</label>
+            <input type="radio"  name="tripType" value="multicity" {% if tripType=='multicity' %} checked {% endif %} style="display:none;">
+      
+          </div> 
+
+      </div> 
+        <div class="widget">
+                  <div class="clearfix"></div>
+                
+<h3>Leaving From</h3>
+                                 <div class="form-group make-margin">
+                                         <div class="dropdown">
+                                              {{ form_widget(form.leavingFrom) }}                                            
+                                        </div>
+                                    </div>
+        <h3>Going To</h3>
+                                    <div class="form-group make-margin">
+                                         <div class="dropdown">
+                                             {{ form_widget(form.goingTo) }}                                            
+                                        </div>
+                                    </div>
+            <div class="clearfix"></div>
+        </div>
+         <div class="widget">
+                  <div class="clearfix"></div>
+                
+<h3>{{ form_label(form.date) }}</h3>
+                                 <div class="form-group make-margin">
+                                         <div class="dropdown">
+                                              {{ form_widget(form.date) }}                                            
+                                        </div>
+                                    </div>
+        <h3>{{ form_label(form.returnDate) }} </h3>
+                                    <div class="form-group make-margin">
+                                         <div class="dropdown">
+                                             {{ form_widget(form.returnDate) }}                                            
+                                        </div>
+                                    </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+        <div class="clearfix"></div>
+        
+         <div class="widget">
+                  <div class="clearfix"></div>
+             <h3>{{ form_label(form.preferTime) }} </h3>
+                                       <div class="form-group make-margin">
+                                         {{ form_widget(form.preferTime) }}
+                                    </div>          
+             <h3>{{ form_label(form.numAdult) }}</h3>
+                                 <div class="form-group make-margin">
+                                         <div class="input-group">
+                                            <a class="adults input-group-addon" id="decrement" value="1" href="#">-</a> 
+                                                            {{ form_widget(form.numAdult) }}
+                                            <a class="adults input-group-addon" id="increment" href="#">+</a>
+                                        </div>
+                                    </div>
+             <div {% if tripType=='multicity' %} style="display:block;" {% else %} style="display:none;"  {% endif %}>
+        <h3>{{ form_label(form.numDays) }} </h3>
+                                    <div class="form-group make-margin">
+                                         <div class="input-group">
+                                            <a class="days input-group-addon" id="decrement" value="1" href="#">-</a> 
+                                                            {{ form_widget(form.numDays) }}
+                                            <a class="days input-group-addon" id="increment" href="#">+</a>
+                                        </div>
+                                        </div>
+                                    </div>
+        </div>
+            <div class="clearfix"></div>
+        <button type="submit" class="btn btn-primary btn-block btn-sm"> Apply Changes</button>
+        
+          <div class="clearfix"></div>
+      
+        <div style="display:none">
+        
+             {% for multiCity in form.multiple %}
+            {{ form_widget(multiCity) }} 
+            {% endfor %}
+        </div>
+        
+       
+      <div class="clearfix"></div>
+        {{ form_end(form) }}
+        
+        
+        </div>
+        
+        
+    </div>
+  </div>
+</div>
+                    
+                    
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

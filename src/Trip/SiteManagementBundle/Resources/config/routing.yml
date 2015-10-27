@@ -1,0 +1,25 @@
+
+trip_site_management_add_vehicle:
+    path:     /add/vehicle
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:addVehicle }
+trip_site_management_add_services:
+    path:     /add/services
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:addServices }
+trip_site_management_add_locations:
+    path:     /add/locations
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:addLocations }
+trip_site_management_add_hotel:
+    path:     /add/hotel
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:addHotel }
+trip_site_management_contact:
+    path:     /contact
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:contact }
+trip_site_management_about:
+    path:     /aboutUs
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:aboutUs }
+trip_site_management_terms:
+    path:     /privacy-policy
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:terms }
+trip_site_management_faq:
+    path:     /faq
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:faq }

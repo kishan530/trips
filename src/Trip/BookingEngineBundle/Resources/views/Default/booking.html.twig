@@ -1,0 +1,249 @@
+{% extends 'page.html.twig' %}
+{% block javascripts %}
+<script>
+    $("#couponCode").hide();
+    if({{ discount }}<1)
+    $('#fee').hide();
+    $('#trip_bookingenginebundle_customer_haveCoupon').change(function(){ 		 		 	
+		 var haveCoupon = $("#trip_bookingenginebundle_customer_haveCoupon").is(':checked');
+            haveCoupon ? $("#couponCode").show() : $("#couponCode").hide();
+         });
+
+    	$('#apply').click(function(e){		
+		e.preventDefault(); //STOP default action 		 		 	
+		 var optionSelected = $("#trip_bookingenginebundle_customer_couponCode").val();		
+		 $.ajax({
+		      url: "{{ path('trip_booking_engine_apply_coupon') }}",
+		      type: "GET",
+		       data: { "coupon" : optionSelected },
+		      success: function(data) {				     			        	  		        	
+				     if(data=='false')
+				     {
+				    	 $('#coupon-error').show();
+					  }
+				     else
+				     {
+				    	 $('#coupon-error').hide();
+					     $('#price').html(data);
+                         $('#fee').show();
+				     }			     
+				     
+		      },
+
+		      error: function(XMLHttpRequest, textStatus, errorThrown)
+		      {
+		        alert('Error: ' +  errorThrown);
+		      }
+		   });						 		   			   							
+    });
+
+</script>
+
+{% endblock %}
+{% block stylesheets %}
+<style>
+    #apply{
+        background-color: #0694b6 !important;
+        color: #FFF;
+    }
+</style>
+{% endblock %}
+{% block body %}
+
+    <section class="section clearfix">
+        <div class="container">
+            <div class="row">
+                <div id="fullwidth" class="col-sm-12">
+
+                    <!-- START CONTENT -->
+                    <div class="row">
+                        <div id="content" class="col-md-12 col-sm-12 col-xs-12">
+
+                            <div class="price-range text-center clearfix row">
+                                <div class="col-md-12">
+                                    <img src="{{ asset('images/progress.png') }}" class="img-responsive" alt="">
+                                </div><!-- end price-range -->
+                            </div><!-- end price-range -->
+
+                            <div class="clearfix"></div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                         {% block form %}
+                                        <div class="hotel-title price-details">
+                                            <h5>Your Information</h5>
+                                        </div>
+                                            {{ form_start(form) }}
+                                            {{ form_errors(form, { 'global_errors': true }) }}
+                                        
+                                        <div class="row">
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                {{ form_widget(form.name,{'attr':{'class':'make-margin','placeholder':'Name'}}) }}
+                                            </div>
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                               {{ form_widget(form.email,{'attr':{'class':'make-margin','placeholder':'Email'}}) }}
+                                            </div>
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                            {{ form_widget(form.mobile,{'attr':{'class':'make-margin','placeholder':'10 Digit Mobile No'}}) }} 
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                <div class="input-group make-margin">
+                                                 {{ form_widget(form.haveCoupon) }} {{ form_label(form.haveCoupon) }}
+                                                </div>
+                                            </div>
+                                              <div class="col-md-6 col-sm-6 col-xs-6">
+                                                <div class="input-group make-margin" id="couponCode">
+                                                {{ form_widget(form.couponCode,{'attr':{'placeholder':'Enter an offer code'}}) }}
+                                                    <a class="input-group-addon" id="apply" href="#">apply</a>
+                                                </div>
+                                                <div class="row form-group has-error make-margin">
+                                                    <ul class="errors help-block">
+                                                        <li id="coupon-error" style="display:none">Invalid Coupon</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                             <div class="col-md-8 col-sm-8 col-xs-8">
+                                                <input type="checkbox" required="required" name="cb" class="remove_margin">  {% trans %} I agree to the JustTrip {% endtrans%} <a target="_blank" href="{{ path('trip_site_management_terms') }}">{% trans %} Terms of Service{% endtrans%}</a>
+                                            </div>
+                                             <div class="col-md-4 col-sm-4 col-xs-4">
+                                                <button type="submit" class="btn btn-primary btn-block btn-lg"> BOOK NOW</button>
+                                            </div>
+                                            
+                                            {# <input type="text" class="form-control make-margin" placeholder="Country of Passport">  #}
+                                           {{ form_end(form) }}<!-- end form -->
+                                        </div>
+                                    {% endblock %}
+                                    </div><!-- end col -->
+                                    <div class="col-sm-4">
+                                <div class="booking-price-details-border price-details clearfix">
+                                <div class="hotel-title">
+                                    <h5>Your Booking Details</h5>
+                                </div>
+                                <div class="row booking-price-details">
+                                    <div class="col-md-12">
+                                        {% block details %}
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <img src="{{ asset('images/cars/'~service.imgPath) }}" alt="" class="img-responsive">
+                                            </div><!-- end col -->
+                                            <div class="col-sm-12">
+                                                <h6>{{ service.model }}</h6>
+
+                                                <ul class="clearfix">
+                                                    
+                                                    <li><span>Root:</span> 
+                                                    
+                                                        <ul class="list-inline" style="margin:0">
+                                                        {% if filter.tripType=='multicity' %}
+                                                            {% for from in service.lFrom %}
+                                                                <li>{{ from }} {% if loop.last is same as(false) %} <i class="fa fa-arrow-right"></i> {% endif %}</li>
+                                                            {% endfor %}                                                  
+                                                           {# <li>{{ service.to }} </li> #}
+                                                        {% else %}
+                                                        <li> {{ service.lFrom }} {% if filter.tripType=='roundtrip' %} <i class="fa fa-arrow-left"></i>{% endif %}<i class="fa fa-arrow-right"></i></li>
+                                                          <li>{{ service.to }} </li>
+                                                        {% endif %}
+
+                                                        </ul>
+                                                    </li>
+                                                    {% if filter.tripType != 'multicity' %}
+                                                        <li><span>Date:</span>{{ filter.date|date('F jS Y') }}</li>
+                                                        {% if filter.tripType=='roundtrip' %}
+                                                            <li><span>Return:</span> {{ filter.returnDate|date('F jS Y') }}</li>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                    
+                                                    
+                                                    
+                                                    <hr>
+                                                    
+                                                    {% if filter.tripType=='roundtrip' %}
+                                                    <li class="booking-price"><span>Price:</span>
+                                                        <em id="fee"><i class="fa fa-inr"></i>
+                                                        <em> {{ service.returnPrice }} </em> - <i class="fa fa-inr"></i> <em >50</em> = 
+                                                        </em> 
+                                                        <i class="fa fa-inr"></i><em id="price"> {{ service.returnPrice }} </em>
+                                                    </li>
+                                                    {% else %}
+                                                    <li class="booking-price"><span>Price:</span> 
+                                                        <em id="fee"><i class="fa fa-inr"></i>
+                                                        <em> {{ service.price }} </em> - <i class="fa fa-inr"></i> <em >50</em> = 
+                                                        </em>
+                                                        <i class="fa fa-inr"></i><em id="price"> {{ service.price }} </em>
+                                                    </li>
+                                                    {% endif %}                                                                     
+                                               </ul>
+                                            </div><!-- end col -->
+                                             <div class="col-md-12">
+                                                <a class="sm-links" data-toggle="modal" data-target="#terms" href="#terms">Fair Rules</a>
+                                            </div>
+                                             </div><!-- end row -->
+                                        
+                                            {% endblock %}
+                                           
+                                       
+                                    </div><!-- end col -->
+
+                                    <div class="col-md-6">
+                                      
+                                    </div><!-- end col -->
+                                </div><!-- end row -->
+                            </div><!-- end pricing-details -->
+                                    </div>
+                                    
+                                </div><!-- end row -->
+                           
+                        </div><!-- end col -->
+                    </div><!-- end row -->
+                    <!-- END CONTENT --> 
+                    
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+							 <div class="modal fade" id="terms" role="dialog">
+								    <div class="modal-dialog">
+								    
+								      <!-- Modal content-->
+								      <div class="modal-content">
+								        <div class="modal-header">
+								          <button type="button" class="close" data-dismiss="modal">&times;</button>
+								          <h4 class="modal-title">Terms and Conditions</h4>
+								        </div>
+								        <div class="modal-body">
+                                            <p> Toll , Parking, Food allowances and  State Permit extra</p>
+                                            <p>In ghat road A/C will not function.</p>
+                                            <p>Once the Journey is started, Tickets are not refundable and unchangeable.</p>
+                                            {% if filter.tripType == 'multicity' %}
+                                            <p>This package is time limited to 12 hrs from the pickup time. But if want
+to keep the car for 24 hrs Rs:500 extra/night.</p>
+                                            <p>Cancellation charges of Rs.200 applicable if canceled within 24 Hours of pickup time.</p>
+                                            {% else %}        
+                                                {% if filter.tripType=='roundtrip' %}
+                                                    <p>This package is time limited to 12 hrs from the pickup time</p>
+                                                    <p>Cancellation charges of Rs.200 applicable if canceled within 24 Hours of pickup time.</p>
+                                                    <p>In Roundtrip Min 300kms/Day. For every 1 Kms extra (i.e: From 301 Km)
+        Indico Rs:8, Vertio, Etios, Swift Dzire Rs:10, Innova Rs:14, Tempo Rs:17
+        has to be paid extra</p>
+                                                {% else %}
+                                                    <p> Price mentioned is applicable for drop/return on the same day.</p>
+                                                    <p>  For Tirumala drop cab will wait 30 Minutes at CRO Office after that
+Extra hour will be charged Rs:100/- for all 4 seater  cars , Rs:150/-for
+all 7 seater cars , Rs:-200/-for all 12 seater.</p>
+                                            <p>Cancellation charges of Rs.100 applicable if canceled within 24 Hours of pickup time.</p>
+                                                {% endif %}
+                                            {% endif %}
+								             
+                                    
+                                    
+
+								        </div>
+								        
+								      </div>
+								      
+								    </div>
+								  </div>
+
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends 'TripBookingEngineBundle:Default:booking.html.twig' %}
+
+{% block form %}
+<div class="row"><div class="col-lg-11">{{ render(controller('FOSUserBundle:Security:login')) }}</div>	</div>
+<div class="row text-center remove_margin"><label>OR</label></div>
+            {{ form_start(form) }}
+            {{ form_errors(form, { 'global_errors': true }) }}
+         <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    {{ form_widget(form.email,{'attr':{'class':'make-margin','placeholder':'Email'}}) }}
+                </div>
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <input type="hidden" name="selected" value="{{ selected }}" />
+                <button type="submit" class="btn btn-primary btn-block">Continue as Guest</button>
+             </div>
+            
+        </div>
+
+        {{ form_end(form) }}<!-- end form -->
+    
+{% endblock %}
+ {% block details %}
+
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <img src="{{ asset('images/cars/'~service.imgPath) }}" alt="" class="img-responsive">
+                                            </div><!-- end col -->
+                                            <div class="col-sm-12">
+                                                <h6>{{ service.model }}</h6>
+
+                                                <ul class="clearfix">
+                                                    <li><span>Root:</span> 
+                                                    
+                                                        <ul class="list-inline" style="margin:0">
+                                                        {% if filter.tripType=='multicity' %}
+                                                            {% for from in service.lFrom %}
+                                                                <li>{{ from }} {% if loop.last is same as(false) %} <i class="fa fa-arrow-right"></i> {% endif %}</li>
+                                                            {% endfor %}                                                  
+                                                           {# <li>{{ service.to }} </li> #}
+                                                        {% else %}
+                                                        <li> {{ service.lFrom }} {% if filter.tripType=='roundtrip' %} <i class="fa fa-arrow-left"></i>{% endif %}<i class="fa fa-arrow-right"></i></li>
+                                                          <li>{{ service.to }} </li>
+                                                        {% endif %}
+
+                                                        </ul>
+                                                    </li>
+                                                   {% if filter.tripType != 'multicity' %}
+                                                        <li><span>Date:</span>{{ filter.date|date('F jS Y') }}</li>
+                                                        {% if filter.tripType=='roundtrip' %}
+                                                            <li><span>Return:</span> {{ filter.returnDate|date('F jS Y') }}</li>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                    
+                                                    
+                                                    
+                                                    <hr>
+                                                    
+                                                    {% if filter.tripType=='roundtrip' %}
+                                                    <li class="booking-price"><span>Price:</span>
+                                                        <em id="fee"><i class="fa fa-inr"></i>
+                                                        <em> {{ service.returnPrice }} </em> - <i class="fa fa-inr"></i> <em >50</em> = 
+                                                        </em> 
+                                                        <i class="fa fa-inr"></i><em id="price"> {{ service.returnPrice }} </em>
+                                                    </li>
+                                                    {% else %}
+                                                    <li class="booking-price"><span>Price:</span> 
+                                                        <em id="fee"><i class="fa fa-inr"></i>
+                                                        <em> {{ service.price }} </em> - <i class="fa fa-inr"></i> <em >50</em> = 
+                                                        </em>
+                                                        <i class="fa fa-inr"></i><em id="price"> {{ service.price }} </em>
+                                                    </li>
+                                                    {% endif %}      
+                                                    
+                                                </ul>
+                                            </div><!-- end col -->
+                                             <div class="col-md-12">
+                                            <a class="sm-links" data-toggle="modal" data-target="#terms" href="#terms">Fair Rules</a>
+                                            </div>
+                                        </div><!-- end row -->
+{% endblock %}

@@ -1,0 +1,36 @@
+trip_site_management_homepage:
+    path:     /
+    defaults: { _controller: TripBookingEngineBundle:Booking:index }
+trip_site_management_homepage_hotels:
+    path:     /hotels
+    defaults: { _controller: TripBookingEngineBundle:Booking:hotels }
+trip_site_management_homepage_packages:
+    path:     /packages
+    defaults: { _controller: TripBookingEngineBundle:Booking:packages }
+trip_site_management_homepage_deals:
+    path:     /deals
+    defaults: { _controller: TripBookingEngineBundle:Booking:deals }
+trip_booking_engine_search:
+    path:     /search
+    defaults: { _controller: TripBookingEngineBundle:Booking:search }
+trip_booking_engine_search_hotel:
+    path:     /searchHotel
+    defaults: { _controller: TripBookingEngineBundle:Booking:searchHotel }
+trip_booking_engine_book:
+    path:     /book
+    defaults: { _controller: TripBookingEngineBundle:Booking:book }
+trip_booking_engine_book_submit:
+    path:     /book/submit
+    defaults: { _controller: TripBookingEngineBundle:Booking:bookSubmit }
+trip_booking_engine_payment:
+    path:     /book/payment
+    defaults: { _controller: TripBookingEngineBundle:Booking:payment }
+trip_booking_engine_success:
+    path:     /success
+    defaults: { _controller: TripBookingEngineBundle:Booking:success }
+trip_booking_engine_confirm:
+    path:     /confirm
+    defaults: { _controller: TripBookingEngineBundle:Booking:confirm }
+trip_booking_engine_apply_coupon:
+    path:     /applyCoupon
+    defaults: { _controller: TripBookingEngineBundle:Booking:applyCoupon }

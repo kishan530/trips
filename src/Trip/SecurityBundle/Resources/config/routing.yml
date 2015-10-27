@@ -1,0 +1,3 @@
+trip_security_sign_up:
+    path:     /sign-up
+    defaults: { _controller: TripSecurityBundle:SecurityLogin:login }

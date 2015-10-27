@@ -1,0 +1,7 @@
+services:
+#    trip_site_management.example:
+#        class: Trip\SiteManagementBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+     mail.services:
+        class: Trip\SiteManagementBundle\DependencyInjection\MailServices
+        arguments: ["@doctrine.orm.entity_manager",'@service_container', @session]

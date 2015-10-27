@@ -1,0 +1,41 @@
+{% extends 'TripBookingEngineBundle:Default:booking.html.twig' %}
+
+{% block form %}
+<div class="row"><div class="col-sm-12">{{ render(controller('FOSUserBundle:Security:login')) }}</div>	</div>
+<div class="row text-center remove_margin"><label>OR</label></div>
+            {{ form_start(form) }}
+            {{ form_errors(form, { 'global_errors': true }) }}
+         <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    {{ form_widget(form.email,{'attr':{'class':'make-margin','placeholder':'Email'}}) }}
+                </div>
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <input type="hidden" name="selected" value="{{ selected }}" />
+                <button type="submit" class="btn btn-primary btn-block">Continue as Guest</button>
+             </div>
+            
+        </div>
+
+        {{ form_end(form) }}<!-- end form -->
+
+    
+{% endblock %}
+ {% block details %}
+
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <img src="{{ asset('images/hotels/'~service.imagePath) }}" alt="" class="img-responsive">
+                                            </div><!-- end col -->
+                                            <div class="col-sm-12">
+                                                <h6>{{ service.name }}</h6>
+
+                                                <ul class="clearfix">
+                                                   
+                                                     <li><span>Check In:</span> {{ filter.date|date('d/m/Y') }}</li>
+                                                      <li><span>Check out:</span> {{ filter.returnDate|date('d/m/Y') }}</li>
+                                                    <hr>
+                                                      <li class="booking-price"><span>Price:</span> <i class="fa fa-inr"></i><em id="price">  {{ service.price }}</li>
+                                                </ul>
+                                            </div><!-- end col -->
+                                        </div><!-- end row -->
+{% endblock %}
