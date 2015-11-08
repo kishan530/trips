@@ -68,9 +68,11 @@ class MultiCityType extends AbstractType
 				            		),                
             ))
            
-            ->add('date','text',array(
+            ->add('date','date',array(
             						'required'    => false,
             						'label' => 'From Date',
+                				    'widget'=> 'single_text',
+						            'format'=>'d/M/y',
 				            		'attr'   =>  array(
 				            				'data-date-format'=>'dd/mm/yyyy',
                                             'placeholder'=>'Date'

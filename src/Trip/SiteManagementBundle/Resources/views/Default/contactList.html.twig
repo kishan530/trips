@@ -1,0 +1,41 @@
+{% extends 'page.html.twig' %}
+{% block javascripts %}
+
+{% endblock %}
+{% block body %}
+
+    <section class="section clearfix">
+        <div class="container">
+            <div class="row">
+                <div id="fullwidth" class="col-sm-12">
+                    <div class="col-lg-12">
+                    <table id="result" class="table table-bordered col-lg-12 col-sm-12">
+	               {% if contactList|length>0 %}	
+                          <tr class="blue">
+                               
+                                <th>Name</th>
+                                <th>Mobile</th>
+                                <th>Email</th>                                
+                                <th> Subject </th>
+                                <th> Message </th>
+							</tr>	
+					{% endif %}			
+						
+                     {% for contact in contactList if contactList|length>0 %}
+                        <tr>
+                           
+                            <td>{{ contact.firstName }}</td> 
+                            <td>{{ contact.phoneNumber }}</td> 
+                            <td>{{ contact.email }}</td>   
+                             <td>{{ contact.subject }}</td> 
+                            <td>{{ contact.message }}</td>
+                        
+                        </tr>
+                    {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+{% endblock %}

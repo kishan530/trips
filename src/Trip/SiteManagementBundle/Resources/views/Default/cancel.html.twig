@@ -1,0 +1,31 @@
+{% extends 'page.html.twig' %}
+{% block javascripts %}
+
+{% endblock %}
+{% block body %}
+
+    <section class="section clearfix">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-sm-12">
+                {% if app.session.get('cancel_error')|length>0 %}
+							<div class="form-group has-error remove_margin">
+							<ul class="help-block remove_margin">
+								<li class="remove_margin">{{ app.session.get('cancel_error') }}</li>
+							</ul>
+							
+							</div>
+					    {% endif %}
+                </div>
+                <div id="fullwidth" class="col-sm-12">
+                    <div class="col-lg-5">
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+{% endblock %}

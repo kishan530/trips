@@ -46,8 +46,8 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <!--
-    <meta name="google-site-verification"
+    
+   <!-- <meta name="google-site-verification"
 content="t9UottiGdtAaU1gGattiHZZNJOK3BF8qZ-qRfCqyYC0" />
     
     
@@ -62,8 +62,8 @@ Date();a=s.createElement(o),
   ga('send', 'pageview');
 
 </script>
-
 -->
+
     
 </head>
 <body>
@@ -127,6 +127,14 @@ Date();a=s.createElement(o),
                                             
                                         </ul>
                                     </li>
+                                     <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Dashbord</a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="{{ path('trip_site_management_bookings') }}">Bookings</a></li>
+                                            <li><a href="{{ path('trip_site_management_users') }}">Users</a></li>
+                                            <li><a href="{{ path('trip_site_management_contactList') }}">Contact List</a></li>
+                                            
+                                        </ul>
+                                    </li>
                                     {% endif %}
                                      <li  class="dropdown"><a href="{{ path('trip_security_sign_up')}}">My Account</a>
                                         <ul class="dropdown-menu" role="menu">
@@ -134,10 +142,11 @@ Date();a=s.createElement(o),
                                                 <li><a href="{{ path('fos_user_security_logout') }}"><b>{% trans%}Logout{% endtrans %}</b></a> </li>
 										    {% else %}
                                                 <li><a href="{{ path('trip_security_sign_up')}}">Login</a></li>
+                                                <li><a href="{{ path('trip_security_sign_up')}}">Signup</a></li>
                                             {% endif%}
-                                             <li><a href="{{ path('trip_security_sign_up')}}">Signup</a></li>
-                                             <li><a href="{{ path('trip_security_sign_up')}}">My Bookings</a></li>
-                                             <li><a href="{{ path('trip_security_sign_up')}}">Cancel Booking</a></li>
+                                            
+                                             <li><a href="{{ path('trip_site_management_my_bookings')}}">My Bookings</a></li>
+                                             <li><a href="{{ path('trip_site_management_cancel')}}">Cancel Booking</a></li>
                                             
                                             
                                         </ul>                                    
@@ -167,7 +176,7 @@ Date();a=s.createElement(o),
         </div><!-- end sidebar menu -->
     </header><!-- end header --> 
 
-         {% block body %} {% endblock %}
+         {% block body %}{% endblock %}
     <footer class="footer clearfix">
         <div class="container">
             <div class="row">

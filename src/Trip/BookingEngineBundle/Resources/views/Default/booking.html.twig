@@ -50,7 +50,7 @@
 {% endblock %}
 {% block body %}
 
-    <section class="section clearfix">
+    <section class="section clearfix" style="padding-top:15px">
         <div class="container">
             <div class="row">
                 <div id="fullwidth" class="col-sm-12">
@@ -68,15 +68,17 @@
                             <div class="clearfix"></div>
 
                                 <div class="row">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-6 booking-price-details-border price-details clearfix">
                                          {% block form %}
+                                        <div class="row">
                                         <div class="hotel-title price-details">
                                             <h5>Your Information</h5>
+                                        </div>
                                         </div>
                                             {{ form_start(form) }}
                                             {{ form_errors(form, { 'global_errors': true }) }}
                                         
-                                        <div class="row">
+                                        <div class="row booking-price-details">
                                             <div class="col-md-12 col-sm-12 col-xs-12">
                                                 {{ form_widget(form.name,{'attr':{'class':'make-margin','placeholder':'Name'}}) }}
                                             </div>
@@ -175,7 +177,7 @@
                                                </ul>
                                             </div><!-- end col -->
                                              <div class="col-md-12">
-                                                <a class="sm-links" data-toggle="modal" data-target="#terms" href="#terms">Fair Rules</a>
+                                                <a class="sm-links" data-toggle="modal" data-target="#terms" href="#terms">View Fare Rules</a>
                                             </div>
                                              </div><!-- end row -->
                                         

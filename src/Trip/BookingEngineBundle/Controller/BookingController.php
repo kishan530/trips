@@ -50,7 +50,7 @@ class BookingController extends Controller
     }
     
     /**
-	 * Starting point for the application
+	 * 
 	 */
     public function indexAction(){
     	return $this->getHome('TripSiteManagementBundle:Default:index.html.twig');
@@ -105,13 +105,14 @@ class BookingController extends Controller
     public function searchAction(Request $request)
     {
         $searchFilter = new SearchFilter();
+        $searchFilter->setDate(new \DateTime());
     	$form   = $this->createSearchForm($searchFilter);
         $form->handleRequest($request);
     	if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $session = $request->getSession();
            $session->set('searchHotel',null);
-            $date = $searchFilter->getGoingTo(); 
+            $date = $searchFilter->getDate(); 
             $returnDate = $searchFilter->getReturnDate();
             
              $tripType = $request->get('tripType');
@@ -121,12 +122,16 @@ class BookingController extends Controller
                 $count = count($multiple);
                  $start = $multiple[0]->getLeavingFrom(); 
                  $end = $multiple[$count-1]->getGoingTo();
+                 $startDate = $multiple[0]->getDate(); 
+                 $endDate = $multiple[$count-1]->getDate();
+                 $interval = $endDate->diff($startDate);
+                 $noDays = $interval->d+1;
                 $resultCollection = array();
                 foreach($multiple as $multicity){
                     $goingFrom = $multicity->getLeavingFrom();       
                     $goingTo = $multicity->getGoingTo();           
                     $result = $this->getVehicles($goingFrom,$goingTo);
-                    $result = $this->getResultByCars($result,$numdays);
+                    $result = $this->getResultByCars($result,$noDays);
                     $resultCollection[]=$result;
                 }
                 /*if($start != $end){
@@ -137,12 +142,18 @@ class BookingController extends Controller
                 $resultSet = $this->getResultSet($resultCollection);
             }else{
                 $goingFrom = $searchFilter->getLeavingFrom();       
-                $goingTo = $searchFilter->getGoingTo();                
-                $resultSet = $this->getResult($goingFrom,$goingTo);
+                $goingTo = $searchFilter->getGoingTo();  
+                $noDays =0;
+                if($tripType=="roundtrip"){
+                    $interval = $returnDate->diff($date);
+                    $noDays = $interval->d;
+                }
+                $resultSet = $this->getResult($goingFrom,$goingTo,$noDays);
                 if(count($resultSet)==0)
-                    $resultSet = $this->getResult($goingTo,$goingFrom);
+                    $resultSet = $this->getResult($goingTo,$goingFrom,$noDays);
             }
             $searchFilter->setTripType($tripType);
+            $searchFilter->setNumDays($noDays);
             $session->set('selectedData',$searchFilter);
             $session->set('resultSet',$resultSet);
         
@@ -159,14 +170,21 @@ class BookingController extends Controller
         
     }
     public function getVehicles($goingFrom,$goingTo){
-            $dql3 = "SELECT v.id,v.imgPath, v.model,v.capcity,v.price vPrice,v.mileage, c1.name lFrom,c2.name to FROM TripBookingEngineBundle:Vehicle v, TripSiteManagementBundle:city c1,TripSiteManagementBundle:city c2 WHERE c1.id=$goingFrom and c2.id=$goingTo";
+            $dql3 = "SELECT v.id,v.imgPath, v.model,v.capcity,v.price vPrice,v.mileage, c1.name lFrom,c2.name to FROM TripBookingEngineBundle:Vehicle v, TripSiteManagementBundle:city c1,TripSiteManagementBundle:city c2 WHERE v.active=1 and c1.id=$goingFrom and c2.id=$goingTo";
             $em = $this->getDoctrine()->getManager();
             $query = $em->createQuery($dql3);					
             $result = $query->getResult();
          return $result;        
      }
-     public function getResult($goingFrom,$goingTo){
-            $dql3 = "SELECT v.id,v.imgPath, v.model,v.capcity,v.price vPrice,v.mileage, s.price,s.returnPrice, s.multiPrice, c1.name lFrom,c2.name to FROM TripBookingEngineBundle:Vehicle v, TripBookingEngineBundle:Services s,TripSiteManagementBundle:city c1,TripSiteManagementBundle:city c2 WHERE s.leavingFrom=c1.id and s.goingTo=c2.id and s.vehicleId=v.id and s.leavingFrom=$goingFrom and s.goingTo=$goingTo";
+     public function getResult($goingFrom,$goingTo,$noDays){
+         if($noDays>0){
+            // $noDays = $noDays-1;
+             $price = "(CASE WHEN c2.extraPrice = 1 THEN s.returnPrice+v.extraPrice*$noDays ELSE s.returnPrice END) returnPrice";
+             //$price = "(s.returnPrice+v.extraPrice*$noDays) returnPrice";
+         }else{
+             $price = "s.returnPrice";
+         }
+            $dql3 = "SELECT v.id,v.imgPath, v.model,v.capcity,v.price vPrice,v.extraPrice,v.mileage, s.price,$price, s.multiPrice, c1.name lFrom,c2.name to,c2.extraPrice needExtraPrice FROM TripBookingEngineBundle:Vehicle v, TripBookingEngineBundle:Services s,TripSiteManagementBundle:city c1,TripSiteManagementBundle:city c2 WHERE s.leavingFrom=c1.id and s.goingTo=c2.id and s.vehicleId=v.id and v.active=1 and s.leavingFrom=$goingFrom and s.goingTo=$goingTo";
             $em = $this->getDoctrine()->getManager();
             $query = $em->createQuery($dql3);					
             $result = $query->getResult();
@@ -388,6 +406,7 @@ class BookingController extends Controller
             $booking->setTotalPrice($price);
             $booking->setFinalPrice($finalPrice);
             $booking->setStatus('pending');
+            $booking->setBookedOn(new \DateTime());
             $booking->setNumDays($searchFilter->getNumDays());
             $booking->setNumAdult($searchFilter->getNumAdult());
             $booking->setPreferTime($searchFilter->getPreferTime());
@@ -549,10 +568,20 @@ class BookingController extends Controller
             $name = $customer->getName();
             $mobile = $customer->getMobile();
             $bookingId = $booking->getBookingId();
-            $body = "Dear $name <br> Your Booking has been Successfully completed.Your Booking Id is $bookingId";
+            $body = "Dear $name <br> Your Booking has been Successfully completed.Your Booking Id is $bookingId <br>
+            <tabel>";
+            
+                $mail = $this->renderView(
+    								'TripBookingEngineBundle:Mail:mailer.html.twig',
+    								array(
+    										'customer'   => $customer,
+    										'booking'=>$booking,
+    										'service'=>$booking->getVehicleBooking()[0],
+    								)
+    						);
 
             $mailService = $this->container->get( 'mail.services' );
-            $mailService->mail($email,'Just Trip:Booking Confirmation',$body);
+            $mailService->mail($email,'Just Trip:Booking Confirmation',$mail);
         }else{
             $booking->setStatus('fail');
             $em->merge($booking);

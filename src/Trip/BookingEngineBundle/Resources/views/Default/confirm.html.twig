@@ -1,17 +1,17 @@
 {% extends 'TripBookingEngineBundle:Default:booking.html.twig' %}
 
 {% block form %}
-<div class="row"><div class="col-lg-11">{{ render(controller('FOSUserBundle:Security:login')) }}</div>	</div>
+<div class="row"><div class="col-lg-12">{{ render(controller('FOSUserBundle:Security:login')) }}</div>	</div>
 <div class="row text-center remove_margin"><label>OR</label></div>
             {{ form_start(form) }}
             {{ form_errors(form, { 'global_errors': true }) }}
-         <div class="row">
-                <div class="col-md-12 col-sm-12 col-xs-12">
+         <div class="row booking-price-details">
+                <div class="col-md-7 col-sm-7 col-xs-7">
                     {{ form_widget(form.email,{'attr':{'class':'make-margin','placeholder':'Email'}}) }}
                 </div>
-              <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="col-md-5 col-sm-5 col-xs-5">
                 <input type="hidden" name="selected" value="{{ selected }}" />
-                <button type="submit" class="btn btn-primary btn-block">Continue as Guest</button>
+                <button type="submit" class="btn btn-primary btn-block make-margin">Continue as Guest</button>
              </div>
             
         </div>
@@ -74,7 +74,7 @@
                                                 </ul>
                                             </div><!-- end col -->
                                              <div class="col-md-12">
-                                            <a class="sm-links" data-toggle="modal" data-target="#terms" href="#terms">Fair Rules</a>
+                                            <a class="sm-links" data-toggle="modal" data-target="#terms" href="#terms">View Fare Rules</a>
                                             </div>
                                         </div><!-- end row -->
 {% endblock %}

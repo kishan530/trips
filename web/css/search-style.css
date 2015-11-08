@@ -1,6 +1,3 @@
-
-
-
 .image-cover img,.related-post .post .post-media .image-style img,.blog-page__content .post .post-media .image-style img {
 position:absolute;
 width:100%;
@@ -20,10 +17,6 @@ img {
     vertical-align: middle;
     border: 0;
 }
-
-
-
-
 
 .flight-item .item-price-more .price .amount, .trip-item .item-price-more .price .amount, .attraction-item .item-price-more .price .amount, .hotel-item .item-price-more .price .amount {
     display: block;
@@ -51,7 +44,7 @@ width:100%;
 }
 .flight-item{
     font-family: 'LatoRegular', serif;
-    font-size: 17px;
+    font-size: 16px;
     color: #000;
     font-weight: normal;
 }
@@ -75,7 +68,7 @@ float:left;
 }
 
 .flight-item .item-media .image-cover,.trip-item .item-media .image-cover,.attraction-item .item-media .image-cover,.hotel-item .item-media .image-cover {
-padding-top:66.66%;
+padding-top:49.66%;
 overflow:hidden;
 }
 
@@ -94,12 +87,21 @@ width:50%;
 float:left;
 overflow:hidden;
 overflow-x:auto;
-padding:18px 34px;
+padding:11px 34px;
         text-transform: capitalize;
+}
+.search-widget{
+    padding: 0;
+    margin: 5px;
+    padding-top: 10px;
+}
+
+.search-widget .form-control {
+    font-size: 14px !important;
 }
 
 .flight-item .item-body .item-title h2,.trip-item .item-body .item-title h2,.attraction-item .item-body .item-title h2,.hotel-item .item-body .item-title h2 {
-font-size:20px;
+font-size:16px;
 font-weight:600;
 margin:0;
 "Open Sans", sans-serif;
@@ -188,14 +190,32 @@ margin-left:15px;
 
 .flight-item .item-price-more,.trip-item .item-price-more,.attraction-item .item-price-more,.hotel-item .item-price-more {
 position:relative;
-width:20%;
+width:15%;
+float:left;
+overflow:hidden;
+margin:7px 0;
+padding:0 30px;
+}
+.flight-item .item-price-more-book,.trip-item .item-price-more-book,.attraction-item .item-price-more-book,.hotel-item .item-price-more-book {
+position:relative;
+width:17%;
 float:right;
 overflow:hidden;
-margin:10px 0;
-padding:0 30px;
+margin: 7px 0;
+padding: 17px 30px;
 }
 
 .flight-item .item-price-more:after,.trip-item .item-price-more:after,.attraction-item .item-price-more:after,.hotel-item .item-price-more:after {
+content:'';
+display:block;
+position:absolute;
+width:0;
+top:0;
+bottom:0;
+left:0;
+border-left: 1px solid #D4D4D4;
+}
+.flight-item .item-price-more-book:after,.trip-item .item-price-more-book:after,.attraction-item .item-price-more-book:after,.hotel-item .item-price-more-book:after {
 content:'';
 display:block;
 position:absolute;
@@ -266,11 +286,11 @@ transform:translate(-50%,-50%);
 }
 
 .flight-item .item-body {
-width:60%;
+width:47%;
 }
 
 .flight-item .item-price-more {
-padding:10px 30px;
+padding:17px 30px;
 }
 
 .flight-item .item-price-more .price {
@@ -328,13 +348,12 @@ margin-left:5px;
 
 .page-sidebar .widget {
 border-bottom:1px solid #DFDFDF;
-margin-bottom:15px;
 }
 
 .page-sidebar .widget h3 {
 position:relative;
-font-size: 16px;
-color:#000;
+font-size: 12px;
+color:#FFF;
 margin-top:0;
 margin-bottom:10px;
 text-transform:uppercase;
@@ -445,7 +464,6 @@ margin-top:15px;
 }
 
 .widget_has_radio_checkbox_text .widget_content {
-margin-bottom:32px;
 }
 
 .widget_has_radio_checkbox_text .widget_content label {
@@ -531,8 +549,7 @@ display:none;
 }
 
 .related-post,.blog-page__content,.page-sidebar {
-margin-top:37px;
-margin-bottom:84px;
+
 }
 .widget ul li > label,.ticket-price thead th span {
 font-size:12px;
@@ -579,4 +596,98 @@ border-color:#444;
 
 #page-wrap.dark .page-sidebar .widget_has_thumbnail .content a,#page-wrap.dark .page-sidebar .widget_latest_post ul li a,#page-wrap.dark .page-sidebar .widget_rss ul li a,#page-wrap.dark .page-sidebar .widget_meta ul li a,#page-wrap.dark .page-sidebar .widget_pages ul li a,#page-wrap.dark .page-sidebar .widget_nav_menu ul li a,#page-wrap.dark .page-sidebar .widget_categories ul li a,#page-wrap.dark .page-sidebar .widget_archive ul li a,#page-wrap.dark .minicart-wrap .minicart-body .minicart-list li .product-name a {
 color:#ddd;
+}
+
+
+.flightLegNav span:first-child {
+    border-left: 1px solid #c3c3c3;
+}
+.flightLegNav span {
+    float: left;
+    position: relative;
+    display: inline-block;
+    border: 1px solid #c3c3c3;
+    border-left: none;
+    background-color: #eee;
+    background-color: #efefef\9;
+    background-image: -moz-linear-gradient(top,#fff,#eee);
+    background-image: -webkit-gradient(linear,0 0,0 100%,from(#fff),to(#eee));
+    background-image: -webkit-linear-gradient(top,#fff,#eee);
+    background-image: -o-linear-gradient(top,#fff,#eee);
+    background-image: linear-gradient(to bottom,#fff,#eee);
+    background-repeat: repeat-x;
+}
+
+.tripSwitch .flightLegNav a {
+    width: 36px;
+    height: 26px;
+    padding: 0!important;
+}
+.flightLegNav span a {
+    padding: 6px 10px;
+    font-size: 12px!important;
+    position: relative;
+    display: block;
+    color: #303030;
+    border-right: 1px solid #fff;
+}
+.legSelected {
+    cursor: default;
+    border-right: none!important;
+}
+.legSelected, .legSelected:hover {
+    background: #e6e6e6!important;
+    color: #000!important;
+    box-shadow: 0 2px 2px 0 #bababa inset;
+    text-decoration: none;
+}
+
+.tripSwitch{
+    padding-top: 5px;
+}
+
+.tripSwitch .flightLegNav a i {
+    width: 25px;
+    height: 20px;
+}
+
+
+.icons{
+background: transparent url('../images/ico-srp.png') 0 0 no-repeat;
+    display: inline-block;
+}
+.tripSwitchOW {
+    background-position: -270px -62px;
+    margin: 6px 0 0 8px;
+}
+.tripSwitchRT {
+    background-position: -311px -44px;
+    margin: 6px 0 0 7px;
+}
+
+
+
+
+@media (max-width: 768px) {
+    .flight-item .item-media {
+    width: 100%;
+    float: none; 
+}
+    .flight-item .item-body{
+    width: 100%;
+}
+    .flight-item .item-price-more {
+    width: 100%;
+        float: none; 
+    text-align: center;
+}
+.flight-item .item-price-more-book {
+    width: 100%;
+        float: none; 
+    text-align: center;
+}
+    .flight-item .item-media .image-cover, .trip-item .item-media .image-cover, .attraction-item .item-media .image-cover, .hotel-item .item-media .image-cover {
+    padding-top: 24.66%;
+        float: none; 
+    }
 }
