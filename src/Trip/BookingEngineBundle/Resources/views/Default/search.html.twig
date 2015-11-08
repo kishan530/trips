@@ -56,6 +56,8 @@ $("select").change(function() {
          e.preventDefault();
      });
 </script>
+
+{{ facebook_initialize({'xfbml': true, 'fbAsyncInit': 'onFbInit();'}) }}
 {% endblock %}
 {% block stylesheets %}
     <!-- Default Styles -->
@@ -268,6 +270,8 @@ input[type="radio"] {
    
 	<img src="{{ asset('images/Sidebar.png') }}" >
 	<h1 class="text-shadow">+91-9739655453</h1>
+    
+    <div class="fb-like" data-href="https://www.facebook.com/JustTripIndia" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
    </div>
   
   </div>
