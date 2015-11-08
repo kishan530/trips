@@ -882,6 +882,10 @@ a,
 }
 .home-message h1,
 .home-message,.home-message h2 {
+	color:#FFF;
+}
+.banner-message h1,
+.banner-message,.banner-message h2 {
 	color:#675B55;
 }
 .home-message .btn {
@@ -1983,7 +1987,7 @@ i {
 
 .footer {
 	background-color: #222222;
-	padding:80px 0 60px;
+    padding: 0px 0 5px;
 	font-size:15px;
 	color:#aaaaaa;
 }
@@ -2100,6 +2104,176 @@ i {
 #sidebar .widget-title {
 	margin-top:0;
 	padding-top: 0;
+}
+
+.secure ul:first-child li:first-child span {
+  border-left: none medium;
+}
+
+.secure ul:first-child {
+    float: left;
+    margin: 5px 0;
+}
+.secure ul {
+    float: right;
+    margin: 20px 0 0;
+}
+
+.secure ul li {
+  float: left;
+  padding: 5px 0;
+}
+
+.secure ul li span {
+  vertical-align: middle;
+  margin: 2px 5px;
+  padding: 5px;
+  color: #666;
+}
+
+.secure .ico-secured-sites {
+  display: inline-block;
+  vertical-align: middle;
+}
+.payment-sprite{
+    background-color: #222222;
+    color: #aaaaaa;
+}
+
+
+.sprite-footer {
+  display: inline-block;
+  position: relative;
+  background: transparent url("../images/payment-icons.png") 0 0 no-repeat;
+  content: " ";
+  margin: 0 5px;
+  vertical-align: middle;
+}
+
+.ico-arrow {
+  background-position: 0 -1px;
+  height: 8px;
+  width: 11px;
+}
+
+.ico-secured-sites {
+  background-position: 0 -124px;
+  height: 52px;
+  width: 66px;
+}
+
+.ico-verisign-secure {
+  background-position: 0 -72px;
+  height: 52px;
+  width: 90px;
+}
+
+.ico-visa-secure {
+  background-position: 0 -210px;
+  height: 30px;
+  width: 40px;
+}
+
+.ico-master-card {
+  background-position: -43px -210px;
+  height: 26px;
+  width: 40px;
+}
+
+.ico-american-secure {
+  background-position: 0 -177px;
+  height: 27px;
+  width: 43px;
+}
+
+.ico-diner-club {
+  background-position: -85px -208px;
+  height: 27px;
+  width: 38px;
+}
+
+.ico-emi-secure {
+  background-position: 0 -15px;
+  height: 26px;
+  width: 89px;
+}
+
+.ico-net-secure {
+  background-position: 0 -46px;
+  height: 26px;
+  width: 91px;
+}
+
+.ico-fresh-facebook {
+  background-position: 0 -240px;
+  height: 38px;
+  width: 38px;
+}
+
+.ico-fresh-twitter {
+  background-position: -48px -240px;
+  height: 38px;
+  width: 38px;
+}
+
+.ico-fresh-google {
+  background-position: -96px -240px;
+  height: 38px;
+  width: 38px;
+}
+
+.ico-fresh-youtube {
+  background-position: -142px -240px;
+  height: 38px;
+  width: 38px;
+}
+
+.ico-fresh-instagram {
+  background-position: -190px -240px;
+  height: 38px;
+  width: 38px;
+}
+
+.ico-fresh-android {
+  background-position: 0 -337px;
+  height: 38px;
+  width: 38px;
+}
+
+.ico-fresh-ios {
+  background-position: -48px -337px;
+  height: 38px;
+  width: 38px;
+}
+
+.ico-fresh-window {
+  background-position: -96px -337px;
+  height: 38px;
+  width: 38px;
+}
+
+.ico-country-india {
+  background-position: -27px 1px;
+  height: 15px;
+  width: 21px;
+}
+
+.ico-country-us {
+  background-position: -47px -2px;
+  height: 13px;
+  width: 21px;
+}
+
+.ico-footer-service-mobile {
+  background-position: -125px -15px;
+  height: 58px;
+  width: 53px;
+}
+
+.ico-rupay {
+  background-position: -125px -208px;
+  height: 27px;
+  width: 56px;
 }
 
 /* ==================================================================
