@@ -91,6 +91,15 @@ class Booking
      * @ORM\Column(name="booked_on", type="date")
      */
     private $bookedOn;
+    /**
+
+     * @var integer
+
+     * @ORM\Column(name="payment_mode", type="string")
+
+     */
+
+    private $paymentMode;
     
     /**
      * @ORM\OneToMany(targetEntity="Trip\BookingEngineBundle\Entity\HotelBooking", mappedBy="booking", cascade={"persist"})
@@ -568,6 +577,49 @@ class Booking
 		$this->bookedOn = $bookedOn;
 		return $this;
 	}
+    /**
+
+     * Set paymentMode
+
+     *
+
+     * @param integer $paymentMode
+
+     * @return paymentMode
+
+     */
+
+    public function setPaymentMode($paymentMode)
+
+    {
+
+    	$this->paymentMode = $paymentMode;
+
+    
+
+    	return $this;
+
+    }
+
+    
+
+    /**
+
+     * Get paymentMode
+
+     *
+
+     * @return string
+
+     */
+
+    public function getPaymentMode()
+
+    {
+
+    	return $this->paymentMode;
+
+    }
     
     /**
 	 *

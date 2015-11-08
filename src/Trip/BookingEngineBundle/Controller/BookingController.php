@@ -382,6 +382,7 @@ class BookingController extends Controller
     	if ($form->isValid()) {
             $couponApplyed = $customer->getHaveCoupon();
             $couponCode = $customer->getCouponCode();
+             $paymentMode = $customer->getPaymentMode();
             $em = $this->getDoctrine()->getManager();
             $em->persist($customer);
     		$em->flush();
@@ -441,11 +442,20 @@ class BookingController extends Controller
 
                 }
              }
-            
+            $booking->setPaymentMode($paymentMode);
             $em->persist($booking);
     		$em->flush();
             $session->set('bookingObj',$booking);
-            $paymentLink = $this->getPaymentLink($finalPrice);
+            $amountToPay = $finalPrice; 
+            if($paymentMode=='advance'){
+                $amountToPay = round($finalPrice*(10/100));
+                $tax = round($amountToPay*(3/100));
+                $amountToPay = $amountToPay+$tax; 
+            }else{
+                $tax = round($finalPrice*(3/100));
+                $amountToPay = $finalPrice+$tax;              
+            }
+            $paymentLink = $this->getPaymentLink($amountToPay);
         //$paymentLink = "https://www.instamojo.com/Waseemsyed/tirupati-caars-services-cb8a4/";
         $paymentLink.="?data_name=".$customer->getName()."&data_email=".$customer->getEmail()."&data_phone=".$customer->getMobile()."&embed=form";
         return $this->render('TripBookingEngineBundle:Default:payment.html.twig', array(
@@ -560,7 +570,18 @@ class BookingController extends Controller
          $em = $this->getDoctrine()->getManager();
         if($status=='success'){
             $booking->setStatus('booked');
-            $booking->setAmountPaid($booking->getFinalPrice());
+            $paymentMode = $booking->getPaymentMode();
+            $finalPrice = $booking->getFinalPrice();
+            $amountToPay = $finalPrice; 
+            if($paymentMode=='advance'){
+                $amountToPay = round($finalPrice*(10/100));
+                $tax = round($amountToPay*(3/100));
+                $amountToPay = $amountToPay+$tax; 
+            }else{
+                $tax = round($finalPrice*(3/100));
+                $amountToPay = $finalPrice+$tax;              
+            }
+            $booking->setAmountPaid($amountToPay);
             $booking->setPaymentId($paymentId);
             $em->merge($booking);
             $em->flush();

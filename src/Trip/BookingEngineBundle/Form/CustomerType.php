@@ -23,8 +23,26 @@ class CustomerType extends AbstractType
     				'label'     => 'I have an offer code?',
     				'required'  => false,
     		))
+            
            // ->add('address','textarea')
         ;
+        
+        $builder->add('paymentMode', 'choice', array(
+
+    				'expanded' => true,
+
+    				'multiple' => false,
+
+    				'choices' => array(
+
+                            'full' => 'Full',
+    						'advance' => 'Only Advance 10%',
+
+    				),
+                'label'     => 'Payment Mode',
+    				'required'    => true,
+
+    		));
     }
     
     /**

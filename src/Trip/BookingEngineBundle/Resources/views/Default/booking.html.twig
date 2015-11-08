@@ -88,6 +88,8 @@
                                             <div class="col-md-12 col-sm-12 col-xs-12">
                                             {{ form_widget(form.mobile,{'attr':{'class':'make-margin','placeholder':'10 Digit Mobile No'}}) }} 
                                             </div>
+                                             <div class="row">
+                                                  <div class="col-md-12 col-sm-12 col-xs-12">
                                             <div class="col-md-6 col-sm-6 col-xs-6">
                                                 <div class="input-group make-margin">
                                                  {{ form_widget(form.haveCoupon) }} {{ form_label(form.haveCoupon) }}
@@ -104,6 +106,19 @@
                                                     </ul>
                                                 </div>
                                             </div>
+                                                 </div>
+                                            </div>
+                                            <div class="row">
+                                                 <div class="col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="col-md-4 col-sm-4 col-xs-4 make-margin">
+                                                    {{ form_label(form.paymentMode) }} 
+                                                    </div>
+                                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                                        {{ form_widget(form.paymentMode,{'attr':{'class':'make-margin'}}) }} 
+                                                    </div>
+                                                </div>
+                                            </div>
+                                             
                                              <div class="col-md-8 col-sm-8 col-xs-8">
                                                 <input type="checkbox" required="required" name="cb" class="remove_margin">  {% trans %} I agree to the JustTrip {% endtrans%} <a target="_blank" href="{{ path('trip_site_management_terms') }}">{% trans %} Terms of Service{% endtrans%}</a>
                                             </div>
