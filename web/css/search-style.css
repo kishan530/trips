@@ -18,6 +18,10 @@ img {
     border: 0;
 }
 
+
+
+
+
 .flight-item .item-price-more .price .amount, .trip-item .item-price-more .price .amount, .attraction-item .item-price-more .price .amount, .hotel-item .item-price-more .price .amount {
     display: block;
     font-weight: 700;
