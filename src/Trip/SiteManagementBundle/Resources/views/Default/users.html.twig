@@ -1,0 +1,40 @@
+{% extends 'page.html.twig' %}
+{% block javascripts %}
+
+{% endblock %}
+{% block body %}
+
+    <section class="section clearfix">
+        <div class="container">
+            <div class="row">
+                <div id="fullwidth" class="col-sm-12">
+                    <div class="col-lg-12">
+                    <table id="result" class="table table-bordered col-lg-12 col-sm-12">
+	               {% if users|length>0 %}	
+                          <tr class="blue">
+                                <th>Name</th>
+                                <th>Email</th>  
+                                <th>Last Login</th>
+                             {#   <th> Roles </th> #}
+                                <th> Active </th>
+							</tr>	
+					{% endif %}			
+						
+                     {% for user in users if users|length>0 %}
+                        <tr>
+
+                            <td>{{ user.firstName }}</td> 
+                            <td>{{ user.email }}</td> 
+                            <td>{{ user.lastLogin|date('d/m/Y')  }}</td> 
+                            {# <td>{{ user.role }} }}</td> #}
+                            <td>{% if user.enabled %} Yes {% else %} No {% endif %}</td>
+                        
+                        </tr>
+                    {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+{% endblock %}

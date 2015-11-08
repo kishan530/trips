@@ -54,9 +54,20 @@ class Vehicle
     private $price;
     /**
      * @var string
+     * @ORM\Column(name="extra_day_price", type="float")
+     */
+    private $extraPrice;
+    /**
+     * @var string
      * @ORM\Column(name="mileage", type="string")
      */
     private $mileage;
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="active", type="boolean")
+     */
+    private $active;
 	/**
 	 *
 	 * @return the integer
@@ -148,7 +159,24 @@ class Vehicle
 		$this->price = $price;
 		return $this;
 	}
-	    /**
+    /**
+	 *
+	 * @return the string
+	 */
+	public function getExtraPrice() {
+		return $this->extraPrice;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$extraPrice
+	 */
+	public function setExtraPrice($extraPrice) {
+		$this->extraPrice = $extraPrice;
+		return $this;
+	}
+    /**
 	 *
 	 * @return the string
 	 */
@@ -165,6 +193,29 @@ class Vehicle
 		$this->mileage = $mileage;
 		return $this;
 	}
+    
+    /**
+     * Set active
+     *
+     * @param $active
+     * @return Hotel
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return active 
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
 	
     
 }

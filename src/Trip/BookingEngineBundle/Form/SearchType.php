@@ -97,7 +97,7 @@ class SearchType extends AbstractType
             						),
             		            
             				))
-            ->add('numDays','text',array(            						
+            /*->add('numDays','text',array(            						
             						'required'    => false,
             						'label' => 'No of Days',
                                     'data'=>'1',
@@ -105,7 +105,7 @@ class SearchType extends AbstractType
                                             'placeholder'=>'Number of Days'
             						),
             		            
-            				))      
+            				))  */    
             ->add('numAdult','text',array(            						
             						'required'    => true,
             						'label' => 'No of Adult',

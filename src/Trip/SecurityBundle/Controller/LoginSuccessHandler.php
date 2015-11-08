@@ -97,7 +97,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface, Auth
             $session->set('last_username', $request->get('_username'));
             $session->set('loginfail',true);
             $session->set('regFail',false);
-                return new RedirectResponse($this->router->generate('trip_site_management_homepage'));
+                return new RedirectResponse($this->router->generate('trip_security_sign_up'));
 
         }
     }

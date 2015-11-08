@@ -39,6 +39,12 @@ class City
      * @ORM\Column(name="hotel_service", type="boolean")
      */
     private $active;
+    /**
+     * @var string
+     * @ORM\Column(name="extra_price", type="float")
+     */
+    private $extraPrice;
+    
     
 	
 	/**
@@ -98,6 +104,23 @@ class City
     {
         return $this->active;
     }
+    /**
+	 *
+	 * @return the string
+	 */
+	public function getExtraPrice() {
+		return $this->extraPrice;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$extraPrice
+	 */
+	public function setExtraPrice($extraPrice) {
+		$this->extraPrice = $extraPrice;
+		return $this;
+	}
 	
     
 }

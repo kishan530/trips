@@ -87,6 +87,12 @@ class Booking
     private $status;   
     
     /**
+     * @var string
+     * @ORM\Column(name="booked_on", type="date")
+     */
+    private $bookedOn;
+    
+    /**
      * @ORM\OneToMany(targetEntity="Trip\BookingEngineBundle\Entity\HotelBooking", mappedBy="booking", cascade={"persist"})
      */
     private $hotelBooking;
@@ -544,6 +550,24 @@ class Booking
     {
     	return $this->preferTime;
     }
+    
+    /**
+	 *
+	 * @return the string
+	 */
+	public function getBookedOn() {
+		return $this->bookedOn;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$bookedOn
+	 */
+	public function setBookedOn($bookedOn) {
+		$this->bookedOn = $bookedOn;
+		return $this;
+	}
     
     /**
 	 *

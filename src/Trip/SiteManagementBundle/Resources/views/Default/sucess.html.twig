@@ -1,0 +1,33 @@
+{% extends 'page.html.twig' %}
+{% block javascripts %}
+
+{% endblock %}
+{% block stylesheets %}
+
+{% endblock %}
+{% block body %}
+
+    <section class="section clearfix">
+        <div class="container">
+            <div class="row">
+                <div id="fullwidth" class="col-sm-12">
+
+                    <!-- START CONTENT -->
+                    <div class="row">
+                        <div id="content" class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="post-wrapper text-center clearfix">
+                                <h6>Dear customer,</h6>
+                                <p>Your booking has been cancelled. You will be receiving an e-mail within next 72 hours.<br>
+                                For any problems please <a href="mailto:info@justtrip.in">info@justtrip.in</a> </p>
+                                <a href="{{ path('trip_site_management_homepage') }}" class="btn btn-primary btn-normal btn-lg">CONTINUE SHOPPING</a>
+                            </div><!-- end post-wrapper -->
+                        </div><!-- end col -->
+                    </div><!-- end row -->
+                    <!-- END CONTENT -->
+
+                </div><!-- end fullwidth -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </section><!-- end section -->
+
+{% endblock %}

@@ -910,9 +910,10 @@ a,
     border: 1px solid #ECEFF1;
 }
 .sidebar-filter{
-       background-color: #f8f9f9;
+    background-color: #00566d;
     border-left: 1px solid #cfcfcf;
     border-right: 1px solid #cfcfcf;
+        margin-bottom: 15px;
 }
 .home-form .nav-tabs > li.active > a i,
 .home-form .nav-tabs > li > a:hover i,
@@ -1421,6 +1422,31 @@ li.booking-price{
     font-size: 20px;
     margin: 0;
 }
+.text-shadow{
+   text-shadow: 0 1px 0 #ccc,
+               0 2px 0 #c9c9c9,
+               0 3px 0 #bbb,
+               0 4px 0 #b9b9b9,
+               0 5px 0 #aaa,
+               0 6px 1px rgba(0,0,0,.1),
+               0 0 5px rgba(0,0,0,.1),
+               0 1px 3px rgba(0,0,0,.3),
+               0 3px 5px rgba(0,0,0,.2),
+               0 5px 10px rgba(0,0,0,.25),
+               0 10px 10px rgba(0,0,0,.2),
+               0 20px 20px rgba(0,0,0,.15);   
+}
+.oddClass {
+    background: #f2edcc;
+}
+.btn-book {
+    color: #000000;
+    background-color: #f8da15;
+    border: none;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
 .price-details h6{
     color: #f26722;
     font-family: 'LatoBold', serif;
@@ -1601,7 +1627,7 @@ i {
 .navbar-nav > li > a {
     font-family: 'LatoRegular', serif;
     text-transform: capitalize;
-    font-size: 18px;
+    font-size: 16px;
     color: #0095b8;
     /* padding: 40px 15px; */
     border-bottom: 3px solid #ffffff;
@@ -1662,7 +1688,7 @@ i {
 .dropdown-menu li a {
     font-family: 'LatoRegular', serif;
     text-transform: capitalize;
-    font-size: 18px;
+    font-size: 15px;
     color: #0095b8;
     text-decoration: none;
 }
@@ -2321,5 +2347,4 @@ a,
 	.bookform .make-margin {
     margin: 10px 0 !important;
 }
-
 }
