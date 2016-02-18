@@ -34,7 +34,9 @@ class SearchType extends AbstractType
 		$locations = $this->catalog->getLocations();
 		$tempLocations = array();
 		foreach ($locations as $location){
-		  $tempLocations[$location->getId()] = $location->getName();
+             if($location->getActive()){
+		          $tempLocations[$location->getId()] = $location->getName();
+             }
 		}
 		return $tempLocations;
 	}
