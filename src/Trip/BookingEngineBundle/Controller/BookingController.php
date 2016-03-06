@@ -27,6 +27,7 @@ class BookingController extends Controller
      * @return unknown
      */
     private function createSearchForm(SearchFilter $entity){
+		
     	$bookingService = $this->container->get( 'booking.services' );
     	$form = $this->createForm(new SearchType($bookingService), $entity, array(
     			'action' => $this->generateUrl('trip_booking_engine_search'),
