@@ -15,6 +15,8 @@ use Trip\BookingEngineBundle\Entity\VehicleBooking;
 use Trip\BookingEngineBundle\Entity\HotelBooking;
 use Trip\BookingEngineBundle\Form\CustomerType;
 use Trip\BookingEngineBundle\Form\GuestType;
+use Trip\SiteManagementBundle\Entity\Contact;
+use Trip\SiteManagementBundle\Form\ContactType;
 use Trip\BookingEngineBundle\DependencyInjection\Instamojo;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -65,12 +67,6 @@ class BookingController extends Controller
     /**
 	 * 
 	 */
-    public function packagesAction(){
-    	return $this->getHome('TripSiteManagementBundle:Default:packages.html.twig');
-    }
-    /**
-	 * 
-	 */
     public function dealsAction(){
     	return $this->getHome('TripSiteManagementBundle:Default:deals.html.twig');
     }
@@ -103,10 +99,30 @@ class BookingController extends Controller
     	
     	return $form;
     }
+    
+        /**
+     *
+     * @param Contact $entity
+     * @return unknown
+     */
+    private function createContactForm(Contact $entity)
+    {
+    	$form = $this->createForm(new ContactType(), $entity, array(
+    			'action' => $this->generateUrl('trip_site_management_contact'),
+    			'method' => 'POST',
+    	));
+    	$form->add('submit', 'submit', array('label' => 'Submit Now'));
+    	return $form;
+    }
+    
+    
     public function searchAction(Request $request)
     {
+		
         $searchFilter = new SearchFilter();
         $searchFilter->setDate(new \DateTime());
+		$test = "kishan";
+		
     	$form   = $this->createSearchForm($searchFilter);
         $form->handleRequest($request);
     	if ($form->isValid()) {
@@ -115,7 +131,8 @@ class BookingController extends Controller
            $session->set('searchHotel',null);
             $date = $searchFilter->getDate(); 
             $returnDate = $searchFilter->getReturnDate();
-            
+            echo var_dump($searchFilter);
+		exit();
              $tripType = $request->get('tripType');
             if($tripType=="multicity"){
                  $numdays = $searchFilter->getNumdays(); 
@@ -141,6 +158,16 @@ class BookingController extends Controller
                     $resultCollection[]=$result;
                 }*/
                 $resultSet = $this->getResultSet($resultCollection);
+            }elseif($tripType=="dailyRent"){
+                $goingFrom = $searchFilter->getLeavingFrom();       
+                $goingTo = $searchFilter->getGoingTo();  
+                $noDays =0;
+                if(!is_null($returnDate)){
+                    $interval = $returnDate->diff($date);
+                    $noDays = $interval->d;
+                }
+                $resultSet = $this->getVehicles($goingFrom,$goingTo);
+                $resultSet = $this->getDailyRent($resultSet,$noDays);
             }else{
                 $goingFrom = $searchFilter->getLeavingFrom();       
                 $goingTo = $searchFilter->getGoingTo();  
@@ -157,9 +184,14 @@ class BookingController extends Controller
             $searchFilter->setNumDays($noDays);
             $session->set('selectedData',$searchFilter);
             $session->set('resultSet',$resultSet);
+            
+            
+                	$contact = new Contact();
+    	           $contactForm   = $this->createContactForm($contact);
         
             return $this->render('TripBookingEngineBundle:Default:search.html.twig', array(
                 'form'   => $form->createView(),
+                'contactForm'   => $contactForm->createView(),
                 'result'=>$resultSet,
                 'tripType'=>$tripType
             ));
@@ -171,7 +203,7 @@ class BookingController extends Controller
         
     }
     public function getVehicles($goingFrom,$goingTo){
-            $dql3 = "SELECT v.id,v.imgPath, v.model,v.capcity,v.price vPrice,v.mileage, c1.name lFrom,c2.name to FROM TripBookingEngineBundle:Vehicle v, TripSiteManagementBundle:city c1,TripSiteManagementBundle:city c2 WHERE v.active=1 and c1.id=$goingFrom and c2.id=$goingTo";
+            $dql3 = "SELECT v.id,v.imgPath, v.model,v.capcity,v.price vPrice,v.mileage,v.dailyRent, c1.name lFrom,c2.name to FROM TripBookingEngineBundle:Vehicle v, TripSiteManagementBundle:city c1,TripSiteManagementBundle:city c2 WHERE v.active=1 and c1.id=$goingFrom and c2.id=$goingTo";
             $em = $this->getDoctrine()->getManager();
             $query = $em->createQuery($dql3);					
             $result = $query->getResult();
@@ -198,8 +230,35 @@ class BookingController extends Controller
             $car['id']=$row['id'];
             $car['imgPath']=$row['imgPath'];
             $car['model']=$row['model'];
-             $car['capcity']=$row['capcity'];
-            $car['price']=$row['vPrice']*$numdays;
+            $car['capcity']=$row['capcity'];
+            $car['vPrice']=$row['vPrice'];
+            $kms = 300*$numdays;
+            $car['kms']=$kms;
+            $car['price']=$row['vPrice']*$kms;
+            $car['lFrom']=$row['lFrom'];
+            $car['to']=$row['to'];
+            $car['mileage']=$row['mileage'];
+            
+            $tempCollection[$row['id']]=$car;
+        }
+        return $tempCollection;        
+    }
+     public function getDailyRent($result,$numdays){
+        $tempCollection = array();
+        foreach($result as $row){
+            $car = array();
+            $car['id']=$row['id'];
+            $car['imgPath']=$row['imgPath'];
+            $car['model']=$row['model'];
+            $car['capcity']=$row['capcity'];
+            $car['vPrice']=$row['dailyRent'];
+            $nightHalt = 300*$numdays;
+            $car['kms']=$nightHalt;
+            $car['price']=$row['dailyRent'];
+            if($numdays>0){
+                $numdays = $numdays+1;
+                $car['price']=($row['dailyRent']*$numdays)+$nightHalt;
+            }
             $car['lFrom']=$row['lFrom'];
             $car['to']=$row['to'];
             $car['mileage']=$row['mileage'];
@@ -285,9 +344,9 @@ class BookingController extends Controller
         }else{
          return $this->render('TripBookingEngineBundle:Default:booking.html.twig', array(
                 'form'   => $form->createView(),
-               'service'=>$selectedService,
-             'discount'=>0,
-             'filter'=>$searchFilter,
+                'service'=>$selectedService,
+                'discount'=>0,
+                'filter'=>$searchFilter,
             ));
         }
         
@@ -391,7 +450,11 @@ class BookingController extends Controller
                 if($searchFilter->getTripType()=='roundtrip'){
                     $price = $selectedService['returnPrice'];
                 }else{
+                     if($searchFilter->getTripType()=='package'){
+                         $price = $selectedService->getPrice()->first()->getPrice();
+                     }else{
                     $price = $selectedService['price'];
+                     }
                 }
                 $finalPrice = $price;
                 if($couponCode=='FIRSTRIDE'){
@@ -400,7 +463,11 @@ class BookingController extends Controller
                 if($searchFilter->getTripType()=='roundtrip'){
                     $selectedService['returnPrice'] = $finalPrice;
                 }else{
+                    if($searchFilter->getTripType()=='package'){
+                         $selectedService->getPrice()->first()->setPrice($finalPrice);
+                     }else{
                     $selectedService['price'] = $finalPrice;
+                    }
                 }
             $booking = new Booking();
             $booking->setCustomerId($customer->getId());
@@ -435,32 +502,49 @@ class BookingController extends Controller
                         $booking = $this->setVehicleBooking($selectedService,$searchFilter,$leavingFrom,$goingTo,$date,$returnDate,0,$booking);
                     }
                 }else{
+                    if($searchFilter->getTripType()=='package'){
+                        $leavingFrom = $selectedService->getEndPoint()->first()->getName();
+                        $date = $searchFilter->getDate();
+                        $returnDate = null;
+                        $endPoint = $selectedService->getEndPoint();
+                        foreach($endPoint as $end){
+                            $goingTo = $end->getName();
+                        $booking = $this->setVehicleBooking($selectedService,$searchFilter,$leavingFrom,$goingTo,$date,$returnDate,0,$booking);
+                            $leavingFrom = null;
+                        }
+                    }else{
                     $leavingFrom = $searchFilter->getLeavingFrom();
                     $goingTo = $searchFilter->getGoingTo();
                     $returnDate = $searchFilter->getReturnDate();
                     $date = $searchFilter->getDate();
                     $booking = $this->setVehicleBooking($selectedService,$searchFilter,$leavingFrom,$goingTo,$date,$returnDate,$price,$booking);
+                    }
 
                 }
              }
             $booking->setPaymentMode($paymentMode);
-            $em->persist($booking);
-    		$em->flush();
-            $session->set('bookingObj',$booking);
+            
             $amountToPay = $finalPrice; 
+            $tax = 0;
             if($paymentMode=='advance'){
-                $amountToPay = round($finalPrice*(10/100));
+                $amountToPay = round($finalPrice*(50/100));
                 $tax = round($amountToPay*(3/100));
                 $amountToPay = $amountToPay+$tax; 
             }else{
-                $tax = round($finalPrice*(3/100));
-                $amountToPay = $finalPrice+$tax;              
+                $amountToPay = round($finalPrice*(10/100));
+                $tax = round($amountToPay*(3/100));
+                $amountToPay = $amountToPay+$tax;              
             }
+            $booking->setTax($tax);
+            $em->persist($booking);
+    		$em->flush();
+            $session->set('bookingObj',$booking);
             $paymentLink = $this->getPaymentLink($amountToPay);
         //$paymentLink = "https://www.instamojo.com/Waseemsyed/tirupati-caars-services-cb8a4/";
         $paymentLink.="?data_name=".$customer->getName()."&data_email=".$customer->getEmail()."&data_phone=".$customer->getMobile()."&embed=form";
         return $this->render('TripBookingEngineBundle:Default:payment.html.twig', array(
                 'customer'   => $customer,
+             'booking'   => $booking,
                'service'=>$selectedService,
              'filter'=>$searchFilter,
             'discount'=>$discount,
@@ -498,8 +582,14 @@ class BookingController extends Controller
     }
     private function setVehicleBooking($selectedService,$searchFilter,$leavingFrom,$goingTo,$date,$returnDate,$price,$booking){
             $vehicleBooking = new VehicleBooking();
-            $vehicleBooking->setVehicleId($selectedService['id']);
-            $vehicleBooking->setModel($selectedService['model']);
+             if($searchFilter->getTripType()=='package'){
+                 $vehicle = $selectedService->getPrice()->first();
+                  $vehicleBooking->setVehicleId($vehicle->getVehicleId());
+                  $vehicleBooking->setModel($vehicle->getName());
+             }else{
+                $vehicleBooking->setVehicleId($selectedService['id']);
+                $vehicleBooking->setModel($selectedService['model']);
+             }
             $vehicleBooking->setLeavingFrom($leavingFrom);
             $vehicleBooking->setGoingTo($goingTo);
             $vehicleBooking->setDate($date);
@@ -590,9 +680,9 @@ class BookingController extends Controller
             $name = $customer->getName();
             $mobile = $customer->getMobile();
             $bookingId = $booking->getBookingId();
-            $body = "Dear $name <br> Your Booking has been Successfully completed.Your Booking Id is $bookingId <br>
-            <tabel>";
-            
+            $mail = "Dear $name <br> Your Booking has been Successfully completed.Your Booking Id is $bookingId";
+            $adminMail = "Dear Admin, $name <br> has Done Booking Successfully and Booking Id is $bookingId";
+            if($searchFilter->getTripType()=='package'){
                 $mail = $this->renderView(
     								'TripBookingEngineBundle:Mail:mailer.html.twig',
     								array(
@@ -601,9 +691,11 @@ class BookingController extends Controller
     										'service'=>$booking->getVehicleBooking()[0],
     								)
     						);
+            }
 
             $mailService = $this->container->get( 'mail.services' );
             $mailService->mail($email,'Just Trip:Booking Confirmation',$mail);
+             $mailService->mail('Payment@justtrip.in','Just Trip:Booking Confirmation',$adminMail);
         }else{
             $booking->setStatus('fail');
             $em->merge($booking);

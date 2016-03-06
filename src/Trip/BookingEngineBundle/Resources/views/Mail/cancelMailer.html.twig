@@ -67,9 +67,9 @@
 <td align="center" style="border:solid 1px #dddddd" height="30">Rs {{ booking.totalPrice }} </td>
 <td align="center" style="border:solid 1px #dddddd">Rs {{ booking.discount }}</td>
 
-<td align="center" style="border:solid 1px #dddddd">Rs 0 </td>
-<td align="center" style="border:solid 1px #dddddd"> Rs {{ booking.finalPrice }} </td>
-<td align="center" style="border:solid 1px #dddddd">Rs 0.00</td>
+<td align="center" style="border:solid 1px #dddddd">Rs {{ booking.tax }} </td>
+<td align="center" style="border:solid 1px #dddddd"> Rs {{ booking.amountPaid }} </td>
+<td align="center" style="border:solid 1px #dddddd">Rs {{ booking.finalPrice  +  booking.tax - booking.amountPaid }} </td>
 </tr>
 
 </tbody></table><div class="yj6qo"></div><div class="adL">

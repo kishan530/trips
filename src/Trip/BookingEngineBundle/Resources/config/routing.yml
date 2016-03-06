@@ -4,9 +4,6 @@ trip_site_management_homepage:
 trip_site_management_homepage_hotels:
     path:     /hotels
     defaults: { _controller: TripBookingEngineBundle:Booking:hotels }
-trip_site_management_homepage_packages:
-    path:     /packages
-    defaults: { _controller: TripBookingEngineBundle:Booking:packages }
 trip_site_management_homepage_deals:
     path:     /deals
     defaults: { _controller: TripBookingEngineBundle:Booking:deals }

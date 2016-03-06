@@ -97,8 +97,8 @@
                                             </div>
                                               <div class="col-md-6 col-sm-6 col-xs-6">
                                                 <div class="input-group make-margin" id="couponCode">
-                                                {{ form_widget(form.couponCode,{'attr':{'placeholder':'Enter an offer code'}}) }}
-                                                    <a class="input-group-addon" id="apply" href="#">apply</a>
+                                                {{ form_widget(form.couponCode,{'attr':{'placeholder':'Enter a Coupon code'}}) }}
+                                                    <a class="input-group-addon" id="apply" href="#">Apply</a>
                                                 </div>
                                                 <div class="row form-group has-error make-margin">
                                                     <ul class="errors help-block">
@@ -140,14 +140,22 @@
                                     <div class="col-md-12">
                                         {% block details %}
                                         <div class="row">
+                                            {% if filter.package|length>0 %}
+                                            {% else %}
                                             <div class="col-sm-12">
                                                 <img src="{{ asset('images/cars/'~service.imgPath) }}" alt="" class="img-responsive">
                                             </div><!-- end col -->
+                                            {% endif %}
                                             <div class="col-sm-12">
+                                                {% if filter.package|length>0 %}
+                                                    <h6>{{ service.name }}</h6>
+                                                {% else %}
                                                 <h6>{{ service.model }}</h6>
+                                                {% endif %}
 
                                                 <ul class="clearfix">
-                                                    
+                                                    {% if filter.package|length>0 %}
+                                                    {% else %}
                                                     <li><span>Root:</span> 
                                                     
                                                         <ul class="list-inline" style="margin:0">
@@ -163,7 +171,8 @@
 
                                                         </ul>
                                                     </li>
-                                                    {% if filter.tripType != 'multicity' %}
+                                                    {% endif %}
+                                                   {% if filter.tripType != 'multicity' %}
                                                         <li><span>Date:</span>{{ filter.date|date('F jS Y') }}</li>
                                                         {% if filter.tripType=='roundtrip' %}
                                                             <li><span>Return:</span> {{ filter.returnDate|date('F jS Y') }}</li>
@@ -174,27 +183,38 @@
                                                     
                                                     <hr>
                                                     
-                                                    {% if filter.tripType=='roundtrip' %}
-                                                    <li class="booking-price"><span>Price:</span>
+                                                    {% if filter.package|length>0 %}
+                                                        <li class="booking-price"><span>Price:</span>
                                                         <em id="fee"><i class="fa fa-inr"></i>
-                                                        <em> {{ service.returnPrice }} </em> - <i class="fa fa-inr"></i> <em >50</em> = 
+                                                        <em> {{ service.price.first.price }} </em> - <i class="fa fa-inr"></i> <em >50</em> = 
                                                         </em> 
-                                                        <i class="fa fa-inr"></i><em id="price"> {{ service.returnPrice }} </em>
-                                                    </li>
+                                                        <i class="fa fa-inr"></i><em id="price"> {{ service.price.first.price }} </em>
+                                                        </li>
                                                     {% else %}
-                                                    <li class="booking-price"><span>Price:</span> 
-                                                        <em id="fee"><i class="fa fa-inr"></i>
-                                                        <em> {{ service.price }} </em> - <i class="fa fa-inr"></i> <em >50</em> = 
-                                                        </em>
-                                                        <i class="fa fa-inr"></i><em id="price"> {{ service.price }} </em>
-                                                    </li>
-                                                    {% endif %}                                                                     
-                                               </ul>
+                                                    
+                                                        {% if filter.tripType=='roundtrip' %}
+                                                        <li class="booking-price"><span>Price:</span>
+                                                            <em id="fee"><i class="fa fa-inr"></i>
+                                                            <em> {{ service.returnPrice }} </em> - <i class="fa fa-inr"></i> <em >50</em> = 
+                                                            </em> 
+                                                            <i class="fa fa-inr"></i><em id="price"> {{ service.returnPrice }} </em>
+                                                        </li>
+                                                        {% else %}
+                                                        <li class="booking-price"><span>Price:</span> 
+                                                            <em id="fee"><i class="fa fa-inr"></i>
+                                                            <em> {{ service.price }} </em> - <i class="fa fa-inr"></i> <em >50</em> = 
+                                                            </em>
+                                                            <i class="fa fa-inr"></i><em id="price"> {{ service.price }} </em>
+                                                        </li>
+                                                        {% endif %} 
+                                                    {% endif %} 
+                                                    
+                                                </ul>
                                             </div><!-- end col -->
                                              <div class="col-md-12">
-                                                <a class="sm-links" data-toggle="modal" data-target="#terms" href="#terms">View Fare Rules</a>
+                                            <a class="sm-links" data-toggle="modal" data-target="#terms" href="#terms">View Fare Rules</a>
                                             </div>
-                                             </div><!-- end row -->
+                                        </div><!-- end row -->
                                         
                                             {% endblock %}
                                            

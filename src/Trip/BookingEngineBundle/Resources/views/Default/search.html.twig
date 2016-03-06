@@ -1,6 +1,27 @@
 {% extends 'page.html.twig' %}
+
+{% block stylesheets %}
+    <!-- Default Styles -->
+    <link href="{{ asset('css/search-style.css?version=1.05') }}" rel="stylesheet">
+ <link href="{{ asset('css/awe-booking-font.css') }}" rel="stylesheet">
+<style>
+input[type="radio"] {
+    display: none;
+}
+.tripSelMod label{
+    cursor: pointer;
+}
+.tripSelMod.legSelected label{
+    cursor: default;
+}
+</style>
+
+		<link href="{{ asset('css/jquery.timepicker.css') }}" rel="stylesheet" media="screen">
+{% endblock %}
 {% block javascripts %}
+<script src="{{ asset('js/jquery.timepicker.min.js') }}"></script>
 <script>
+     $('#trip_search_preferTime').timepicker({ 'scrollDefault': 'now' });
      $('.adults').click(function(e){		
 			e.preventDefault(); //STOP default action 
 			 var id = $(this).attr('id');
@@ -59,22 +80,7 @@ $("select").change(function() {
 
 {{ facebook_initialize({'xfbml': true, 'fbAsyncInit': 'onFbInit();'}) }}
 {% endblock %}
-{% block stylesheets %}
-    <!-- Default Styles -->
-    <link href="{{ asset('css/search-style.css') }}" rel="stylesheet">
- <link href="{{ asset('css/awe-booking-font.css') }}" rel="stylesheet">
-<style>
-input[type="radio"] {
-    display: none;
-}
-.tripSelMod label{
-    cursor: pointer;
-}
-.tripSelMod.legSelected label{
-    cursor: default;
-}
-</style>
-{% endblock %}
+
 {% block body %}
 
     <section class="section clearfix" style="padding-top:0px">
@@ -102,6 +108,12 @@ input[type="radio"] {
                  <a data-triptype="R" href="roundtrip" class="tripSelMod {% if tripType=='roundtrip' %} legSelected {% endif %}"><label for="roundtrip">
                      <input type="radio"  name="tripType" id="roundtrip" value="roundtrip" {% if tripType=='roundtrip' %} checked {% endif %}>
                          <i class="icons tripSwitchRT"></i></label>
+                     </a>
+                 </span> 
+                    <span inittooltip="" data-tooltip="dailyRent" class="">
+                 <a data-triptype="D" href="dailyRent" class="tripSelMod {% if tripType=='dailyRent' %} legSelected {% endif %}"><label for="dailyRent">
+                     <input type="radio"  name="tripType" id="dailyRent" value="dailyRent" {% if tripType=='dailyRent' %} checked {% endif %}>
+                         <i class="icons tripSwitchDR"></i></label>
                      </a>
                  </span> 
                  </div> 
@@ -229,19 +241,25 @@ input[type="radio"] {
           </div>
           <div class="item-body">
             <div class="item-title">
-                <div class="col-md-12">
+                <div class="col-md-7">
                     <h2><a href="#">{{ vehicle.model }}</a></h2>
                 </div>
+                <div class="col-md-5"><span>{{ vehicle.capcity }}</span></div>
             </div>
-           <div class="col-md-5"><span>{{ vehicle.capcity }}</span></div>
-            <div class="col-md-7">
+           
+            <div class="col-md-12">
                     <ul class="list-inline">
                         {% if tripType=='multicity' %}
+                            <li>
                             {% for from in vehicle.lFrom %}
-                                <li>{{ from }} {% if loop.last is same as(false) %} <i class="fa fa-long-arrow-right"></i> {% endif %}</li>
-                            {% endfor %}                                                  
-                           {# <li>{{ vehicle.to }} </li> #}
+                                {{ from }} {% if loop.last is same as(false) %} <i class="fa fa-long-arrow-right"></i> {% endif %}
+                            {% endfor %} 
+                            {% if vehicle.lFrom.first!= vehicle.to %}
+                                <i class="fa fa-long-arrow-right"></i> {{ vehicle.to }} 
+                                {% endif %}
+                            </li>
                         {% else %}
+                            
                         <li> {{ vehicle.lFrom }} {% if tripType=='roundtrip' %} <i class="fa fa-long-arrow-left"></i>{% endif %}<i class="fa fa-long-arrow-right"></i></li>
                           <li>{{ vehicle.to }} </li>
                         {% endif %}
@@ -250,16 +268,21 @@ input[type="radio"] {
               </div>
                   
           </div>
-          <div class="item-price-more">
+          <div class="item-price-more text-center">
             <div class="price"><span class="amount"> <i class="fa fa-inr"></i> {% if tripType=='roundtrip' %} {{ vehicle.returnPrice }} {% else %} {{ vehicle.price }}{% endif %}</span></div>
                {% if tripType=='multicity' %}
-              <span> {{ vehicle.mileage }}  </span>
+              <span> <i class="fa fa-inr"></i> {{ vehicle.vPrice }} / KM  </span>
               {% endif %}
           </div>
             <div class="item-price-more-book">
             <a href="{{ path('trip_booking_engine_confirm') }}?selected={{ key }}" class="awe-btn awe-btn btn btn-book btn-normal btn-md"><i class="fa fa-shopping-cart"></i> Book now</a>
           </div>
         </div>
+          {% else %}
+          <div class="col-md-12 free-kms">
+              <h2>Sorry, we didn't find any services matching for this, please call us For More Assistance .<br>Help
+line No:+91-9663133008</h2>
+          </div>
           
           {% endfor %}
       </div>
@@ -267,10 +290,58 @@ input[type="radio"] {
     </div>
   </div>
    <div class="col-md-2">
+        {% if result|length>0 %}
+            {% if tripType=='multicity' %}
+           <div class="row free-kms">
+                <div class="col-md-12">
+                    <h2>Free kilometers</h2>
+                    <h1>{{ result[1].kms }}</h1>
+
+               </div>
+               <div class="col-md-12">
+                   <ul>
+                       <li>On exceeding the free km limit, user will be charged as follows </li>
+                           {% for key,vehicle in result %}
+                       <li>  Rs.{{ vehicle.vPrice }}/km for {{ vehicle.model }} </li>
+                           {% endfor %}
+
+
+
+                   </ul>
+               </div>
+           </div>
+           {% endif %}
+       {% if tripType=='dailyRent' %}
+           <div class="row free-kms">
+                <div class="col-md-12">
+                    <h2>Free Hours</h2>
+                    <h1>12</h1>
+                    <b>For 24 Hours Rs:300 Extra</b>
+                    <b>plus</b>
+
+               </div>
+               <div class="col-md-12">
+                   <ul>
+                       <li>4 Seater (Indica AC/ Vertio / Swift Dzire / Etios/Renault Duster)</li>
+                       <li>  For Every 10Kms/1 Liter Diesel </li>
+                       <li>  6+1 Seater (Innova / Xuv400 ) </li>
+                       <li>  For Every 9 Kms/ 1 Liter Diesel </li>
+                       <li>  12+1 Seater (Tempo Traveller)</li>
+                       <li>  For Every 7Kms/1 Liter Diesel</li>
+
+
+
+                   </ul>
+               </div>
+           </div>
+           {% endif %}
+       {% endif %}
     
 	<img src="{{ asset('images/Sidebar.png') }}" style="margin-left: 33px;">
-	<h1 style="font-size:20px;">+91-9739655453</h1>
+	<h1 style="font-size:20px;">+91-9663133008</h1>
+        <a data-toggle="modal" data-target="#request" href="#request" class="btn btn-primary btn-block btn-sm">Enquiry</a>
            <div class="fb-like" data-href="https://www.facebook.com/JustTripIndia" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+        <h1 style="font-size:20px;"> "Pay 10% Now And Book Your Ride" </h1>
    </div>
   
   </div>
@@ -282,5 +353,81 @@ input[type="radio"] {
             </div>
         </div>
     </section>
+
+
+
+							 <div class="modal fade" id="request" role="dialog">
+								    <div class="modal-dialog">
+								    
+								      <!-- Modal content-->
+								      <div class="modal-content">
+								        <div class="modal-header">
+								          <button type="button" class="close" data-dismiss="modal">&times;</button>
+								          <h4 class="modal-title">Get the Best Holiday Planned by Experts!</h4>
+								        </div>
+								        <div class="modal-body">
+                                            <div class="row">
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div id="contact_form" class="contact_form">
+                                <div id="message">
+                                    <div class="col-lg-12 col-sm-12 form-group has-error">
+                                      <ul class="errors">
+                                            <div class="row top-buffer">
+                                                {{ form_errors(contactForm.firstName) }}
+                                            </div>
+                                            <div class="row top-buffer">
+                                                {{ form_errors(contactForm.lastName) }}
+                                            </div>
+                                            <div class="row top-buffer">
+                                                {{ form_errors(contactForm.email) }}
+                                            </div>
+                                            <div class="row top-buffer">
+                                                {{ form_errors(contactForm.phoneNumber) }}
+                                            </div>
+                                            <div class="row top-buffer">
+                                                {{ form_errors(contactForm.message) }}
+                                            </div>
+                                        </ul>
+								    </div>
+                                </div>
+                                {{ form_start(contactForm) }}
+				                {{ form_errors(contactForm, { 'global_errors': true }) }}
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                         {{ form_widget(contactForm.firstName, { 'attr': {'class':'make-margin','placeholder': 'Enter Your  First Name','title':'Please enter a valid Name', 'maxlength':'100'}}) }}
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                     {{ form_widget(contactForm.lastName, { 'attr': {'class':'make-margin','placeholder': 'Enter Your Last Name','title':'Please enter a valid Last Name', 'maxlength':'100'}}) }}
+                                    </div>
+                                 <div class="col-md-6 col-sm-6 col-xs-12">
+                                         {{ form_widget(contactForm.email, { 'attr': {'class':'make-margin','placeholder': 'Enter Your Email','title':'Please enter a valid Email', 'maxlength':'100'}}) }}
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                    {{ form_widget(contactForm.phoneNumber, { 'attr': {'class':'make-margin','placeholder': 'Enter Your Number','title':'Please enter a valid number', 'maxlength':'15'}}) }}
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                    {{ form_widget(contactForm.subject, { 'attr': {'class':'make-margin','placeholder': 'Enter Your Subject','title':'Please enter a valid subject', 'maxlength':'100'}}) }}
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                    {{ form_widget(contactForm.message, { 'attr': {'class':'make-margin','placeholder': 'Enter Your message','title':'Please enter a valid message', 'maxlength':'5000'}}) }}
+                                        
+                                        
+                                        
+                                        
+                                         {{ form_widget(contactForm.submit,{ 'attr': {'class': 'pull-right btn btn-primary btn-lg border-radius'}}) }}
+							              
+                                    
+                                    </div>
+                                {{ form_end(contactForm) }}   
+                            </div><!-- end contact-form -->
+                        </div><!-- end col -->
+                                                </div>
+                                    
+
+								        </div>
+								        
+								      </div>
+								      
+								    </div>
+								  </div>
 
 {% endblock %}

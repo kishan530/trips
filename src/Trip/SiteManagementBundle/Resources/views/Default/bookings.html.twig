@@ -1,6 +1,31 @@
 {% extends 'page.html.twig' %}
 {% block javascripts %}
 
+<script>
+    
+    $("#result").on('click', '.jobStatus', function (e) {
+	 e.preventDefault(); //STOP default action
+	 var id = $(this).attr('href');
+	 /*if (!confirm("The Student "+name+" details will be assigned, please confirm")) {
+	            exit();
+	        }*/
+  var status = $(this).attr('value');
+	   $.ajax({
+	       url: "{{ path('trip_site_management_change_status') }}",
+	       type: "GET",
+	       data: { 'id': id,'status':status },
+	       success: function(data) {		    	       	
+	    	 //document.getElementById("drive_roadtaxbundle_roadtax_search_submit").click();
+	       },
+	       error: function(XMLHttpRequest, textStatus, errorThrown)
+	       {
+	           alert('Error: ' +  errorThrown);
+	       }
+	   });
+});
+
+</script>
+
 {% endblock %}
 {% block body %}
 
@@ -8,16 +33,71 @@
         <div class="container">
             <div class="row">
                 <div id="fullwidth" class="col-sm-12">
-                    <div class="col-lg-12">
+                       <div class="row">
+   <div class="form_details col-lg-12 col-sm-12 bottom-buffer1">
+   {{ form_start(form) }}
+   {{ form_errors(form) }}
+   
+	<div class="row">
+			 <div class="col-lg-3 col-sm-3">
+			<div class="row form-group {% if form.start_date.vars.errors|length %}has-error{% endif %}">
+                    <div class="col-lg-5 remove_margin">
+                            {{ form_label(form.start_date) }}
+                        </div>
+                        <div class="col-lg-7">
+                        	
+                            {{ form_widget(form.start_date) }}
+                        </div>
+                       </div>
+                      </div>
+                     
+			
+             <div class="col-lg-3 col-sm-3">
+            <div class="row form-group {% if form.end_date.vars.errors|length %}has-error{% endif %}">
+                    <div class="col-lg-5">
+                            {{ form_label(form.end_date) }}
+                        </div>
+                        <div class="col-lg-7">
+                        <div class="row">
+                        	{{ form_widget(form.end_date) }}
+                        	</div>
+                             </div>
+                            </div>
+            </div>
+            <div class="col-lg-3 col-sm-3">
+          
+			     <div class="row form-group {% if form.bookingId.vars.errors|length %}has-error{% endif %}">
+                    <div class="col-lg-5">
+                            {{ form_label(form.bookingId) }}
+                        </div>
+                        <div class="col-lg-6">
+                       		 <div class="row">
+                           {{ form_widget(form.bookingId) }}
+                     		</div>
+                        </div>
+               
+			         </div>
+			 </div>
+                            
+                          
+				<div class="col-lg-2 col-sm-2">
+				{{ form_widget(form.submit,{ 'attr': {'class': 'btn-system'}}) }}
+					{{ form_end(form) }}
+				</div>
+								
+			
+			</div>
+                    
+                    <div class="">
                     <table id="result" class="table table-bordered col-lg-12 col-sm-12">
 	               {% if bookings|length>0 %}	
                           <tr class="blue">
                                 <th>Booking Id #</th>
                                 <th>Name</th>
                                 <th>Mobile</th>
-                                {#}<th>Email</th> 
-                                <th>Address</th>{#}
-                                <th>Prefer Time</th>
+                               <th>Email</th> 
+                                {#} <th>Address</th>
+                                <th>Prefer Time</th>{#}
                                 <th>No of Days</th>
                                 <th>Trip Type</th>
                                 <th>Booked On </th>
@@ -28,6 +108,7 @@
                                 <th> Amount Paid </th>
                                 <th> Payment Id </th>
                                 <th> Status </th>
+                                <th> action </th>
 							</tr>	
 					{% endif %}			
 						
@@ -35,13 +116,13 @@
                        {% if booking.customerId %}
                         {% set service = booking.vehicleBooking.first %}
                         {% set customer = customers[booking.customerId] %}
-                        <tr>
+                        <tr class="wrap-text">
                             <td>{{ booking.bookingId }}</td> 
                             <td>{{ customer.name }}</td> 
                             <td>{{ customer.mobile }}</td> 
-                           {# <td>{{ customer.email }}</td> 
-                            <td>{{ customer.Address }}</td> #}
-                            <td>{{ booking.preferTime }}</td>
+                            <td>{{ customer.email }}</td> 
+                           {# <td>{{ customer.Address }}</td> #}
+                            
                             <td>{{ booking.numDays }}</td>
                             <td>{{ service.tripType }}</td>
                             <td>{{ booking.bookedOn|date('d/m/Y') }}</td>
@@ -52,18 +133,23 @@
                             <td>{{ booking.amountPaid }}</td>
                             <td>{{ booking.paymentId }}</td>
                             <td>{{ booking.status }}</td>
+                            <td><a href="{{ booking.id }}" class="jobStatus" value="{% if booking.status=='Open' %} Close {% else %} Open {% endif %}">
+                                {% if booking.jobStatus=='Open' %} Close {% else %} Open {% endif %}
+                                </a></td>
                         
                         </tr>
-                        <tr>
-                            <td colspan="14" class="oddClass">
+                        <tr class="wrap-text">
+                            <td colspan="15" class="oddClass">
                             <table class="table table-bordered col-lg-12 col-sm-12 oddClass">
                                  {% for service in booking.vehicleBooking if booking.vehicleBooking|length>0 %}
                                     <tr class="oddClass">
                                         <td>{{ service.model }}</td>
-                                        <td>{{ locations[service.leavingFrom].name }}</td>
+                                        <td>{% if service.leavingFrom %} {{ locations[service.leavingFrom].name }} {% endif %}</td>
                                         <td>{{ locations[service.goingTo].name }}</td>
                                         <td> {{ service.date|date('d/m/Y') }} </td>
+                                       
                                 <td>{% if service.tripType=='roundtrip' %} {{ service.returnDate|date('F jS Y') }} {% else %} - {% endif %}</td>
+                                         <td>{{ booking.preferTime }}</td>
                                     </tr>
                                 {% endfor %}
                             </table>

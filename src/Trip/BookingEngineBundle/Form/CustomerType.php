@@ -20,7 +20,7 @@ class CustomerType extends AbstractType
             ->add('mobile')
             ->add('couponCode')
           ->add('haveCoupon', 'checkbox', array(
-    				'label'     => 'I have an offer code?',
+    				'label'     => 'I have an Coupon code?',
     				'required'  => false,
     		))
             
@@ -35,8 +35,8 @@ class CustomerType extends AbstractType
 
     				'choices' => array(
 
-                            'full' => 'Full',
-    						'advance' => 'Only Advance 10%',
+                            '10' => '10% payment',
+    						'advance' => '50% Payment ',
 
     				),
                 'label'     => 'Payment Mode',

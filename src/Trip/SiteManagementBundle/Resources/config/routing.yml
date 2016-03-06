@@ -11,6 +11,15 @@ trip_site_management_add_locations:
 trip_site_management_add_hotel:
     path:     /add/hotel
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:addHotel }
+trip_site_management_homepage_packages:
+    path:     /packages
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:packages }
+trip_site_management_homepage_package_submit:
+    path:     /package/submit
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:packageSubmit }
+trip_site_management_booking_search:
+    path:     /booking-search
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:bookingSearch }
 trip_site_management_bookings:
     path:     /bookings
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:bookings }
@@ -20,6 +29,9 @@ trip_site_management_my_bookings:
 trip_site_management_cancel:
     path:     /cancel-booking
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:cancel }
+trip_site_management_change_status:
+    path:     /change-status
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:changeStatus }
 trip_site_management_verify_booking:
     path:     /verify-bookings
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:cancelVerify }

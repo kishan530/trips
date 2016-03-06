@@ -22,13 +22,31 @@ img {
     display: block;
     font-weight: 700;
     font-style: normal;
-    font-size: 24px;
+    font-size: 21px;
     color: #f26722;
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
     -ms-transition: all 0.3s ease;
     -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
+}
+
+.free-kms{
+    border: 1px solid #CCC;
+    padding: 4px;
+}
+.free-kms h2{
+    text-transform: capitalize;
+    font-size: 22px;
+    margin: 0;
+    text-align: center;
+}
+.free-kms h1{
+    margin: 0;
+    text-align: center;
+}
+.free-kms ul{
+    font-size: 12px;
 }
 
 .filter-page {
@@ -291,6 +309,9 @@ width:47%;
 
 .flight-item .item-price-more {
 padding:17px 30px;
+}
+.flight-item .item-price-more span {
+    font-size: 12px;
 }
 
 .flight-item .item-price-more .price {
@@ -619,8 +640,8 @@ color:#ddd;
 }
 
 .tripSwitch .flightLegNav a {
-    width: 36px;
-    height: 26px;
+    width: 35px;
+    height: 30px;
     padding: 0!important;
 }
 .flightLegNav span a {
@@ -647,8 +668,8 @@ color:#ddd;
 }
 
 .tripSwitch .flightLegNav a i {
-    width: 25px;
-    height: 20px;
+    width: 29px;
+    height: 25px;
 }
 
 
@@ -662,6 +683,10 @@ background: transparent url('../images/ico-srp.png') 0 0 no-repeat;
 }
 .tripSwitchRT {
     background-position: -311px -44px;
+    margin: 6px 0 0 7px;
+}
+.tripSwitchDR {
+    background-position: -82px -33px;
     margin: 6px 0 0 7px;
 }
 

@@ -10,6 +10,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Table(name="booking")
  * @ORM\Entity
+ * @ORM\NamedQueries({
+ *     @ORM\NamedQuery(name="bookings", query="SELECT b FROM TripBookingEngineBundle:Booking b WHERE ( :bookingId is null OR b.bookingId like :bookingId ) AND b.bookedOn BETWEEN  :start AND :end ORDER BY b.bookedOn DESC")
+ * })
  */
 class Booking
 {
@@ -45,6 +48,11 @@ class Booking
      * @ORM\Column(name="final_price", type="float")
      */
     private $finalPrice;
+    /**
+     * Tax
+     * @ORM\Column(name="tax", type="float")
+     */
+     private $tax;
     /**
      * @var integer
      * @ORM\Column(name="amount_paid", type="float")
@@ -85,6 +93,11 @@ class Booking
      * @ORM\Column(name="status", type="string", length=100)
      */
     private $status;   
+    /**
+     * @var string
+     * @ORM\Column(name="job_status", type="string", length=100)
+     */
+    private $jobStatus;
     
     /**
      * @var string
@@ -331,6 +344,23 @@ class Booking
 
     }
     /**
+	 *
+	 * @return the double
+	 */
+	public function getTax() {
+		return $this->tax;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$tax
+	 */
+	public function setTax($tax) {
+		$this->tax = $tax;
+		return $this;
+	}
+    /**
 
      * Set amountPaid
 
@@ -462,6 +492,29 @@ class Booking
 
         return $this->status;
 
+    }
+    
+    /**
+     * Set jobStatus
+     *
+     * @param string $jobStatus
+     * @return RTO
+     */
+    public function setJobStatus($jobStatus)
+    {
+    	$this->jobStatus =$jobStatus;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get jobStatus
+     *
+     * @return string
+     */
+    public function getJobStatus()
+    {
+    	return $this->jobStatus;
     }
     
     /**

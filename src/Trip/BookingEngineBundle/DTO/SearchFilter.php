@@ -51,6 +51,10 @@ class SearchFilter
     /**
      * @var string
      */
+    private $package;
+    /**
+     * @var string
+     */
     private $multiple;
         public function __construct()
     {
@@ -217,6 +221,27 @@ class SearchFilter
     public function getPreferTime()
     {
     	return $this->preferTime;
+    }
+    
+    
+    /**
+     * Set package
+     * @param string $package
+     * @return Booking
+     */
+
+    public function setPackage($package)
+    {
+    	$this->package = $package;
+    	return $this;
+    }
+    /**
+     * Get package
+     * @return string
+     */
+    public function getPackage()
+    {
+    	return $this->package;
     }
     
     

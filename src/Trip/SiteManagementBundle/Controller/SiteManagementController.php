@@ -5,6 +5,7 @@ namespace Trip\SiteManagementBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Trip\SiteManagementBundle\Entity\City;
 use Trip\BookingEngineBundle\Form\SearchType;
+use Trip\BookingEngineBundle\Form\PackageType;
 use Trip\SiteManagementBundle\Form\LocationType;
 use Trip\SiteManagementBundle\Form\ServicesType;
 use Trip\SiteManagementBundle\Form\VehicleType;
@@ -19,8 +20,11 @@ use Trip\SiteManagementBundle\Entity\Contact;
 use Trip\SiteManagementBundle\Form\ContactType;
 use Trip\SiteManagementBundle\Entity\Cancel;
 use Trip\SiteManagementBundle\Form\CancelType;
+use Trip\SiteManagementBundle\DTO\BookingSearch;
+use Trip\SiteManagementBundle\Form\BookingSearchType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class SiteManagementController extends Controller
 {
@@ -45,9 +49,199 @@ class SiteManagementController extends Controller
         return $this->render('TripSiteManagementBundle:Static:faq.html.twig');
     }
     /**
+     * 
+     * @param Search $entity
+     * @return unknown
+     */
+    private function createPackageForm(SearchFilter $entity){
+    	$form = $this->createForm(new packageType(), $entity, array(
+    			'action' => $this->generateUrl('trip_booking_engine_search'),
+    			'method' => 'GET',
+    	));
+    	
+    	return $form;
+    }
+    /**
+	 * 
+	 */
+    public function packagesAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $packages = $em->getRepository('TripSiteManagementBundle:Package')->findAll();
+         $locations = $em->getRepository('TripSiteManagementBundle:city')->findAll();
+        $locations = $this->getLocationsByIndex($locations);
+        $session = $request->getSession();
+        $session->set('resultSet',$packages);
+        return $this->render('TripSiteManagementBundle:Default:packages.html.twig',array(
+    			'packages' => $packages,
+                'locations' => $locations,
+    	));
+    }
+    /**
+	 * 
+	 */
+    public function packageSubmitAction(Request $request){
+        $session = $request->getSession();
+        $preferDate = $request->get('preferDate');
+        $preferTime = $request->get('preferTime');
+        $numAdult = $request->get('numAdult');
+        $selected = $request->get('selected');
+        $vehicleIndex = $request->get('vehicleIndex');
+        $resultSet = $session->get('resultSet');
+         $selectedService = $resultSet[$selected];
+        $vehiclePrice = $selectedService->getPrice();
+        $selectedVehicle = $vehiclePrice->get($vehicleIndex);
+        $selectedService->setPrice(new ArrayCollection(array($selectedVehicle)));
+        $searchFilter = new SearchFilter();
+        list($d,$m,$y) = explode('/',$preferDate);
+        $searchFilter->setDate(new \DateTime("$y-$m-$d"));
+        $searchFilter->setTripType('package');
+        $searchFilter->setNumDays(1);
+        $searchFilter->setNumAdult($numAdult);
+        $searchFilter->setPreferTime($preferTime);
+        $searchFilter->setPackage($selectedService->getCode());
+            $session->set('selectedData',$searchFilter);
+         //$session->set('package','JTP01');
+            
+        return $this->redirect($this->generateUrl('trip_booking_engine_confirm', array('selected' => $selected)));
+        
+    }
+    /**
+	 *
+	 * @param BookingSearch $bookingSearch        	
+	 * @return unknown
+	 */
+	private function createBookingSearchForm(BookingSearch $bookingSearch) {
+		$form = $this->createForm ( new BookingSearchType (), $bookingSearch, array (
+				'action' => $this->generateUrl ( 'trip_site_management_booking_search' ),
+				'method' => 'POST' 
+		) );		
+		$form->add ( 'submit', 'submit', array (
+				'label' => 'Search' 
+		) );
+		return $form;
+	}
+    /**
+	 * 
+	 */
+    public function changeStatusAction(Request $request){
+        $id = $request->get('id');
+        $status = $request->get('status');
+        $em = $this->getDoctrine()->getManager();
+        $booking->setJobStatus($status);
+        return new Response ( "true" );
+    }
+    
+    /**
+
+	 *
+
+	 * @param Request $request        	
+
+	 */
+
+	public function bookingSearchAction(Request $request) {
+
+		$security = $this->container->get ( 'security.context' );
+
+		$user = $security->getToken ()->getUser ();
+
+		if (! $security->isGranted ( 'ROLE_SUPER_ADMIN' )) {
+
+			return $this->redirect ( $this->generateUrl ('trip_security_sign_up') );
+
+		}
+
+		$bookingSearch = new BookingSearch ();
+
+		$form = $this->createBookingSearchForm ( $bookingSearch );
+
+		$form->handleRequest ( $request );
+
+		if ($form->isValid ()) {
+
+			$bookingId = $bookingSearch->getBookingId ();
+
+			$from_date = $bookingSearch->getStartDate ();
+
+			if($from_date)
+
+			{
+                list ( $d, $m, $y ) = explode ( '/', $from_date );
+				$from_date = new \Datetime($y.'-'.$m.'-'.$d);
+
+			}
+
+			else
+
+			{
+
+				$from_date = new \Datetime('2012-01-01');
+
+			}
+            
+            $to_date = $bookingSearch->getEndDate ();
+
+            list ( $d, $m, $y ) = explode ( '/', $to_date );
+			$to_date = new \Datetime($y.'-'.$m.'-'.$d);
+            if(!is_null($bookingId)){
+                $from_date = new \Datetime('2012-01-01');
+                $to_date = new \Datetime();
+            }
+
+			$from_date->format('Y-m-d');			
+			$to_date->format('Y-m-d');
+
+			$em = $this->getDoctrine ()->getManager ();
+
+			
+
+				$doctrineQuery = $this->getDoctrine ()->getRepository ( 'TripBookingEngineBundle:Booking' )->createNamedQuery ( 'bookings' );
+
+				$doctrineQuery->setParameter ( 'start', $from_date ); 
+
+				$doctrineQuery->setParameter ( 'end', $to_date ); 
+
+				$doctrineQuery->setParameter ( 'bookingId', '%' . $bookingId . "%" ); 
+
+				$bookings = $doctrineQuery->getResult ();
+            
+                     $locations = $em->getRepository('TripSiteManagementBundle:city')->findAll();
+         $customers = $em->getRepository('TripBookingEngineBundle:Customer')->findAll();
+        $locations = $this->getLocationsByIndex($locations);
+        $customers = $this->getCustomersByIndex($customers);
+
+			return $this->render ( 'TripSiteManagementBundle:Default:bookings.html.twig', array (
+
+				    'bookings' => $bookings,
+                    'locations' => $locations,
+                    'customers' => $customers,
+                'form' => $form->createView () 
+
+			) );
+
+		}
+
+		return $this->render ( 'TripSiteManagementBundle:Default:bookings.html.twig', array (
+
+				'bookingSearch' => $bookingSearch,
+                'bookings' => null,
+				'form' => $form->createView () 
+
+		) );
+
+	}
+    
+    
+    /**
      *
      */
     public function bookingsAction(){
+        $security = $this->container->get ( 'security.context' );
+        if (! $security->isGranted ( 'ROLE_SUPER_ADMIN' )) {
+
+			return $this->redirect ( $this->generateUrl ('trip_security_sign_up') );
+
+		}
         $em = $this->getDoctrine()->getManager();
         $bookings = $em->getRepository('TripBookingEngineBundle:Booking')->findBy(array(), array('id' => 'DESC'));
          $locations = $em->getRepository('TripSiteManagementBundle:city')->findAll();

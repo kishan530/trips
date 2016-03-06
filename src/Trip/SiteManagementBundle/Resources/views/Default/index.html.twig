@@ -101,8 +101,10 @@ $("#trip_search_multiple_1_leavingFrom").change(function() {
         if(type=='roundtrip'){
             $("#trip_search_returnDate").removeAttr("readonly");
         }else{
+            if(type!='dailyRent'){
             $("#trip_search_returnDate").attr("readonly","readonly");
             $("#trip_search_returnDate").val('');
+            }
         }
      });
     
@@ -182,7 +184,7 @@ $("#trip_search_multiple_1_leavingFrom").change(function() {
                         <ul class="nav nav-tabs" role="tablist">
                             <li class="active"><a href="#tab_01" aria-controls="tab_01" role="tab" data-toggle="tab"><i class="icon-sedan3"></i>   Cars</a></li>
                             <!--<li><a href="#tab_02" aria-controls="tab_02" role="tab" data-toggle="tab"><i class="icon-hotel68"></i>  Hotels</a></li>-->
-                            <li><a href="#tab_03" aria-controls="tab_03" role="tab" data-toggle="tab"><i class="icon-bag"></i>  Packages</a></li>
+                            <li><a href="{{ path('trip_site_management_homepage_packages')}}"><i class="icon-bag"></i>  Packages</a></li>
                             
                             <li><a href="#tab_04" aria-controls="tab_04" role="tab" data-toggle="tab"><i class="icon-travel25"></i>  Offers</a></li>
                             
@@ -214,6 +216,12 @@ $("#trip_search_multiple_1_leavingFrom").change(function() {
                                          <label for="multicity">
                                             <input type="radio" name="tripType" value="multicity" id="multicity" style="display:none">
                                             Multicity
+                                        </label>
+                                    </span>
+                                    <span>
+                                         <label for="dailyRent">
+                                            <input type="radio" name="tripType" value="dailyRent" id="dailyRent" style="display:none">
+                                            Daily Rent
                                         </label>
                                     </span>
                                 </div>
@@ -447,8 +455,9 @@ $("#trip_search_multiple_1_leavingFrom").change(function() {
 
                 <div class="col-md-6 col-xs-12">
                     <div class="home-message banner-message">
-                        <h1> Help Line No :</br>+91-9739655453</h1>
+                        <h1> Help Line No :</br>+91-9663133008</h1>
                         <h2> TAXI / HOTEL <br>Service providers in Tirupati </h2> 
+                        <h1> "Pay 10% Now And Book Your Ride" </h1>
                        
                     </div><!-- end homemessage -->
                 </div><!-- end col -->            

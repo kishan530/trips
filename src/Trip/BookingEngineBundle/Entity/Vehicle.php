@@ -59,6 +59,11 @@ class Vehicle
     private $extraPrice;
     /**
      * @var string
+     * @ORM\Column(name="daily_rent", type="float")
+     */
+    private $dailyRent;
+    /**
+     * @var string
      * @ORM\Column(name="mileage", type="string")
      */
     private $mileage;
@@ -174,6 +179,23 @@ class Vehicle
 	 */
 	public function setExtraPrice($extraPrice) {
 		$this->extraPrice = $extraPrice;
+		return $this;
+	}
+     /**
+	 *
+	 * @return the string
+	 */
+	public function getDailyRent() {
+		return $this->dailyRent;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$dailyRent
+	 */
+	public function setDailyRent($dailyRent) {
+		$this->dailyRent = $dailyRent;
 		return $this;
 	}
     /**

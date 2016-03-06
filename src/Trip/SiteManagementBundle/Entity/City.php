@@ -36,7 +36,7 @@ class City
     /**
      * @var boolean
      *
-     * @ORM\Column(name="hotel_service", type="boolean")
+     * @ORM\Column(name="active", type="boolean")
      */
     private $active;
     /**
