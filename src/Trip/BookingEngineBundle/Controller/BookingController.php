@@ -130,8 +130,8 @@ class BookingController extends Controller
            $session->set('searchHotel',null);
             $date = $searchFilter->getDate(); 
             $returnDate = $searchFilter->getReturnDate();
-            echo var_dump($searchFilter);
-		exit();
+            //echo var_dump($searchFilter);
+		//exit();
              $tripType = $request->get('tripType');
             if($tripType=="multicity"){
                  $numdays = $searchFilter->getNumdays(); 
