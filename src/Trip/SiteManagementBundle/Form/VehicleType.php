@@ -36,6 +36,12 @@ class VehicleType extends AbstractType
     {
         $builder
             ->add('model')
+			->add('capcity')
+			->add('mileage')
+			//->add('imgPath')
+			->add('price')
+			->add('dailyRent')
+			->add('extraPrice')
             ->add('submit', 'submit', array('label' => 'submit'))
         ;
                     

@@ -2,6 +2,9 @@
 trip_site_management_add_vehicle:
     path:     /add/vehicle
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:addVehicle }
+trip_site_management_edit_vehicle:
+    path:     /edit/{id}/vehicle
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:editVehicle }
 trip_site_management_add_services:
     path:     /add/services
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:addServices }
@@ -20,9 +23,15 @@ trip_site_management_homepage_package_submit:
 trip_site_management_booking_search:
     path:     /booking-search
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:bookingSearch }
+trip_site_management_booking_update_price:
+    path:     /update-price
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:updatePrice }
 trip_site_management_bookings:
     path:     /bookings
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:bookings }
+trip_site_management_export_bookings:
+    path:     /exportBookings
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:exportBookings }
 trip_site_management_my_bookings:
     path:     /my-bookings
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:myBookings }

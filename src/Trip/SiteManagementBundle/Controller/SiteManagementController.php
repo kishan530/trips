@@ -9,6 +9,7 @@ use Trip\BookingEngineBundle\Form\PackageType;
 use Trip\SiteManagementBundle\Form\LocationType;
 use Trip\SiteManagementBundle\Form\ServicesType;
 use Trip\SiteManagementBundle\Form\VehicleType;
+use Trip\SiteManagementBundle\Form\PriceType;
 use Trip\BookingEngineBundle\DTO\SearchFilter;
 use Trip\BookingEngineBundle\Form\SearchHotelType;
 use Trip\BookingEngineBundle\DTO\SearchHotel;
@@ -248,12 +249,31 @@ class SiteManagementController extends Controller
          $customers = $em->getRepository('TripBookingEngineBundle:Customer')->findAll();
         $locations = $this->getLocationsByIndex($locations);
         $customers = $this->getCustomersByIndex($customers);
+		$data = $this->render('TripSiteManagementBundle:Default:exportBookings.html.twig',array(
+    			'bookings' => $bookings,
+            'locations' => $locations,
+            'customers' => $customers,
+    	));
+		$request = $this->container->get('request');
+		$session = $request->getSession();
+        $session->set('exportBookings',$data);
     	return $this->render('TripSiteManagementBundle:Default:bookings.html.twig',array(
     			'bookings' => $bookings,
             'locations' => $locations,
             'customers' => $customers,
     	));
     }
+	    /**
+     *
+     */
+    public function exportBookingsAction(){
+		$request = $this->container->get('request');
+		$session = $request->getSession();
+        $view = $session->get('exportBookings');
+		header ( 'Content-Type: application/force-download' );
+		header ( 'Content-disposition: attachment; filename=bookings.xls' );
+		return $view;
+	}
     /**
      *
      */
@@ -533,7 +553,38 @@ class SiteManagementController extends Controller
     	$bookingService = $this->container->get( 'booking.services' );
     	$form = $this->createForm(new VehicleType($bookingService), $entity, array(
     			'action' => $this->generateUrl('trip_site_management_add_vehicle'),
-    			'method' => 'GET',
+    			'method' => 'POST',
+    	));
+    	
+    	return $form;
+    }
+	/**
+     * 
+     * @param Search $entity
+     * @return unknown
+     */
+    private function createUpdatePriceForm($entity){
+    	$bookingService = $this->container->get( 'booking.services' );
+    	$form = $this->createForm(new PriceType($bookingService), $entity, array(
+    			'action' => $this->generateUrl('trip_site_management_booking_update_price'),
+    			'method' => 'POST',
+    	));
+    	
+    	return $form;
+    }
+	
+	/**
+     * 
+     * @param Search $entity
+     * @return unknown
+     */
+    private function createVehicleEditForm($entity,$id){
+    	$bookingService = $this->container->get( 'booking.services' );
+    	$form = $this->createForm(new VehicleType($bookingService), $entity, array(
+    			'action' => $this->generateUrl('trip_site_management_edit_vehicle',array (
+						'id' => $id 
+				) ),
+    			'method' => 'POST',
     	));
     	
     	return $form;
@@ -547,7 +598,7 @@ class SiteManagementController extends Controller
     	$bookingService = $this->container->get( 'booking.services' );
     	$form = $this->createForm(new ServicesType($bookingService), $entity, array(
     			'action' => $this->generateUrl('trip_site_management_add_services'),
-    			'method' => 'GET',
+    			'method' => 'POST',
     	));
     	
     	return $form;
@@ -611,6 +662,58 @@ class SiteManagementController extends Controller
     	$form->handleRequest($request);
     	if ($form->isValid()) {
     		$em->persist($entity);
+    		$em->flush();
+    		return $this->redirect($this->generateUrl('trip_site_management_add_vehicle'));
+    	}
+         $vehicles = $em->getRepository('TripBookingEngineBundle:Vehicle')->findAll();
+    	return $this->render('TripSiteManagementBundle:Default:vehicles.html.twig',array(
+    			'entity' => $entity,
+                'vehicles' => $vehicles,
+    			'form'   => $form->createView(),
+    	));
+    }
+	
+	/**
+     *
+     */
+    public function updatePriceAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+    	$entity = new Services();
+    	$form   = $this->createUpdatePriceForm($entity);
+    	$form->handleRequest($request);
+    	if ($form->isValid()) {
+    		$services = $this->getServices($entity->getVehicleId());
+			return $this->render('TripSiteManagementBundle:Default:updatePrice.html.twig',array(
+					'services' => $services,
+					'form'   => $form->createView(),
+			));
+    	}
+    	return $this->render('TripSiteManagementBundle:Default:updatePrice.html.twig',array(
+                'services' => array(),
+    			'form'   => $form->createView(),
+    	));
+    }
+	/**
+	*
+	*/
+	public function getServices($vid){
+            $dql3 = "SELECT s.price,s.returnPrice, c1.name lFrom,c2.name to FROM TripBookingEngineBundle:Services s,TripSiteManagementBundle:city c1,TripSiteManagementBundle:city c2 WHERE s.leavingFrom=c1.id and s.goingTo=c2.id and s.vehicleId=$vid";
+            $em = $this->getDoctrine()->getManager();
+            $query = $em->createQuery($dql3);					
+            $result = $query->getResult();
+         return $result;        
+     }
+	 /**
+     *
+     */
+    public function editVehicleAction(Request $request,$id){
+        $em = $this->getDoctrine()->getManager();
+    	//$entity = new Vehicle();
+		$entity = $em->getRepository('TripBookingEngineBundle:Vehicle')->find($id);
+    	$form   = $this->createVehicleEditForm($entity,$id);
+    	$form->handleRequest($request);
+    	if ($form->isValid()) {
+    		$em->merge($entity);
     		$em->flush();
     		return $this->redirect($this->generateUrl('trip_site_management_add_vehicle'));
     	}
