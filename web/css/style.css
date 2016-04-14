@@ -679,3 +679,11 @@ h1{font-size:28px;}
 .bookform .form-group,
 .bookform .make-margin{margin:10px 0 !important;}
 }
+/*two day package*/
+.childtwo{
+    padding-left: 22%;
+}
+.package .package-desc1{height:262px;margin-top:10px;}
+.package .package-desc1 .border-center{border-right:1px solid #CCC;}
+.package .package-desc1 .container{display:table;height:208px;}
+.test1{text-align:center;padding-right:1px solid #000000;}

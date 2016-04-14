@@ -27,6 +27,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Collections\ArrayCollection;
 
+
 class SiteManagementController extends Controller
 {
     
@@ -68,7 +69,7 @@ class SiteManagementController extends Controller
     public function packagesAction(Request $request){
         $em = $this->getDoctrine()->getManager();
         $packages = $em->getRepository('TripSiteManagementBundle:Package')->findAll();
-         $locations = $em->getRepository('TripSiteManagementBundle:city')->findAll();
+        $locations = $em->getRepository('TripSiteManagementBundle:city')->findAll();
         $locations = $this->getLocationsByIndex($locations);
         $session = $request->getSession();
         $session->set('resultSet',$packages);
@@ -452,6 +453,14 @@ class SiteManagementController extends Controller
         $temp = array();
          foreach($locations as $location){
              $temp[$location->getId()]=$location;
+             //$temp[4]='kishan';
+             // $temp[2]='kishan';
+               //$temp[1]='kishan';
+                //$temp[4]='kishan';
+                
+                
+                //$name = $temp[$id];
+             
          }
         return $temp;
     }

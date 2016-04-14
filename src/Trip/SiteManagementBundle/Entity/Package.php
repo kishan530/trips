@@ -33,7 +33,18 @@ class Package
      *     message="Please enter a valid Name"
      * )
      */
-    private $name;
+     private $name;
+     /**
+     * @var string
+     * @ORM\Column(name="package_type", type="string", length=50)
+     * @Assert\Length(max = 100, maxMessage="Your Type cannot contain more then 50")
+     * @Assert\Regex(
+     *     pattern="/^[a-zA-Z&]+([s ][A-Za-z&]+)*$/",
+     *     match=true,
+     *     message="Please enter a valid Type"
+     * )
+     */
+     private $type;
     /**
      * @var string
      * @ORM\Column(name="code", type="string", length=50)
@@ -54,8 +65,12 @@ class Package
      */   
     private $endPoint;
     /**
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\EndPoint2", mappedBy="booking", cascade={"persist"})
+     */ 
+    private $endPoint2;
+    /**
      * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\PackagePrice", mappedBy="booking", cascade={"persist"})
-     */     
+     */
     private $price;
         
     /**
@@ -103,6 +118,23 @@ class Package
 	 */
 	public function setName($name) {
 		$this->name = $name;
+		return $this;
+	}
+        /**
+	 *
+	 * @return the string
+	 */
+	public function getType() {
+		return $this->type;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$type
+	 */
+	public function setType($type) {
+		$this->type = $type;
 		return $this;
 	}
     /**
@@ -196,6 +228,32 @@ class Package
 	 */
 	public function addEndPoint($endPoint) {
 		$this->endPoint->add($endPoint);
+		return $this;
+	} 
+        /**
+	 *
+	 * @return the integer
+	 */
+	public function getEndPoint2() {
+		return $this->endPoint2;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$id
+	 */
+	public function setEndPoint2($endPoint2) {
+		$this->endPoint = $endPoint2;
+		return $this;
+	}
+    /**
+	 *
+	 * @param
+	 *        	$id
+	 */
+	public function addEndPoint2($endPoint2) {
+		$this->endPoint->add($endPoint2);
 		return $this;
 	} 
     
