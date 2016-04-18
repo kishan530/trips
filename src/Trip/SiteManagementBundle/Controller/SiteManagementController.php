@@ -702,11 +702,26 @@ class SiteManagementController extends Controller
     			'form'   => $form->createView(),
     	));
     }
+		/**
+     *
+     */
+    public function updateServicePriceAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+    	$id = $request->get('id');
+		$price = $request->get('price');
+		$returnPrice = $request->get('returnPrice');
+		$service = $em->getRepository('TripBookingEngineBundle:Services')->find($id);
+		$service->setPrice($price);
+		$service->setReturnPrice($returnPrice);
+    	$em->merge($service);			
+		$em->flush();
+		return new Response ("done");
+    }
 	/**
 	*
 	*/
 	public function getServices($vid){
-            $dql3 = "SELECT s.price,s.returnPrice, c1.name lFrom,c2.name to FROM TripBookingEngineBundle:Services s,TripSiteManagementBundle:city c1,TripSiteManagementBundle:city c2 WHERE s.leavingFrom=c1.id and s.goingTo=c2.id and s.vehicleId=$vid";
+            $dql3 = "SELECT s.id,s.price,s.returnPrice, c1.name lFrom,c2.name to FROM TripBookingEngineBundle:Services s,TripSiteManagementBundle:city c1,TripSiteManagementBundle:city c2 WHERE s.leavingFrom=c1.id and s.goingTo=c2.id and s.vehicleId=$vid";
             $em = $this->getDoctrine()->getManager();
             $query = $em->createQuery($dql3);					
             $result = $query->getResult();

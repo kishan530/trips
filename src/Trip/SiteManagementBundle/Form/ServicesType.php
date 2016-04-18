@@ -61,11 +61,6 @@ class ServicesType extends AbstractType
             		'multiple' => false,
             		'choices' => $this->getLocations(),
             		'required'    => true,
-            		'empty_value'   => 'Location',
-                    'attr'   =>  array(
-                                        'class'=>'selectpicker',
-                                        'data-style'=>'btn-white',
-				            		),
             ))
          ->add('goingTo', 'choice', array(
             		'expanded' => false,
@@ -73,10 +68,6 @@ class ServicesType extends AbstractType
             		'choices' => $this->getLocations(),
             		'required'    => true,
             		'empty_value'   => 'Location',
-                    'attr'   =>  array(
-                                        'class'=>'selectpicker',
-                                        'data-style'=>'btn-white',
-				            		),
             ))
             ->add('vehicle_id', 'choice', array(
             		'expanded' => false,
@@ -84,10 +75,6 @@ class ServicesType extends AbstractType
             		'choices' => $this->getVehicles(),
             		'required'    => true,
             		'empty_value'   => 'vehicle',
-                    'attr'   =>  array(
-                                        'class'=>'selectpicker',
-                                        'data-style'=>'btn-white',
-				            		),
             ))
         ->add('price')
          ->add('returnPrice')

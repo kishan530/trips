@@ -1,12 +1,26 @@
 {% extends 'page.html.twig' %}
 {% block javascripts %}
 <script>
-$("select").change(function() {
-			$("#search").submit();						
-		});
-		 $("input").blur(function() {
-			$("#search").submit();						
-		});
+$(".update").click(function(e) {
+			e.preventDefault();
+			var tr = $(this).parent().parent();
+			var id = $(tr).find('td:eq(0)').attr("id");
+			var price = $(tr).find('td:eq(2)').text().trim();
+			var returnPrice = $(tr).find('td:eq(3)').text().trim();	
+
+			$.ajax({
+					url: "{{ path('trip_site_management_booking_update_service_price') }}",
+					type: "POST",
+					data: { "id" : id,"price" : price,"returnPrice" : returnPrice },
+							success: function(data) {
+									alert(data);														
+						},
+					error: function(XMLHttpRequest, textStatus, errorThrown)
+						{
+							 alert('Error: ' +  errorThrown);
+							}
+				});	
+	});
 </script>
 {% endblock %}
 {% block body %}
@@ -30,21 +44,25 @@ $("select").change(function() {
 						<th>To</th>
 						<th>Price</th>
 						<th>Return Price</th>
+						<th>/</th>
 					</tr>
                      {% for service in services %}
                         <tr>
-                            <td>
+                            <td id="{{ service.id }}">
                                 {{ service.lFrom }}
                             </td>
 							 <td>
                                 {{ service.to }}
                             </td>
-							<td>
+							<td contenteditable="true">
                                 {{ service.price }}
                             </td>
-							 <td>
+							 <td contenteditable="true">
                                  {{ service.returnPrice }}
                             </td>
+							<td>
+								<a href="#" class="update">Update</a>
+							</td>
 							
                         </tr>
                     {% endfor %}
