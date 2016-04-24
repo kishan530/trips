@@ -6,16 +6,23 @@
     $("#result").on('click', '.jobStatus', function (e) {
 	 e.preventDefault(); //STOP default action
 	 var id = $(this).attr('href');
-	 /*if (!confirm("The Student "+name+" details will be assigned, please confirm")) {
-	            exit();
-	        }*/
   var status = $(this).attr('value');
+  var link = $(this);
 	   $.ajax({
 	       url: "{{ path('trip_site_management_change_status') }}",
 	       type: "GET",
 	       data: { 'id': id,'status':status },
-	       success: function(data) {		    	       	
-	    	 //document.getElementById("drive_roadtaxbundle_roadtax_search_submit").click();
+	       success: function(data) {
+			if(data=='true'){
+			var newStatus = 'Open';
+			if(status=='Open')
+			 newStatus = 'Close';
+			link.attr('value',newStatus);
+			link.html(newStatus);
+			alert('Done');
+			}else{
+			alert('Error');
+			}
 	       },
 	       error: function(XMLHttpRequest, textStatus, errorThrown)
 	       {
@@ -90,7 +97,9 @@
                     
                     <div class="">
                     <table id="result" class="table table-bordered col-lg-12 col-sm-12">
-					<a href="{{ path('trip_site_management_export_bookings') }}">Export Bookings</a>
+					{% if bookings|length>0 %}
+						<a href="{{ path('trip_site_management_export_bookings') }}">Export Bookings</a>
+					{% endif %}
 	               {% if bookings|length>0 %}	
                           <tr class="blue">
                                 <th>Booking Id #</th>
@@ -134,9 +143,9 @@
                             <td>{{ booking.amountPaid }}</td>
                             <td>{{ booking.paymentId }}</td>
                             <td>{{ booking.status }}</td>
-                            <td><a href="{{ booking.id }}" class="jobStatus" value="{% if booking.status=='Open' %} Close {% else %} Open {% endif %}">
+                            <td><a href="{{ booking.id }}" class="jobStatus" value="{% if booking.jobStatus=='Open' %}Close{% else %}Open{% endif %}">
                                 {% if booking.jobStatus=='Open' %} Close {% else %} Open {% endif %}
-                                </a></td>
+                                </a> </td>
                         
                         </tr>
                         <tr class="wrap-text">
