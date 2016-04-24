@@ -24,13 +24,42 @@ $("select").change(function() {
             </div>
             <div class="row">
                 <div id="fullwidth" class="col-sm-12">
+					<table class="table table-bordered col-lg-12 col-sm-12">
+					<tr>
+						<th>Model</th>
+						<th>Capcity</th>
+						<th>Mileage</th>
+						<th>Multi City Price</th>
+						<th>Daily Rent</th>
+						<th>Extra Day Price</th>
+						<th>/</th>
+					</tr>
                      {% for vehicle in vehicles %}
-                        <div class="row">
-                            <div class="col-lg-2">
+                        <tr>
+                            <td>
                                 {{ vehicle.model }}
-                            </div>
-                        </div>
+                            </td>
+							 <td>
+                                {{ vehicle.capcity }}
+                            </td>
+							 <td>
+                                {{ vehicle.mileage }}
+                            </td>
+							 <td>
+                                {{ vehicle.price }}
+                            </td>
+							 <td>
+                                {{ vehicle.dailyRent }}
+                            </td>
+							 <td>
+                                {{ vehicle.extraPrice }}
+                            </td>
+							<td>
+								<a href="{{ path('trip_site_management_edit_vehicle',{ 'id': vehicle.id }) }}"><i class="fa fa-pencil-square-o"></i></a>
+							</td>
+                        </tr>
                     {% endfor %}
+					</table>
                 </div>
             </div>
         </div>

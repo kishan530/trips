@@ -1,0 +1,66 @@
+ <table id="result" class="table table-bordered col-lg-12 col-sm-12">
+					<a href="{{ path('trip_site_management_export_bookings') }}">Export Bookings</a>
+	               {% if bookings|length>0 %}	
+                          <tr class="blue">
+                                <th>Booking Id #</th>
+                                <th>Name</th>
+                                <th>Mobile</th>
+                               <th>Email</th> 
+                                {#} <th>Address</th>
+                                <th>Prefer Time</th>{#}
+                                <th>No of Days</th>
+                                <th>Trip Type</th>
+                                <th>Booked On </th>
+                                <th>Adult </th>
+                                <th>Total Price</th>
+                                <th>Discount</th>
+                                <th>Final Price</th>
+                                <th> Amount Paid </th>
+                                <th> Payment Id </th>
+                                <th> Status </th>
+							</tr>	
+					{% endif %}			
+						
+                     {% for booking in bookings if bookings|length>0 %}
+                       {% if booking.customerId %}
+                        {% set service = booking.vehicleBooking.first %}
+                        {% set customer = customers[booking.customerId] %}
+                        <tr class="wrap-text">
+                            <td>{{ booking.bookingId }}</td> 
+                            <td>{{ customer.name }}</td> 
+                            <td>{{ customer.mobile }}</td> 
+                            <td>{{ customer.email }}</td> 
+                           {# <td>{{ customer.Address }}</td> #}
+                            
+                            <td>{{ booking.numDays }}</td>
+                            <td>{{ service.tripType }}</td>
+                            <td>{{ booking.bookedOn|date('d/m/Y') }}</td>
+                            <td>{{ booking.numAdult }}</td>
+                            <td>{{ booking.totalPrice }}</td>
+                            <td>{{ booking.discount }}</td>
+                            <td>{{ booking.finalPrice }}</td>
+                            <td>{{ booking.amountPaid }}</td>
+                            <td>{{ booking.paymentId }}</td>
+                            <td>{{ booking.status }}</td>
+                        
+                        </tr>
+                        <tr class="wrap-text">
+                            <td colspan="15" class="oddClass">
+                            <table class="table table-bordered col-lg-12 col-sm-12 oddClass">
+                                 {% for service in booking.vehicleBooking if booking.vehicleBooking|length>0 %}
+                                    <tr class="oddClass">
+                                        <td>{{ service.model }}</td>
+                                        <td>{% if service.leavingFrom %} {{ locations[service.leavingFrom].name }} {% endif %}</td>
+                                        <td>{{ locations[service.goingTo].name }}</td>
+                                        <td> {{ service.date|date('d/m/Y') }} </td>
+                                       
+                                <td>{% if service.tripType=='roundtrip' %} {{ service.returnDate|date('F jS Y') }} {% else %} - {% endif %}</td>
+                                         <td>{{ booking.preferTime }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                            </td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                        </table>

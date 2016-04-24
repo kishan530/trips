@@ -130,8 +130,6 @@ class BookingController extends Controller
            $session->set('searchHotel',null);
             $date = $searchFilter->getDate(); 
             $returnDate = $searchFilter->getReturnDate();
-            //echo var_dump($searchFilter);
-		//exit();
              $tripType = $request->get('tripType');
             if($tripType=="multicity"){
                  $numdays = $searchFilter->getNumdays(); 
@@ -664,10 +662,11 @@ class BookingController extends Controller
             $finalPrice = $booking->getFinalPrice();
             $amountToPay = $finalPrice; 
             if($paymentMode=='advance'){
-                $amountToPay = round($finalPrice*(10/100));
+                $amountToPay = round($finalPrice*(50/100));
                 $tax = round($amountToPay*(3/100));
                 $amountToPay = $amountToPay+$tax; 
             }else{
+				$amountToPay = round($finalPrice*(10/100));
                 $tax = round($finalPrice*(3/100));
                 $amountToPay = $finalPrice+$tax;              
             }
