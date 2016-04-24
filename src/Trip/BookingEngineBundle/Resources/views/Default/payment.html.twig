@@ -43,6 +43,7 @@
                                                         {% if filter.tripType=='roundtrip' %}
                                                             <li><span>Return:</span> {{ filter.returnDate|date('F jS Y') }}</li>
                                                         {% endif %}
+														<li><span>Pickup Time:</span>{{ filter.preferTime }}</li>
                                                     {% endif %}
                                                     <li><span>Name:</span> {{ customer.name }}</li>
                                                      <li><span>Mobile:</span> {{ customer.mobile }}</li>

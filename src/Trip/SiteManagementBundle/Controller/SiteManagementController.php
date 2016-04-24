@@ -127,9 +127,12 @@ class SiteManagementController extends Controller
 	 */
     public function changeStatusAction(Request $request){
         $id = $request->get('id');
-        $status = $request->get('status');
+        $status = trim($request->get('status'));
         $em = $this->getDoctrine()->getManager();
+		$booking = $em->getRepository('TripBookingEngineBundle:Booking')->find($id);
         $booking->setJobStatus($status);
+		$em->merge($booking);
+    	$em->flush();
         return new Response ( "true" );
     }
     
@@ -211,6 +214,14 @@ class SiteManagementController extends Controller
          $customers = $em->getRepository('TripBookingEngineBundle:Customer')->findAll();
         $locations = $this->getLocationsByIndex($locations);
         $customers = $this->getCustomersByIndex($customers);
+		$data = $this->render('TripSiteManagementBundle:Default:exportBookings.html.twig',array(
+    			'bookings' => $bookings,
+            'locations' => $locations,
+            'customers' => $customers,
+    	));
+		$request = $this->container->get('request');
+		$session = $request->getSession();
+        $session->set('exportBookings',$data);
 
 			return $this->render ( 'TripSiteManagementBundle:Default:bookings.html.twig', array (
 
@@ -249,15 +260,7 @@ class SiteManagementController extends Controller
          $locations = $em->getRepository('TripSiteManagementBundle:city')->findAll();
          $customers = $em->getRepository('TripBookingEngineBundle:Customer')->findAll();
         $locations = $this->getLocationsByIndex($locations);
-        $customers = $this->getCustomersByIndex($customers);
-		$data = $this->render('TripSiteManagementBundle:Default:exportBookings.html.twig',array(
-    			'bookings' => $bookings,
-            'locations' => $locations,
-            'customers' => $customers,
-    	));
-		$request = $this->container->get('request');
-		$session = $request->getSession();
-        $session->set('exportBookings',$data);
+        $customers = $this->getCustomersByIndex($customers);		
     	return $this->render('TripSiteManagementBundle:Default:bookings.html.twig',array(
     			'bookings' => $bookings,
             'locations' => $locations,
@@ -273,6 +276,8 @@ class SiteManagementController extends Controller
         $view = $session->get('exportBookings');
 		header ( 'Content-Type: application/force-download' );
 		header ( 'Content-disposition: attachment; filename=bookings.xls' );
+		//echo var_dump($view);
+		//exit();
 		return $view;
 	}
     /**

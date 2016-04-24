@@ -131,6 +131,7 @@ class BookingController extends Controller
             $date = $searchFilter->getDate(); 
             $returnDate = $searchFilter->getReturnDate();
              $tripType = $request->get('tripType');
+			 $noData = 0;
             if($tripType=="multicity"){
                  $numdays = $searchFilter->getNumdays(); 
                 $multiple = $searchFilter->getMultiple(); 
@@ -173,9 +174,11 @@ class BookingController extends Controller
                     $interval = $returnDate->diff($date);
                     $noDays = $interval->d;
                 }
-                $resultSet = $this->getResult($goingFrom,$goingTo,$noDays);
-                if(count($resultSet)==0)
-                    $resultSet = $this->getResult($goingTo,$goingFrom,$noDays);
+                $resultSet = $this->getResult($goingFrom,$goingTo,$noDays,$noData);
+                if(count($resultSet)==0){
+					$noData = 1;
+                    $resultSet = $this->getResult($goingTo,$goingFrom,$noDays,$noData);					
+					}
             }
             $searchFilter->setTripType($tripType);
             $searchFilter->setNumDays($noDays);
@@ -190,7 +193,7 @@ class BookingController extends Controller
                 'form'   => $form->createView(),
                 'contactForm'   => $contactForm->createView(),
                 'result'=>$resultSet,
-                'tripType'=>$tripType
+                'tripType'=>$tripType,
             ));
             
         }
@@ -206,7 +209,7 @@ class BookingController extends Controller
             $result = $query->getResult();
          return $result;        
      }
-     public function getResult($goingFrom,$goingTo,$noDays){
+     public function getResult($goingFrom,$goingTo,$noDays,$noData){
          if($noDays>0){
             // $noDays = $noDays-1;
              $price = "(CASE WHEN c2.extraPrice = 1 THEN s.returnPrice+v.extraPrice*$noDays ELSE s.returnPrice END) returnPrice";
@@ -214,7 +217,11 @@ class BookingController extends Controller
          }else{
              $price = "s.returnPrice";
          }
-            $dql3 = "SELECT v.id,v.imgPath, v.model,v.capcity,v.price vPrice,v.extraPrice,v.mileage, s.price,$price, s.multiPrice, c1.name lFrom,c2.name to,c2.extraPrice needExtraPrice FROM TripBookingEngineBundle:Vehicle v, TripBookingEngineBundle:Services s,TripSiteManagementBundle:city c1,TripSiteManagementBundle:city c2 WHERE s.leavingFrom=c1.id and s.goingTo=c2.id and s.vehicleId=v.id and v.active=1 and s.leavingFrom=$goingFrom and s.goingTo=$goingTo";
+		 $fromAndTo = "c1.name lFrom,c2.name to,c2.extraPrice needExtraPrice";
+		 if($noData==1){
+			$fromAndTo = "c2.name lFrom,c1.name to,c1.extraPrice needExtraPrice";
+		 }
+            $dql3 = "SELECT v.id,v.imgPath, v.model,v.capcity,v.price vPrice,v.extraPrice,v.mileage, s.price,$price, s.multiPrice, $fromAndTo FROM TripBookingEngineBundle:Vehicle v, TripBookingEngineBundle:Services s,TripSiteManagementBundle:city c1,TripSiteManagementBundle:city c2 WHERE s.leavingFrom=c1.id and s.goingTo=c2.id and s.vehicleId=v.id and v.active=1 and s.leavingFrom=$goingFrom and s.goingTo=$goingTo";
             $em = $this->getDoctrine()->getManager();
             $query = $em->createQuery($dql3);					
             $result = $query->getResult();
@@ -472,6 +479,7 @@ class BookingController extends Controller
             $booking->setTotalPrice($price);
             $booking->setFinalPrice($finalPrice);
             $booking->setStatus('pending');
+			$booking->setJobStatus('Open');
             $booking->setBookedOn(new \DateTime());
             $booking->setNumDays($searchFilter->getNumDays());
             $booking->setNumAdult($searchFilter->getNumAdult());
@@ -694,6 +702,7 @@ class BookingController extends Controller
             $mailService = $this->container->get( 'mail.services' );
             $mailService->mail($email,'Just Trip:Booking Confirmation',$mail);
              $mailService->mail('Payment@justtrip.in','Just Trip:Booking Confirmation',$adminMail);
+			 $mailService->mail('info@justtrip.in','Just Trip:Booking Confirmation',$adminMail);
         }else{
             $booking->setStatus('fail');
             $em->merge($booking);

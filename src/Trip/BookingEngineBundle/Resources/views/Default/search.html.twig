@@ -260,9 +260,9 @@ $("select").change(function() {
                             </li>
                         {% else %}
                             
-                        <li> {% if tripType==0 %} {{ vehicle.lFrom }} {% else %} {{ vehicle.to }} {% endif %}
+                        <li> {#}{% if noData==0 %} {{ vehicle.lFrom }} {% else %} {{ vehicle.to }} {% endif %} {#} {{ vehicle.lFrom }}
 						{% if tripType=='roundtrip' %} <i class="fa fa-long-arrow-left"></i>{% endif %}<i class="fa fa-long-arrow-right"></i></li>
-                          <li>  {% if tripType==0 %} {{ vehicle.to }}  {% else %} {{ vehicle.lFrom }} {% endif %} </li>
+                          <li>  {#} {% if noData==0 %} {{ vehicle.to }}  {% else %} {{ vehicle.lFrom }} {% endif %} {#} {{ vehicle.to }} </li>
                         {% endif %}
                       
                     </ul>
