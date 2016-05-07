@@ -74,33 +74,45 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                             <div class="clearfix"></div>   
                                             <div class="mini-desti-desc package-desc {% if loop.index is even %} oddClass {% endif %}">
 
-                                                  <div class="col-md-12 package-border">
-                                                    <div class="col-md-6 border-center">
-                                                        <span> Pick Up</span>
+                                                <div class="col-md-12 package-border"> 
+                                                    <div class="col-md-12 container">
+                                                         <!--<div class="helper">
+                                                           <ul class="list-unstyled">-->
+                                                               <span class="package-title"> Pick Up</span>
+<!--                                                             </ul>
+                                                        </div>-->
                                                      </div>
-                                                      <div class="col-md-6">
-                                                          <span> Places to Visit</span>
-                                                     </div>
-                                                    </div>
+                                                      <div class="col-md-12 container ">
 
-                                               <div class="col-md-6 container border-center">
-
-                                                   <div class="helper">
-                                                       <ul class="list-unstyled">
-                                                       {% for startPoint in package.startPoint %} 
-                                                            <li>{{ locations[startPoint.name].name }} {% if loop.last is same as(false) %} / {% endif %} </li>
-                                                       {% endfor %}
-                                                       </ul>
+                                                      <!-- <div class="helper">
+                                                           <ul class="list-unstyled">-->
+                                                           {% for startPoint in package.startPoint %} 
+                                                                {{ locations[startPoint.name].name }} {% if loop.last is same as(false) %} / {% endif %}
+                                                           {% endfor %}
+                                                          <!-- </ul>
+                                                        </div>-->
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6 container">
-                                                   <div class="helper">
-                                                       <ul class="package-Destination">
+                                                    
+                                                
+                                                <div class="col-md-12"> 
+  
+                                                <div class="col-md-12 container">
+                                                         <!--<div class="helper">
+                                                           <ul class="list-unstyled">-->
+                                                     <span class="package-title"> Places to Visit</span>
+                                                            <!-- </ul>
+                                                    </div>-->
+                                                     </div>
+                                                <div class="col-md-12 container">
+                                                   <!--<div class="helper">
+                                                       <ul class="package-Destination">-->
                                                        {% for endPoint in package.endPoint %} 
-                                                            <li>{{ locations[endPoint.name].name }}</li>
+                                                            {{ locations[endPoint.name].name }},
                                                        {% endfor %}
-                                                       </ul> 
-                                                    </div>
+                                                       <!--</ul> 
+                                                    </div>-->
+                                                </div>
                                                 </div>
                                             </div>
                                             <div class="clearfix"></div> 
@@ -122,7 +134,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                             <div class="col-md-12 text-center package-info">                                   
 
                                                 <div class="row">
-                                                    <div class="col-md-6 text-right">
+                                                    <div class="col-md-6 package-price-label">
                                                         <h6>Starting From:</h6>
                                                     </div>
                                                     <div class="col-md-6 price">
@@ -190,7 +202,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                 <div class="row">
                                  {% for key,package in packages %} 
                                      {% if package.type == 'two' %}
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                 <div class="mini-desti package row">
 
                                     <div class="col-md-12">
@@ -202,53 +214,47 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                                 <h6>{{ package.code }}</h6>
                                             </div> 
                                             <div class="clearfix"></div>   
-                                            <div class="mini-desti-desc package-desc1 {% if loop.index is even %} oddClass {% endif %}">
+                                            <div class="mini-desti-desc package-desc {% if loop.index is even %} oddClass {% endif %}">
 
                                                   <div class="col-md-12 package-border ">                                                      
-                                                    <div class="col-md-4 test1">
-                                                        <span> Pick Up</span>
+                                                    <div class="col-md-12 container">
+                                                        <span class="package-title"> Pick Up</span>
                                                      </div>
-                                                      <div class="col-md-4 test1">
-                                                          <span> Places to Visit FirstDay</span>
-                                                     </div>
-                                                       <div class="col-md-4 test1">
-                                                          <span> Places to Visit SecondDay</span>
-                                                     </div>
-                                                    </div>
+                                                      <div class="col-md-12 container">
 
-                                               <div class="col-md-4 container border-center">
+                                                   
+                                                    {% for startPoint in package.startPoint %} 
+                                                        {{ locations[startPoint.name].name }} {% if loop.last is same as(false) %} / {% endif %}
+                                                    {% endfor %}
+                                                      
+                                                    </div>
+                                                     
+                                                    </div>                                              
 
-                                                   <div class="helper">
-                                                       <ul class="list-unstyled">
-                                                       {% for startPoint in package.startPoint %} 
-                                                            <li>{{ locations[startPoint.name].name }} {% if loop.last is same as(false) %} / {% endif %} </li>
-                                                       {% endfor %}
-                                                       </ul>
-                                                    </div>
+                                               <div class="col-md-12 package-border ">
+                                                <div class="col-md-12 container">
+                                                          <span class="package-title"> Places to Visit FirstDay</span>
                                                 </div>
-                                                <div class="col-md-4 container border-center">
-                                                   <div class="helper">
-                                                       <ul class="package-Destination">
-                                                       {% for endPoint in package.endPoint %} 
-                                                            <li>{{ locations[endPoint.name].name }}</li>
-                                                       {% endfor %}
-                                                       </ul> 
-                                                    </div>
+                                                <div class="col-md-12 container">
+                                                {% for endPoint in package.endPoint %} 
+                                                    {{ locations[endPoint.name].name }} {% if loop.last is same as(false) %} / {% endif %}
+                                                {% endfor %}
                                                 </div>
-                                                <div class="col-md-4 container">
-                                                   <div class="helper">
-                                                       <ul class="package-Destination">
+                                                </div>
+                                                <div class="col-md-12 container">
+                                                          <span class="package-title"> Places to Visit SecondDay</span>
+                                                 </div>
+                                               <div class="col-md-12 container">
                                                        {% for endPoint2 in package.endPoint2 %} 
-                                                            <li>{{ locations[endPoint2.name].name }}</li>
+                                                            {{ locations[endPoint2.name].name }} {% if loop.last is same as(false) %},{% endif %}
                                                        {% endfor %}
-                                                       </ul> 
-                                                    </div>
+                                                      
                                                 </div>
                                             </div>
                                             <div class="clearfix"></div> 
 
 
-                                                <div class="col-md-12 package-border childtwo">
+                                                <div class="col-md-12 package-border">
                                                 {% for index,price in package.price %} 
                                                     <div class="col-md-2 package-vehicle">
                                                         <span class="text-center">{{ price.name }}</span> 
@@ -264,7 +270,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                             <div class="col-md-12 text-center package-info">                                   
 
                                                 <div class="row">
-                                                    <div class="col-md-6 text-right">
+                                                    <div class="col-md-6 package-price-label">
                                                         <h6>Starting From:</h6>
                                                     </div>
                                                     <div class="col-md-6 price">
