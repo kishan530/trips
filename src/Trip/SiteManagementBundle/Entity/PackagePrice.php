@@ -51,7 +51,7 @@ class PackagePrice
      * @ORM\ManyToOne(targetEntity="Trip\SiteManagementBundle\Entity\Package", inversedBy="price")
      * @ORM\JoinColumn(name="package_id", referencedColumnName="id")
      */
-    private $booking;
+    private $package;
     
     
 	
@@ -154,21 +154,14 @@ class PackagePrice
         return $this->price;
     }
     
-    /**
-	 * @return the integer
-	 */
-	public function getBooking() {
-		return $this->booking;
-	}
-	
-	/**
-	 * @param
-	 *        	$booking
-	 */
-	public function setBooking($booking) {
-		$this->booking = $booking;
-		return $this;
-	}
-	
+    function getPackage() {
+        return $this->package;
+    }
+
+    function setPackage($package) {
+        $this->package = $package;
+    }
+
+
     
 }

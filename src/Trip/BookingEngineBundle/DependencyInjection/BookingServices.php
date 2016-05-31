@@ -33,11 +33,11 @@ class BookingServices
         $this->em = $entityManager;
 		$this->logger = $this->container->get('logger');
     }
-    private function getLocations(){
+    public function getLocations(){
         $locations = $this->em->getRepository('TripSiteManagementBundle:City')->findAll();
         return $locations;
     }
-    private function getVehicles(){
+    public function getVehicles(){
         $vehicles = $this->em->getRepository('TripBookingEngineBundle:Vehicle')->findAll();
         return $vehicles;
     }
@@ -67,6 +67,10 @@ class BookingServices
 		}
 		return $catalogue;			
 	}
+        public function getPackageList(){
+        $packagelist = $this->em->getRepository('TripSiteManagementBundle:Package')->findAll();
+        return $packagelist;
+    }
 	
 	
 	

@@ -57,7 +57,7 @@ class Package
      */
     private $active;
     /**
-     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\StartPoint", mappedBy="booking", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\StartPoint", mappedBy="booking", cascade={"all"})
      */
     private $startPoint;
      /**
@@ -69,7 +69,7 @@ class Package
      */ 
     private $endPoint2;
     /**
-     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\PackagePrice", mappedBy="booking", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\PackagePrice", mappedBy="package", cascade={"persist"})
      */
     private $price;
         

@@ -14,6 +14,16 @@ trip_site_management_add_locations:
 trip_site_management_add_hotel:
     path:     /add/hotel
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:addHotel }
+trip_site_management_add_package_price:
+    path:     /add/package-price
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:addPackagePrice }
+trip_site_management_add_package:
+    path:     /add/package
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:addPackage }
+trip_site_management_add_packagelocations:
+    path:     /add/packagelocations
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:addPackageLocations }    
+    
 trip_site_management_homepage_packages:
     path:     /packages
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:packages }

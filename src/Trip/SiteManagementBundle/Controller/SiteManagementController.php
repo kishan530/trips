@@ -4,8 +4,15 @@ namespace Trip\SiteManagementBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Trip\SiteManagementBundle\Entity\City;
+use Trip\SiteManagementBundle\Entity\Package;
+use Trip\SiteManagementBundle\Entity\StartPoint;
+use Trip\SiteManagementBundle\Entity\EndPoint;
+use Trip\SiteManagementBundle\Entity\EndPoint2;
+use Trip\SiteManagementBundle\Entity\PackagePrice;
+use Trip\SiteManagementBundle\Dto\PackageLocations;
+use Trip\SiteManagementBundle\Form\PackageLocationsType;
 use Trip\BookingEngineBundle\Form\SearchType;
-use Trip\BookingEngineBundle\Form\PackageType;
+use Trip\SiteManagementBundle\Form\PackageType;
 use Trip\SiteManagementBundle\Form\LocationType;
 use Trip\SiteManagementBundle\Form\ServicesType;
 use Trip\SiteManagementBundle\Form\VehicleType;
@@ -23,6 +30,7 @@ use Trip\SiteManagementBundle\Entity\Cancel;
 use Trip\SiteManagementBundle\Form\CancelType;
 use Trip\SiteManagementBundle\DTO\BookingSearch;
 use Trip\SiteManagementBundle\Form\BookingSearchType;
+use Trip\SiteManagementBundle\Form\PackagePriceType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -34,7 +42,8 @@ class SiteManagementController extends Controller
     /**
      *
      */
-    public function aboutUsAction(){
+    public function aboutUsAction()
+            {
         return $this->render('TripSiteManagementBundle:Static:aboutUs.html.twig');
     }
 
@@ -645,11 +654,51 @@ class SiteManagementController extends Controller
     	
     	return $form;
     }
-    
+    private function createAddPackageForm(Package $package){
+        $bookingService = $this->container->get( 'booking.services' );
+        $form = $this->createForm(new PackageType(), $package, array(
+            'action' => $this->generateUrl('trip_site_management_add_package'),
+            'method' => 'POST',
+        ));
+       $form->add('submit', 'submit', array('label' => 'submit'));
+
+        return $form;
+    }
+   /* private function createAddPackageForm(Package $package){
+        $form = $this->createForm(new PackageType(), $package, array(
+            'action' => $this->generateUrl('trip_site_management_add_package'),
+            'method' => 'POST',
+        ));
+       $form->add('submit', 'submit', array('label' => 'submit'));
+
+        return $form;
+    }*/
+    private function createAddPackageLocationForm(PackageLocations $packagelocations){
+        $bookingService = $this->container->get( 'booking.services' );
+        $form = $this->createForm(new PackageLocationsType($bookingService), $packagelocations, array(
+            'action' => $this->generateUrl('trip_site_management_add_packagelocations'),
+            'method' => 'POST',
+        ));
+       $form->add('submit', 'submit', array('label' => 'submit'));
+
+        return $form;
+        
+    }
+     private function createAddPackagePriceForm(PackagePrice $packageprice){
+         $bookingService = $this->container->get( 'booking.services' );
+        $form = $this->createForm(new PackagePriceType($bookingService), $packageprice, array(
+            'action' => $this->generateUrl('trip_site_management_add_package_price'),
+            'method' => 'POST',
+        ));
+       $form->add('submit', 'submit', array('label' => 'submit'));
+
+        return $form;
+        
+    }
      /**
      *
      */
-    public function addLocationsAction(Request $request){
+     public function addLocationsAction(Request $request){
         $em = $this->getDoctrine()->getManager();
     	$entity = new City();
     	$form   = $this->createLocationForm($entity);
@@ -803,6 +852,87 @@ class SiteManagementController extends Controller
     			'hotel' => $hotel,
                 'hotels' => $hotels,
     			'form'   => $form->createView(),
+    	));
+    }
+    public function addPackageAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+    	$package = new Package();
+    	$form   = $this->createAddPackageForm($package);
+    	$form->handleRequest($request);
+        if ($form->isValid()) {
+             $em->persist($package);
+    		$em->flush();
+    		return $this->redirect($this->generateUrl('trip_site_management_add_package'));    
+        
+        }
+        
+        return $this->render('TripSiteManagementBundle:Default:addPackage.html.twig',array(
+    			'package' => $package,
+                		'form'   => $form->createView(),
+    	));
+    }
+    public function addPackageLocationsAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+    	$packagelocations = new PackageLocations();
+    	$form   = $this->createAddPackageLocationForm($packagelocations);
+    	$form->handleRequest($request);
+        if ($form->isValid()) {
+            $type=$packagelocations->getType();
+            $packageId= $packagelocations->getPackage();
+                $package =$em->getRepository('TripSiteManagementBundle:Package')->find($packageId);
+               //echo(var_dump($package));
+               //exit();
+            switch ($type) {
+                case 'PickUp':
+                     $startpoint = new StartPoint();
+                    //$package->getStartPoint($startpoint);
+                    break;
+                  case 'FirstDay':
+                     $startpoint = new EndPoint();
+                     // $package->setStartPoint($startpoint);
+                    break;
+                  case 'SecondDay':
+                     $startpoint = new EndPoint2();
+                     // $package->setStartPoint($startpoint);
+                    break;
+                
+            }
+            
+            $startpoint->setName($packagelocations->getLocation());
+                 $startpoint->setBooking($package);
+               $em->persist($startpoint);
+    		$em->flush(); 
+                return $this->redirect($this->generateUrl('trip_site_management_add_packagelocations')); 
+   
+        
+        }
+        
+        return $this->render('TripSiteManagementBundle:Default:addPackagelocations.html.twig',array(
+    			'packagelocations' => $packagelocations,
+                		'form'   => $form->createView(),
+    	));
+    }
+    public function addPackagePriceAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+    	$packageprice = new PackagePrice();
+    	$form   = $this->createAddPackagePriceForm($packageprice);
+    	$form->handleRequest($request);
+        if ($form->isValid()) {
+            $packageId= $packageprice->getPackage();
+            $package =$em->getRepository('TripSiteManagementBundle:Package')->find($packageId);
+            $VehicleId= $packageprice->getVehicleId();
+            $vehicle =$em->getRepository('TripBookingEngineBundle:Vehicle')->find($VehicleId);
+            $packageprice->setName($vehicle->getModel());
+            $packageprice->setPackage($package);
+             $em->persist($packageprice);
+    		$em->flush();
+    		return $this->redirect($this->generateUrl('trip_site_management_add_package_price'));  
+        
+        }
+        
+        return $this->render('TripSiteManagementBundle:Default:addPackagePrice.html.twig',array(
+    			'packageprice' => $packageprice,
+                		'form'   => $form->createView(),
     	));
     }
 }
