@@ -90,12 +90,12 @@
                                             </div>
                                              <div class="row">
                                                   <div class="col-md-12 col-sm-12 col-xs-12">
-                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <div class="input-group make-margin">
                                                  {{ form_widget(form.haveCoupon) }} {{ form_label(form.haveCoupon) }}
                                                 </div>
                                             </div>
-                                              <div class="col-md-6 col-sm-6 col-xs-6">
+                                              <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <div class="input-group make-margin" id="couponCode">
                                                 {{ form_widget(form.couponCode,{'attr':{'placeholder':'Enter a Coupon code'}}) }}
                                                     <a class="input-group-addon" id="apply" href="#">Apply</a>
@@ -119,10 +119,10 @@
                                                 </div>
                                             </div>
                                              
-                                             <div class="col-md-8 col-sm-8 col-xs-8">
+                                             <div class="col-md-8 col-sm-8 col-xs-12">
                                                 <input type="checkbox" required="required" name="cb" class="remove_margin">  {% trans %} I agree to the JustTrip {% endtrans%} <a target="_blank" href="{{ path('trip_site_management_terms') }}">{% trans %} Terms of Service{% endtrans%}</a>
                                             </div>
-                                             <div class="col-md-4 col-sm-4 col-xs-4">
+                                             <div class="col-md-4 col-sm-4 col-xs-12">
                                                 <button type="submit" class="btn btn-primary btn-block btn-lg"> BOOK NOW</button>
                                             </div>
                                             
