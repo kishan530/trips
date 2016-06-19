@@ -23,6 +23,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class BookingController extends Controller
 {
 
+
     /**
      * 
      * @param Search $entity
