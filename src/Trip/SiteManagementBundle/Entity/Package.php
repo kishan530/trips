@@ -45,6 +45,7 @@ class Package
      * )
      */
      private $type;
+    
     /**
      * @var string
      * @ORM\Column(name="code", type="string", length=50)
@@ -308,5 +309,6 @@ class Package
 		return $this;
 	} 
 	
-    
+
+
 }
