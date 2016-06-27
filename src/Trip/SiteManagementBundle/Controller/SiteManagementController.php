@@ -78,11 +78,32 @@ class SiteManagementController extends Controller
     public function packagesAction(Request $request){
         $em = $this->getDoctrine()->getManager();
         $packages = $em->getRepository('TripSiteManagementBundle:Package')->findAll();
-        $locations = $em->getRepository('TripSiteManagementBundle:city')->findAll();
+        $locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
         $locations = $this->getLocationsByIndex($locations);
         $session = $request->getSession();
         $session->set('resultSet',$packages);
         return $this->render('TripSiteManagementBundle:Default:packages.html.twig',array(
+    			'packages' => $packages,
+                'locations' => $locations,
+    	));
+    }
+    /**
+	 * 
+	 */
+       public function specialPackagesAction(Request $request,$id,$url){
+            //$dql3 = "SELECT p FROM TripSiteManagementBundle:Package p,TripSiteManagementBundle:StartPoint sp, TripSiteManagementBundle:EndPoint ep,TripSiteManagementBundle:EndPoint2 ep2 where sp.name=c1.id and vb.goingTo=c2.id and b.id=vb.booking ORDER BY b.id DESC";
+          $dql3 = "SELECT p FROM TripSiteManagementBundle:StartPoint sp,TripSiteManagementBundle:EndPoint ep,TripSiteManagementBundle:Package p LEFT JOIN TripSiteManagementBundle:EndPoint2 ep2 WITH p.id=ep2.booking  where   p.id= sp.booking AND p.id=ep.booking  AND ((ep.name='$id' OR sp.name='$id') OR ep2.name='$id')";
+            $em = $this->getDoctrine()->getManager();
+            $query = $em->createQuery($dql3);					
+            $packages = $query->getResult();
+          
+       //$em = $this->getDoctrine()->getManager();
+        //$packages = $em->getRepository('TripSiteManagementBundle:Package')->findAll();
+        $locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
+        $locations = $this->getLocationsByIndex($locations);
+        $session = $request->getSession();
+        $session->set('resultSet',$packages);
+        return $this->render('TripSiteManagementBundle:Default:specialPackages.html.twig',array(
     			'packages' => $packages,
                 'locations' => $locations,
     	));
@@ -933,6 +954,17 @@ class SiteManagementController extends Controller
         return $this->render('TripSiteManagementBundle:Default:addPackagePrice.html.twig',array(
     			'packageprice' => $packageprice,
                 		'form'   => $form->createView(),
+    	));
+    }
+    public function multipackagesAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $packagetitle = $em->getRepository('TripSiteManagementBundle:PackageTitle')->findAll();
+        
+        $session = $request->getSession();
+        $session->set('resultSet',$packagetitle);
+        return $this->render('TripSiteManagementBundle:Default:multipackages.html.twig',array(
+    			'packagetitle' => $packagetitle,
+                
     	));
     }
 }

@@ -1,0 +1,65 @@
+{% extends 'page.html.twig' %}
+{% block stylesheets %}
+<link href="{{ asset('css/jquery.timepicker.css') }}" rel="stylesheet" media="screen">
+{% endblock %}
+{% block javascripts %}
+<script src="{{ asset('js/jquery.timepicker.min.js') }}"></script>
+<script>
+$('.preferTime').timepicker({ 'scrollDefault': 'now' });
+    
+         $('.adults').click(function(e){		
+			e.preventDefault(); //STOP default action 
+			 var id = $(this).attr('id');
+			 var value = parseInt($(this).attr('value'));
+             var numAdult = $(this).siblings("input[name=numAdult]");
+			 var adults =parseInt(numAdult.val());
+			 if (isNaN(adults)) { 
+				 adults= 0
+	            } 
+			 if(id=='decrement'){
+				 adults-=1;
+				 if(adults>=value) numAdult.val(adults); else exit();
+			  }else{
+				adults+=1;
+			    if(adults<=20)  numAdult.val(adults); else exit();
+				}	
+	    });
+    
+         $('.vehicle-icon').click(function(e){		
+			e.preventDefault(); //STOP default action 
+			 var id = $(this).attr('id');
+			 var price = $(this).attr('value');
+             var package = parseInt($(this).attr('title'));
+             $('.vehicle'+package).removeClass('active');
+             $(this).addClass('active');
+             $('#vehicleIndex'+package).val(id);
+             $('#price'+package).html(price);
+
+
+	       });
+</script>
+{% endblock %}
+{% block body %}
+
+<section class="section clearfix">
+        
+    <div class="container"  style="margin:0 auto;">
+        
+                        <div class="row col-lg-12">
+                            {% for package in packagetitle %} 
+                            <div class="col-lg-5 col-xs-12  bg-primary border-l" class="bgimg"style="margin:10px;background-image: url('{{ asset('images/justtrip-banner5.png') }}');">                                
+                                <h4 style="padding:40px;text-align:center;color:#FFF"><a style="color: #fff;" href="{{ path('trip_site_management_homepage_special_packages',{ 'id': package.locationId,'url':package.locationUrl }) }}">{{ package.title }}</a></h2>
+                                <div><h6 style="text-align:center;">Starts @{{ package.statingPrice }}</h6></div>
+                                <button type="button" class="btn aligncenter" style="background-color:#000"><a style="color: #fff;" href="{{ path('trip_site_management_homepage_special_packages',{ 'id': package.locationId,'url':package.locationUrl }) }}">GO</a></button>
+                            </div>
+                        
+                           {% endfor %}
+                    </div>
+           
+            
+        </div>
+   
+        
+        
+</section>
+{% endblock %}
