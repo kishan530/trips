@@ -91,8 +91,16 @@ class SiteManagementController extends Controller
 	 * 
 	 */
        public function specialPackagesAction(Request $request,$id,$url){
+           $from = $request->get('from');
+           $q1 = "((ep.name='$id' OR sp.name='$id') OR ep2.name='$id')";
+           if(!is_null($from)){
+               if($from=='1')
+                   $q1 = "sp.name='$id'";
+               else
+                   $q1 = "(ep.name='$id' OR  ep2.name='$id')";
+           }
             //$dql3 = "SELECT p FROM TripSiteManagementBundle:Package p,TripSiteManagementBundle:StartPoint sp, TripSiteManagementBundle:EndPoint ep,TripSiteManagementBundle:EndPoint2 ep2 where sp.name=c1.id and vb.goingTo=c2.id and b.id=vb.booking ORDER BY b.id DESC";
-          $dql3 = "SELECT p FROM TripSiteManagementBundle:StartPoint sp,TripSiteManagementBundle:EndPoint ep,TripSiteManagementBundle:Package p LEFT JOIN TripSiteManagementBundle:EndPoint2 ep2 WITH p.id=ep2.booking  where   p.id= sp.booking AND p.id=ep.booking  AND ((ep.name='$id' OR sp.name='$id') OR ep2.name='$id')";
+          $dql3 = "SELECT p FROM TripSiteManagementBundle:StartPoint sp,TripSiteManagementBundle:EndPoint ep,TripSiteManagementBundle:Package p LEFT JOIN TripSiteManagementBundle:EndPoint2 ep2 WITH p.id=ep2.booking  where   p.id= sp.booking AND p.id=ep.booking  AND $q1";
             $em = $this->getDoctrine()->getManager();
             $query = $em->createQuery($dql3);					
             $packages = $query->getResult();

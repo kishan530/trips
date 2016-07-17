@@ -35,11 +35,17 @@ class PackageTitle
      */
     private $statingPrice;
 
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="location", type="string", length=50)
+     */
+    private $location;
     /**
      * @var string
      *
      * @ORM\Column(name="img_path", type="string", length=25)
-     */
+     */    
     private $imgPath;
 
     /**
@@ -52,7 +58,7 @@ class PackageTitle
     /**
      * @var string
      *
-     * @ORM\Column(name="location_url", type="string", length=25)
+     * @ORM\Column(name="location_url", type="string", length=100)
      */
     private $locationUrl;
 
@@ -181,4 +187,14 @@ class PackageTitle
     {
         return $this->locationUrl;
     }
+    
+    public function getLocation() {
+        return $this->location;
+    }
+
+    public function setLocation($location) {
+        $this->location = $location;
+    }
+
+
 }
