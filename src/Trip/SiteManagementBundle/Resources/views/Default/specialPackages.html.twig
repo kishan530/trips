@@ -103,12 +103,27 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                                    <!--<div class="helper">
                                                        <ul class="package-Destination">-->
                                                        {% for endPoint in package.endPoint %} 
-                                                            {{ locations[endPoint.name].name }},
+                                                            {{ locations[endPoint.name].name }}{% if loop.last is same as(false) %},{% endif %}
                                                        {% endfor %}
                                                        <!--</ul> 
                                                     </div>-->
                                                 </div>
                                                 </div>
+                                                        {% if package.endPoint2|length>0 %}
+                                                   <div class="col-md-12 package-border">
+                                                      
+                                                 <div class="col-md-12 container">
+                                                          <span class="package-title"> Drop</span>
+                                                 </div>
+                                               <div class="col-md-12 container">
+                                                       {% for endPoint2 in package.endPoint2 %} 
+                                                            {{ locations[endPoint2.name].name }} {% if loop.last is same as(false) %},{% endif %}
+                                                       {% endfor %}
+                                                      
+                                                </div>
+                                                 
+                                                </div>
+                                                       {% endif %}
                                             </div>
                                             <div class="clearfix"></div> 
 
