@@ -24,10 +24,12 @@ trip_site_management_add_packagelocations:
     path:     /add/packagelocations
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:addPackageLocations }    
     
+trip_site_management_homepage_packages_old:
+    path:     /packages-old
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:packages }
 trip_site_management_homepage_packages:
     path:     /packages
-    defaults: { _controller: TripSiteManagementBundle:SiteManagement:packages }
-
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:multipackages }
 trip_site_management_homepage_special_packages:
     path:     /special/{id}/packages/{url}
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:specialPackages }
@@ -81,7 +83,4 @@ trip_site_management_terms:
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:terms }
 trip_site_management_faq:
     path:     /faq
-    defaults: { _controller: TripSiteManagementBundle:SiteManagement:faq }
-trip_site_management_multipackages:
-    path:     /multipackages
-    defaults: { _controller: TripSiteManagementBundle:SiteManagement:multipackages }  
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:faq }  
