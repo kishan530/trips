@@ -49,8 +49,11 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                             {% for package in packagetitle %} 
                             <div class="col-lg-5 col-xs-12  bg-primary border-l" class="bgimg"style="margin:10px;background-image: url('{{ asset('images/justtrip-banner5.png') }}');">                                
                                 <h4 style="padding:40px;text-align:center;color:#FFF"><a style="color: #fff;" href="{{ path('trip_site_management_homepage_special_packages',{ 'id': package.locationId,'url':package.locationUrl }) }}">{{ package.title }}</a></h2>
-                                <div><h6 style="text-align:center;">Starts @{{ package.statingPrice }}</h6></div>
-                                <button type="button" class="btn aligncenter" style="background-color:#000"><a style="color: #fff;" href="{{ path('trip_site_management_homepage_special_packages',{ 'id': package.locationId,'url':package.locationUrl }) }}">GO</a></button>
+                                <div><h6 style="text-align:center;color:#ffffff">Starts @{{ package.statingPrice }}</h6></div>
+                                 <div class="row">
+                                <a class="btn aligncenter" style="color: #fff;background-color:#000;width:60%; margin:0 auto;" href="{{ path('trip_site_management_homepage_special_packages',{ 'id': package.locationId,'url':package.locationUrl,'from':1 }) }}">From {{ package.location }}</a>
+                                <a class="btn aligncenter" style="color: #fff;background-color:#000;width:60%; margin:0 auto;margin-top:5px;" href="{{ path('trip_site_management_homepage_special_packages',{ 'id': package.locationId,'url':package.locationUrl,'from':0 }) }}">Via {{ package.location }}</a>
+                                 </div>
                             </div>
                         
                            {% endfor %}
