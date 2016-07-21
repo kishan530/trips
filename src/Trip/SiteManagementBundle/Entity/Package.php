@@ -57,6 +57,12 @@ class Package
      * @ORM\Column(name="active", type="boolean")
      */
     private $active;
+	/**
+     * @var integer
+     *
+     * @ORM\Column(name="category", type="integer")
+     */
+    private $category;
     /**
      * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\StartPoint", mappedBy="booking", cascade={"all"})
      */
@@ -177,7 +183,23 @@ class Package
     {
         return $this->active;
     }
-    
+    /**
+	 *
+	 * @return the integer
+	 */
+	public function getCategory() {
+		return $this->category;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$category
+	 */
+	public function setCategory($category) {
+		$this->category = $category;
+		return $this;
+	}
     /**
 	 *
 	 * @return the integer
