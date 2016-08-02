@@ -90,7 +90,7 @@ class SiteManagementController extends Controller
     /**
 	 * 
 	 */
-       public function specialPackagesAction(Request $request,$id,$url){
+       public function specialPackagesAction(Request $request,$url){
           /* $from = $request->get('from');
            $q1 = "((ep.name='$id' OR sp.name='$id') OR ep2.name='$id')";
            if(!is_null($from)){
@@ -104,18 +104,25 @@ class SiteManagementController extends Controller
             $em = $this->getDoctrine()->getManager();
             $query = $em->createQuery($dql3);					
             $packages = $query->getResult(); */
-          
+         
        $em = $this->getDoctrine()->getManager();
         //$packages = $em->getRepository('TripSiteManagementBundle:Package')->findAll();
-		$packages = $em->getRepository('TripSiteManagementBundle:Package')->findBy(array('category' => $id));
-        $locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
-        $locations = $this->getLocationsByIndex($locations);
-        $session = $request->getSession();
-        $session->set('resultSet',$packages);
-        return $this->render('TripSiteManagementBundle:Default:specialPackages.html.twig',array(
-    			'packages' => $packages,
-                'locations' => $locations,
-    	));
+        $packagetitle = $em->getRepository('TripSiteManagementBundle:PackageTitle')->findBy(array('locationUrl' => $url));
+           if($packagetitle){
+                $id= $packagetitle[0]->getId();
+               $packages = $em->getRepository('TripSiteManagementBundle:Package')->findBy(array('category' => $id));
+                $locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
+                $locations = $this->getLocationsByIndex($locations);
+                $session = $request->getSession();
+                $session->set('resultSet',$packages);
+                return $this->render('TripSiteManagementBundle:Default:specialPackages.html.twig',array(
+                        'packages' => $packages,
+                        'locations' => $locations,
+                ));
+           }else{
+               
+           }
+		
     }
     /**
 	 * 

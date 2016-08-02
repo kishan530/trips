@@ -56,7 +56,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                 <a class="btn aligncenter" style="color: #fff;background-color:#000;width:60%; margin:0 auto;" href="{{ path('trip_site_management_homepage_special_packages',{ 'id': package.locationId,'url':package.locationUrl,'from':1 }) }}">From {{ package.location }}</a>
                                 <a class="btn aligncenter" style="color: #fff;background-color:#000;width:60%; margin:0 auto;margin-top:5px;" href="{{ path('trip_site_management_homepage_special_packages',{ 'id': package.locationId,'url':package.locationUrl,'from':0 }) }}">Via {{ package.location }}</a>
 								{#}
-								<a class="btn aligncenter" style="color: #fff;background-color:#000;width:60%; margin:0 auto;margin-top:5px;" href="{{ path('trip_site_management_homepage_special_packages',{ 'id': package.id,'url':package.locationUrl }) }}">Go</a>
+								<a class="btn aligncenter" style="color: #fff;background-color:#000;width:60%; margin:0 auto;margin-top:5px;" href="{{ path('trip_site_management_homepage_special_packages',{'url':package.locationUrl }) }}">Go</a>
                                  </div>
                             </div>
 							</div>

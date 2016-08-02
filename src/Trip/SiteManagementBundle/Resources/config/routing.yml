@@ -31,7 +31,7 @@ trip_site_management_homepage_packages:
     path:     /packages
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:multipackages }
 trip_site_management_homepage_special_packages:
-    path:     /special/{id}/packages/{url}
+    path:     /packages/{url}
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:specialPackages }
 trip_site_management_homepage_package_submit:
     path:     /package/submit
