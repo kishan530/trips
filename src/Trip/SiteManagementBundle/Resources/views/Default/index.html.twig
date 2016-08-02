@@ -171,11 +171,31 @@ $("#trip_search_multiple_1_leavingFrom").change(function() {
     .tripNav label{
         cursor: pointer;
     }
+    @media (min-width:992px){
+    .remove_left{
+        padding-left: 0px;
+    }
+    .remove_right{
+        padding-right: 0px;
+    }
+    .btn-top{
+        margin-top: 25px !important;
+    }
+    }
 </style>
     <section class="section fullscreen background parallax" style="background-image:url('images/JT0305_banner.jpg');" data-img-width="1920" data-img-height="1003" data-diff="100">
         <div class="container">
             <div class="row homeform">
-                <div class="col-md-6 col-xs-12">
+                {#
+                <div class="col-md-12 col-xs-12">
+                    <div class="home-message banner-message">
+                        <h1> Help Line No :</br>+91-9900585533</h1>
+                        <h2> TAXI / HOTEL <br>Service providers in Tirupati </h2> 
+                        <h1> "Pay 10% Now And Book Your Ride" </h1>
+                       
+                    </div><!-- end homemessage -->
+                </div><!-- end col -->  #}
+                <div class="col-md-12 col-xs-12">
                     <div class="home-form">
                         <h2>Plan Your Trip</h2>
                         
@@ -212,12 +232,14 @@ $("#trip_search_multiple_1_leavingFrom").change(function() {
                                             Round Trip
                                         </label>
                                     </span>
+                                    {#
                                     <span>
                                          <label for="multicity">
                                             <input type="radio" name="tripType" value="multicity" id="multicity" style="display:none">
                                             Multicity
                                         </label>
                                     </span>
+                                    #}
                                     <span>
                                          <label for="dailyRent">
                                             <input type="radio" name="tripType" value="dailyRent" id="dailyRent" style="display:none">
@@ -227,7 +249,7 @@ $("#trip_search_multiple_1_leavingFrom").change(function() {
                                 </div>
                                   
                                 <div class="row" id="genaral">
-                                    <div class="form-group make-margin fil col-md-6 col-sm-6 col-xs-12">
+                                    <div class="form-group make-margin fil col-md-2 col-sm-2 col-xs-12 remove_right">
                                          {{ form_label(form.leavingFrom) }}
                                          <div class="dropdown">
                                              {{ form_widget(form.leavingFrom) }}
@@ -235,24 +257,24 @@ $("#trip_search_multiple_1_leavingFrom").change(function() {
                                        
                                     </div>
                                     {#
-                                    <div class="form-group make-margin fil col-md-2 col-sm-2 col-xs-2">
+                                    <div class="form-group make-margin fil col-md-2 col-sm-2 col-xs-2 remove_right remove_left">
                                          <i class="fa fa-arrow-left"></i><i class="fa fa-arrow-right"></i>
                                     </div>
                                     #}
-                                    <div class="form-group make-margin fil col-md-6 col-sm-6 col-xs-12">
+                                    <div class="form-group make-margin fil col-md-2 col-sm-2 col-xs-12 remove_right remove_left">
                                          {{ form_label(form.goingTo) }}
                                          <div class="dropdown">
                                              {{ form_widget(form.goingTo) }}                
                                         </div>
                                     </div>
-                                    <div class="form-group make-margin fil col-md-6 col-sm-6 col-xs-12">
+                                    <div class="form-group make-margin fil col-md-2 col-sm-2 col-xs-12 remove_right remove_left">
                                         {{ form_label(form.date) }} 
                                         <div class="input-group">
                                             {{ form_widget(form.date) }} 
                                             <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                                         </div>
                                     </div>
-                                    <div class="form-group make-margin fil col-md-6 col-sm-6 col-xs-12">
+                                    <div class="form-group make-margin fil col-md-2 col-sm-2 col-xs-12 remove_right remove_left">
                                          {{ form_label(form.returnDate) }}
                                         <div class="input-group">
                                             {{ form_widget(form.returnDate) }}          
@@ -261,6 +283,24 @@ $("#trip_search_multiple_1_leavingFrom").change(function() {
                                             <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                                         </div>
                                     </div> 
+                                    
+                                    <div class="form-group make-margin fil col-md-1 col-sm-1 col-xs-12 remove_right remove_left">
+                                         {{ form_label(form.numAdult) }}
+                                        <div class="input-group">
+                                            <a class="adults input-group-addon" id="decrement" value="1" href="#">-</a> 
+                                                    {{ form_widget(form.numAdult) }}
+                                            <a class="adults input-group-addon" id="increment" href="#">+</a>
+                                        </div>
+                                    </div>
+                                     <div class="form-group make-margin fil col-md-1 col-sm-1 col-xs-12 remove_right remove_left">
+                                         {{ form_label(form.preferTime) }}
+                                        {{ form_widget(form.preferTime) }}
+                                    </div>
+                                    <div class="form-group make-margin fil col-md-2 col-sm-2 col-xs-12">
+                                         <button type="submit" class="btn btn-primary btn-block form-group make-margin btn-top"><i class="icon-search"></i> Search </button>
+                                    </div>
+                                    
+                                    
                                 </div>
                                     <div style="display:none" class="row" id="multipleCity">
                                     
@@ -322,7 +362,7 @@ $("#trip_search_multiple_1_leavingFrom").change(function() {
                                             {% endfor %}
                                     </div>
                                     
-                                     <div class="form-group make-margin fil col-md-6 col-sm-6 col-xs-12">
+                                     <div class="form-group make-margin fil col-md-2 col-sm-2 col-xs-12">
                                       {# <div class="row">
                                           <div class="col-md-6 col-sm-6 col-xs-6">
                                             {{ form_label(form.numDays) }}
@@ -342,36 +382,15 @@ $("#trip_search_multiple_1_leavingFrom").change(function() {
                                     </div>
                                 </div>
                                 <div class="row">
-                                     <div class="form-group make-margin fil col-md-6 col-sm-6 col-xs-12">
-                                        <div class="row">
-                                              <div class="col-md-6 col-sm-6 col-xs-6">
-                                                {{ form_label(form.numAdult) }}
-                                             </div>
-                                             <div class="col-md-6 col-sm-6 col-xs-6">
-                                                     <div class="input-group">
-                                                         <a class="adults input-group-addon" id="decrement" value="1" href="#">-</a> 
-                                                            {{ form_widget(form.numAdult) }}
-                                                         <a class="adults input-group-addon" id="increment" href="#">+</a>
-                                                    </div>
-                                             </div>
-                                         </div>
-                                    </div>
-                                     <div class="form-group make-margin fil col-md-6 col-sm-6 col-xs-12">
-                                        <div class="row">
-                                              <div class="col-md-6 col-sm-6 col-xs-6">
-                                                {{ form_label(form.preferTime) }}
-                                              </div>
-                                             <div class="col-md-6 col-sm-6 col-xs-6">
-                                                {{ form_widget(form.preferTime) }}
-                                             </div>
-                                         </div>
-                                    </div>
+                                     
                                    </div>
+                                {#}
                                 <div class="row">
-                                    <div class="form-group col-md-12 col-sm-6 col-xs-12">
+                                    <div class="form-group col-md-12 col-sm-12 col-xs-12">
                                         <button type="submit" class="btn btn-primary btn-block"><i class="icon-search"></i> Search </button>
                                     </div>
                                 </div>
+                                {#}
                                 {{ form_end(form) }}
                                 
                             </div><!-- end tab-pane -->
@@ -453,14 +472,7 @@ $("#trip_search_multiple_1_leavingFrom").change(function() {
                     </div><!-- end homeform -->
                 </div><!-- end col -->
 
-                <div class="col-md-6 col-xs-12">
-                    <div class="home-message banner-message">
-                        <h1> Help Line No :</br>+91-9900585533</h1>
-                        <h2> TAXI / HOTEL <br>Service providers in Tirupati </h2> 
-                        <h1> "Pay 10% Now And Book Your Ride" </h1>
-                       
-                    </div><!-- end homemessage -->
-                </div><!-- end col -->            
+                          
             </div><!-- end row -->
         </div><!-- end container -->
     </section><!-- end section -->
