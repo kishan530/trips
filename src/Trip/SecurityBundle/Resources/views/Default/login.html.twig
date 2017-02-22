@@ -17,9 +17,15 @@
 						<div class="col-md-1">
 						</div>
 						<div class="col-md-4 page-content">
+						
+						
 							
 							<div id="login" class="login">
-							
+							<div class="row">
+							<div class="hotel-title">
+							                <h5 class="classic-title"><span>{% trans %}Login{% endtrans %}</span></h5>
+							            </div>
+							</div>
 							
 							{% if app.session.get('loginfail')| length > 0 %}
 								{% include "FOSUserBundle:Security:login.html.twig" %}

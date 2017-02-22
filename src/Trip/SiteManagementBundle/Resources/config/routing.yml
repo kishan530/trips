@@ -83,4 +83,7 @@ trip_site_management_terms:
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:terms }
 trip_site_management_faq:
     path:     /faq
-    defaults: { _controller: TripSiteManagementBundle:SiteManagement:faq }  
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:faq }
+trip_site_management_view_package:
+    path:     /view-package
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:viewPackage }  

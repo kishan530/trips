@@ -27,6 +27,22 @@ class PackageTitle
      * @ORM\Column(name="title", type="string", length=100)
      */
     private $title;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="meta_title", type="string", length=100)
+     */
+    private $metaTitle;
+     /**
+     * @var integer
+     * @ORM\Column(name="meta_keywords", type="string", length=5000,nullable=true)
+     */
+    private $metaKeywords;
+    /**
+     * @var integer
+     * @ORM\Column(name="meta_discription", type="string", length=5000,nullable=true)
+     */
+    private $metaDescription;
 
     /**
      * @var float
@@ -95,6 +111,63 @@ class PackageTitle
     {
         return $this->title;
     }
+    /**
+     * Set metaTitle
+     *
+     * @param string $metaTitle
+     * @return PackageTitle
+     */
+    public function setMetaTitle($metaTitle)
+    {
+        $this->metaTitle = $metaTitle;
+    
+        return $this;
+    }
+    /**
+     * Get metaTitle
+     *
+     * @return string 
+     */
+    public function getMetaTitle()
+    {
+        return $this->metaTitle;
+    }
+    
+    /**
+	 *
+	 * @return the integer
+	 */
+	public function getMetaKeywords() {
+		return $this->metaKeywords;
+	}
+	
+	/**
+	 *
+	 * @param
+	 * $metaKeywords
+	 */
+	public function setMetaKeywords($metaKeywords) {
+		$this->metaKeywords = $metaKeywords;
+		return $this;
+	}
+	
+	/**
+	 *
+	 * @return the integer
+	 */
+	public function getMetaDescription() {
+		return $this->metaDescription;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$metaDescription
+	 */
+	public function setMetaDescription($metaDescription) {
+		$this->metaDescription = $metaDescription;
+		return $this;
+	}
 
     /**
      * Set statingPrice
@@ -148,7 +221,7 @@ class PackageTitle
      * @param \Integer $locationId
      * @return PackageTitle
      */
-    public function setLocationId(\Integer $locationId)
+    public function setLocationId($locationId)
     {
         $this->locationId = $locationId;
     

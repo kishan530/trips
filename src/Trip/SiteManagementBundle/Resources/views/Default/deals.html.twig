@@ -1,4 +1,9 @@
 {% extends 'TripSiteManagementBundle:Default:index.html.twig' %}
+{% block meta %}
+    <meta name="keywords" content="cabs in tirupati, tirupati cabs, Cab Service in Tirupati, Cab Services in Tirupati, Taxi in Tirupati, Taxi service in Tirupati, Tirupati Taxi, tirupati car rental">
+    <meta name="description" content="Grab the hot deals at Justtrip.in.Use This Coupon Code FIRSTRIDE and Get 50 OFF on First Ride.">  
+{% endblock %}
+{% block title %}Justtrip Deals, Discounts Coupan Code {% endblock %}
 {% block navTabs %}
                        <ul class="nav nav-tabs" role="tablist">
                             <li ><a href="#tab_01" aria-controls="tab_01" role="tab" data-toggle="tab"><i class="icon-sedan3"></i>   Cars</a></li>
@@ -11,44 +16,46 @@
                         
                                      <div class="tab-content">
                             <div role="tabpanel" class="tab-pane" id="tab_01">
-                            {{ form_start(form) }}
+                                                       {{ form_start(form) }}
 				           {{ form_errors(form, { 'global_errors': true }) }}
+						   {#}
                                 <div class="row">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                     <h3>  Book Your Cab Now</h3>
                                     </div>
                                 </div>
+								{#}
                                 <div class="row tripNav">
                                     <span>
                                          <label for="oneway" class="tripSel">
-                                             <input type="radio" name="tripType" value="oneway" id="oneway" style="display:none" checked> 
+                                             <input type="radio" name="tripType" value="oneway" id="oneway" checked> 
                                              One Way
                                          </label>
                                     </span>
                                     <span>
                                         <label for="roundtrip">
-                                            <input type="radio" name="tripType" value="roundtrip" id="roundtrip" style="display:none">
+                                            <input type="radio" name="tripType" value="roundtrip" id="roundtrip">
                                             Round Trip
                                         </label>
                                     </span>
                                     {#
                                     <span>
                                          <label for="multicity">
-                                            <input type="radio" name="tripType" value="multicity" id="multicity" style="display:none">
+                                            <input type="radio" name="tripType" value="multicity" id="multicity">
                                             Multicity
                                         </label>
                                     </span>
                                     #}
                                     <span>
                                          <label for="dailyRent">
-                                            <input type="radio" name="tripType" value="dailyRent" id="dailyRent" style="display:none">
+                                            <input type="radio" name="tripType" value="dailyRent" id="dailyRent">
                                             Daily Rent
                                         </label>
                                     </span>
                                 </div>
                                   
                                 <div class="row" id="genaral">
-                                    <div class="form-group make-margin fil col-md-2 col-sm-2 col-xs-12 remove_right">
+                                    <div class="form-group fil col-md-2 col-sm-2 col-xs-12 remove_right">
                                          {{ form_label(form.leavingFrom) }}
                                          <div class="dropdown">
                                              {{ form_widget(form.leavingFrom) }}
@@ -56,24 +63,24 @@
                                        
                                     </div>
                                     {#
-                                    <div class="form-group make-margin fil col-md-2 col-sm-2 col-xs-2 remove_right remove_left">
+                                    <div class="form-group fil col-md-2 col-sm-2 col-xs-2 remove_right remove_left">
                                          <i class="fa fa-arrow-left"></i><i class="fa fa-arrow-right"></i>
                                     </div>
                                     #}
-                                    <div class="form-group make-margin fil col-md-2 col-sm-2 col-xs-12 remove_right remove_left">
+                                    <div class="form-group fil col-md-2 col-sm-2 col-xs-12 remove_right remove_left">
                                          {{ form_label(form.goingTo) }}
                                          <div class="dropdown">
                                              {{ form_widget(form.goingTo) }}                
                                         </div>
                                     </div>
-                                    <div class="form-group make-margin fil col-md-2 col-sm-2 col-xs-12 remove_right remove_left">
+                                    <div class="form-group fil col-md-2 col-sm-2 col-xs-12 remove_right remove_left">
                                         {{ form_label(form.date) }} 
                                         <div class="input-group">
                                             {{ form_widget(form.date) }} 
                                             <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                                         </div>
                                     </div>
-                                    <div class="form-group make-margin fil col-md-2 col-sm-2 col-xs-12 remove_right remove_left">
+                                    <div class="form-group fil col-md-2 col-sm-2 col-xs-12 remove_right remove_left">
                                          {{ form_label(form.returnDate) }}
                                         <div class="input-group">
                                             {{ form_widget(form.returnDate) }}          
@@ -83,7 +90,7 @@
                                         </div>
                                     </div> 
                                     
-                                    <div class="form-group make-margin fil col-md-1 col-sm-1 col-xs-12 remove_right remove_left">
+                                    <div class="form-group fil col-md-1 col-sm-1 col-xs-12 remove_right remove_left">
                                          {{ form_label(form.numAdult) }}
                                         <div class="input-group">
                                             <a class="adults input-group-addon" id="decrement" value="1" href="#">-</a> 
@@ -91,11 +98,11 @@
                                             <a class="adults input-group-addon" id="increment" href="#">+</a>
                                         </div>
                                     </div>
-                                     <div class="form-group make-margin fil col-md-1 col-sm-1 col-xs-12 remove_right remove_left">
+                                     <div class="form-group fil col-md-1 col-sm-1 col-xs-12 remove_right remove_left">
                                          {{ form_label(form.preferTime) }}
                                         {{ form_widget(form.preferTime) }}
                                     </div>
-                                    <div class="form-group make-margin fil col-md-2 col-sm-2 col-xs-12">
+                                    <div class="form-group fil col-md-2 col-sm-2 col-xs-12">
                                          <button type="submit" class="btn btn-primary btn-block form-group make-margin btn-top"><i class="icon-search"></i> Search </button>
                                     </div>
                                     

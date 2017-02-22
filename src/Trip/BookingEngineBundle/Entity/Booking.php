@@ -54,6 +54,24 @@ class Booking
      */
      private $tax;
     /**
+     * Tax
+     * @ORM\Column(name="service_tax", type="float")
+     */
+     private $serviceTax;
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="swach_bharth_cess", type="float")
+     */
+    private $swachBharthCess;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="krishi_kalyan_cess", type="float")
+     */
+    private $krishiKalyanCess;
+    /**
      * @var integer
      * @ORM\Column(name="amount_paid", type="float")
      */
@@ -360,6 +378,62 @@ class Booking
 		$this->tax = $tax;
 		return $this;
 	}
+    
+     /**
+	 *
+	 * @return the double
+	 */
+	public function getServiceTax() {
+		return $this->serviceTax;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$serviceTax
+	 */
+	public function setServiceTax($serviceTax) {
+		$this->serviceTax = $serviceTax;
+		return $this;
+	}
+    
+    /**
+	 *
+	 * @return the float
+	 */
+	public function getSwachBharthCess() {
+		return $this->swachBharthCess;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$swachBharthCess
+	 */
+	public function setSwachBharthCess($swachBharthCess) {
+		$this->swachBharthCess = $swachBharthCess;
+		return $this;
+	}
+	
+	/**
+	 *
+	 * @return the float
+	 */
+	public function getKrishiKalyanCess() {
+		return $this->krishiKalyanCess;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$krishiKalyanCess
+	 */
+	public function setKrishiKalyanCess($krishiKalyanCess) {
+		$this->krishiKalyanCess = $krishiKalyanCess;
+		return $this;
+	}
+	
+    
     /**
 
      * Set amountPaid
@@ -575,7 +649,7 @@ class Booking
     
     
     
-    	/**
+    /**
 	 *
 	 * @return the integer
 	 */

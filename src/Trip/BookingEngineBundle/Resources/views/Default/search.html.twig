@@ -21,6 +21,13 @@ input[type="radio"] {
 {% block javascripts %}
 <script src="{{ asset('js/jquery.timepicker.min.js') }}"></script>
 <script>
+    $(document).ready(function() {
+     // var $a = new Date();
+     var $a = $("#trip_search_date").datepicker("getDate");
+    $a.setDate($a.getDate() + 1);//
+    $('#trip_search_returnDate').datepicker("option", "minDate", $a);
+    //$("#trip_search_returnDate").datepicker("option", "minDate", a);
+    });
      $('#trip_search_preferTime').timepicker({ 'scrollDefault': 'now' });
      $('.adults').click(function(e){		
 			e.preventDefault(); //STOP default action 
@@ -72,7 +79,11 @@ $("select").change(function() {
           $("#"+id).attr('checked', 'checked');
                  if(id=='roundtrip'){
             $("#trip_search_returnDate").removeAttr("readonly");$("#trip_search_multiple_1_date").focus();
-                     $("#trip_search_returnDate").focus();
+                 $("#trip_search_returnDate").attr("required","true");$("#trip_search_returnDate").focus();
+                 }else if(id!='dailyRent'){
+                     $("#trip_search_returnDate").attr("readonly","readonly");
+                     $("#trip_search_returnDate").removeAttr("required");
+                      $("#trip_search_returnDate").val('');
                  }
          e.preventDefault();
      });
@@ -282,7 +293,7 @@ $("select").change(function() {
           {% else %}
           <div class="col-md-12 free-kms">
               <h2>Sorry, we didn't find any services matching for this, please call us For More Assistance .<br>Help
-line No:+91-9663133008</h2>
+line No:+91-966313308</h2>
           </div>
           
           {% endfor %}
@@ -339,7 +350,7 @@ line No:+91-9663133008</h2>
        {% endif %}
     
 	<img src="{{ asset('images/Sidebar.png') }}" style="margin-left: 33px;">
-	<h1 style="font-size:20px;">+91-9900585533</h1>
+	<h1 style="font-size:20px;">+91-9663133008</h1>
         <a data-toggle="modal" data-target="#request" href="#request" class="btn btn-primary btn-block btn-sm">Enquiry</a>
            <div class="fb-like" data-href="https://www.facebook.com/JustTripIndia" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
         <h1 style="font-size:20px;"> "Pay 10% Now And Book Your Ride" </h1>

@@ -53,7 +53,7 @@ class BookingServices
 	*/
 	public function getCatalog(){
 		$catalogue = $this->session->get('catalogue');
-		if(is_null($catalogue)){
+		//if(is_null($catalogue)){
 			try{
                 $catalogue = new Catalogue();
 				$locations = $this->getLocations();
@@ -64,7 +64,7 @@ class BookingServices
 				//throw new ApplicationException();
 			}
 			$this->session->set('catalogue',$catalogue);
-		}
+		//}
 		return $catalogue;			
 	}
         public function getPackageList(){

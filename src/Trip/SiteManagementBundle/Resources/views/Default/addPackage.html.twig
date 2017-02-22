@@ -7,6 +7,31 @@ $("select").change(function() {
 		 $("input").blur(function() {
 			$("#search").submit();						
 		});
+    
+    
+ // keep track of how many city fields have been rendered
+    var itineraryCount = '{{ form.itineraryList|length }}';
+
+    $('#add-another-itinerary').click(function(e) {
+            e.preventDefault();
+            /*if(itemCount>4){
+                alert('Max 5 only');
+                exit();
+            }*/
+
+            var itineraryList = $('#itinerary-list');
+
+            // grab the prototype template
+            var newWidget = itineraryList.attr('data-prototype');
+            // replace the "__name__" used in the id and name of the prototype
+            // with a number that's unique to your city
+            newWidget = newWidget.replace(/__name__/g, itineraryCount);
+            itineraryCount++;
+
+            // create a new list element and add it to the list
+            var newLi = $('<div></div>').html(newWidget);
+            newLi.appendTo(itineraryList);
+        });
 </script>
 {% endblock %}
 {% block body %}
@@ -18,6 +43,46 @@ $("select").change(function() {
                     <div class="col-lg-5">
                     {{ form_start(form) }}
                     {{ form_widget(form) }}
+                        
+                        
+                        
+                
+                     {% macro information_prototype(j) %}
+                        <div class="row form-group">
+                            <div class="col-lg-8">
+                                {{ form_widget(j.title) }}
+                            </div> 
+                                                    
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-lg-8">
+                                {{ form_widget(j.description) }}
+                            </div> 
+                                                    
+                        </div>
+                   
+                            
+                        {% endmacro %}
+                        <div id="itinerary-list"
+                                                data-prototype="{{ _self.information_prototype(form.itineraryList.vars.prototype)|e }}">
+                            {% for j in form.itineraryList %}
+                             <div class="row form-group">
+                                <div class="col-lg-8">
+                                    {{ form_widget(j.title) }}
+                                </div> 
+
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-lg-8">
+                                    {{ form_widget(j.description) }}
+                                </div> 
+
+                            </div>
+                            {% endfor %}
+                        </div>
+                    <a href="#" id="add-another-itinerary">Add another Itinerary</a>
+                        
+                    
                     {{ form_end(form) }}
                     </div>
                 </div>

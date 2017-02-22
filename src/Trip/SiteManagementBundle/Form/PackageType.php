@@ -5,7 +5,7 @@ namespace Trip\SiteManagementBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Trip\SiteManagementBundle\Form\HotelAddressType;
+use Trip\SiteManagementBundle\Form\PackageItineraryType;
 
 class PackageType extends AbstractType
 {
@@ -17,8 +17,13 @@ class PackageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('title')
             ->add('name')
-            ->add('code')
+            ->add('overview')
+            ->add('metaKeywords')
+            ->add('metaDescription')
+            ->add('metaTitle')
+            ->add('packageUrl')
             ->add('type', 'choice', array(
             		'expanded' => false,
             		'multiple' => false,
@@ -38,6 +43,16 @@ class PackageType extends AbstractType
                                         '0'=>'InActive',
 				            		),
             		'required'    => true,
+            ))
+            ->add('itineraryList', 'collection', array(
+                // each entry in the array will be an "PackageItinerary" field
+                'type'   => new PackageItineraryType(),
+                'allow_add'    => true,
+                'prototype'=>true,
+                // these options are passed to each "PackageItinerary" type
+                //'entry_options'  => array(
+                 //   'attr'      => array('class' => '')
+                //),
             ))
              ->add('submit', 'submit', array('label' => 'submit'))
         ;

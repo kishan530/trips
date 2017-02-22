@@ -1,101 +1,38 @@
 {% extends 'TripBookingEngineBundle:Default:booking.html.twig' %}
 
 {% block form %}
-<div class="row"><div class="col-lg-12">{{ render(controller('FOSUserBundle:Security:login')) }}</div>	</div>
-<div class="row text-center remove_margin"><label>OR</label></div>
-            {{ form_start(form) }}
-            {{ form_errors(form, { 'global_errors': true }) }}
-         <div class="row booking-price-details">
-                <div class="col-md-7 col-sm-7 col-xs-6" style="padding: 0;">
-                    {{ form_widget(form.email,{'attr':{'class':'make-margin','placeholder':'Email'}}) }}
-                </div>
-              <div class="col-md-5 col-sm-5 col-xs-6">
-                <input type="hidden" name="selected" value="{{ selected }}" />
-                <button type="submit" class="btn btn-primary btn-block make-margin" style="padding: 9px;">Continue as Guest</button>
-             </div>
+<div class="row">
+<div class="hotel-title">
+                <h5 class="classic-title"><span>{% trans %}Login{% endtrans %}</span></h5>
+            </div>
+</div>
+<div class="row">
+	<div class="col-lg-6">{{ render(controller('FOSUserBundle:Security:login')) }}</div>
+	<div class="col-lg-6">
+	<div class="row text-center make-margin"><label>OR</label></div>
+		{{ form_start(form) }}
+		{{ form_errors(form, { 'global_errors': true }) }}
+	
+		<div class="row booking-price-details">
+		<div class="make-margin"></div>
+	                <div class="col-md-12 col-sm-12 col-xs-12" style="padding: 0;">
+	                    {{ form_widget(form.email,{'attr':{'placeholder':'Email'}}) }}
+	                </div>
+	    </div>
+	    <div class="row booking-price-details">       
+	            
+	                <input type="hidden" name="selected" value="{{ selected }}" />
+	                <button type="submit" class="btn btn-primary btn-block" style="padding: 9px;">Continue as Guest</button>
+	            
+	            
+	     </div>
+	     {{ form_end(form) }}<!-- end form -->
+	
+	</div>
+</div>
             
-        </div>
+         
 
-        {{ form_end(form) }}<!-- end form -->
+        
     
-{% endblock %}
- {% block details %}
-
-                                        <div class="row">
-                                            {% if filter.package|length>0 %}
-                                            {% else %}
-                                            <div class="col-sm-12">
-                                                <img src="{{ asset('images/cars/'~service.imgPath) }}" alt="" class="img-responsive">
-                                            </div><!-- end col -->
-                                            {% endif %}
-                                            <div class="col-sm-12">
-                                                {% if filter.package|length>0 %}
-                                                    <h6>{{ service.name }}</h6>
-                                                {% else %}
-                                                <h6>{{ service.model }}</h6>
-                                                {% endif %}
-
-                                                <ul class="clearfix">
-                                                    {% if filter.package|length>0 %}
-                                                    {% else %}
-                                                    <li><span>Root:</span> 
-                                                    
-                                                        <ul class="list-inline" style="margin:0">
-                                                        {% if filter.tripType=='multicity' %}
-                                                            {% for from in service.lFrom %}
-                                                                <li>{{ from }} {% if loop.last is same as(false) %} <i class="fa fa-arrow-right"></i> {% endif %}</li>
-                                                            {% endfor %}                                                  
-                                                           {# <li>{{ service.to }} </li> #}
-                                                        {% else %}
-                                                        <li> {{ service.lFrom }} {% if filter.tripType=='roundtrip' %} <i class="fa fa-arrow-left"></i>{% endif %}<i class="fa fa-arrow-right"></i></li>
-                                                          <li>{{ service.to }} </li>
-                                                        {% endif %}
-
-                                                        </ul>
-                                                    </li>
-                                                    {% endif %}
-                                                   {% if filter.tripType != 'multicity' %}
-                                                        <li><span>Date:</span>{{ filter.date|date('F jS Y') }}</li>
-                                                        {% if filter.tripType=='roundtrip' %}
-                                                            <li><span>Return:</span> {{ filter.returnDate|date('F jS Y') }}</li>
-                                                        {% endif %}
-														<li><span>Pickup Time:</span>{{ filter.preferTime }}</li>
-                                                    {% endif %}
-                                                    
-                                                    
-                                                    
-                                                    <hr>
-                                                    
-                                                    {% if filter.package|length>0 %}
-                                                        <li class="booking-price"><span>Price:</span>
-                                                        <em id="fee"><i class="fa fa-inr"></i>
-                                                        <em> {{ service.price.first.price }} </em> - <i class="fa fa-inr"></i> <em >50</em> = 
-                                                        </em> 
-                                                        <i class="fa fa-inr"></i><em id="price"> {{ service.price.first.price }} </em>
-                                                        </li>
-                                                    {% else %}
-                                                    
-                                                        {% if filter.tripType=='roundtrip' %}
-                                                        <li class="booking-price"><span>Price:</span>
-                                                            <em id="fee"><i class="fa fa-inr"></i>
-                                                            <em> {{ service.returnPrice }} </em> - <i class="fa fa-inr"></i> <em >50</em> = 
-                                                            </em> 
-                                                            <i class="fa fa-inr"></i><em id="price"> {{ service.returnPrice }} </em>
-                                                        </li>
-                                                        {% else %}
-                                                        <li class="booking-price"><span>Price:</span> 
-                                                            <em id="fee"><i class="fa fa-inr"></i>
-                                                            <em> {{ service.price }} </em> - <i class="fa fa-inr"></i> <em >50</em> = 
-                                                            </em>
-                                                            <i class="fa fa-inr"></i><em id="price"> {{ service.price }} </em>
-                                                        </li>
-                                                        {% endif %} 
-                                                    {% endif %} 
-                                                    
-                                                </ul>
-                                            </div><!-- end col -->
-                                             <div class="col-md-12">
-                                            <a class="sm-links" data-toggle="modal" data-target="#terms" href="#terms">View Fare Rules</a>
-                                            </div>
-                                        </div><!-- end row -->
 {% endblock %}

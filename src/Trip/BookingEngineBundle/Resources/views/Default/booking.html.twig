@@ -1,13 +1,13 @@
 {% extends 'page.html.twig' %}
 {% block javascripts %}
 <script>
-    $("#couponCode").hide();
+    //$("#couponCode").hide();
     if({{ discount }}<1)
     $('#fee').hide();
-    $('#trip_bookingenginebundle_customer_haveCoupon').change(function(){ 		 		 	
+  /*   $('#trip_bookingenginebundle_customer_haveCoupon').change(function(){ 		 		 	
 		 var haveCoupon = $("#trip_bookingenginebundle_customer_haveCoupon").is(':checked');
             haveCoupon ? $("#couponCode").show() : $("#couponCode").hide();
-         });
+         }); */
 
     	$('#apply').click(function(e){		
 		e.preventDefault(); //STOP default action 		 		 	
@@ -24,6 +24,7 @@
 				     else
 				     {
 				    	 $('#coupon-error').hide();
+                         $('#discount').html(50);
 					     $('#price').html(data);
                          $('#fee').show();
 				     }			     
@@ -47,6 +48,10 @@
         color: #FFF;
     }
 </style>
+<style>
+.nav-justified>li{display:inline-block;width:31%}.nav-justified>li:after,.nav-justified>li:first-child:after{content:'';width:100%;height:2px;position:absolute;left:-50%;top:9px}.list-group-item-heading{margin-top:8px!important;font-size: initial !important;text-transform: none !important;}.nav-justified>li:after{background:#000;z-index:1}.nav-pills>li.active>a,.nav-pills>li.active>a:focus,.nav-pills>li.active>a:hover{color:#000!important;background:0 0!important}.nav-pills>li.active span,.nav-pills>li.active span:focus,.nav-pills>li.active span:hover{color:#FFF!important;background:#429542!important}.nav-justified>li:first-child:after{background:0 0!important;z-index:-1}.nav-justified>li a{margin-top:-13px;z-index:100}   
+
+</style>
 {% endblock %}
 {% block body %}
 
@@ -60,15 +65,85 @@
                         <div id="content" class="col-md-12 col-sm-12 col-xs-12">
 
                             <div class="price-range text-center clearfix row">
-                                <div class="col-md-12">
-                                    <img src="{{ asset('images/progress.png') }}" class="img-responsive" alt="">
+                                <div class="col-md-11">
+									<ul class="nav nav-pills nav-justified setup-panel">
+									<li class="disabled {% if step=='review' %}active{% endif %}"><a href="#review">
+										<span class="badge">1</span>
+										<h4 class="list-group-item-heading">Review</h4>
+									   
+									</a></li>
+									<li class="disabled {% if step=='personal' %}active{% endif %}"><a href="#personal">
+										<span class="badge">2</span>
+										 <h4 class="list-group-item-heading">Personal</h4>
+									</a></li>
+                                       
+									<li class="disabled {% if step=='payment' %}active{% endif %}"><a href="#payment">
+										<span class="badge">3</span>
+										 <h4 class="list-group-item-heading">Payment</h4>
+									</a></li>
+									</ul>
+                                  {#}  <img src="{{ asset('images/progress.png') }}" class="img-responsive" alt=""> {#}
                                 </div><!-- end price-range -->
                             </div><!-- end price-range -->
 
                             <div class="clearfix"></div>
-
-                                <div class="row">
-                                    <div class="col-sm-6 booking-price-details-border price-details clearfix">
+								<div class="row">
+                                    <div class="col-sm-8">
+                                    <div class="col-sm-12 booking-price-details-border price-details clearfix">
+									<div class="row">
+                                        <div class="hotel-title price-details">
+                                            <h5>Booking Information</h5>
+                                        </div>
+                                        </div>
+										{% if filter.package|length>0 %}
+                                        <h6><span>{{ service.name }}</span> on {{ filter.date|date('F jS Y') }} {{ filter.preferTime }}</h6>
+											<div class="col-sm-2 text-center">
+                                                
+                                                <h5>Package</h5> {{ service.code }}
+											</div>
+											<div class="col-sm-4 text-center">
+											<h5>Pick Up</h5>
+												    {% for startPoint in service.startPoint %} 
+                                                    {{ locations[startPoint.name].name }} {% if loop.last is same as(false) %} / {% endif %}
+                                                           {% endfor %}
+											</div>
+											<div class="col-sm-4 text-center">
+											<h5>Places to Visit</h5>
+												{% for endPoint in service.endPoint %} 
+                                                            {{ locations[endPoint.name].name }}{% if loop.last is same as(false) %},{% endif %}
+                                                       {% endfor %}
+											</div>
+											<div class="col-sm-2 text-center">
+											<h5>Drop</h5>
+											 {% for endPoint2 in service.endPoint2 if service.endPoint2|length>0 %} 
+                                                    {{ locations[endPoint2.name].name }} 
+                                                {% else %}
+                                                    N/A
+                                                {% endfor %}
+											</div>
+										{% else %}
+                                        <h6>On {{ filter.date|date('F jS Y') }} {{ filter.preferTime }}</h6>
+										<div class="col-sm-3 text-center">
+                                             <img src="{{ asset('images/cars/'~service.imgPath) }}" alt="" class="img-responsive">
+                                                <h6>{{ service.model }}</h6>
+										</div>
+										<div class="col-sm-4 text-center">
+												{{ service.lFrom }}
+										</div>
+										<div class="col-sm-1 text-center">
+											{% if filter.tripType=='roundtrip' %} <i class="fa fa-arrow-left"></i>{% endif %}<i class="fa fa-arrow-right"></i>
+										</div>
+										<div class="col-sm-4 text-center">
+											{{ service.to }}
+										</div>
+										{% endif %}
+										    
+											
+									</div>
+                                    
+                                    
+                                
+                                <div class="col-sm-12 booking-price-details-border price-details clearfix">
                                          {% block form %}
                                         <div class="row">
                                         <div class="hotel-title price-details">
@@ -89,35 +164,35 @@
                                             {{ form_widget(form.mobile,{'attr':{'class':'make-margin','placeholder':'10 Digit Mobile No'}}) }} 
                                             </div>
                                              <div class="row">
-                                                  <div class="col-md-12 col-sm-12 col-xs-12">
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <div class="input-group make-margin">
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                <div class="input-group">
                                                  {{ form_widget(form.haveCoupon) }} {{ form_label(form.haveCoupon) }}
                                                 </div>
                                             </div>
-                                              <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <div class="input-group make-margin" id="couponCode">
+                                             <div class="col-md-12 col-sm-12 col-xs-12">
+                                                <div class="input-group" id="couponCode">
                                                 {{ form_widget(form.couponCode,{'attr':{'placeholder':'Enter a Coupon code'}}) }}
                                                     <a class="input-group-addon" id="apply" href="#">Apply</a>
                                                 </div>
-                                                <div class="row form-group has-error make-margin">
+                                                <div class="row form-group has-error">
                                                     <ul class="errors help-block">
                                                         <li id="coupon-error" style="display:none">Invalid Coupon</li>
                                                     </ul>
                                                 </div>
-                                            </div>
-                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                 <div class="col-md-12 col-sm-12 col-xs-12">
-                                                    <div class="col-md-4 col-sm-4 col-xs-4 make-margin">
+                                            	</div>
+                                               </div>
+                                            
+                                                 <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <div class="col-md-12 col-sm-12 col-xs-12">
                                                     {{ form_label(form.paymentMode) }} 
                                                     </div>
-                                                    <div class="col-md-8 col-sm-8 col-xs-8">
-                                                        {{ form_widget(form.paymentMode,{'attr':{'class':'make-margin'}}) }} 
+                                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                                        {{ form_widget(form.paymentMode) }} 
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="make-margin"></div>
                                              
                                              <div class="col-md-8 col-sm-8 col-xs-12">
                                                 <input type="checkbox" required="required" name="cb" class="remove_margin">  {% trans %} I agree to the JustTrip {% endtrans%} <a target="_blank" href="{{ path('trip_site_management_terms') }}">{% trans %} Terms of Service{% endtrans%}</a>
@@ -131,47 +206,24 @@
                                         </div>
                                     {% endblock %}
                                     </div><!-- end col -->
-                                    <div class="col-sm-4">
+                                    
+                                  </div>  
+                                    
+                                <div class="col-sm-3">
                                 <div class="booking-price-details-border price-details clearfix">
                                 <div class="hotel-title">
-                                    <h5>Your Booking Details</h5>
+                                    <h5>Fare Details</h5>
                                 </div>
                                 <div class="row booking-price-details">
                                     <div class="col-md-12">
-                                        {% block details %}
+                                        
                                         <div class="row">
-                                            {% if filter.package|length>0 %}
-                                            {% else %}
+                                           
                                             <div class="col-sm-12">
-                                                <img src="{{ asset('images/cars/'~service.imgPath) }}" alt="" class="img-responsive">
-                                            </div><!-- end col -->
-                                            {% endif %}
-                                            <div class="col-sm-12">
-                                                {% if filter.package|length>0 %}
-                                                    <h6>{{ service.name }}</h6>
-                                                {% else %}
-                                                <h6>{{ service.model }}</h6>
-                                                {% endif %}
+                                               
 
                                                 <ul class="clearfix">
-                                                    {% if filter.package|length>0 %}
-                                                    {% else %}
-                                                    <li><span>Root:</span> 
-                                                    
-                                                        <ul class="list-inline" style="margin:0">
-                                                        {% if filter.tripType=='multicity' %}
-                                                            {% for from in service.lFrom %}
-                                                                <li>{{ from }} {% if loop.last is same as(false) %} <i class="fa fa-arrow-right"></i> {% endif %}</li>
-                                                            {% endfor %}                                                  
-                                                           {# <li>{{ service.to }} </li> #}
-                                                        {% else %}
-                                                        <li> {{ service.lFrom }} {% if filter.tripType=='roundtrip' %} <i class="fa fa-arrow-left"></i>{% endif %}<i class="fa fa-arrow-right"></i></li>
-                                                          <li>{{ service.to }} </li>
-                                                        {% endif %}
-
-                                                        </ul>
-                                                    </li>
-                                                    {% endif %}
+                                                   {#
                                                    {% if filter.tripType != 'multicity' %}
                                                         <li><span>Date:</span>{{ filter.date|date('F jS Y') }}</li>
                                                         {% if filter.tripType=='roundtrip' %}
@@ -183,32 +235,31 @@
                                                     
                                                     
                                                     <hr>
-                                                    
+                                                    #}
                                                     {% if filter.package|length>0 %}
-                                                        <li class="booking-price"><span>Price:</span>
-                                                        <em id="fee"><i class="fa fa-inr"></i>
-                                                        <em> {{ service.price.first.price }} </em> - <i class="fa fa-inr"></i> <em >50</em> = 
-                                                        </em> 
-                                                        <i class="fa fa-inr"></i><em id="price"> {{ service.price.first.price }} </em>
-                                                        </li>
+                                                        {% set price = service.price.first.price %}
                                                     {% else %}
-                                                    
                                                         {% if filter.tripType=='roundtrip' %}
-                                                        <li class="booking-price"><span>Price:</span>
-                                                            <em id="fee"><i class="fa fa-inr"></i>
-                                                            <em> {{ service.returnPrice }} </em> - <i class="fa fa-inr"></i> <em >50</em> = 
-                                                            </em> 
-                                                            <i class="fa fa-inr"></i><em id="price"> {{ service.returnPrice }} </em>
-                                                        </li>
+                                                            {% set price = service.returnPrice %}
                                                         {% else %}
-                                                        <li class="booking-price"><span>Price:</span> 
-                                                            <em id="fee"><i class="fa fa-inr"></i>
-                                                            <em> {{ service.price }} </em> - <i class="fa fa-inr"></i> <em >50</em> = 
-                                                            </em>
-                                                            <i class="fa fa-inr"></i><em id="price"> {{ service.price }} </em>
-                                                        </li>
-                                                        {% endif %} 
-                                                    {% endif %} 
+                                                            {% set price = service.price %}
+                                                        {% endif %}
+                                                    {% endif %}
+                                                    <li class="booking-price clearfix">
+                                                        <span>Adult X {{ filter.numAdult }}</span>
+                                                        <span> <i class="fa fa-inr"></i> <em > {{ price+discount }} </em></span>
+                                                        
+                                                    </li>                            
+                                                    <hr>
+                                                    <li class="booking-price clearfix"><span>Discount</span>
+                                                        <span>- <i class="fa fa-inr"></i> <em id="discount"> {{ discount }} </em></span>
+                                                    </li>
+                                                    <hr>
+                                                    {% block details %}
+                                                    <li class="text-right"><em>You Pay</em>
+                                                        <p><b><i class="fa fa-inr"></i><em id="price"> {{ price }} </em></b></p> 
+                                                    </li>
+                                                    {% endblock %}
                                                     
                                                 </ul>
                                             </div><!-- end col -->
@@ -217,7 +268,7 @@
                                             </div>
                                         </div><!-- end row -->
                                         
-                                            {% endblock %}
+                                            
                                            
                                        
                                     </div><!-- end col -->
@@ -228,6 +279,11 @@
                                 </div><!-- end row -->
                             </div><!-- end pricing-details -->
                                     </div>
+                                    
+                                    
+								
+
+
                                     
                                 </div><!-- end row -->
                            

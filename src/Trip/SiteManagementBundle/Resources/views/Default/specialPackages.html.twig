@@ -2,9 +2,17 @@
 {% block stylesheets %}
 <link href="{{ asset('css/jquery.timepicker.css') }}" rel="stylesheet" media="screen">
 {% endblock %}
+
+{% block meta %}
+    <meta name="keywords" content="{{ packagetitle.metaKeywords }}">
+    <meta name="description" content="{{ packagetitle.metaDescription }}">  
+{% endblock %}
+{% block title %} {{ packagetitle.metaTitle }} {% endblock %}
 {% block javascripts %}
 <script src="{{ asset('js/jquery.timepicker.min.js') }}"></script>
 <script>
+    
+
 $('.preferTime').timepicker({ 'scrollDefault': 'now' });
     
          $('.adults').click(function(e){		
@@ -50,7 +58,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                     <div class="container">
 
                         <div class="row">
-                            <div id="fullwidth" class="col-sm-12">
+                            <div id="fullwidth" class="col-sm-12 col-md-9">
                                 <div class="row">
                                  {% for key,package in packages %} 
                                      
@@ -99,31 +107,43 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                                             <!-- </ul>
                                                     </div>-->
                                                      </div>
-                                                <div class="col-md-12 container">
+                                                <div class="col-md-12 container package-visit-desc">
                                                    <!--<div class="helper">
                                                        <ul class="package-Destination">-->
+                                                    {% if package.endPoint|length>0 %}
                                                        {% for endPoint in package.endPoint %} 
                                                             {{ locations[endPoint.name].name }}{% if loop.last is same as(false) %},{% endif %}
+                                                    
                                                        {% endfor %}
+                                                     {% else %}
+                                                            N/A
+                                                   
+                                                     {% endif %}
                                                        <!--</ul> 
                                                     </div>-->
                                                 </div>
                                                 </div>
-                                                        {% if package.endPoint2|length>0 %}
+                                                       
                                                    <div class="col-md-12 package-border">
                                                       
                                                  <div class="col-md-12 container">
                                                           <span class="package-title"> Drop</span>
                                                  </div>
                                                <div class="col-md-12 container">
-                                                       {% for endPoint2 in package.endPoint2 %} 
-                                                            {{ locations[endPoint2.name].name }} {% if loop.last is same as(false) %},{% endif %}
-                                                       {% endfor %}
+                                                   {% if package.endPoint2|length>0 %}
+                                                    {% for endPoint2 in package.endPoint2  %} 
+                                                    {{ locations[endPoint2.name].name }} {% if loop.last is same as(false) %},{% endif %}
+                                                   
+                                                    {% endfor %}
+                                                   {% else %}
+                                                            N/A
+                                                   
+                                                   {% endif %}
                                                       
                                                 </div>
                                                  
                                                 </div>
-                                                       {% endif %}
+                                                      
                                             </div>
                                             <div class="clearfix"></div> 
 
@@ -152,21 +172,21 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-4 package-info-widget">
 
                                                          <div class="form-group make-margin">
                                                              <label>Date</label>
                                                     <input type="text" name="preferDate" placeholder="Prefer Date" class="form-control preferDate" required>                                          
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-4 package-info-widget">
 
                                                          <div class="form-group make-margin">
                                                         <label>Time</label>
                                                      <input type="text" name="preferTime" placeholder="Prefer Time" class="form-control preferTime" required>                                            
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-4 package-info-widget">
 
                                                         <div class="form-group make-margin">
                                                             <label>Adults</label>
@@ -200,6 +220,12 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                 {% endfor %}
                                  
                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <h3>All Packages</h3>
+                            {% for packagetitle in packagetitles %} 
+                                <a class="package-links" href="{{ path('trip_site_management_homepage_special_packages',{ 'url':packagetitle.locationUrl }) }}">{{ packagetitle.title }}</a> <br>
+                            {% endfor %}
                             </div>
                         </div>
                     </div>

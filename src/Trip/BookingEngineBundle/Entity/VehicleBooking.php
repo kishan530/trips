@@ -65,6 +65,11 @@ class VehicleBooking
      */
     private $returnDate;
     /**
+     * @var string
+     * @ORM\Column(name="prefer_time", type="string", length=100)
+     */
+    private $preferTime;
+    /**
      * @ORM\ManyToOne(targetEntity="Trip\BookingEngineBundle\Entity\Booking", inversedBy="vehicleBooking")
      * @ORM\JoinColumn(name="booking_id", referencedColumnName="id")
      */
@@ -230,6 +235,26 @@ class VehicleBooking
 		$this->price = $price;
 		return $this;
 	}
+    
+    /**
+     * Set preferTime
+     * @param string $preferTime
+     * @return Booking
+     */
+
+    public function setPreferTime($preferTime)
+    {
+    	$this->preferTime = $preferTime;
+    	return $this;
+    }
+    /**
+     * Get preferTime
+     * @return string
+     */
+    public function getPreferTime()
+    {
+    	return $this->preferTime;
+    }
     
      /**
 	 * @return the integer

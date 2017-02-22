@@ -9,7 +9,8 @@ use Trip\SiteManagementBundle\Entity\StartPoint;
 use Trip\SiteManagementBundle\Entity\EndPoint;
 use Trip\SiteManagementBundle\Entity\EndPoint2;
 use Trip\SiteManagementBundle\Entity\PackagePrice;
-use Trip\SiteManagementBundle\Dto\PackageLocations;
+use Trip\SiteManagementBundle\Entity\PackageItinerary;
+use Trip\SiteManagementBundle\DTO\PackageLocations;
 use Trip\SiteManagementBundle\Form\PackageLocationsType;
 use Trip\BookingEngineBundle\Form\SearchType;
 use Trip\SiteManagementBundle\Form\PackageType;
@@ -109,15 +110,20 @@ class SiteManagementController extends Controller
         //$packages = $em->getRepository('TripSiteManagementBundle:Package')->findAll();
         $packagetitle = $em->getRepository('TripSiteManagementBundle:PackageTitle')->findBy(array('locationUrl' => $url));
            if($packagetitle){
-                $id= $packagetitle[0]->getId();
+               $packagetitle = $packagetitle[0];
+                $id= $packagetitle->getId();
                $packages = $em->getRepository('TripSiteManagementBundle:Package')->findBy(array('category' => $id));
                 $locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
                 $locations = $this->getLocationsByIndex($locations);
                 $session = $request->getSession();
                 $session->set('resultSet',$packages);
+				 $session->set('locations',$locations);
+				$packagetitles = $em->getRepository('TripSiteManagementBundle:PackageTitle')->findAll();
                 return $this->render('TripSiteManagementBundle:Default:specialPackages.html.twig',array(
                         'packages' => $packages,
                         'locations' => $locations,
+                        'packagetitle'=>$packagetitle,
+						'packagetitles'=>$packagetitles,
                 ));
            }else{
                
@@ -848,7 +854,7 @@ class SiteManagementController extends Controller
     	$form   = $this->createServicesForm($entity);
     	$form->handleRequest($request);
     	if ($form->isValid()) {
-            $entity->setVehicleId($vid);
+           // $entity->setVehicleId($vid);
     		$em->persist($entity);
     		$em->flush();
     		return $this->redirect($this->generateUrl('trip_site_management_add_services'));
@@ -894,10 +900,14 @@ class SiteManagementController extends Controller
     public function addPackageAction(Request $request){
         $em = $this->getDoctrine()->getManager();
     	$package = new Package();
+        $itinerary = new PackageItinerary();
+        $collection = $package->getItineraryList();
+        $collection->add($itinerary);
     	$form   = $this->createAddPackageForm($package);
     	$form->handleRequest($request);
         if ($form->isValid()) {
-             $em->persist($package);
+             $collection = $package->getItineraryList();
+             $package = $em->persist($package);
     		$em->flush();
     		return $this->redirect($this->generateUrl('trip_site_management_add_package'));    
         
@@ -980,6 +990,16 @@ class SiteManagementController extends Controller
         $session->set('resultSet',$packagetitle);
         return $this->render('TripSiteManagementBundle:Default:multipackages.html.twig',array(
     			'packagetitle' => $packagetitle,
+                
+    	));
+    }
+     public function  viewPackageAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $package =$em->getRepository('TripSiteManagementBundle:Package')->find(1);
+        
+        
+        return $this->render('TripSiteManagementBundle:Default:viewPackage.html.twig',array(
+    			'package' => $package,
                 
     	));
     }

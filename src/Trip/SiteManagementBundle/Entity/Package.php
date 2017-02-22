@@ -34,6 +34,41 @@ class Package
      * )
      */
      private $name;
+    
+    /**
+     * @var integer
+     * @ORM\Column(name="title", type="string", length=250,nullable=true)
+     */
+    private $title;
+    
+    /**
+     * @var string
+     * @ORM\Column(name="overview", type="string", length=5000,nullable=true)
+     */
+    private $overview; 
+    
+    
+    /**
+     * @var integer
+     * @ORM\Column(name="meta_keywords", type="string", length=5000,nullable=true)
+     */
+    private $metaKeywords;
+    /**
+     * @var integer
+     * @ORM\Column(name="meta_discription", type="string", length=5000,nullable=true)
+     */
+    private $metaDescription;
+    /**
+     * @var integer
+     * @ORM\Column(name="meta_title", type="string", length=250,nullable=true)
+     */
+    private $metaTitle;
+    /**
+     * @var integer
+     * @ORM\Column(name="package_url", type="string", length=250,nullable=true)
+     */
+    private $packageUrl;
+    
      /**
      * @var string
      * @ORM\Column(name="package_type", type="string", length=50)
@@ -79,6 +114,14 @@ class Package
      * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\PackagePrice", mappedBy="package", cascade={"persist"})
      */
     private $price;
+    /**
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\PackageItinerary", mappedBy="package", cascade={"persist"})
+     */
+    private $itinerary;
+    /**
+     * @var string
+     */
+    private $itineraryList;
         
     /**
      * @var string
@@ -90,6 +133,8 @@ class Package
     	$this->startPoint = new ArrayCollection();
     	$this->endPoint = new ArrayCollection();
         $this->price = new ArrayCollection();
+         $this->itinerary = new ArrayCollection();
+         $this->itineraryList = new ArrayCollection();
     }
 	
 	/**
@@ -330,6 +375,151 @@ class Package
 		$this->price->add($price);
 		return $this;
 	} 
+    
+    
+    /**
+	 *
+	 * @return the integer
+	 */
+	public function getTitle() {
+		return $this->title;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$title
+	 */
+	public function setTitle($title) {
+		$this->title = $title;
+		return $this;
+	}
+	
+	/**
+	 *
+	 * @return the string
+	 */
+	public function getOverview() {
+		return $this->overview;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$overview
+	 */
+	public function setOverview($overview) {
+		$this->overview = $overview;
+		return $this;
+	}
+	
+	/**
+	 *
+	 * @return the integer
+	 */
+	public function getMetaKeywords() {
+		return $this->metaKeywords;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$metaKeywords
+	 */
+	public function setMetaKeywords($metaKeywords) {
+		$this->metaKeywords = $metaKeywords;
+		return $this;
+	}
+	
+	/**
+	 *
+	 * @return the integer
+	 */
+	public function getMetaDescription() {
+		return $this->metaDescription;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$metaDescription
+	 */
+	public function setMetaDescription($metaDescription) {
+		$this->metaDescription = $metaDescription;
+		return $this;
+	}
+	
+	/**
+	 *
+	 * @return the integer
+	 */
+	public function getMetaTitle() {
+		return $this->metaTitle;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$metaTitle
+	 */
+	public function setMetaTitle($metaTitle) {
+		$this->metaTitle = $metaTitle;
+		return $this;
+	}
+	
+	/**
+	 *
+	 * @return the integer
+	 */
+	public function getPackageUrl() {
+		return $this->packageUrl;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$packageUrl
+	 */
+	public function setPackageUrl($packageUrl) {
+		$this->packageUrl = $packageUrl;
+		return $this;
+	}
+    
+    /**
+	 *
+	 * @return the integer
+	 */
+	public function getItinerary() {
+		return $this->itinerary;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$itinerary
+	 */
+	public function setItinerary($itinerary) {
+		$this->itinerary = $itinerary;
+		return $this;
+	}
+    
+     /**
+	 *
+	 * @return the integer
+	 */
+	public function getItineraryList() {
+		return $this->itineraryList;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$itineraryList
+	 */
+	public function setItineraryList($itineraryList) {
+		$this->itineraryList = $itineraryList;
+		return $this;
+	}
 	
 
 

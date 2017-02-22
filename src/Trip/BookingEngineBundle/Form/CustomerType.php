@@ -35,7 +35,7 @@ class CustomerType extends AbstractType
 
     				'choices' => array(
 
-                            '10' => '10% payment',
+                            '30' => '30% payment',
     						'advance' => '50% Payment ',
 
     				),
