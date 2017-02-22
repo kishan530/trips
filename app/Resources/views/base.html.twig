@@ -9,10 +9,13 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-<title>{% block title %}Just Trip | Cab Booking Service| Taxi Service In Tirupati {% endblock %}</title>
-
+     <meta name="author" content="justrip.in">
+    <meta name="google-site-verification" content="t9UottiGdtAaU1gGattiHZZNJOK3BF8qZ-qRfCqyYC0" />
+    {% block meta %}
+    <meta name="keywords" content="cabs in tirupati, tirupati cabs, Cab Service in Tirupati, Cab Services in Tirupati, Taxi in Tirupati, Taxi service in Tirupati, Tirupati Taxi, tirupati car rental">
+    <meta name="description" content="JustTrip.in is a one-stop-shop for booking  taxi & cabs online.Call @  +91-9663133008 and get Tirupati car rental, cab & taxi services from Tirupati to pick & drop">  
+{% endblock %}
+    <title>{% block title %}Tirupati Car Rentals,Cabs ,Taxi Services in Tirupati{% endblock %}</title>
     <!-- Favicons -->
     <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon" />
     <link rel="apple-touch-icon" href="{{ asset('images/apple-touch-icon.png') }}" />
@@ -25,7 +28,7 @@
     <!-- Bootstrap -->
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
     <!-- Default Styles -->
-    <link href="{{ asset('css/style.css?version=1.08') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css?version=1.10') }}" rel="stylesheet">
     <!-- Custom Styles -->
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
 
@@ -73,7 +76,7 @@
             <div class="pull-right">
                 <ul class="topbar-drops list-inline">
                     <a href="mailto:info@justtrip.in"><i class="icon-wallet17"></i> info@justtrip.in</a>
-                    <li><i class="icon-telephone5"></i> +91-9900585533</li>
+                    <li><i class="icon-telephone5"></i> +91-9663133008</li>
                 </ul><!-- end list-style -->
             </div><!-- end left -->
            
@@ -113,6 +116,7 @@
                                              <li><a href="{{ path('trip_site_management_add_packagelocations') }}">Add PackageLocation</a></li>
                                              <li><a href="{{ path('trip_site_management_add_package_price') }}">Add PackagePrice</a></li>
 											 <li><a href="{{ path('trip_site_management_booking_update_price') }}">Update Price</a></li>
+                                             <li><a href="{{ path('trip_booking_engine_coustomPackage') }}">Coustom Package</a></li>
                                             
                                         </ul>
                                     </li>
@@ -233,14 +237,12 @@
   
     
     <!-- SLIDER REVOLUTION 4.x SCRIPTS  -->
-    <script defer="defer" src="{{ asset('rs-plugin/js/jquery.themepunch.tools.min.js') }}"></script>
-    <script defer="defer" src="{{ asset('rs-plugin/js/jquery.themepunch.revolution.min.js') }}"></script>
-    <script defer="defer" src="{{ asset('js/revslider.js') }}"></script>
+    
     
     <script defer="defer" src="{{ asset('js/chosen.jquery.js') }}" type="text/javascript"></script>
 <script defer="defer" src="{{ asset('js/prism.js') }}" type="text/javascript" charset="utf-8"></script>
     
-      <script defer="defer" src="{{ asset('js/custom.js?version=1.05') }}"></script>
+      <script defer="defer" src="{{ asset('js/custom.js?version=1.06') }}"></script>
     
     
         {% block javascripts %}{% endblock %}
