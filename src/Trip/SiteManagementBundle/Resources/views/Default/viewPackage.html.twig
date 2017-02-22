@@ -1,0 +1,105 @@
+{% extends 'page.html.twig' %}
+{% block stylesheets %}
+<link href="{{ asset('css/jquery.timepicker.css') }}" rel="stylesheet" media="screen">
+{% endblock %}
+{% block javascripts %}
+<script src="{{ asset('js/jquery.timepicker.min.js') }}"></script>
+<script>
+$('.preferTime').timepicker({ 'scrollDefault': 'now' });
+    
+         $('.adults').click(function(e){		
+			e.preventDefault(); //STOP default action 
+			 var id = $(this).attr('id');
+			 var value = parseInt($(this).attr('value'));
+             var numAdult = $(this).siblings("input[name=numAdult]");
+			 var adults =parseInt(numAdult.val());
+			 if (isNaN(adults)) { 
+				 adults= 0
+	            } 
+			 if(id=='decrement'){
+				 adults-=1;
+				 if(adults>=value) numAdult.val(adults); else exit();
+			  }else{
+				adults+=1;
+			    if(adults<=20)  numAdult.val(adults); else exit();
+				}	
+	    });
+    
+         $('.vehicle-icon').click(function(e){		
+			e.preventDefault(); //STOP default action 
+			 var id = $(this).attr('id');
+			 var price = $(this).attr('value');
+             var package = parseInt($(this).attr('title'));
+             $('.vehicle'+package).removeClass('active');
+             $(this).addClass('active');
+             $('#vehicleIndex'+package).val(id);
+             $('#price'+package).html(price);
+
+
+	       });
+</script>
+{% endblock %}
+{% block body %}
+
+<section class="section clearfix">
+        
+    <div class="container">
+        <h3>One day Package</h3>
+        <ul class="nav nav-pills pactabs">
+          <li class="active"><a data-toggle="pill" href="#overview">Overview</a></li>
+         <li><a data-toggle="pill" href="#fareRules">Fare Rules</a></li>
+       <li><a data-toggle="pill" href="#itinerary">Itinerary</a></li>
+          <li><a data-toggle="pill" href="#about">About</a></li> 
+        </ul>
+  
+        <div class="tab-content">
+            <div id="overview" class="tab-pane fade in active">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h4>Overview</h4>
+                        <p>{{ package.overview }}</p>
+                    </div>
+                </div>
+            </div>
+             <div id="fareRules" class="tab-pane fade in active">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h4>Overview</h4>
+                        <p>Pattaya & Bangkok: The two most popular holiday destinations in Thailand. Bangkok is the capital and a cosmopolitan city, which will enthrall with its amazing attractions. Shopping in Bangkok is famous all over the world, and no one misses it. Pattaya, with its dazzling night life and beautiful beaches is sure to leave you mesmerized</p>
+                    </div>
+                </div>
+            </div>
+             <div id="itinerary" class="tab-pane fade in active">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h4>Itinerary</h4>
+                        <h5>Day 1 - Arrival Bangkok – Pattaya</h5>
+                        <p>Upon your arrival in Bangkok, Arrange your own transfers to Pattaya from Bangkok Airport, which is a short 2 hours drive from
+Bangkok. Check in to the hotel .Time to relax!!
+In the evening, we recommend that you take an optional tour of Alcazar Show(at additional cost). The Alcazar Show a world-famous cabaret, which can give the Lido and Moulin Rouge of Paris, a run for their money, featuring a grand theatre with 1200 seats and thousands of watts of pulsating sound.
+Overnight at Hotel in Pattaya.
+*Hotel Standard Check in time is 2PM -4PM. To avail guaranteed early check in please pay INR 1,200 per person at the time of booking. Also, hotel guaranteed check-in is subject to availability at the time of booking.</p>
+                        <h5>Day 1 - Arrival Bangkok – Pattaya</h5>
+                        <p>Upon your arrival in Bangkok, Arrange your own transfers to Pattaya from Bangkok Airport, which is a short 2 hours drive from
+Bangkok. Check in to the hotel .Time to relax!!
+In the evening, we recommend that you take an optional tour of Alcazar Show(at additional cost). The Alcazar Show a world-famous cabaret, which can give the Lido and Moulin Rouge of Paris, a run for their money, featuring a grand theatre with 1200 seats and thousands of watts of pulsating sound.
+Overnight at Hotel in Pattaya.
+*Hotel Standard Check in time is 2PM -4PM. To avail guaranteed early check in please pay INR 1,200 per person at the time of booking. Also, hotel guaranteed check-in is subject to availability at the time of booking.</p>
+                    </div>
+                </div>
+            </div>
+             <div id="About" class="tab-pane fade in active">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h4>About Tirupati</h4>
+                        <p>Thailand is one the most popular countries in Asia and is famous for its delightful culture, stunning sandy beaches, Thai culinary delicacies and some wonderful tourist attractions. Tourists can experience the euphoria of Thailand in Pattaya. Renowned as one of the world' s top beach destinations, Pattaya has been luring adventure-seekers for decades with an intoxicating mix of eateries and shops, luxury resorts, wild parties and high-octane water sports. Pattaya is located on the east coast of the Gulf of Thailand, just 150 kilometres from the capital ' Bangkok. The beach city draws in hordes of tourists and expats from all over the world. You can choose to get lost in the natural beauty or get taken over by the allure of the cabaret stage. This region is famous for its varied nightlife, which gave it the name ' the naughty sister of Bangkok' . However, now there are a lot more attrac</p>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+        
+        
+</section>
+{% endblock %}

@@ -1,0 +1,201 @@
+{% extends 'page.html.twig' %}
+{% block stylesheets %}
+		<link href="{{ asset('css/jquery.timepicker.css') }}" rel="stylesheet" media="screen">
+{% endblock %}
+{% block javascripts %}
+<script src="{{ asset('js/jquery.timepicker.min.js') }}"></script>
+<script>
+    
+    $('.adults').click(function(e){		
+			e.preventDefault(); //STOP default action 
+			 var id = $(this).attr('id');
+			 var value = parseInt($(this).attr('value'));
+			 var adults =parseInt( $('#trip_custom_package_numAdult').val());
+			 if (isNaN(adults)) { 
+				 adults= 0
+	            } 
+			 if(id=='decrement'){
+				 adults-=1;
+				 if(adults>=value) $('#trip_custom_package_numAdult').val(adults); else exit();
+			  }else{
+				adults+=1;
+			    if(adults<=20)  $('#trip_custom_package_numAdult').val(adults); else exit();
+				}							 		   			   							
+	    });
+    
+    $('.preferTime').timepicker({ 'scrollDefault': 'now' });
+ // keep track of how many city fields have been rendered
+    var packageCount = '{{ form.multiple|length }}';
+
+    $('#add-another-package').click(function(e) {
+            e.preventDefault();
+            /*if(itemCount>4){
+                alert('Max 5 only');
+                exit();
+            }*/
+
+            var itineraryList = $('#package-list');
+
+            // grab the prototype template
+            var newWidget = itineraryList.attr('data-prototype');
+            // replace the "__name__" used in the id and name of the prototype
+            // with a number that's unique to your city
+            newWidget = newWidget.replace(/__name__/g, packageCount);
+            packageCount++;
+        
+            
+            // create a new list element and add it to the list
+            var newLi = $('<div></div>').html(newWidget);
+            newLi.appendTo(itineraryList);
+        
+            var key = packageCount-1;
+            var next = key+1;
+            $(".chosen-select").chosen({
+                no_results_text: "Oops, nothing found!"
+            });
+            $(".preferDate").datepicker({
+                dateFormat: "dd/mm/yy",
+                numberOfMonths: 2,
+                minDate: 0
+            });
+            $('.preferTime').timepicker({ 'scrollDefault': 'now' });
+        });
+</script>
+{% endblock %}
+{% block body %}
+
+    <section class="section clearfix">
+        <div class="container">
+            <div class="row">
+                <div id="fullwidth" class="col-sm-12">
+                    <div class="col-lg-5">
+                    {{ form_start(form) }}
+                   
+                                                 
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-4 make-margin">
+                             {{ form_label(form.name) }} 
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                             {{ form_widget(form.name,{'attr':{'class':'make-margin'}}) }} 
+                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-4 make-margin">
+                             {{ form_label(form.email) }} 
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                             {{ form_widget(form.email,{'attr':{'class':'make-margin'}}) }} 
+                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-4 make-margin">
+                             {{ form_label(form.mobile) }} 
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                             {{ form_widget(form.mobile,{'attr':{'class':'make-margin'}}) }} 
+                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-4 make-margin">
+                             {{ form_label(form.numAdult) }} 
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                             <div class="input-group make-margin">
+                                    <a class="adults input-group-addon" id="decrement" value="1" href="#">-</a> 
+                                                    {{ form_widget(form.numAdult) }}
+                                    <a class="adults input-group-addon" id="increment" href="#">+</a>
+                            </div>
+                         </div>
+                    </div>
+                    <div class="row form-inline">
+                        <div class="col-md-4 col-sm-4 col-xs-4 make-margin">
+                             {{ form_label(form.paymentMode) }} 
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                             {{ form_widget(form.paymentMode,{'attr':{'class':'make-margin'}}) }} 
+                         </div>
+                    </div>
+                        
+                        
+                    </div>    
+                <div class="col-lg-8">
+                        <div class="row form-group">
+                            <div class="col-lg-2">
+                               <label>Date</label>
+                            </div>
+                             <div class="col-lg-2">
+                                <label>Prefer Time</label>
+                            </div>
+                             <div class="col-lg-2">
+                                <label>Vehicle</label>
+                            </div>
+                            <div class="col-lg-2">
+                                <label>Leaving From</label>
+                            </div> 
+                           <div class="col-lg-2">
+                               <label>goingTo</label>
+                            </div>
+                            <div class="col-lg-2">
+                                <label>price</label>                              
+                            </div>
+                        </div>
+                     {% macro information_prototype(j) %}
+                        <div class="row form-group">
+                            <div class="col-lg-2">
+                                {{ form_widget(j.date) }}
+                            </div>
+                             <div class="col-lg-2">
+                                {{ form_widget(j.preferTime) }}
+                            </div>
+                             <div class="col-lg-2">
+                                {{ form_widget(j.vehicleId) }}
+                            </div>                            
+                           <div class="col-lg-2">
+                                {{ form_widget(j.leavingFrom) }}
+                            </div>
+                            <div class="col-lg-2">
+                                {{ form_widget(j.goingTo) }}
+                            </div>
+                            <div class="col-lg-2">
+                                {{ form_widget(j.price) }}
+                            </div>
+                        </div>
+                   
+                            
+                        {% endmacro %}
+                        <div id="package-list"
+                                                data-prototype="{{ _self.information_prototype(form.multiple.vars.prototype)|e }}">
+                            {% for j in form.multiple %}
+                             <div class="row form-group">
+                                 <div class="col-lg-2">
+                                {{ form_widget(j.date) }}
+                                </div>
+                                 <div class="col-lg-2">
+                                    {{ form_widget(j.preferTime) }}
+                                </div>
+                                 <div class="col-lg-2">
+                                    {{ form_widget(j.vehicleId) }}
+                                </div>
+                                <div class="col-lg-2">
+                                    {{ form_widget(j.goingTo) }}
+                                </div> 
+                               <div class="col-lg-2">
+                                    {{ form_widget(j.leavingFrom) }}
+                                </div>
+                                <div class="col-lg-2">
+                                    {{ form_widget(j.price) }}
+                                </div>                                                                        
+                            </div>
+                            {% endfor %}
+                        </div>
+                    <a href="#" id="add-another-package">Add another Package</a>
+                        
+                    
+                    {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

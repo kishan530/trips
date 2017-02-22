@@ -1,0 +1,103 @@
+<div style="background:#eeeeee"><div class="adM">
+</div><div style="margin-top:10px"><div class="adM">
+	 </div><div style="display:block"><div class="adM">
+	</div><table width="100%">
+		<tbody>
+		<tr>
+			<td>
+				<p>Dear {{ customer.name }} <br> Your Booking has been Successfully completed.Your Booking Id is {{ booking.bookingId }} </p>			
+			</td>
+		</tr>
+		
+	</tbody></table>
+	<br>
+	<br>
+
+<h4 style="padding:0px;margin:0px;color:#666;font-size:17px">Personal Details</h4> 	
+<table width="100%" align="center" style="border:1px solid #ccc" cellspacing="0" cellpadding="0">
+
+<tbody><tr style="background:#e8e8e8;color:#666">
+<th style="border:solid 1px #dddddd" height="30">Customer Name</th>
+<th style="border:solid 1px #dddddd">Phone Number</th>
+<th style="border:solid 1px #dddddd">Email</th>
+</tr>
+<tr style="color:#666;background:#fcfcfc">
+<td align="center" style="border:solid 1px #dddddd" height="30">  {{ customer.name }} </td>
+<td align="center" style="border:solid 1px #dddddd"> {{ customer.mobile }} </td>
+<td align="center" style="border:solid 1px #dddddd"><a href="mailto:{{ customer.email }}" target="_blank"> {{ customer.email }} </a></td>
+</tr>
+</tbody></table>
+<br>
+<h4 style="padding:0px;margin:0px;color:#666;font-size:17px">Booking Details</h4>
+<table width="100%" align="center" style="border:1px solid #ccc" cellpadding="0" cellspacing="0">
+<tbody><tr style="background:#e8e8e8;color:#666">
+<th style="border:solid 1px #dddddd" height="30">Booking Id #</th>
+<th style="border:solid 1px #dddddd">Trip Type</th>
+<th style="border:solid 1px #dddddd">Booked On </th>
+<th style="border:solid 1px #dddddd">Adult </th>
+</tr>
+<tr style="color:#666;background:#fcfcfc">
+<td align="center" style="border:solid 1px #dddddd" height="30">{{ booking.bookingId }}</td>
+<td align="center" style="border:solid 1px #dddddd">{{ services.first.tripType }}</td>
+<td align="center" style="border:solid 1px #dddddd">{{ booking.bookedOn|date('d/m/Y') }}</td>
+<td align="center" style="border:solid 1px #dddddd"> {{ booking.numAdult }} </td>
+</tr>
+</tbody></table>
+<br>
+<h4 style="padding:0px;margin:0px;color:#666;font-size:17px">Package Details</h4>
+<table width="100%" align="center" style="border:1px solid #ccc" cellpadding="0" cellspacing="0">
+<tbody>
+<tr style="background:#e8e8e8;color:#666">
+<th style="border:solid 1px #dddddd" height="30">#</th>
+<th style="border:solid 1px #dddddd">Date</th>
+<th style="border:solid 1px #dddddd">Prefer Time</th>
+<th style="border:solid 1px #dddddd">Vehicle</th>
+<th style="border:solid 1px #dddddd">From</th>
+<th style="border:solid 1px #dddddd">To </th>
+</tr>
+{% if services|length>0 %}
+    {% for service in services  %} 
+        <tr>
+            <td align="center" style="border:solid 1px #dddddd" height="30">{{ loop.index }}</td>
+            <td align="center" style="border:solid 1px #dddddd"> {{ service.date|date('F jS Y') }}  </td>
+            <td align="center" style="border:solid 1px #dddddd">{{ service.preferTime }}</td>
+            <td align="center" style="border:solid 1px #dddddd">{{ service.model }}</td>
+            <td align="center" style="border:solid 1px #dddddd">{{ locations[service.leavingFrom].name }}</td>
+            <td align="center" style="border:solid 1px #dddddd">{{ locations[service.goingTo].name }}</td>
+        </tr>
+    {% endfor %}
+{% endif %}
+</tbody>
+</table>
+<br>
+<h4 style="padding:0px;margin:0px;color:#666;font-size:17px">Fare Details</h4>
+<table width="45%" align="right" style="border:1px solid #ccc" cellpadding="0" cellspacing="0">
+<tbody>
+    <tr style="background:#fcfcfc;color:#666">
+        <th align="right" style="border:solid 1px #dddddd; padding:5px" height="30" width="50%">Total Fare</th>
+        <td align="left" style="border:solid 1px #dddddd; padding:5px">Rs {{ booking.totalPrice }} </td>
+    </tr>
+   
+    <tr style="background:#fcfcfc;color:#666">
+        <th align="right" style="border:solid 1px #dddddd; padding:5px" height="30" width="50%">Service Tax (5.6%)</th>
+        <td align="left" style="border:solid 1px #dddddd; padding:5px">Rs {{ booking.serviceTax }} </td>
+    </tr>
+    <tr style="background:#fcfcfc;color:#666">
+        <th align="right" style="border:solid 1px #dddddd; padding:5px" height="30" width="50%">Swach Bharth Cess (0.2%)</th>
+        <td align="left" style="border:solid 1px #dddddd; padding:5px">Rs {{ booking.swachBharthCess }} </td>
+    </tr>
+    <tr style="background:#fcfcfc;color:#666">
+        <th align="right" style="border:solid 1px #dddddd; padding:5px" height="30" width="50%">Krishi Kalyan Cess (0.2%)</th>
+        <td align="left" style="border:solid 1px #dddddd; padding:5px"> Rs {{ booking.krishiKalyanCess }} </td>
+    </tr>
+	 <tr style="background:#fcfcfc;color:#666">
+        <th align="right" style="border:solid 1px #dddddd; padding:5px" height="30" width="50%">Final Price</th>
+        <td align="left" style="border:solid 1px #dddddd; padding:5px">Rs {{ booking.finalPrice }}</td>
+    </tr>
+   
+
+</tbody></table><div class="yj6qo"></div><div class="adL">
+
+</div></div><div class="adL">
+</div></div><div class="adL">
+</div></div>
