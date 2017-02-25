@@ -119,16 +119,21 @@ class SiteManagementController extends Controller
                 $session->set('resultSet',$packages);
 				 $session->set('locations',$locations);
 				$packagetitles = $em->getRepository('TripSiteManagementBundle:PackageTitle')->findAll();
+				$packagetitlecontents = $em->getRepository('TripSiteManagementBundle:PackageTitleContent')->findBy(array('packageTitleId' => $id));
+				$packagetitlelist = $em->getRepository('TripSiteManagementBundle:PackageTitleList')->findBy(array('packageTitleId' => $id));
                 return $this->render('TripSiteManagementBundle:Default:specialPackages.html.twig',array(
                         'packages' => $packages,
                         'locations' => $locations,
                         'packagetitle'=>$packagetitle,
 						'packagetitles'=>$packagetitles,
+                		'packagetitlecontents'=>$packagetitlecontents,
+                		'packagetitlelist'=>$packagetitlelist,
                 ));
            }else{
                
            }
-		
+          
+           
     }
     /**
 	 * 
