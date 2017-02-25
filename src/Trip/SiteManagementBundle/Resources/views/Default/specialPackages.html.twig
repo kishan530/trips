@@ -227,8 +227,30 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                 <a class="package-links" href="{{ path('trip_site_management_homepage_special_packages',{ 'url':packagetitle.locationUrl }) }}">{{ packagetitle.title }}</a> <br>
                             {% endfor %}
                             </div>
-                        </div>
+                        </div></br>
+                       
+                         <div class="row">
+                           <div id="fullwidth" class="col-sm-12 col-md-9">
+                            <div class="specialtxt">
+                             {% for packagecontent in packagetitlecontents %} 
+                           <h5>{{ packagecontent.title }}</h5>
+                           <p>{{ packagecontent.description }}</p>
+                           
+                            {% endfor %}
+                          
+                          
+                           <ul class="type">
+                           {% for packagelist in packagetitlelist %}
+                           <li>{{ packagelist.text }} </li>
+                            {% endfor %}
+
+                           </ul></br>
+                                 
+                           </div>
+                         </div>  
+                       </div>
                     </div>
+                    
             </div>
             
             
