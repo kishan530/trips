@@ -725,3 +725,9 @@ h1{font-size:28px;}
 .specialtxt{text-align:justify;}
 .type{padding-left:25px;}
 .data-align {text-align:justify;}
+.package-view .package-view-title{font-size: 2.14286em;text-transform: none !important; }
+.package-view .package-custome-title{color: #000;font-size: 1.42857em;text-transform: none;margin: 20px 0 20px 0!important;font-family: "LatoBold";}
+.package-view .subtitle {font: 1.28571em "LatoBold";text-transform: none !important;;}
+.package-price-details{ margin-top: 70px;}
+.package-view .list-view{padding-left: 20px;}
+.package-view .list-view li{font-size: 1.07143em;line-height: 22px;text-align: justify;}
