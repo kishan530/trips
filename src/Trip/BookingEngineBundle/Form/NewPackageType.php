@@ -119,8 +119,6 @@ class NewPackageType extends AbstractType
     {
         $resolver->setDefaults(array(
         		'data_class' => 'Trip\BookingEngineBundle\DTO\NewPackage',
-        		'csrf_protection'   => false,
-        		'allow_extra_fields' => true,
                 
         ));
     }

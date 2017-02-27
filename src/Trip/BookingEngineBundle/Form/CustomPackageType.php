@@ -43,7 +43,6 @@ class CustomPackageType extends AbstractType
          ->add('multiple', 'collection', array(
         		'type'         => new NewPackageType($this->catalogService),
         		'allow_add'    => true,
-        		'allow_delete' => true,
                  'prototype'=>true,
         		'required'    => false,
         ))
@@ -87,6 +86,7 @@ class CustomPackageType extends AbstractType
     {
             $resolver->setDefaults(array(
             'data_class' => 'Trip\BookingEngineBundle\DTO\Customer',
+            'allow_extra_fields' => true,
             ));
     }
 

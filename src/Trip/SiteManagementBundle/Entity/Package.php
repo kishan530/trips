@@ -132,6 +132,7 @@ class Package
     public function __construct() {
     	$this->startPoint = new ArrayCollection();
     	$this->endPoint = new ArrayCollection();
+    	$this->endPoint2 = new ArrayCollection();
         $this->price = new ArrayCollection();
          $this->itinerary = new ArrayCollection();
          $this->itineraryList = new ArrayCollection();

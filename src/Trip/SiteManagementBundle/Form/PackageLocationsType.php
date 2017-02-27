@@ -66,8 +66,8 @@ class PackageLocationsType extends AbstractType
                     'label' => 'Type',
             		'choices' => array(
                                         'PickUp'=>'PickUp',
-                                        'FirstDay'=>'FirstDay',
-                                        'SecondDay'=>'SecondDay',
+                                        'FirstDay'=>'Places to Visit',
+                                        'SecondDay'=>'Drop',
 				            		),
             		'required'    => true,
                    

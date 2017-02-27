@@ -28,7 +28,7 @@
     <!-- Bootstrap -->
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
     <!-- Default Styles -->
-    <link href="{{ asset('css/style.css?version=1.10') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css?version=1.13') }}" rel="stylesheet">
     <!-- Custom Styles -->
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
 
@@ -103,7 +103,19 @@
                                         <a href="{{ path('trip_site_management_homepage')}}">Cars</a>
                                     </li><!-- end yamm-fw -->
                                    <!-- <li><a href="{{ path('trip_site_management_homepage_hotels')}}">Hotels</a></li>-->
-                                    <li><a href="{{ path('trip_site_management_homepage_packages')}}" >packages</a></li>
+                                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                    	<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Packages</a>
+                                        <ul class="dropdown-menu" role="menu">
+
+                                             <li><a href="{{ path('trip_site_management_add_package') }}">Add Package</a></li>
+                                             <li><a href="{{ path('trip_site_management_add_packagelocations') }}">Add PackageLocation</a></li>
+                                             <li><a href="{{ path('trip_site_management_add_package_price') }}">Add PackagePrice</a></li>
+                                            
+                                        </ul>
+                                    </li>
+                                    {% else %}
+                                    <li><a href="{{ path('trip_site_management_homepage_packages')}}" >Packages</a></li>
+                                    {% endif %}
                                     <li><a href="{{ path('trip_site_management_homepage_deals')}}">Hot Deals</a></li>
                                     {% if is_granted('ROLE_SUPER_ADMIN') %}
                                     <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin</a>
@@ -116,7 +128,7 @@
                                              <li><a href="{{ path('trip_site_management_add_packagelocations') }}">Add PackageLocation</a></li>
                                              <li><a href="{{ path('trip_site_management_add_package_price') }}">Add PackagePrice</a></li>
 											 <li><a href="{{ path('trip_site_management_booking_update_price') }}">Update Price</a></li>
-                                             <li><a href="{{ path('trip_booking_engine_coustomPackage') }}">Coustom Package</a></li>
+                                             <li><a href="{{ path('trip_booking_engine_coustomPackage') }}">Custom Package</a></li>
                                             
                                         </ul>
                                     </li>
@@ -232,6 +244,7 @@
     <script defer="defer" src="{{ asset('js/jquery.prettyPhoto.js') }}"></script>
     <script defer="defer" src="{{ asset('js/contact.js') }}"></script>
     <script defer="defer" src="{{ asset('js/parallax.js') }}"></script>
+   
     <script defer="defer" src="{{ asset('js/owl.carousel.js') }}"></script>
     <script defer="defer" src="{{ asset('js/bootstrap-select.js') }}"></script>
   
@@ -242,7 +255,7 @@
     <script defer="defer" src="{{ asset('js/chosen.jquery.js') }}" type="text/javascript"></script>
 <script defer="defer" src="{{ asset('js/prism.js') }}" type="text/javascript" charset="utf-8"></script>
     
-      <script defer="defer" src="{{ asset('js/custom.js?version=1.06') }}"></script>
+      <script defer="defer" src="{{ asset('js/custom.js?version=1.07') }}"></script>
     
     
         {% block javascripts %}{% endblock %}

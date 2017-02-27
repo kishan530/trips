@@ -161,36 +161,5 @@
     }), e(".chosen-select").chosen({
         no_results_text: "Oops, nothing found!"
     });
-    var r, o, i = [
-            ["OUR INFORMATIONS", -37.801578, 145.060508, 2]
-        ],
-        n = new google.maps.Map(document.getElementById("map"), {
-            zoom: 13,
-            scrollwheel: !1,
-            navigationControl: !0,
-            mapTypeControl: !1,
-            scaleControl: !1,
-            draggable: !0,
-            styles: [{
-                stylers: [{
-                    hue: "#000"
-                }, {
-                    saturation: -100
-                }, {
-                    gamma: 1.6
-                }]
-            }],
-            center: new google.maps.LatLng(-37.801578, 145.060508),
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        }),
-        s = new google.maps.InfoWindow;
-    for (o = 0; o < i.length; o++) r = new google.maps.Marker({
-        position: new google.maps.LatLng(i[o][1], i[o][2]),
-        map: n,
-        icon: "images/marker.png"
-    }), google.maps.event.addListener(r, "click", function(e, t) {
-        return function() {
-            s.setContent(i[t][0]), s.close(n, e)
-        }
-    }(r, o))
+    
 }(jQuery);

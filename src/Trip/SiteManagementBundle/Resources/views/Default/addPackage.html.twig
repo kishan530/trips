@@ -40,22 +40,94 @@ $("select").change(function() {
         <div class="container">
             <div class="row">
                 <div id="fullwidth" class="col-sm-12">
-                    <div class="col-lg-5">
-                    {{ form_start(form) }}
-                    {{ form_widget(form) }}
-                        
-                        
-                        
-                
-                     {% macro information_prototype(j) %}
-                        <div class="row form-group">
+               <div class="col-lg-5">
+                    
+                   {{ form_start(form) }}
+                   <div class="row form-group">
                             <div class="col-lg-8">
-                                {{ form_widget(j.title) }}
+                            	{{ form_label(form.title) }}
+                                {{ form_widget(form.title) }}
+                            </div> 
+                                                    
+                    </div>
+                     <div class="row form-group">
+                            <div class="col-lg-8">
+                            	{{ form_label(form.name) }}
+                                {{ form_widget(form.name) }}
                             </div> 
                                                     
                         </div>
-                        <div class="row form-group">
+                     <div class="row form-group">
                             <div class="col-lg-8">
+                            	{{ form_label(form.overview) }}
+                                {{ form_widget(form.overview) }}
+                            </div> 
+                                                    
+                        </div>   
+                     <div class="row form-group">
+                            <div class="col-lg-8">
+                            	{{ form_label(form.metaKeywords) }}
+                                {{ form_widget(form.metaKeywords) }}
+                            </div> 
+                                                    
+                        </div>   
+                      <div class="row form-group">
+                            <div class="col-lg-8">
+                            	{{ form_label(form.metaDescription) }}
+                                {{ form_widget(form.metaDescription) }}
+                            </div> 
+                                                    
+                        </div>   
+                       <div class="row form-group">
+                            <div class="col-lg-8">
+                            	{{ form_label(form.metaTitle) }}
+                                {{ form_widget(form.metaTitle) }}
+                            </div> 
+                                                    
+                        </div>                        
+                        
+                        
+                      <div class="row form-group">
+                            <div class="col-lg-8">
+                            	{{ form_label(form.packageUrl) }}
+                                {{ form_widget(form.packageUrl) }}
+                            </div> 
+                                                    
+                        </div>   
+                        
+                   <div class="row form-group">
+                            <div class="col-lg-8">
+                            	{{ form_label(form.type) }}
+                                {{ form_widget(form.type) }}
+                            </div> 
+                                                    
+                        </div>   
+                        
+                    <div class="row form-group">
+                            <div class="col-lg-8">
+                            	{{ form_label(form.active) }}
+                                {{ form_widget(form.active) }}
+                            </div> 
+                                                    
+                        </div>   
+                        
+                       <h4>Itinerary</h4>
+                		<div class="row">               		
+                			<div class="col-lg-6">
+                            	<label>Title</label>
+                            </div> 
+                            <div class="col-lg-6">
+                            	<label>Description</label>
+                            </div> 
+                		</div>
+                     {% macro information_prototype(j) %}
+                        <div class="row form-group">
+                            <div class="col-lg-6">
+                                {{ form_widget(j.title) }}
+                            </div> 
+                                                    
+                            <div class="col-lg-6">
+                            	
                                 {{ form_widget(j.description) }}
                             </div> 
                                                     
@@ -67,17 +139,16 @@ $("select").change(function() {
                                                 data-prototype="{{ _self.information_prototype(form.itineraryList.vars.prototype)|e }}">
                             {% for j in form.itineraryList %}
                              <div class="row form-group">
-                                <div class="col-lg-8">
-                                    {{ form_widget(j.title) }}
-                                </div> 
-
-                            </div>
-                            <div class="row form-group">
-                                <div class="col-lg-8">
-                                    {{ form_widget(j.description) }}
-                                </div> 
-
-                            </div>
+	                            <div class="col-lg-6">
+	                                {{ form_widget(j.title) }}
+	                            </div> 
+	                                                    
+	                            <div class="col-lg-6">
+	                            	
+	                                {{ form_widget(j.description) }}
+	                            </div> 
+                                                    
+                        	</div>
                             {% endfor %}
                         </div>
                     <a href="#" id="add-another-itinerary">Add another Itinerary</a>

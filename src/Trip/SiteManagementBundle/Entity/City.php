@@ -34,6 +34,12 @@ class City
      */
     private $name;
     /**
+     * @var string
+     * @ORM\Column(name="description", type="string", length=4000,nullable=true)
+     * @Assert\Length(max = 4000, maxMessage="Your description cannot contain more then 4000 Characters")
+     */
+    private $description;
+    /**
      * @var boolean
      *
      * @ORM\Column(name="active", type="boolean")
@@ -82,6 +88,25 @@ class City
 		$this->name = $name;
 		return $this;
 	}
+	
+	/**
+	 *
+	 * @return the string
+	 */
+	public function getDescription() {
+		return $this->description;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$description
+	 */
+	public function setDescription($description) {
+		$this->description = $description;
+		return $this;
+	}
+	
     /**
      * Set active
      *

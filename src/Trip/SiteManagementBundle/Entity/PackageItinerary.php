@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  *
  * Contact
- * @ORM\Table(name="package_price")
+ * @ORM\Table(name="package_itinerary")
  * @ORM\Entity
  */
 class PackageItinerary
@@ -25,18 +25,18 @@ class PackageItinerary
     /**
      * @var string
      *
-     * @ORM\Column(name="title", type="string", length=100)
+     * @ORM\Column(name="title", type="string", length=150)
      */
     private $title;
-        /**
+    /**
      * @var string
-     * @ORM\Column(name="DESCRIPTION", type="string", length=4000,nullable=true)
+     * @ORM\Column(name="description", type="string", length=4000,nullable=true)
      * @Assert\Length(max = 4000, maxMessage="Your description cannot contain more then 4000 Characters") 
      */
     private $description;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Trip\SiteManagementBundle\Entity\Package", inversedBy="price")
+     * @ORM\ManyToOne(targetEntity="Trip\SiteManagementBundle\Entity\Package", inversedBy="itinerary")
      * @ORM\JoinColumn(name="package_id", referencedColumnName="id")
      */
     private $package;

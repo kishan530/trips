@@ -126,11 +126,14 @@ class SiteManagementController extends Controller
                         'locations' => $locations,
                         'packagetitle'=>$packagetitle,
 						'packagetitles'=>$packagetitles,
+                		'packagetitlecontents'=>$packagetitlecontents,
+                		'packagetitlelist'=>$packagetitlelist,
                 ));
            }else{
                
            }
-		
+          
+           
     }
     /**
 	 * 
@@ -138,14 +141,11 @@ class SiteManagementController extends Controller
     public function packageSubmitAction(Request $request){
         $session = $request->getSession();
         $preferDate = $request->get('preferDate');
-                        		'packagetitlecontents'=>$packagetitlecontents,
-                		'packagetitlelist'=>$packagetitlelist,
-$preferTime = $request->get('preferTime');
+        $preferTime = $request->get('preferTime');
         $numAdult = $request->get('numAdult');
         $selected = $request->get('selected');
-        $vehicleIndex = $request->get('vehicleIndex');          
-           
-     $resultSet = $session->get('resultSet');
+        $vehicleIndex = $request->get('vehicleIndex');
+        $resultSet = $session->get('resultSet');
          $selectedService = $resultSet[$selected];
         $vehiclePrice = $selectedService->getPrice();
         $selectedVehicle = $vehiclePrice->get($vehicleIndex);
@@ -912,25 +912,8 @@ $preferTime = $request->get('preferTime');
     	$form->handleRequest($request);
         if ($form->isValid()) {
              $collection = $package->getItineraryList();
-             $itineraryCollection = $package->getItinerary();
-             foreach($collection as $itinerary){
-             	if(!is_null($itinerary->getTitle()) or !is_null($itinerary->getTitle())){
-             		$itinerary->setPackage($package);
-             		$itineraryCollection->add($itinerary);
-             	}
-             }
-             
-            $em->persist($package);
+             $package = $em->persist($package);
     		$em->flush();
-    		
-    		$packageCode = 'JTP'.$package->getId();
-    		$packageUrl = $package->getPackageUrl();
-    		$packageUrl = $packageUrl.'-'.$packageCode;
-    		$package->setCode($packageCode);
-    		$package->setPackageUrl($packageUrl);
-    		$package = $em->merge($package);
-    		$em->flush();
-    		
     		return $this->redirect($this->generateUrl('trip_site_management_add_package'));    
         
         }
@@ -1015,27 +998,13 @@ $preferTime = $request->get('preferTime');
                 
     	));
     }
-     public function  viewPackageAction(Request $request,$url){
+     public function  viewPackageAction(Request $request){
         $em = $this->getDoctrine()->getManager();
-        $location = null;
-        $package =$em->getRepository('TripSiteManagementBundle:Package')->findBy(array('packageUrl' => $url));
-        if($package){
-        	$package = $package[0];	       
-	        $drop = $package->getEndPoint2()->first();
-	        if($drop){
-	        $location =$em->getRepository('TripSiteManagementBundle:city')->find($drop->getName());
-	        }
-        }
-        $locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
-        $locations = $this->getLocationsByIndex($locations);
-        //echo var_dump($package->getItinerary()->first());
-        //exit();
+        $package =$em->getRepository('TripSiteManagementBundle:Package')->find(1);
         
         
         return $this->render('TripSiteManagementBundle:Default:viewPackage.html.twig',array(
     			'package' => $package,
-        		'location'=>$location,
-        		'locations'=>$locations
                 
     	));
     }

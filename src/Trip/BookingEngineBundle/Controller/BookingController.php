@@ -823,7 +823,7 @@ class BookingController extends Controller
 		}
         $em = $this->getDoctrine()->getManager();
     	$customer = new CustomerDto();
-        $package = new NewPackage();
+       $package = new NewPackage();
         $collection = $customer->getMultiple();
         $collection->add($package);
     	$form   = $this->createCoustomPackageForm($customer);

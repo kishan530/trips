@@ -1,6 +1,6 @@
 <?php
 
-namespace Trip\SiteManagementBundle\Dto;
+namespace Trip\SiteManagementBundle\DTO;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
