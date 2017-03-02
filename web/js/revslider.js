@@ -230,10 +230,6 @@ jQuery(document).ready(function() {
 			arrows: {
 		    	 enable: true,
 		         style: 'hesperiden',
-		         width: 100,
-		         height: 50,
-		         min_width: 100,
-		         space: 5,
 		         tmp:'<span class="tp-thumb-image"></span><span class="tp-thumb-title">{{title}}</span>',
 		 
 		    }

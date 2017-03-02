@@ -32,6 +32,30 @@ $("select").change(function() {
             var newLi = $('<div></div>').html(newWidget);
             newLi.appendTo(itineraryList);
         });
+
+ // keep track of how many city fields have been rendered
+    var imageCount = '{{ form.itineraryList|length }}';
+
+    $('#add-another-image').click(function(e) {
+            e.preventDefault();
+            /*if(itemCount>4){
+                alert('Max 5 only');
+                exit();
+            }*/
+
+            var imageList = $('#image-list');
+
+            // grab the prototype template
+            var newWidget = imageList.attr('data-prototype');
+            // replace the "__name__" used in the id and name of the prototype
+            // with a number that's unique to your city
+            newWidget = newWidget.replace(/__name__/g, imageCount);
+            imageCount++;
+
+            // create a new list element and add it to the list
+            var newLi = $('<div></div>').html(newWidget);
+            newLi.appendTo(imageList);
+        });
 </script>
 {% endblock %}
 {% block body %}
@@ -152,6 +176,29 @@ $("select").change(function() {
                             {% endfor %}
                         </div>
                     <a href="#" id="add-another-itinerary">Add another Itinerary</a>
+                    
+                     <h4>Images</h4>
+                     
+                     {% macro image_prototype(i) %}
+                     		<div class="row form-group">
+	                            <div class="col-lg-6">
+	                                {{ form_label(i.url) }}
+	                            </div> 
+	                                                    
+	                            <div class="col-lg-6">
+	                            	
+	                                {{ form_widget(i.url) }}
+	                            </div> 
+                                                    
+                        	</div>
+                     {% endmacro %}
+                     <div id="image-list"
+                                                data-prototype="{{ _self.image_prototype(form.imageList.vars.prototype)|e }}">
+                            {% for i in form.imageList %}
+                            	{{ _self.image_prototype(i) }}
+                            {% endfor %}
+                        </div>
+                    <a href="#" id="add-another-image">Add another Image</a>
                         
                     
                     {{ form_end(form) }}

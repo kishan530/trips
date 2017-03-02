@@ -99,6 +99,11 @@ class Package
      */
     private $category;
     /**
+     * @var string
+     * @ORM\Column(name="imgPath", type="string", length=50)
+     */
+    private $imgPath;
+    /**
      * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\StartPoint", mappedBy="booking", cascade={"all"})
      */
     private $startPoint;
@@ -119,15 +124,19 @@ class Package
      */
     private $itinerary;
     /**
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\PackageImages", mappedBy="package", cascade={"persist"})
+     */
+    private $images;
+    /**
      * @var string
      */
     private $itineraryList;
-        
     /**
      * @var string
-     * @ORM\Column(name="imgPath", type="string", length=50)
      */
-    private $imgPath;
+    private $imageList;
+        
+
     
     public function __construct() {
     	$this->startPoint = new ArrayCollection();
@@ -135,7 +144,9 @@ class Package
     	$this->endPoint2 = new ArrayCollection();
         $this->price = new ArrayCollection();
          $this->itinerary = new ArrayCollection();
+         $this->images = new ArrayCollection();
          $this->itineraryList = new ArrayCollection();
+         $this->imageList = new ArrayCollection();
     }
 	
 	/**
@@ -521,6 +532,43 @@ class Package
 		$this->itineraryList = $itineraryList;
 		return $this;
 	}
+	
+	/**
+	 *
+	 * @return the unknown_type
+	 */
+	public function getImages() {
+		return $this->images;
+	}
+	
+	/**
+	 *
+	 * @param unknown_type $images        	
+	 */
+	public function setImages($images) {
+		$this->images = $images;
+		return $this;
+	}
+	
+	/**
+	 *
+	 * @return the string
+	 */
+	public function getImageList() {
+		return $this->imageList;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$imageList
+	 */
+	public function setImageList($imageList) {
+		$this->imageList = $imageList;
+		return $this;
+	}
+	
+	
 	
 
 

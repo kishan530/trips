@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Trip\SiteManagementBundle\Form\PackageItineraryType;
+use Trip\SiteManagementBundle\Form\PackageImageType;
 
 class PackageType extends AbstractType
 {
@@ -49,10 +50,22 @@ class PackageType extends AbstractType
                 'type'   => new PackageItineraryType(),
                 'allow_add'    => true,
                 'prototype'=>true,
+            	'required'    => false,
                 // these options are passed to each "PackageItinerary" type
                 //'entry_options'  => array(
                  //   'attr'      => array('class' => '')
                 //),
+            ))
+            ->add('imageList', 'collection', array(
+            		// each entry in the array will be an "PackageItinerary" field
+            		'type'   => new PackageImageType(),
+            		'allow_add'    => true,
+            		'prototype'=>true,
+            		'required'    => false,
+            		// these options are passed to each "PackageItinerary" type
+            		//'entry_options'  => array(
+            		//   'attr'      => array('class' => '')
+            		//),
             ))
              ->add('submit', 'submit', array('label' => 'submit'))
         ;

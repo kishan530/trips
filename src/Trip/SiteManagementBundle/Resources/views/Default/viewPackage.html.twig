@@ -1,14 +1,33 @@
 {% extends 'page.html.twig' %}
 {% block stylesheets %}
 <link href="{{ asset('css/jquery.timepicker.css') }}" rel="stylesheet" media="screen">
+<link type="text/css" rel="stylesheet" href="{{ asset('css/lightGallery.min.css') }}" /> 
+<link type="text/css" rel="stylesheet" href="{{ asset('css/lightslider.css') }}" /> 
+ 
 {% endblock %}
-{% block javascripts %}
-<!-- SLIDER REVOLUTION 4.x SCRIPTS  -->
-  <script src="{{ asset('rs-plugin/js/jquery.themepunch.tools.min.js') }}"></script>   
-  <script src="{{ asset('rs-plugin/js/jquery.themepunch.revolution.min.js') }}"></script>
- <script  src="{{ asset('js/revslider.js') }}"></script>
+{% block javascripts %} 
+ <script src="{{ asset('js/lightgallery-all.min.js') }}"></script>
+ <script src="{{ asset('js/lightslider.js') }}"></script> 
 <script src="{{ asset('js/jquery.timepicker.min.js') }}"></script>
+
 <script>
+$(document).ready(function() {
+   // $("#view-package-slider").lightSlider(); 
+
+    $('#view-package-slider').lightSlider({
+        gallery:true,
+        item:1,
+        loop:true,
+        slideMargin:0,
+        enableDrag: false,
+        currentPagerPosition:'left',
+        onSliderLoad: function(el) {
+            el.lightGallery({
+                selector: '#view-package-slider .lslide'
+            });
+        }   
+    });  
+  });
 $('.preferTime').timepicker({ 'scrollDefault': 'now' });
     
          $('.adults').click(function(e){		
@@ -62,32 +81,16 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                 <div class="row">
                     <div class="col-lg-12">
                     
-                    	<article class="parallax-slider">
-	        				<div class="tp-banner-container">
-	            				<div id="view-package-slider" class="tp-banner">
-					                <ul>
-					                	<li data-transition="fade" 
-										    data-title="Slide Title" 
-										    data-param1="Additional Text" 
-										    data-thumb="../images/Just-Trip-banner-6100x50.jpg">
-										 
-										        <!-- slide's main background image -->
-										        <img src="{{ asset('images/Just-Trip-banner-6.jpg') }}" alt="Sky" class="rev-slidebg">
-										 
-										</li>
-										<li data-transition="fade" 
-										    data-title="Slide Title" 
-										    data-param1="Additional Text" 
-										    data-thumb="../images/Just Trip Taxi Service100x50.jpg">
-										 
-										        <!-- slide's main background image -->
-										        <img src="{{ asset('images/Just Trip Taxi Service.jpg') }}" alt="Sky" class="rev-slidebg">
-										 
-										</li>
-					                </ul>
-				                </div>
-				            </div>
-			            </article>
+                    	
+	        				
+<ul id="view-package-slider">
+	{% for image in package.images %}
+		<li data-thumb="../images/packages/{{ image.url }}" data-src="../images/packages/{{ image.url }}">
+		    <img src="{{ asset('images/packages/'~image.url) }}" />
+		</li>
+	{% endfor %}
+</ul>
+	            		
                         
                     </div>
                 </div>

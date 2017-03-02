@@ -10,6 +10,7 @@ use Trip\SiteManagementBundle\Entity\EndPoint;
 use Trip\SiteManagementBundle\Entity\EndPoint2;
 use Trip\SiteManagementBundle\Entity\PackagePrice;
 use Trip\SiteManagementBundle\Entity\PackageItinerary;
+use Trip\SiteManagementBundle\Entity\PackageImages;
 use Trip\SiteManagementBundle\DTO\PackageLocations;
 use Trip\SiteManagementBundle\Form\PackageLocationsType;
 use Trip\BookingEngineBundle\Form\SearchType;
@@ -910,6 +911,9 @@ class SiteManagementController extends Controller
         $itinerary = new PackageItinerary();
         $collection = $package->getItineraryList();
         $collection->add($itinerary);
+        $packageImage = new PackageImages();
+       	$packageImages = $package->getImageList();
+        $packageImages->add($packageImage);
     	$form   = $this->createAddPackageForm($package);
     	$form->handleRequest($request);
         if ($form->isValid()) {
@@ -920,6 +924,22 @@ class SiteManagementController extends Controller
              		$itinerary->setPackage($package);
              		$itineraryCollection->add($itinerary);
              	}
+             }
+             
+             $packageImageList =$package->getImageList();
+             $packageImages =$package->getImages();
+             foreach($packageImageList as $packageImage){
+             	$uploadedfile = $packageImage->getUrl ();
+             	if (!is_null($uploadedfile)) {
+             		$file_name = $uploadedfile->getClientOriginalName ();
+             		$dir = 'images/packages/';
+             		$uploadedfile->move ( $dir, $file_name );
+             		$packageImage->setUrl ($file_name );
+             		$packageImage->setPackage($package);
+             		$packageImages->add($packageImage);
+             			
+             	}
+             	
              }
              
             $em->persist($package);
