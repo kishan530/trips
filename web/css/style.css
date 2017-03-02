@@ -652,7 +652,7 @@ a,
 .col-xs-15{width:20%;float:left;}
 .wrap-text td{width: 100px;word-wrap: break-word;max-width: 125px;}
 @media (min-width:768px){.col-sm-15{width:20%;float:left;}.package-vehicle span.vehicle-icon{font-size:28px;} 
-.mini-desti .col-md-12{padding-right: 10px !important;padding-left: 10px !important;}
+.mini-desti .col-md-12{padding-right: 6px !important;padding-left: 6px !important;}
 }
 @media (min-width:992px){.col-md-15{width:20%;float:left;}
     .package .package-desc{/*height:236px;*/} .package-price-label{text-align: right} .package-info .price{text-align:left;} 
