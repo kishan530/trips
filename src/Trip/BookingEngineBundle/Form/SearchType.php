@@ -53,7 +53,7 @@ class SearchType extends AbstractType
             		'multiple' => false,
                     'data'=>1,
             		'choices' => $this->getLocations(),
-            		'required'    => false,
+            		'required'    => true,
             		'empty_value'   => 'Select Origin',
                     'attr'   =>  array(
                                         'class'=>'chosen-select',
@@ -66,7 +66,7 @@ class SearchType extends AbstractType
             		'expanded' => false,
             		'multiple' => false,
             		'choices' => $this->getLocations(),
-            		'required'    => false,
+            		'required'    => true,
             		'empty_value'   => 'Select Destination',
                     'attr'   =>  array(
                                         'class'=>'chosen-select',
@@ -77,7 +77,7 @@ class SearchType extends AbstractType
             ))
            
             ->add('date','date',array(
-            						'required'    => false,
+            						'required'    => true,
             						'label' => 'From Date',
                 				    'widget'=> 'single_text',
 						            'format'=>'d/M/y',
