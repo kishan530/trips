@@ -18,11 +18,38 @@ class CustomPackageType extends AbstractType
 	
 	private $bookingService;
 	private $catalogService;
+	private $security;
 	
-	public function __construct($bookingService)
+	public function __construct($bookingService,$security)
 	{
 		$this->bookingService= $bookingService;
 		$this->catalogService = $bookingService->getCatalog();
+		$this->security = $security;
+	}
+	
+	/**
+	 * @param OptionsResolverInterface $resolver
+	 */
+	private function getLocations()
+	{
+		$locations = $this->catalogService->getLocations();
+		$tempLocations = array();
+		foreach ($locations as $location){
+			$tempLocations[$location->getId()] = $location->getName();
+		}
+		return $tempLocations;
+	}
+	/**
+	 * @param OptionsResolverInterface $resolver
+	 */
+	public function getVehicles()
+	{
+		$locations = $this->catalogService->getVehicles();
+		$tempLocations = array();
+		foreach ($locations as $location){
+			$tempLocations[$location->getId()] = $location->getModel();
+		}
+		return $tempLocations;
 	}
 	
 	/**
@@ -40,12 +67,12 @@ class CustomPackageType extends AbstractType
             ->add('email','email')
             ->add('mobile')
         // ->add('submit', 'submit', array('label' => 'submit'))
-         ->add('multiple', 'collection', array(
+        /*  ->add('multiple', 'collection', array(
         		'type'         => new NewPackageType($this->catalogService),
         		'allow_add'    => true,
                  'prototype'=>true,
         		'required'    => false,
-        ))
+        )) */
         ->add('numAdult','text',array(            						
             						'required'    => true,
             						'label' => 'No of Adult',
@@ -54,28 +81,102 @@ class CustomPackageType extends AbstractType
                                             'placeholder'=>'Number of Adult'
             						),
             		            
-        )) 
+        ))
+        ->add('pickUp', 'choice', array(
+        		'expanded' => false,
+        		'multiple' => false,
+        		'choices' => $this->getLocations(),
+        		'required'    => false,
+        		'empty_value'   => 'Select',
+        		'attr'   =>  array(
+        				'class'=>'chosen-select',
+        				'data-style'=>'btn-white',
+        				'data-live-search'=>'true',
+        				'data-placeholder'=>'Select'
+        		),
+        ))
+        ->add('drop', 'choice', array(
+        		'expanded' => false,
+        		'multiple' => false,
+        		'choices' => $this->getLocations(),
+        		'required'    => false,
+        		'empty_value'   => 'Select',
+        		'attr'   =>  array(
+        				'class'=>'chosen-select',
+        				'data-style'=>'btn-white',
+        				'data-live-search'=>'true',
+        				'data-placeholder'=>'Select'
+        		),
+        ))
+        ->add('placesToVisit', 'choice', array(
+        		'expanded' => false,
+        		'multiple' => true,
+        		'choices' => $this->getLocations(),
+        		'required'    => false,
+        		'empty_value'   => 'Select',
+        		'attr'   =>  array(
+        				'class'=>'chosen-select',
+        				'data-style'=>'btn-white',
+        				'data-live-search'=>'true',
+        				'data-placeholder'=>'Select'
+        		),
+        ))
+        ->add('vehicleId', 'choice', array(
+        		'expanded' => false,
+        		'multiple' => false,
+        		'label' => 'Vehicle',
+        		'choices' =>$this->getVehicles(),
+        		'required'    => true,
+        
+        ))
+         
+        ->add('date','date',array(
+        		'required'    => false,
+        		'label' => 'Date',
+        		'widget'=> 'single_text',
+        		'format'=>'d/M/y',
+        		'attr'   =>  array(
+        				'data-date-format'=>'dd/mm/yyyy',
+        				//'placeholder'=>'Date',
+        				'class'=>'preferDate'
+        		),
+        
+        ))
+        ->add('preferTime','text',array(
+        		'required'    => false,
+        		'label' => 'Prefer Time',
+        		//'input'=>'string',
+        		'attr' => array( 'class'=>'preferTime'),
+        		//'widget' => 'single_text',
+        
+        ))
+        
            // ->add('address','textarea')
         ;
         
-        $builder->add('paymentMode', 'choice', array(
-
-    				'expanded' => true,
-
-    				'multiple' => false,
-
-    				'choices' => array(
-
-                            '30' => '30% payment',
-    						'advance' => '50% Payment ',
-
-    				),
-                'label'     => 'Payment Mode',
-    				'required'    => true,
-
-    		));
-           
-        ;
+        if ($this->security->isGranted ( 'ROLE_SUPER_ADMIN' )) {
+        
+        	$builder->add('price');
+        	$builder->add('paymentMode', 'choice', array(
+        	
+        			'expanded' => true,
+        	
+        			'multiple' => false,
+        	
+        			'choices' => array(
+        	
+        					'30' => '30% payment',
+        					'advance' => '50% Payment ',
+        	
+        			),
+        			'label'     => 'Payment Mode',
+        			'required'    => true,
+        	
+        	));
+        	 
+        	;
+        }
+        
                     
     }
     

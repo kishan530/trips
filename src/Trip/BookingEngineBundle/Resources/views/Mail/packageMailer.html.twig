@@ -52,8 +52,9 @@
 <th style="border:solid 1px #dddddd">Date</th>
 <th style="border:solid 1px #dddddd">Prefer Time</th>
 <th style="border:solid 1px #dddddd">Vehicle</th>
-<th style="border:solid 1px #dddddd">From</th>
-<th style="border:solid 1px #dddddd">To </th>
+<th style="border:solid 1px #dddddd">Pick Up</th>
+<th style="border:solid 1px #dddddd">Drop </th>
+<th style="border:solid 1px #dddddd">Places to Visit </th>
 </tr>
 {% if services|length>0 %}
     {% for service in services  %} 
@@ -62,14 +63,37 @@
             <td align="center" style="border:solid 1px #dddddd"> {{ service.date|date('F jS Y') }}  </td>
             <td align="center" style="border:solid 1px #dddddd">{{ service.preferTime }}</td>
             <td align="center" style="border:solid 1px #dddddd">{{ service.model }}</td>
-            <td align="center" style="border:solid 1px #dddddd">{{ locations[service.leavingFrom].name }}</td>
-            <td align="center" style="border:solid 1px #dddddd">{{ locations[service.goingTo].name }}</td>
+            <td align="center" style="border:solid 1px #dddddd">           
+            {% for p in booking.pickUp %} 
+                 {{ locations[p.location].name }} {% if loop.last is same as(false) %} / {% endif %}
+             {% endfor %}             
+    		</td>
+    		<td align="center" style="border:solid 1px #dddddd"> 
+    		{% if booking.placesToVisit|length>0 %}            
+            {% for p in booking.drop %} 
+                 {{ locations[p.location].name }} {% if loop.last is same as(false) %} / {% endif %}
+             {% endfor %}     
+             {% else %}
+                   N/A
+              {% endif %}        
+    		</td>
+    		<td align="center" style="border:solid 1px #dddddd">   
+    		 {% if booking.placesToVisit|length>0 %}                                                    
+                                                            
+            {% for p in booking.placesToVisit %} 
+                 {{ locations[p.location].name }} {% if loop.last is same as(false) %} , {% endif %}
+             {% endfor %}
+             {% else %}
+                   N/A
+              {% endif %}              
+    		</td>
         </tr>
     {% endfor %}
 {% endif %}
 </tbody>
 </table>
 <br>
+{% if is_granted('ROLE_SUPER_ADMIN') %}
 <h4 style="padding:0px;margin:0px;color:#666;font-size:17px">Fare Details</h4>
 <table width="45%" align="right" style="border:1px solid #ccc" cellpadding="0" cellspacing="0">
 <tbody>
@@ -96,7 +120,9 @@
     </tr>
    
 
-</tbody></table><div class="yj6qo"></div><div class="adL">
+</tbody></table>
+{% endif %}
+<div class="yj6qo"></div><div class="adL">
 
 </div></div><div class="adL">
 </div></div><div class="adL">

@@ -21,21 +21,7 @@ class HotelBooking
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    /**
-     * @var integer
-     * @ORM\Column(name="hotel_id", type="integer")
-     */
-    private $hotelId;
-    /**
-     * @var string
-     * @ORM\Column(name="hotel_name", type="string", length=100)
-     */
-    private $hotelName;
-    /**
-     * @var string
-     * @ORM\Column(name="location", type="string", length=100)
-     */
-    private $location;
+
     
     /**
      * @var string
@@ -43,17 +29,6 @@ class HotelBooking
      */
     private $price;
     
-    /**
-     * @var string
-     * @ORM\Column(name="chek_in", type="date")
-     */
-    private $chekIn;
-    
-    /**
-     * @var string
-     * @ORM\Column(name="chek_out", type="date")
-     */
-    private $chekOut;
     /**
      * @ORM\ManyToOne(targetEntity="Trip\BookingEngineBundle\Entity\Booking", inversedBy="hotelBooking")
      * @ORM\JoinColumn(name="booking_id", referencedColumnName="id")

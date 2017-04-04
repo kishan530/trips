@@ -32,5 +32,5 @@ trip_booking_engine_apply_coupon:
     path:     /applyCoupon
     defaults: { _controller: TripBookingEngineBundle:Booking:applyCoupon }
 trip_booking_engine_coustomPackage:
-    path:     /coustom-package
+    path:     /custom-package
     defaults: { _controller: TripBookingEngineBundle:Booking:coustomPackage }

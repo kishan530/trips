@@ -49,12 +49,42 @@
                                  {% for service in booking.vehicleBooking if booking.vehicleBooking|length>0 %}
                                     <tr class="oddClass">
                                         <td>{{ service.model }}</td>
-                                        <td>{% if service.leavingFrom %} {{ locations[service.leavingFrom].name }} {% endif %}</td>
+                                         {% if service.tripType!='custom package' %}
+                                        <td>{% if service.leavingFrom %} {{ locations[service.leavingFrom].name }} {% endif %}</td>                                     
                                         <td>{{ locations[service.goingTo].name }}</td>
+                                         {% endif %}
                                         <td> {{ service.date|date('d/m/Y') }} </td>
-                                       
+                                       {% if service.tripType!='custom package' %}
                                 <td>{% if service.tripType=='roundtrip' %} {{ service.returnDate|date('F jS Y') }} {% else %} - {% endif %}</td>
-                                         <td>{{ booking.preferTime }}</td>
+                                         {% endif %}
+                                          <td>{{ booking.preferTime }}</td>
+                                          
+                     {% if service.tripType=='custom package' %}
+                                         <td align="center">           
+            {% for p in booking.pickUp %} 
+                 {{ locations[p.location].name }} {% if loop.last is same as(false) %} / {% endif %}
+             {% endfor %}             
+    		</td>
+    		<td align="center"> 
+    		{% if booking.placesToVisit|length>0 %}            
+            {% for p in booking.drop %} 
+                 {{ locations[p.location].name }} {% if loop.last is same as(false) %} / {% endif %}
+             {% endfor %}     
+             {% else %}
+                   N/A
+              {% endif %}        
+    		</td>
+    		<td align="center">    
+    		 {% if booking.placesToVisit|length>0 %}                                                    
+                                                            
+            {% for p in booking.placesToVisit %} 
+                 {{ locations[p.location].name }} {% if loop.last is same as(false) %} , {% endif %}
+             {% endfor %}
+             {% else %}
+                   N/A
+              {% endif %}              
+    		</td>
+    		 {% endif %}
                                     </tr>
                                 {% endfor %}
                             </table>

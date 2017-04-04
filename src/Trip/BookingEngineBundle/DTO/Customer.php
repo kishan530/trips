@@ -46,14 +46,41 @@ class Customer
      * @var integer
      */
     private $numAdult;
+    /**
+     * @var string
+     */
+    private $date;
+    /**
+     * @var string
+     */
+    private $preferTime;
+    /**
+     * @var integer
+     */
+    private $vehicleId;
+    /**
+     * @var string
+     */
+    private $price;
     
      /**
      * @var string
      */
     private $multiple;
+    /**
+     * @var string
+     */
+    private $pickUp;
+    /**
+     * @var string
+     */
+    private $drop;
+
+    private $placesToVisit;
         public function __construct()
     {
         $this->multiple = new ArrayCollection();
+        //$this->placesToVisit = new ArrayCollection();
     }
     
     /**
@@ -239,6 +266,133 @@ class Customer
 		$this->numAdult = $numAdult;
 		return $this;
 	}
+	
+	/**
+	 *
+	 * @return the string
+	 */
+	public function getDate() {
+		return $this->date;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$date
+	 */
+	public function setDate($date) {
+		$this->date = $date;
+		return $this;
+	}
+	
+	/**
+	 *
+	 * @return the string
+	 */
+	public function getPreferTime() {
+		return $this->preferTime;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$preferTime
+	 */
+	public function setPreferTime($preferTime) {
+		$this->preferTime = $preferTime;
+		return $this;
+	}
+	
+	/**
+	 *
+	 * @return the integer
+	 */
+	public function getVehicleId() {
+		return $this->vehicleId;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$vehicleId
+	 */
+	public function setVehicleId($vehicleId) {
+		$this->vehicleId = $vehicleId;
+		return $this;
+	}
+	
+	/**
+	 *
+	 * @return the string
+	 */
+	public function getPrice() {
+		return $this->price;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$price
+	 */
+	public function setPrice($price) {
+		$this->price = $price;
+		return $this;
+	}
+		
+	
+	/**
+	 *
+	 * @return the string
+	 */
+	public function getPickUp() {
+		return $this->pickUp;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$pickUp
+	 */
+	public function setPickUp($pickUp) {
+		$this->pickUp = $pickUp;
+		return $this;
+	}
+	
+	/**
+	 *
+	 * @return the string
+	 */
+	public function getDrop() {
+		return $this->drop;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$drop
+	 */
+	public function setDrop($drop) {
+		$this->drop = $drop;
+		return $this;
+	}
+	
+	/**
+	 *
+	 * @return the unknown_type
+	 */
+	public function getPlacesToVisit() {
+		return $this->placesToVisit;
+	}
+	
+	/**
+	 *
+	 * @param unknown_type $placesToVisit        	
+	 */
+	public function setPlacesToVisit($placesToVisit) {
+		$this->placesToVisit = $placesToVisit;
+		return $this;
+	}
+	
     
 
 

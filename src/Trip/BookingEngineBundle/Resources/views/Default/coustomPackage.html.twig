@@ -1,11 +1,29 @@
 {% extends 'page.html.twig' %}
 {% block stylesheets %}
 		<link href="{{ asset('css/jquery.timepicker.css') }}" rel="stylesheet" media="screen">
+	<style>
+	.chosen-container {
+    margin: 15px 0 15px !important;
+	}
+	</style>
 {% endblock %}
 {% block javascripts %}
 <script src="{{ asset('js/jquery.timepicker.min.js') }}"></script>
 <script>
-    
+$(document).ready(function() {
+$(".chosen-select").chosen({
+    no_results_text: "Oops, nothing found!"
+});
+
+$('#trip_custom_package_preferTime').timepicker({ 'scrollDefault': 'now' });
+
+$("#trip_custom_package_date").datepicker({
+    dateFormat: "dd/mm/yy",
+    numberOfMonths: 2,
+    minDate: 0
+});
+
+});
     $('.adults').click(function(e){		
 			e.preventDefault(); //STOP default action 
 			 var id = $(this).attr('id');
@@ -23,9 +41,9 @@
 				}							 		   			   							
 	    });
     
-    $('.preferTime').timepicker({ 'scrollDefault': 'now' });
+    
  // keep track of how many city fields have been rendered
-    var packageCount = '{{ form.multiple|length }}';
+ {# var packageCount = '{{ form.multiple|length }}'; #}
 
     $('#add-another-package').click(function(e) {
             e.preventDefault();
@@ -69,10 +87,9 @@
             <div class="row">
                 <div id="fullwidth" class="col-sm-12">
                 {{ form_start(form) }}
-                    <div class="col-lg-5">
-                    
-                   
-                                                 
+                <div class="row">
+                    <div class="col-lg-4">
+                                                                                     
                     <div class="row">
                         <div class="col-md-4 col-sm-4 col-xs-4 make-margin">
                              {{ form_label(form.name) }} 
@@ -81,6 +98,8 @@
                              {{ form_widget(form.name,{'attr':{'class':'make-margin'}}) }} 
                          </div>
                     </div>
+                    </div>
+                    <div class="col-lg-4">
                     <div class="row">
                         <div class="col-md-4 col-sm-4 col-xs-4 make-margin">
                              {{ form_label(form.email) }} 
@@ -89,7 +108,9 @@
                              {{ form_widget(form.email,{'attr':{'class':'make-margin'}}) }} 
                          </div>
                     </div>
-                    <div class="row">
+                    </div>
+                    <div class="col-lg-4">
+                     <div class="row">
                         <div class="col-md-4 col-sm-4 col-xs-4 make-margin">
                              {{ form_label(form.mobile) }} 
                         </div>
@@ -97,11 +118,67 @@
                              {{ form_widget(form.mobile,{'attr':{'class':'make-margin'}}) }} 
                          </div>
                     </div>
+                    </div>
+               </div>
+                 <div class="row">
+                    <div class="col-lg-4">   
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-4 make-margin">
+                             {{ form_label(form.pickUp) }} 
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                             {{ form_widget(form.pickUp) }} 
+                         </div>
+                    </div>
+                    </div>
+                     <div class="col-lg-4">  
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-4 make-margin">
+                             {{ form_label(form.drop) }} 
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                             {{ form_widget(form.drop) }} 
+                         </div>
+                    </div>
+                    </div>
+                     <div class="col-lg-4">  
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-4 make-margin">
+                             {{ form_label(form.placesToVisit) }} 
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                             {{ form_widget(form.placesToVisit) }} 
+                         </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4"> 
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-4 make-margin">
+                             {{ form_label(form.date) }} 
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                             {{ form_widget(form.date,{'attr':{'class':'make-margin'}}) }} 
+                         </div>
+                    </div>
+                    </div>
+                     <div class="col-lg-4"> 
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-4 make-margin">
+                             {{ form_label(form.preferTime) }} 
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                             {{ form_widget(form.preferTime,{'attr':{'class':'make-margin'}}) }} 
+                         </div>
+                    </div>
+                    </div>
+                    <div class="col-lg-4">
                     <div class="row">
                         <div class="col-md-4 col-sm-4 col-xs-4 make-margin">
                              {{ form_label(form.numAdult) }} 
                         </div>
-                        <div class="col-md-3 col-sm-3 col-xs-3">
+                        <div class="col-md-4 col-sm-4 col-xs-4">
                              <div class="input-group make-margin">
                                     <a class="adults input-group-addon" id="decrement" value="1" href="#">-</a> 
                                                     {{ form_widget(form.numAdult) }}
@@ -109,6 +186,34 @@
                             </div>
                          </div>
                     </div>
+                    </div>
+                     
+                    
+                  </div>
+                   <div class="row">
+                   
+                   <div class="col-lg-4"> 
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-4 make-margin">
+                             {{ form_label(form.vehicleId) }} 
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                             {{ form_widget(form.vehicleId,{'attr':{'class':'make-margin'}}) }} 
+                         </div>
+                    </div>
+                    </div>
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    <div class="col-lg-4"> 
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-4 make-margin">
+                             {{ form_label(form.price) }} 
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                             {{ form_widget(form.price,{'attr':{'class':'make-margin'}}) }} 
+                         </div>
+                    </div>
+                    </div>
+                     <div class="col-lg-4">
                     <div class="row form-inline">
                         <div class="col-md-4 col-sm-4 col-xs-4 make-margin">
                              {{ form_label(form.paymentMode) }} 
@@ -117,9 +222,12 @@
                              {{ form_widget(form.paymentMode,{'attr':{'class':'make-margin'}}) }} 
                          </div>
                     </div>
+                        </div>
+                        {% endif %}
+                 </div>
                         
-                        
-                    </div>    
+                       
+                    {#} 
                 <div class="col-lg-8">
                         <div class="row form-group">
                             <div class="col-lg-2">
@@ -195,17 +303,21 @@
                     
                     
                     </div>
-                   <div class="col-lg-8">
+                    {#}
+                    <div class="row">
+                   <div class="col-lg-12">
                     
                    
                                                  
                     <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-md-12 col-sm-12 col-xs-12 text-right">
                              {{ form_widget(form.submit) }} 
                          </div>
                     </div>
                     </div>
+                    </div>
                     {{ form_end(form) }}
+                    </div>
                 </div>
             </div>
         </div>

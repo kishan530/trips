@@ -1045,7 +1045,7 @@ class SiteManagementController extends Controller
         	$package = $package[0];	       
 	        $drop = $package->getEndPoint2()->first();
 	        if($drop){
-	        $location =$em->getRepository('TripSiteManagementBundle:city')->find($drop->getName());
+	        $location =$em->getRepository('TripSiteManagementBundle:City')->find($drop->getName());
 	        }
         }
         $locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
