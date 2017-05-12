@@ -72,11 +72,11 @@ class BookingController extends Controller
     public function hotelsAction(){
     	return $this->getHome('TripSiteManagementBundle:Default:hotels.html.twig');
     }
-    /**
-	 * 
-	 */
+
     public function dealsAction(){
     	return $this->getHome('TripSiteManagementBundle:Default:deals.html.twig');
+		
+		//test
     }
     /**
     *
