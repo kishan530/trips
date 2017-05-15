@@ -41,11 +41,16 @@ class VehicleBooking
      * @ORM\Column(name="leaving_from", type="string", length=100)
      */
     private $leavingFrom;
-        /**
+    /**
      * @var string
      * @ORM\Column(name="going_to", type="string", length=100)
      */
     private $goingTo;
+    /**
+     * @var string
+     * @ORM\Column(name="discription", type="string", length=5000,nullable=true)
+     */
+    private $description;
     
     /**
      * @var string
@@ -65,6 +70,11 @@ class VehicleBooking
      */
     private $returnDate;
     /**
+     * @var integer
+     * @ORM\Column(name="num_of_adult", type="integer")
+     */
+    private $numAdult;
+    /**
      * @var string
      * @ORM\Column(name="prefer_time", type="string", length=100)
      */
@@ -74,6 +84,16 @@ class VehicleBooking
      * @ORM\JoinColumn(name="booking_id", referencedColumnName="id")
      */
     private $booking;
+    /**
+     * @ORM\OneToMany(targetEntity="Trip\BookingEngineBundle\Entity\PlacesToVisit", mappedBy="booking", cascade={"persist"})
+     */
+    private $placesToVisit;
+    /**
+     * 
+     */
+    public function __construct() {
+    	$this->placesToVisit = new ArrayCollection();
+    }
     
      /**
 	 *
@@ -271,6 +291,62 @@ class VehicleBooking
 		$this->booking = $booking;
 		return $this;
 	}
+	
+	/**
+	 *
+	 * @return the string
+	 */
+	public function getDescription() {
+		return $this->description;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$description
+	 */
+	public function setDescription($description) {
+		$this->description = $description;
+		return $this;
+	}
+	
+	/**
+	 *
+	 * @return the unknown_type
+	 */
+	public function getPlacesToVisit() {
+		return $this->placesToVisit;
+	}
+	
+	/**
+	 *
+	 * @param unknown_type $placesToVisit        	
+	 */
+	public function setPlacesToVisit($placesToVisit) {
+		$this->placesToVisit = $placesToVisit;
+		return $this;
+	}
+	
+	/**
+	 *
+	 * @return the integer
+	 */
+	public function getNumAdult() {
+		return $this->numAdult;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$numAdult
+	 */
+	public function setNumAdult($numAdult) {
+		$this->numAdult = $numAdult;
+		return $this;
+	}
+	
+	
+	
     
     
 }

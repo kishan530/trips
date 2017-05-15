@@ -5,6 +5,9 @@
 	.chosen-container {
     margin: 15px 0 15px !important;
 	}
+	.preferDate {
+    margin: 15px 0 15px !important;
+	}
 	</style>
 {% endblock %}
 {% block javascripts %}
@@ -15,35 +18,38 @@ $(".chosen-select").chosen({
     no_results_text: "Oops, nothing found!"
 });
 
-$('#trip_custom_package_preferTime').timepicker({ 'scrollDefault': 'now' });
+$('.preferTime').timepicker({ 'scrollDefault': 'now' });
 
-$("#trip_custom_package_date").datepicker({
+$(".preferDate").datepicker({
     dateFormat: "dd/mm/yy",
     numberOfMonths: 2,
     minDate: 0
 });
 
+
+
 });
-    $('.adults').click(function(e){		
-			e.preventDefault(); //STOP default action 
-			 var id = $(this).attr('id');
-			 var value = parseInt($(this).attr('value'));
-			 var adults =parseInt( $('#trip_custom_package_numAdult').val());
-			 if (isNaN(adults)) { 
-				 adults= 0
-	            } 
-			 if(id=='decrement'){
-				 adults-=1;
-				 if(adults>=value) $('#trip_custom_package_numAdult').val(adults); else exit();
-			  }else{
-				adults+=1;
-			    if(adults<=20)  $('#trip_custom_package_numAdult').val(adults); else exit();
-				}							 		   			   							
-	    });
-    
+	$("#package-list").on('click', ".adults", function (e) {
+	e.preventDefault(); //STOP default action 
+	 var id = $(this).attr('id');
+	 var value = parseInt($(this).attr('value'));
+	 //var adults =parseInt( $('#trip_custom_package_numAdult').val());
+	 var numAdult = $(this).siblings(".numAdult");
+	 var adults =parseInt(numAdult.val());
+	 if (isNaN(adults)) { 
+		 adults= 0
+        } 
+	 if(id=='decrement'){
+		 adults-=1;
+		 if(adults>=value) numAdult.val(adults); else exit();
+	  }else{
+		adults+=1;
+	    if(adults<=20)  numAdult.val(adults); else exit();
+		}							 		   			   							
+});
     
  // keep track of how many city fields have been rendered
- {# var packageCount = '{{ form.multiple|length }}'; #}
+  var packageCount = '{{ form.multiple|length }}'; 
 
     $('#add-another-package').click(function(e) {
             e.preventDefault();
@@ -58,8 +64,9 @@ $("#trip_custom_package_date").datepicker({
             var newWidget = itineraryList.attr('data-prototype');
             // replace the "__name__" used in the id and name of the prototype
             // with a number that's unique to your city
-            newWidget = newWidget.replace(/__name__/g, packageCount);
+            newWidget = newWidget.replace(/__name__/g, packageCount);           
             packageCount++;
+            newWidget = newWidget.replace(/Day/, 'Day '+packageCount);
         
             
             // create a new list element and add it to the list
@@ -77,17 +84,29 @@ $("#trip_custom_package_date").datepicker({
                 minDate: 0
             });
             $('.preferTime').timepicker({ 'scrollDefault': 'now' });
+
+
+     
+            
         });
 </script>
 {% endblock %}
 {% block body %}
 
     <section class="section clearfix">
+    
+    	
         <div class="container">
+         <div class="row">
+         	<h1 class="custom-package-title">Custom Package</h1>
+    		<h3 class="custom-quote"><i class="fa fa-quote-left" aria-hidden="true"></i> Design your own itinerary below and send it to us. We will revert<br> back to
+you with the best price<i class="fa fa-quote-right" aria-hidden="true"></i></h3>
+		</div>
             <div class="row">
                 <div id="fullwidth" class="col-sm-12">
                 {{ form_start(form) }}
                 <div class="row">
+                 <div class="col-lg-12 custom-package-personal-info">
                     <div class="col-lg-4">
                                                                                      
                     <div class="row">
@@ -120,6 +139,8 @@ $("#trip_custom_package_date").datepicker({
                     </div>
                     </div>
                </div>
+               </div>
+               {#}
                  <div class="row">
                     <div class="col-lg-4">   
                     <div class="row">
@@ -190,6 +211,7 @@ $("#trip_custom_package_date").datepicker({
                      
                     
                   </div>
+                  
                    <div class="row">
                    
                    <div class="col-lg-4"> 
@@ -226,9 +248,10 @@ $("#trip_custom_package_date").datepicker({
                         {% endif %}
                  </div>
                         
-                       
-                    {#} 
-                <div class="col-lg-8">
+                       {#}
+                
+                <div class="col-lg-12">
+                {#}
                         <div class="row form-group">
                             <div class="col-lg-2">
                                <label>Date</label>
@@ -249,68 +272,101 @@ $("#trip_custom_package_date").datepicker({
                                 <label>price</label>                              
                             </div>
                         </div>
-                     {% macro information_prototype(j) %}
+                        {#}
+                     {% macro information_prototype(j,day_count) %}
+                     <div class="new-day" style="border:1px solid #000; padding: 10px; margin: 5px">
+                     	<h4 style="text-transform: capitalize;color: #ef4639;">Day {{ day_count }}</h4>
                         <div class="row form-group">
-                            <div class="col-lg-2">
+                            <div class="col-lg-3">
+                            	{{ form_label(j.date) }} 
                                 {{ form_widget(j.date) }}
                             </div>
-                             <div class="col-lg-2">
-                                {{ form_widget(j.preferTime) }}
-                            </div>
-                             <div class="col-lg-2">
-                                {{ form_widget(j.vehicleId) }}
-                            </div>                            
-                           <div class="col-lg-2">
+                                                      
+                           <div class="col-lg-3">
+                           {{ form_label(j.leavingFrom) }} 
                                 {{ form_widget(j.leavingFrom) }}
                             </div>
-                            <div class="col-lg-2">
+                            <div class="col-lg-3">
+                            {{ form_label(j.goingTo) }} 
                                 {{ form_widget(j.goingTo) }}
                             </div>
-                            <div class="col-lg-2">
+                            <div class="col-lg-3">
+                            {{ form_label(j.placesToVisit) }} 
+                                {{ form_widget(j.placesToVisit) }}
+                            </div>
+                         </div>
+                          <div class="row form-group">
+                             <div class="col-lg-12">
+                             {{ form_label(j.description) }} 
+                                {{ form_widget(j.description) }}
+                            </div>
+                          </div>
+                         <div class="row form-group">
+                             <div class="col-lg-3">
+                             {{ form_label(j.preferTime) }} 
+                                {{ form_widget(j.preferTime) }}
+                            </div>
+                            
+                             <div class="col-lg-3">
+                             {{ form_label(j.vehicleId) }} 
+                                {{ form_widget(j.vehicleId) }}
+                            </div> 
+                            {% if is_granted('ROLE_SUPER_ADMIN') %} 
+                            <div class="col-lg-3">
+                            {{ form_label(j.price) }} 
                                 {{ form_widget(j.price) }}
                             </div>
+                            {% endif %}
+                            <div class="col-lg-3">
+	                            <div class="row">
+		                             <div class="col-lg-6">
+		                             {{ form_label(j.numAdult) }} 
+			                             <div class="input-group">
+			                                    <a class="adults input-group-addon" id="decrement" value="1" href="#">-</a> 
+			                                                    {{ form_widget(j.numAdult) }}
+			                                    <a class="adults input-group-addon" id="increment" href="#">+</a>
+			                             </div>
+		                            </div>
+	                            </div>
+                         	</div>
                         </div>
-                   
+                   </div>
                             
                         {% endmacro %}
                         <div id="package-list"
                                                 data-prototype="{{ _self.information_prototype(form.multiple.vars.prototype)|e }}">
                             {% for j in form.multiple %}
-                             <div class="row form-group">
-                                 <div class="col-lg-2">
-                                {{ form_widget(j.date) }}
-                                </div>
-                                 <div class="col-lg-2">
-                                    {{ form_widget(j.preferTime) }}
-                                </div>
-                                 <div class="col-lg-2">
-                                    {{ form_widget(j.vehicleId) }}
-                                </div>
-                                <div class="col-lg-2">
-                                    {{ form_widget(j.goingTo) }}
-                                </div> 
-                               <div class="col-lg-2">
-                                    {{ form_widget(j.leavingFrom) }}
-                                </div>
-                                <div class="col-lg-2">
-                                    {{ form_widget(j.price) }}
-                                </div>                                                                        
-                            </div>
+                             {{ _self.information_prototype(j,loop.index) }}
                             {% endfor %}
                         </div>
-                    <a href="#" id="add-another-package">Add another Package</a>
+                    <a href="#" id="add-another-package">+ Add another Day</a>
                         
                     
                     
                     </div>
-                    {#}
+                  
                     <div class="row">
                    <div class="col-lg-12">
                     
                    
                                                  
                     <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12 text-right">
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    
+                     <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+	                    <div class="row form-inline">
+	                        <div class="col-md-6 col-sm-6 col-xs-6 make-margin text-right" style="color: #f26722;font-weight: bold;">
+	                             {{ form_label(form.paymentMode) }}
+	                        </div>
+	                        <div class="col-md-6 col-sm-6 col-xs-6 text-left">
+	                             {{ form_widget(form.paymentMode,{'attr':{'class':'make-margin'}}) }} 
+	                         </div>
+	                    </div>
+                       </div>
+                        {% endif %}
+                        </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 text-center">
                              {{ form_widget(form.submit) }} 
                          </div>
                     </div>

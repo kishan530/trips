@@ -63,17 +63,17 @@ class CustomPackageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
+            ->add('name',null,array('required'    => true,))
             ->add('email','email')
-            ->add('mobile')
+            ->add('mobile',null,array('required'    => true,))
         // ->add('submit', 'submit', array('label' => 'submit'))
-        /*  ->add('multiple', 'collection', array(
-        		'type'         => new NewPackageType($this->catalogService),
+         ->add('multiple', 'collection', array(
+        		'type'         => new NewPackageType($this->catalogService,$this->security),
         		'allow_add'    => true,
                  'prototype'=>true,
         		'required'    => false,
-        )) */
-        ->add('numAdult','text',array(            						
+        ))
+       /*  ->add('numAdult','text',array(            						
             						'required'    => true,
             						'label' => 'No of Adult',
                                     'data'=>'1',
@@ -149,14 +149,14 @@ class CustomPackageType extends AbstractType
         		'attr' => array( 'class'=>'preferTime'),
         		//'widget' => 'single_text',
         
-        ))
+        )) */
         
            // ->add('address','textarea')
         ;
         
         if ($this->security->isGranted ( 'ROLE_SUPER_ADMIN' )) {
         
-        	$builder->add('price');
+        	//$builder->add('price');
         	$builder->add('paymentMode', 'choice', array(
         	
         			'expanded' => true,

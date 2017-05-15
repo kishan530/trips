@@ -30,7 +30,7 @@ class PlacesToVisit
    
     private $active;
     /**
-     * @ORM\ManyToOne(targetEntity="Trip\BookingEngineBundle\Entity\Booking", inversedBy="placesToVisit")
+     * @ORM\ManyToOne(targetEntity="Trip\BookingEngineBundle\Entity\VehicleBooking", inversedBy="placesToVisit")
      * @ORM\JoinColumn(name="booking_id", referencedColumnName="id")
      */
     private $booking;

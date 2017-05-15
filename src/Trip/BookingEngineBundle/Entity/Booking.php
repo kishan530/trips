@@ -140,25 +140,11 @@ class Booking
      * @ORM\OneToMany(targetEntity="Trip\BookingEngineBundle\Entity\VehicleBooking", mappedBy="booking", cascade={"persist"})
      */
     private $vehicleBooking;
-    /**
-     * @ORM\OneToMany(targetEntity="Trip\BookingEngineBundle\Entity\Pickup", mappedBy="booking", cascade={"persist"})
-     */
-    private $pickUp;
-    /**
-     * @ORM\OneToMany(targetEntity="Trip\BookingEngineBundle\Entity\Drop", mappedBy="booking", cascade={"persist"})
-     */
-    private $drop;
-    /**
-     * @ORM\OneToMany(targetEntity="Trip\BookingEngineBundle\Entity\PlacesToVisit", mappedBy="booking", cascade={"persist"})
-     */
-    private $placesToVisit;
+
     
     public function __construct() {
     	$this->hotelBooking = new ArrayCollection();
     	$this->vehicleBooking = new ArrayCollection();
-    	$this->pickUp = new ArrayCollection();
-    	$this->drop = new ArrayCollection();
-    	$this->placesToVisit = new ArrayCollection();
     }
      
     
@@ -813,57 +799,6 @@ class Booking
 	 */
 	public function addVehicleBooking($vehicleBooking) {
 		$this->vehicleBooking->add($vehicleBooking);
-		return $this;
-	}
-	
-	/**
-	 *
-	 * @return the unknown_type
-	 */
-	public function getPickUp() {
-		return $this->pickUp;
-	}
-	
-	/**
-	 *
-	 * @param unknown_type $pickUp        	
-	 */
-	public function setPickUp($pickUp) {
-		$this->pickUp = $pickUp;
-		return $this;
-	}
-	
-	/**
-	 *
-	 * @return the unknown_type
-	 */
-	public function getDrop() {
-		return $this->drop;
-	}
-	
-	/**
-	 *
-	 * @param unknown_type $drop        	
-	 */
-	public function setDrop($drop) {
-		$this->drop = $drop;
-		return $this;
-	}
-	
-	/**
-	 *
-	 * @return the unknown_type
-	 */
-	public function getPlacesToVisit() {
-		return $this->placesToVisit;
-	}
-	
-	/**
-	 *
-	 * @param unknown_type $placesToVisit        	
-	 */
-	public function setPlacesToVisit($placesToVisit) {
-		$this->placesToVisit = $placesToVisit;
 		return $this;
 	}
 	 

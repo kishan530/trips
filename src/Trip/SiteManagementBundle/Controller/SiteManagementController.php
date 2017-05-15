@@ -15,6 +15,8 @@ use Trip\SiteManagementBundle\DTO\PackageLocations;
 use Trip\SiteManagementBundle\Form\PackageLocationsType;
 use Trip\BookingEngineBundle\Form\SearchType;
 use Trip\SiteManagementBundle\Form\PackageType;
+use Trip\SiteManagementBundle\Form\EditPackageType;
+use Trip\SiteManagementBundle\Form\PackageItineraryType;
 use Trip\SiteManagementBundle\Form\LocationType;
 use Trip\SiteManagementBundle\Form\ServicesType;
 use Trip\SiteManagementBundle\Form\VehicleType;
@@ -145,11 +147,26 @@ class SiteManagementController extends Controller
 		$preferTime = $request->get('preferTime');
         $numAdult = $request->get('numAdult');
         $selected = $request->get('selected');
+        $packageId = $request->get('packageId');
         $vehicleIndex = $request->get('vehicleIndex');
           
-           
-     $resultSet = $session->get('resultSet');
+           if(!is_null($packageId)){
+           	$em = $this->getDoctrine()->getManager();
+           	//$selectedService = $em->getRepository('TripSiteManagementBundle:Package')->findAll();
+           	$selectedService = $em->getRepository('TripSiteManagementBundle:Package')->find($packageId);
+           //	echo var_dump($selectedService->getStartPoint()->first());
+           //	exit();
+           //	$selectedService = $selectedService[0];
+           	$locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
+           	$locations = $this->getLocationsByIndex($locations);
+           	$session->set('locations',$locations);
+           	$selected = 0;
+           	$resultSet[$selected] = $selectedService;
+           	$session->set('resultSet',$resultSet);
+           }else {
+     	 $resultSet = $session->get('resultSet');
          $selectedService = $resultSet[$selected];
+           }
         $vehiclePrice = $selectedService->getPrice();
         $selectedVehicle = $vehiclePrice->get($vehicleIndex);
         $selectedService->setPrice(new ArrayCollection(array($selectedVehicle)));
@@ -163,8 +180,8 @@ class SiteManagementController extends Controller
         $searchFilter->setPackage($selectedService->getCode());
             $session->set('selectedData',$searchFilter);
          //$session->set('package','JTP01');
-            
-        return $this->redirect($this->generateUrl('trip_booking_engine_confirm', array('selected' => $selected)));
+        $code = $selectedService->getCode();
+        return $this->redirect($this->generateUrl('trip_booking_engine_confirm', array('selected' => $selected,'package'=>$code)));
         
     }
     /**
@@ -786,6 +803,17 @@ class SiteManagementController extends Controller
     			'form'   => $form->createView(),
     	));
     }
+    /**
+     *
+     */
+    public function packageListAction(Request $request){
+    	$em = $this->getDoctrine()->getManager();
+    	
+    	$packageList = $em->getRepository('TripSiteManagementBundle:Package')->findAll();
+    	return $this->render('TripSiteManagementBundle:Default:packageList.html.twig',array(
+    			'packageList' => $packageList,
+    	));
+    }
 	
 	/**
      *
@@ -920,7 +948,7 @@ class SiteManagementController extends Controller
              $collection = $package->getItineraryList();
              $itineraryCollection = $package->getItinerary();
              foreach($collection as $itinerary){
-             	if(!is_null($itinerary->getTitle()) or !is_null($itinerary->getTitle())){
+             	if(!is_null($itinerary->getTitle()) or !is_null($itinerary->getDescription())){
              		$itinerary->setPackage($package);
              		$itineraryCollection->add($itinerary);
              	}
@@ -1026,6 +1054,94 @@ class SiteManagementController extends Controller
                 		'form'   => $form->createView(),
     	));
     }
+    
+    
+    private function createEditPackageForm(Package $package,$id){
+    	$bookingService = $this->container->get( 'booking.services' );
+    	$form = $this->createForm(new EditPackageType(), $package, array(
+    			'action' => $this->generateUrl('trip_site_management_edit_package',array('id'=>$id)),
+    			'method' => 'POST',
+    	));
+    	$form->add('submit', 'submit', array('label' => 'Update'));
+    
+    	return $form;
+    }
+    
+    public function editPackageAction(Request $request,$id){
+    	$em = $this->getDoctrine()->getManager();
+    	//$package = new Package();
+    	$package =$em->getRepository('TripSiteManagementBundle:Package')->find($id);
+    	$itinerary = new PackageItinerary();
+    	$collection = new ArrayCollection();
+    	$collection->add($itinerary);
+    	$itineraryList = $package->getItinerary();
+    	$package->setItineraryList($collection);
+    	$packageUrl =  $package->getPackageUrl();
+    	$packageUrl = substr($packageUrl,0, strrpos($packageUrl, '-'));
+    	$package->setPackageUrl($packageUrl);
+    	$form   = $this->createEditPackageForm($package,$id);
+    	$form->handleRequest($request);
+    	if ($form->isValid()) {   		
+    
+    		$collection = $package->getItineraryList();
+    		$itineraryCollection = $package->getItinerary();
+    		foreach($collection as $itinerary){
+    			if(!is_null($itinerary->getTitle()) or !is_null($itinerary->getDescription())){
+    				$itinerary->setPackage($package);
+    				$itineraryCollection->add($itinerary);
+    			}
+    		}
+    		
+    		$packageCode = $package->getCode();
+    		$packageUrl =  $package->getPackageUrl();
+    		$packageUrl = $packageUrl.'-'.$packageCode;
+    		$package->setPackageUrl($packageUrl);
+    		$package = $em->merge($package);
+    		$em->flush();
+    
+    		return $this->redirect($this->generateUrl('trip_site_management_package_list'));
+    
+    	}
+    
+    	return $this->render('TripSiteManagementBundle:Default:editPackage.html.twig',array(
+    			'package' => $package,
+    			'itineraryList'=>$itineraryList,
+    			'form'   => $form->createView(),
+    	));
+    }
+    
+    private function createEditItineraryForm($package,$id){
+    	$bookingService = $this->container->get( 'booking.services' );
+    	$form = $this->createForm(new PackageItineraryType(), $package, array(
+    			'action' => $this->generateUrl('trip_site_management_edit_itinerary',array('id'=>$id)),
+    			'method' => 'POST',
+    	));
+    	$form->add('submit', 'submit', array('label' => 'Update'));
+    
+    	return $form;
+    }
+    
+    public function editItineraryAction(Request $request,$id){
+    	$em = $this->getDoctrine()->getManager();
+    	//$package = new Package();
+    	$package =$em->getRepository('TripSiteManagementBundle:PackageItinerary')->find($id);
+    	 
+    	$form   = $this->createEditItineraryForm($package,$id);
+    	$form->handleRequest($request);
+    	if ($form->isValid()) {
+    		$package = $em->merge($package);
+    		$em->flush();
+    
+    		return $this->redirect($this->generateUrl('trip_site_management_package_list'));
+    
+    	}
+    
+    	return $this->render('TripSiteManagementBundle:Default:editItinerary.html.twig',array(
+    			'package' => $package,
+    			'form'   => $form->createView(),
+    	));
+    }
+    
     public function multipackagesAction(Request $request){
         $em = $this->getDoctrine()->getManager();
         $packagetitle = $em->getRepository('TripSiteManagementBundle:PackageTitle')->findAll();

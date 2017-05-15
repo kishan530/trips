@@ -43,7 +43,7 @@ class Package
     
     /**
      * @var string
-     * @ORM\Column(name="overview", type="string", length=5000,nullable=true)
+     * @ORM\Column(name="overview", type="string", length=10000,nullable=true)
      */
     private $overview; 
     
@@ -104,27 +104,27 @@ class Package
      */
     private $imgPath;
     /**
-     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\StartPoint", mappedBy="booking", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\StartPoint", mappedBy="booking", cascade={"all"},  fetch="EAGER")
      */
     private $startPoint;
      /**
-     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\EndPoint", mappedBy="booking", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\EndPoint", mappedBy="booking", cascade={"persist"}, fetch="EAGER")
      */   
     private $endPoint;
     /**
-     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\EndPoint2", mappedBy="booking", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\EndPoint2", mappedBy="booking", cascade={"persist"}, fetch="EAGER")
      */ 
     private $endPoint2;
     /**
-     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\PackagePrice", mappedBy="package", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\PackagePrice", mappedBy="package", cascade={"persist"},  fetch="EAGER")
      */
     private $price;
     /**
-     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\PackageItinerary", mappedBy="package", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\PackageItinerary", mappedBy="package", cascade={"persist"}, fetch="EAGER")
      */
     private $itinerary;
     /**
-     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\PackageImages", mappedBy="package", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\PackageImages", mappedBy="package", cascade={"persist"}, fetch="EAGER")
      */
     private $images;
     /**

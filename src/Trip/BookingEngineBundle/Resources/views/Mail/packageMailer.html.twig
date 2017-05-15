@@ -34,13 +34,11 @@
 <th style="border:solid 1px #dddddd" height="30">Booking Id #</th>
 <th style="border:solid 1px #dddddd">Trip Type</th>
 <th style="border:solid 1px #dddddd">Booked On </th>
-<th style="border:solid 1px #dddddd">Adult </th>
 </tr>
 <tr style="color:#666;background:#fcfcfc">
 <td align="center" style="border:solid 1px #dddddd" height="30">{{ booking.bookingId }}</td>
 <td align="center" style="border:solid 1px #dddddd">{{ services.first.tripType }}</td>
-<td align="center" style="border:solid 1px #dddddd">{{ booking.bookedOn|date('d/m/Y') }}</td>
-<td align="center" style="border:solid 1px #dddddd"> {{ booking.numAdult }} </td>
+<td align="center" style="border:solid 1px #dddddd;text-transform: capitalize;">{{ booking.bookedOn|date('d/m/Y') }}</td>
 </tr>
 </tbody></table>
 <br>
@@ -55,6 +53,10 @@
 <th style="border:solid 1px #dddddd">Pick Up</th>
 <th style="border:solid 1px #dddddd">Drop </th>
 <th style="border:solid 1px #dddddd">Places to Visit </th>
+<th style="border:solid 1px #dddddd">Adult </th>
+ {% if is_granted('ROLE_SUPER_ADMIN') %}
+<th style="border:solid 1px #dddddd">Price </th>
+{% endif %}
 </tr>
 {% if services|length>0 %}
     {% for service in services  %} 
@@ -64,29 +66,29 @@
             <td align="center" style="border:solid 1px #dddddd">{{ service.preferTime }}</td>
             <td align="center" style="border:solid 1px #dddddd">{{ service.model }}</td>
             <td align="center" style="border:solid 1px #dddddd">           
-            {% for p in booking.pickUp %} 
-                 {{ locations[p.location].name }} {% if loop.last is same as(false) %} / {% endif %}
-             {% endfor %}             
+            {% if service.leavingFrom %} 
+                 {{ locations[service.leavingFrom].name }}
+			{% endif %}             
     		</td>
     		<td align="center" style="border:solid 1px #dddddd"> 
-    		{% if booking.placesToVisit|length>0 %}            
-            {% for p in booking.drop %} 
-                 {{ locations[p.location].name }} {% if loop.last is same as(false) %} / {% endif %}
-             {% endfor %}     
-             {% else %}
-                   N/A
-              {% endif %}        
+    		{% if service.goingTo %} 
+                 {{ locations[service.goingTo].name }}
+			{% endif %}     		        
     		</td>
     		<td align="center" style="border:solid 1px #dddddd">   
-    		 {% if booking.placesToVisit|length>0 %}                                                    
+    		 {% if service.placesToVisit|length>0 %}                                                    
                                                             
-            {% for p in booking.placesToVisit %} 
+            {% for p in service.placesToVisit %} 
                  {{ locations[p.location].name }} {% if loop.last is same as(false) %} , {% endif %}
              {% endfor %}
              {% else %}
                    N/A
               {% endif %}              
     		</td>
+    		<td align="center" style="border:solid 1px #dddddd"> {{ service.numAdult }} </td>
+    		 {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <td align="center" style="border:solid 1px #dddddd"> {{ service.price }} </td>
+            {% endif %}
         </tr>
     {% endfor %}
 {% endif %}

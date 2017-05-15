@@ -16,6 +16,7 @@ class GuestType extends AbstractType
     {
         $builder
             ->add('email','email')
+            ->add('mobile')
         ;
     }
     
