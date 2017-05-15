@@ -15,10 +15,12 @@ use Symfony\Component\Form\Event\DataEvent;
 class NewPackageType extends AbstractType
 {
 	private $catalog;
+	private $security;
 	
-	public function __construct($catalog)
+	public function __construct($catalog,$security)
 	{
 		$this->catalog = $catalog;
+		$this->security = $security;
 	}
 	
 	/**
@@ -57,6 +59,7 @@ class NewPackageType extends AbstractType
             		'multiple' => false,
             		'choices' => $this->getLocations(),
             		'required'    => false,
+            		'label' => 'Pick Up',
             		'empty_value'   => 'Select',
                     'attr'   =>  array(
                                         'class'=>'chosen-select',
@@ -70,6 +73,7 @@ class NewPackageType extends AbstractType
             		'multiple' => false,
             		'choices' => $this->getLocations(),
             		'required'    => false,
+             		'label' => 'Drop',
             		'empty_value'   => 'Select',
                     'attr'   =>  array(
                                         'class'=>'chosen-select',
@@ -77,6 +81,29 @@ class NewPackageType extends AbstractType
                                         'data-live-search'=>'true',
                                         'data-placeholder'=>'Select'
 				            		),                
+            ))
+            ->add('placesToVisit', 'choice', array(
+            		'expanded' => false,
+            		'multiple' => true,
+            		'choices' => $this->getLocations(),
+            		'required'    => false,
+            		'empty_value'   => 'Select',
+            		'attr'   =>  array(
+            				'class'=>'chosen-select',
+            				'data-style'=>'btn-white',
+            				'data-live-search'=>'true',
+            				'data-placeholder'=>'Select'
+            		),
+            ))
+            ->add('numAdult','text',array(
+            		'required'    => true,
+            		'label' => 'No of Adult',
+            		'data'=>'1',
+            		'attr'   =>  array(
+            				'placeholder'=>'Number of Adult',
+            				'class'=>'numAdult'
+            		),
+            
             ))
              ->add('vehicleId', 'choice', array(
             		'expanded' => false,
@@ -107,8 +134,17 @@ class NewPackageType extends AbstractType
                                 //'widget' => 'single_text',
             		            
             )) 
-            ->add('price')
+            ->add('description',null,array(
+            		'required'    => false,
+            		'attr'   =>  array(
+            				'placeholder'=>'If you didn`t find your location write your plan here',
+            		),
+            ))
             ;
+            if ($this->security->isGranted ( 'ROLE_SUPER_ADMIN' )) {
+            
+            	$builder->add('price');
+            }
                           
     }
     

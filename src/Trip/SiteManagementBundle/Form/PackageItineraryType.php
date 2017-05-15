@@ -17,7 +17,7 @@ class PackageItineraryType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('description')
+            ->add('description','textarea')
            
         ;
     }

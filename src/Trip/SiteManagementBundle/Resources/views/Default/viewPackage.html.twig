@@ -62,6 +62,14 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 	       });
 </script>
 {% endblock %}
+
+
+ {% block meta %}
+    <meta name="keywords" content="{{ package.metaKeywords }}">
+    <meta name="description" content="{{ package.metaDescription }}">  
+{% endblock %}
+    {% block title %}{{ package.metaTitle }}{% endblock %}
+
 {% block body %}
 
 <section class="section clearfix">
@@ -97,9 +105,9 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
             </div>
             <div id="overview">
                 <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-lg-12 text-justify">
                         <h4 class="package-custome-title">Overview</h4>
-                        <p>{{ package.overview }}</p>
+                        <p>{{ package.overview|raw }}</p>
                     </div>
                 </div>
             </div>
@@ -123,11 +131,11 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
             </div>
              <div id="itinerary">
                 <div class="row">
-                    <div class="col-lg-12">
-                        <h4 class="package-custome-title">Itinerary</h4>
+                    <div class="col-lg-12 text-justify">
+{#                         <h4 class="package-custome-title">Itinerary</h4>#}
                         {% for i in package.itinerary %} 
                         <h5 class="subtitle">{{ i.title }}</h5>
-                        <p>{{ i.description }}</p>
+                        <p>{{ i.description|raw }}</p>
                         {% endfor %}
                         
                     </div>
@@ -248,21 +256,21 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                                     <div class="col-md-4 package-info-widget">
 
                                                          <div class="form-group make-margin">
-                                                             <label>Date</label>
+                                                             <label class="required">Date</label>
                                                     <input type="text" name="preferDate" placeholder="Prefer Date" class="form-control preferDate" required>                                          
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4 package-info-widget">
 
                                                          <div class="form-group make-margin">
-                                                        <label>Time</label>
+                                                        <label class="required">Time</label>
                                                      <input type="text" name="preferTime" placeholder="Prefer Time" class="form-control preferTime" required>                                            
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4 package-info-widget">
 
                                                         <div class="form-group make-margin">
-                                                            <label>Adults</label>
+                                                            <label class="required">Adults</label>
                                                          <div class="input-group">
                                                             <a class="adults input-group-addon" id="decrement" value="1" href="#">-</a> 
                                                 <input type="text" name="numAdult" placeholder="Adults" class="form-control numAdult" value="1" required> 

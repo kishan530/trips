@@ -22,6 +22,14 @@ class NewPackage
      * @var string
      */
     private $goingTo;
+    /**
+     * @var string
+     */
+    private $placesToVisit;
+    /**
+     * @var integer
+     */
+    private $numAdult;
     
     /**
      * @var string
@@ -39,6 +47,10 @@ class NewPackage
      * @var string
      */
     private $price;
+    /**
+     * @var string
+     */
+    private $description;
     
 	
 	/**
@@ -147,5 +159,62 @@ class NewPackage
 		$this->price = $price;
 		return $this;
 	}
+	
+	/**
+	 *
+	 * @return the string
+	 */
+	public function getPlacesToVisit() {
+		return $this->placesToVisit;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$placesToVisit
+	 */
+	public function setPlacesToVisit($placesToVisit) {
+		$this->placesToVisit = $placesToVisit;
+		return $this;
+	}
+	
+	/**
+	 *
+	 * @return the integer
+	 */
+	public function getNumAdult() {
+		return $this->numAdult;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$numAdult
+	 */
+	public function setNumAdult($numAdult) {
+		$this->numAdult = $numAdult;
+		return $this;
+	}
+	
+	/**
+	 *
+	 * @return the string
+	 */
+	public function getDescription() {
+		return $this->description;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$description
+	 */
+	public function setDescription($description) {
+		$this->description = $description;
+		return $this;
+	}
+	
+	
+	
     
 }

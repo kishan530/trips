@@ -49,7 +49,12 @@
     }
 </style>
 <style>
-.nav-justified>li{display:inline-block;width:31%}.nav-justified>li:after,.nav-justified>li:first-child:after{content:'';width:100%;height:2px;position:absolute;left:-50%;top:9px}.list-group-item-heading{margin-top:8px!important;font-size: initial !important;text-transform: none !important;}.nav-justified>li:after{background:#000;z-index:1}.nav-pills>li.active>a,.nav-pills>li.active>a:focus,.nav-pills>li.active>a:hover{color:#000!important;background:0 0!important}.nav-pills>li.active span,.nav-pills>li.active span:focus,.nav-pills>li.active span:hover{color:#FFF!important;background:#429542!important}.nav-justified>li:first-child:after{background:0 0!important;z-index:-1}.nav-justified>li a{margin-top:-13px;z-index:100}   
+.nav-justified>li{display:inline-block;width:31%}.nav-justified>li:after,.nav-justified>li:first-child:after{content:'';width:100%;height:2px;position:absolute;left:-50%;top:9px}.list-group-item-heading{margin-top:8px!important;font-size: initial !important;text-transform: none !important;}.nav-justified>li:after{background:#000;z-index:1}.nav-pills>li.active>a,.nav-pills>li.active>a:focus,.nav-pills>li.active>a:hover{color:#000!important;background:0 0!important}.nav-pills>li.active span,.nav-pills>li.active span:focus,.nav-pills>li.active span:hover{color:#FFF!important;background:#ea2330!important}.nav-justified>li:first-child:after{background:0 0!important;z-index:-1}.nav-justified>li a{margin-top:-13px;z-index:100}
+
+.badge {
+    padding: 9px 13px;
+    border-radius: 15px;
+}
 
 </style>
 {% endblock %}
@@ -92,14 +97,14 @@
                                     <div class="col-sm-12 booking-price-details-border price-details clearfix">
 									<div class="row">
                                         <div class="hotel-title price-details">
-                                            <h5>Booking Information</h5>
+                                            <h5>Review Your Booking</h5>
                                         </div>
                                         </div>
 										{% if filter.package|length>0 %}
                                         <h6><span>{{ service.name }}</span> on {{ filter.date|date('F jS Y') }} {{ filter.preferTime }}</h6>
 											<div class="col-sm-2 text-center">
                                                 
-                                                <h5>Package</h5> {{ service.code }}
+                                                <h5>Package</h5> <span style="color: #ea2330;font-weight: bold;">{{ service.code }}</span>
 											</div>
 											<div class="col-sm-4 text-center">
 											<h5>Pick Up</h5>
@@ -109,9 +114,11 @@
 											</div>
 											<div class="col-sm-4 text-center">
 											<h5>Places to Visit</h5>
-												{% for endPoint in service.endPoint %} 
-                                                            {{ locations[endPoint.name].name }}{% if loop.last is same as(false) %},{% endif %}
-                                                       {% endfor %}
+												{% for endPoint in service.endPoint if service.endPoint|length>0 %} 
+                                                            {{ locations[endPoint.name].name }}
+                                                     {% else %}
+                                                    N/A
+                                                 {% endfor %}
 											</div>
 											<div class="col-sm-2 text-center">
 											<h5>Drop</h5>
@@ -147,7 +154,7 @@
                                          {% block form %}
                                         <div class="row">
                                         <div class="hotel-title price-details">
-                                            <h5>Your Information</h5>
+                                            <h5>Traveler Details</h5>
                                         </div>
                                         </div>
                                             {{ form_start(form) }}

@@ -63,7 +63,8 @@ class BookingController extends Controller
 	 * 
 	 */
     public function indexAction(){
-
+    	//$mailService = $this->container->get( 'mail.services' );
+    	//$mailService->mail('mailwaseemsyed@gmail.com','Just Trip:Booking Confirmation','this is test');
     	return $this->getHome('TripSiteManagementBundle:Default:index.html.twig');
     }
     /**
@@ -358,8 +359,15 @@ class BookingController extends Controller
         $searchHotel = $session->get('searchHotel');
          $selectedService = $session->get('selected');
 		  $locations = $session->get('locations');
+		  
+		  
         
+       $guest = $session->get('guest');
+
+		
         $customer = new Customer();
+        $customer->setEmail($guest->getEmail());
+        $customer->setMobile($guest->getMobile());
     	$form   = $this->createBookingForm($customer);
         if(!is_null($searchHotel)){
              return $this->render('TripBookingEngineBundle:Default:hotelBooking.html.twig', array(
@@ -423,11 +431,15 @@ class BookingController extends Controller
     }
     public function confirmAction(Request $request)
     {
-
+    	$em = $this->getDoctrine()->getManager();
         $selected = $request->get('selected');
         $session = $request->getSession();
         $resultSet = $session->get('resultSet');
         $selectedService = $resultSet[$selected];
+        $searchFilter = $session->get('selectedData');
+        if($searchFilter->getTripType()=='package')
+        if(!$selectedService->getStartPoint()->first())
+        $selectedService = $em->getRepository('TripSiteManagementBundle:Package')->find($selectedService->getId());
         $searchFilter = $session->get('selectedData');
         $searchHotel = $session->get('searchHotel');
          $session->set('selected',$selectedService);
@@ -437,7 +449,7 @@ class BookingController extends Controller
     	$form   = $this->createGuestForm($customer);
         $form->handleRequest($request);
     	if ($form->isValid()) {
-            
+    		$session->set('guest',$customer);
     		return $this->redirect($this->generateUrl('trip_booking_engine_book'));
         }
     
@@ -450,6 +462,9 @@ class BookingController extends Controller
                  'selected'=>$selected
             ));
         }else{
+        	$searchFilter = $session->get('selectedData');
+        	//echo var_dump($searchFilter->getTripType()=='package');
+        	//exit();
          return $this->render('TripBookingEngineBundle:Default:confirm.html.twig', array(
                 'form'   => $form->createView(),
                'service'=>$selectedService,
@@ -473,9 +488,12 @@ class BookingController extends Controller
         $selectedService = $session->get('selected');
         $searchHotel = $session->get('searchHotel');
 		 $locations = $session->get('locations');
+		 $guest = $session->get('guest');
 
-        
+		
         $customer = new Customer();
+        $customer->setEmail($guest->getEmail());
+        $customer->setMobile($guest->getMobile());
     	$form   = $this->createBookingForm($customer);
         $form->handleRequest($request);
     	if ($form->isValid()) {
@@ -825,9 +843,9 @@ class BookingController extends Controller
     	$security = $this->container->get ( 'security.context' );
         $em = $this->getDoctrine()->getManager();
     	$customer = new CustomerDto();
-      /*  $package = new NewPackage();
+       $package = new NewPackage();
         $collection = $customer->getMultiple();
-        $collection->add($package); */
+        $collection->add($package);
     	$form   = $this->createCoustomPackageForm($customer);
     	$form->handleRequest($request);
         if ($form->isValid()) {
@@ -836,7 +854,7 @@ class BookingController extends Controller
              $collection = $customer->getMultiple();
              $pickUp = $customer->getPickUp();
              $drop = $customer->getDrop();
-             $placesToVisit = $customer->getPlacesToVisit();
+            
              $price = $customer->getPrice();
              $date = $customer->getDate();
              $preferTime = $customer->getPreferTime();
@@ -863,38 +881,70 @@ class BookingController extends Controller
             if ($security->isGranted ( 'ROLE_SUPER_ADMIN' ))
             	$totalPrice = $price;
             
-            $pickUpCollection = $booking->getPickUp();
-            $pickObj = new Pickup();
-            $pickObj->setLocation($pickUp);
-            $pickObj->setBooking($booking);
-            $pickUpCollection->add($pickObj);
-            
-            $dropCollection = $booking->getDrop();
-            $dropObj = new Drop();
-            $dropObj->setLocation($drop);
-            $dropObj->setBooking($booking);
-            $dropCollection->add($dropObj);
-            
-            $placesToVisitCollection = $booking->getPlacesToVisit();
+           
             
             
             
-            $vehicleBooking = new VehicleBooking();
+            foreach($collection as $service){
+            	$leavingFrom = $service->getLeavingFrom();
+            	$goingTo = $service->getGoingTo();
+            	$date = $service->getDate();
+            	$preferTime = $service->getPreferTime();
+            	$numAdult = $service->getNumAdult();
+            	$price = $service->getPrice();
+            	$description = $service->getDescription();
+            	$placesToVisit = $service->getPlacesToVisit();
+            	$totalPrice += $price;
+            	$vehicleBooking = new VehicleBooking();
+            	 
+            	$vehicleBooking->setVehicleId($service->getVehicleId());
+            	$vehicleBooking->setModel($vehicles[$service->getVehicleId()]);
+            	$vehicleBooking->setLeavingFrom($leavingFrom);
+            	$vehicleBooking->setGoingTo($goingTo);
+            	$vehicleBooking->setDescription($description);
+            	$vehicleBooking->setDate($date);
+            	$vehicleBooking->setTripType('custom package');
+            	$vehicleBooking->setPrice($price);
+            	$vehicleBooking->setNumAdult($numAdult);
+            	$vehicleBooking->setPreferTime($preferTime);
+            	$vehicleBooking->setBooking($booking);
+            	$booking->addVehicleBooking($vehicleBooking);
+            	
+            	/* $pickUpCollection = $booking->getPickUp();
+            	$pickObj = new Pickup();
+            	$pickObj->setLocation($leavingFrom);
+            	$pickObj->setBooking($booking);
+            	$pickUpCollection->add($pickObj);
+            	
+            	$dropCollection = $booking->getDrop();
+            	$dropObj = new Drop();
+            	$dropObj->setLocation($goingTo);
+            	$dropObj->setBooking($booking);
+            	$dropCollection->add($dropObj); */
+            	
+            	$placesToVisitCollection = $vehicleBooking->getPlacesToVisit();
+            	
+            	foreach($placesToVisit as $location){
+            		$placesToVisitObj = new PlacesToVisit();
+            		$placesToVisitObj->setLocation($location);
+            		$placesToVisitObj->setBooking($vehicleBooking);
+            		$placesToVisitCollection->add($placesToVisitObj);
+            	}
+            	 
+            }
+            
+            
+           /*  $vehicleBooking = new VehicleBooking();
              
             $vehicleBooking->setVehicleId($customer->getVehicleId());
             $vehicleBooking->setModel($vehicles[$customer->getVehicleId()]);
             $vehicleBooking->setDate($date);
-            $vehicleBooking->setTripType('custom package');
+           
             $vehicleBooking->setPrice($price);
             $vehicleBooking->setPreferTime($preferTime);
             $vehicleBooking->setBooking($booking);
-            $booking->addVehicleBooking($vehicleBooking);
-             foreach($placesToVisit as $location){          
-             	$placesToVisitObj = new PlacesToVisit();
-             	$placesToVisitObj->setLocation($location);
-             	$placesToVisitObj->setBooking($booking);
-             	$placesToVisitCollection->add($placesToVisitObj);
-             }
+            $booking->addVehicleBooking($vehicleBooking); */
+             
             $paymentMode = $customer->getPaymentMode();
             $booking->setPaymentMode('advance');
             if ($security->isGranted ( 'ROLE_SUPER_ADMIN' ))

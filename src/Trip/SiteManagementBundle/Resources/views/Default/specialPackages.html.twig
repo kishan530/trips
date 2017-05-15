@@ -175,21 +175,21 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                                     <div class="col-md-4 package-info-widget">
 
                                                          <div class="form-group make-margin">
-                                                             <label>Date</label>
+                                                             <label class="required">Date</label>
                                                     <input type="text" name="preferDate" placeholder="Prefer Date" class="form-control preferDate" required>                                          
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4 package-info-widget">
 
                                                          <div class="form-group make-margin">
-                                                        <label>Time</label>
+                                                        <label class="required">Time</label>
                                                      <input type="text" name="preferTime" placeholder="Prefer Time" class="form-control preferTime" required>                                            
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4 package-info-widget">
 
                                                         <div class="form-group make-margin">
-                                                            <label>Adults</label>
+                                                            <label class="required">Adults</label>
                                                          <div class="input-group">
                                                             <a class="adults input-group-addon" id="decrement" value="1" href="#">-</a> 
                                                 <input type="text" name="numAdult" placeholder="Adults" class="form-control numAdult" value="1" required> 
@@ -207,6 +207,9 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                                  <input type="hidden" name="selected" value="{{ key }}"> 
                                                 <input id="vehicleIndex{{ package.id }}" type="hidden" name="vehicleIndex" value="{{ package.price.keys[0] }}">
                                                 <button type="submit" class="awe-btn awe-btn btn btn-book btn-block"><i class="fa fa-shopping-cart"></i> BOOK NOW</button>
+                                                {% if package.packageUrl %}
+                                                 <a style="background-color: #f26722;"  class="awe-btn awe-btn btn btn-primary btn-block" href="{{ path('trip_site_management_view_package',{'url':package.packageUrl}) }}"><i class="fa fa-eye"></i> MORE Details</a>
+                                                 {% endif %}
                                                 </div>
                                                 </form>
                                             <div class="clearfix"></div> 

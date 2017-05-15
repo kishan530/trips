@@ -14,10 +14,16 @@
 		{{ form_errors(form, { 'global_errors': true }) }}
 	
 		<div class="row booking-price-details">
-		<div class="make-margin"></div>
-	                <div class="col-md-12 col-sm-12 col-xs-12" style="padding: 0;">
+		<div class="row make-margin">
+	                <div class="col-md-12 col-sm-12 col-xs-12">
 	                    {{ form_widget(form.email,{'attr':{'placeholder':'Email'}}) }}
 	                </div>
+	     </div>
+	    <div class="row make-margin">
+	                <div class="col-md-12 col-sm-12 col-xs-12">
+	                    {{ form_widget(form.mobile,{'attr':{'placeholder':'Mobile'}}) }}
+	                </div>
+	      </div>
 	    </div>
 	    <div class="row booking-price-details">       
 	            

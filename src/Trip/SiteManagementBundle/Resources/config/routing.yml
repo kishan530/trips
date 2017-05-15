@@ -20,6 +20,18 @@ trip_site_management_add_package_price:
 trip_site_management_add_package:
     path:     /add/package
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:addPackage }
+trip_site_management_package_list:
+    path:     /package-list
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:packageList }
+trip_site_management_edit_package:
+    path:     /edit/{id}/package
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:editPackage }
+trip_site_management_edit_itinerary:
+    path:     /edit/{id}/itinerary
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:editItinerary }
+trip_site_management_delete_itinerary:
+    path:     /delete/{id}/itinerary
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:deleteItinerary }
 trip_site_management_add_packagelocations:
     path:     /add/packagelocations
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:addPackageLocations }    

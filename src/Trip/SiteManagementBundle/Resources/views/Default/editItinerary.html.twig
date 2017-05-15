@@ -1,0 +1,90 @@
+{% extends 'page.html.twig' %}
+{% block javascripts %}
+<script>
+$("select").change(function() {
+			$("#search").submit();						
+		});
+		 $("input").blur(function() {
+			$("#search").submit();						
+		});
+    
+    
+ // keep track of how many city fields have been rendered
+
+
+    $('#add-another-itinerary').click(function(e) {
+            e.preventDefault();
+            /*if(itemCount>4){
+                alert('Max 5 only');
+                exit();
+            }*/
+
+            var itineraryList = $('#itinerary-list');
+
+            // grab the prototype template
+            var newWidget = itineraryList.attr('data-prototype');
+            // replace the "__name__" used in the id and name of the prototype
+            // with a number that's unique to your city
+            newWidget = newWidget.replace(/__name__/g, itineraryCount);
+            itineraryCount++;
+
+            // create a new list element and add it to the list
+            var newLi = $('<div></div>').html(newWidget);
+            newLi.appendTo(itineraryList);
+        });
+
+ // keep track of how many city fields have been rendered
+
+    $('#add-another-image').click(function(e) {
+            e.preventDefault();
+            /*if(itemCount>4){
+                alert('Max 5 only');
+                exit();
+            }*/
+
+            var imageList = $('#image-list');
+
+            // grab the prototype template
+            var newWidget = imageList.attr('data-prototype');
+            // replace the "__name__" used in the id and name of the prototype
+            // with a number that's unique to your city
+            newWidget = newWidget.replace(/__name__/g, imageCount);
+            imageCount++;
+
+            // create a new list element and add it to the list
+            var newLi = $('<div></div>').html(newWidget);
+            newLi.appendTo(imageList);
+        });
+</script>
+{% endblock %}
+{% block body %}
+
+    <section class="section clearfix">
+        <div class="container">
+            <div class="row">
+                <div id="fullwidth" class="col-sm-12">
+               <div class="col-lg-7">
+                    
+                   {{ form_start(form) }}
+                   <div class="row form-group">
+                            <div class="col-lg-12">
+                            	{{ form_label(form.title) }}
+                                {{ form_widget(form.title) }}
+                            </div> 
+                                                    
+                    </div>
+                     <div class="row form-group">
+                            <div class="col-lg-12">
+                            	{{ form_label(form.description) }}
+                                {{ form_widget(form.description) }}
+                            </div> 
+                                                    
+                        </div>                              
+                    
+                    {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+          </div> 
+    </section>
+{% endblock %}

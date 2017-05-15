@@ -1,0 +1,51 @@
+{% extends 'page.html.twig' %}
+{% block javascripts %}
+<script>
+$("select").change(function() {
+			$("#search").submit();						
+		});
+		 $("input").blur(function() {
+			$("#search").submit();						
+		});
+</script>
+{% endblock %}
+{% block body %}
+
+    <section class="section clearfix">
+        <div class="container">
+        <h3>Package List</h3>
+            <div class="row">
+                <div id="fullwidth" class="col-sm-12">
+					<table class="table table-bordered col-lg-12 col-sm-12">
+					<tr>
+						<th>Sl.No</th>
+						<th>Name</th>
+						<th>Title</th>
+						<th>Code</th>
+						
+						<th>/</th>
+					</tr>
+                     {% for package in packageList %}
+                        <tr>
+                        	<td>{{ loop.index }}</td>
+                            <td>
+                                {{ package.name }}
+                            </td>
+							 <td>
+                                {{ package.title }}
+                            </td>
+							 <td>
+                                {{ package.code }}
+                            </td>
+							
+							<td>
+								<a href="{{ path('trip_site_management_edit_package',{ 'id': package.id }) }}"><i class="fa fa-pencil-square-o"></i></a>
+							</td>
+                        </tr>
+                    {% endfor %}
+					</table>
+                </div>
+            </div>
+        </div>
+</section>
+{% endblock %}
