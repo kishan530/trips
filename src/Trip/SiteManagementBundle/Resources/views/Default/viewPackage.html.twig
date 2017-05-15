@@ -62,6 +62,14 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 	       });
 </script>
 {% endblock %}
+
+
+ {% block meta %}
+    <meta name="keywords" content="{{ package.metaKeywords }}">
+    <meta name="description" content="{{ package.metaDescription }}">  
+{% endblock %}
+    {% block title %}{{ package.metaTitle }}{% endblock %}
+
 {% block body %}
 
 <section class="section clearfix">
