@@ -3,7 +3,7 @@
 <link href="{{ asset('css/jquery.timepicker.css') }}" rel="stylesheet" media="screen">
 <link type="text/css" rel="stylesheet" href="{{ asset('css/lightGallery.min.css') }}" /> 
 <link type="text/css" rel="stylesheet" href="{{ asset('css/lightslider.css') }}" /> 
- 
+
 {% endblock %}
 {% block javascripts %} 
  <script src="{{ asset('js/lightgallery-all.min.js') }}"></script>
@@ -103,54 +103,6 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                     </div>
                 </div>
             </div>
-            <div id="overview">
-                <div class="row">
-                    <div class="col-lg-12 text-justify">
-                        <h4 class="package-custome-title">Overview</h4>
-                        <p>{{ package.overview|raw }}</p>
-                    </div>
-                </div>
-            </div>
-             <div id="fareRules">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h4 class="package-custome-title">Fare Rules</h4>
-                        	<ul class="list-view">
-                        		<li> Toll , Parking, Food allowances and  State Permit extra</li>
-		                        <li>In ghat road A/C will not function.</li>
-		                         <li>Once the Journey is started, Tickets are not refundable and unchangeable.</li>
-								 <li> Price mentioned is applicable for drop/return on the same day.</li>
-		                         <li>  For Tirumala drop cab will wait 30 Minutes at CRO Office after that
-		Extra hour will be charged Rs:100/- for all 4 seater  cars , Rs:150/-for
-		all 7 seater cars , Rs:-200/-for all 12 seater.</li>
-		                         <li>Cancellation charges of Rs.100 applicable if canceled within 24 Hours of pickup time.</li>
-                        	</ul>
-                        
-                    </div>
-                </div>
-            </div>
-             <div id="itinerary">
-                <div class="row">
-                    <div class="col-lg-12 text-justify">
-{#                         <h4 class="package-custome-title">Itinerary</h4>#}
-                        {% for i in package.itinerary %} 
-                        <h5 class="subtitle">{{ i.title }}</h5>
-                        <p>{{ i.description|raw }}</p>
-                        {% endfor %}
-                        
-                    </div>
-                </div>
-            </div>
-            {% if location %}
-             <div id="about">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h4 class="package-custome-title">About {{ location.name }}</h4>
-                        <p>{{ location.description }}</p>
-                    </div>
-                </div>
-            </div>
-            {% endif %}
             </div>
              <div class="col-lg-3">
              
@@ -295,6 +247,72 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                             <div class="clearfix"></div> 
              	
              </div>
+			<div class="col-lg-12">
+			 <div id="overview">
+                <div class="row">
+                    <div class="col-lg-12 text-justify">
+                        <h4 class="package-custome-title">Overview</h4>
+						<hr>
+                        <p>{{ package.overview|raw }}</p>
+						<hr>
+						{% if location %}
+							 {#<div id="about">
+								<div class="row">
+									<div class="col-lg-12">
+										<h4 class="package-custome-title">About {{ location.name }}</h4>
+										<p>{{ location.description }}</p>
+									</div>
+								</div>
+							</div>#}
+						{% endif %}
+                    </div>
+                </div>
+            </div>
+			<div id="itinerary">
+			<h4 class="package-custome-title">Package Itinerary</h4>
+                <div class="row">
+                    <div class="col-lg-12 text-justify">
+								<div class="row">
+									
+										<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">
+										  <div class="list-group">
+											<a href="#" class="list-group-item active text-center">DAY1</a>
+										  </div>
+										</div>
+										<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 bhoechie-tab">
+											<!-- flight section -->
+											<div class="bhoechie-tab-content active">
+												
+												  {% for i in package.itinerary %}
+													<h5 class="subtitle">{{ i.title }}</h5>
+													<p>{{ i.description|raw }}</p>
+													{% endfor %}
+												
+											</div>
+										</div>
+							  </div>
+                    </div>
+                </div>
+            </div>
+			 <div id="fareRules">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h4 class="package-custome-title">Fare Rules</h4>
+                        	<ul class="list-view">
+                        		<li> Toll , Parking, Food allowances and  State Permit extra</li>
+		                        <li>In ghat road A/C will not function.</li>
+		                         <li>Once the Journey is started, Tickets are not refundable and unchangeable.</li>
+								 <li> Price mentioned is applicable for drop/return on the same day.</li>
+		                         <li>  For Tirumala drop cab will wait 30 Minutes at CRO Office after that
+		Extra hour will be charged Rs:100/- for all 4 seater  cars , Rs:150/-for
+		all 7 seater cars , Rs:-200/-for all 12 seater.</li>
+		                         <li>Cancellation charges of Rs.100 applicable if canceled within 24 Hours of pickup time.</li>
+                        	</ul>
+                        
+                    </div>
+                </div>
+            </div>
+			</div>
           </div>
             
     </div>
