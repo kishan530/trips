@@ -218,10 +218,25 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                     </div><!-- end col -->
                                 </div><!-- end mini-desti -->
                                         </div>
-                                        
-                                    
                                 {% endfor %}
-                                 
+								
+                                 <div class="specialtxt">
+									 {% for packagecontent in packagetitlecontents %} 
+								   <h5>{{ packagecontent.title }}</h5>
+								   <p>{{ packagecontent.description }}</p>
+								   
+									{% endfor %}
+								  
+								  
+								   <ul class="type">
+								   {% for packagelist in packagetitlelist %}
+								   <li>{{ packagelist.text }} </li>
+									{% endfor %}
+
+								   </ul></br>
+								</div><!-- specialtxt -->
+								 
+								 
                                </div>
                             </div>
                             <div class="col-md-3">
@@ -234,22 +249,6 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                        
                          <div class="row">
                            <div id="fullwidth" class="col-sm-12 col-md-9">
-                            <div class="specialtxt">
-                             {% for packagecontent in packagetitlecontents %} 
-                           <h5>{{ packagecontent.title }}</h5>
-                           <p>{{ packagecontent.description }}</p>
-                           
-                            {% endfor %}
-                          
-                          
-                           <ul class="type">
-                           {% for packagelist in packagetitlelist %}
-                           <li>{{ packagelist.text }} </li>
-                            {% endfor %}
-
-                           </ul></br>
-                                 
-                           </div>
                          </div>  
                        </div>
                     </div>
