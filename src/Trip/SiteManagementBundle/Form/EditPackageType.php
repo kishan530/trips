@@ -5,6 +5,8 @@ namespace Trip\SiteManagementBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Trip\SiteManagementBundle\Form\PackageItineraryType;
+use Trip\SiteManagementBundle\Form\PackageContentType;
 
 class EditPackageType extends AbstractType
 {
@@ -46,6 +48,17 @@ class EditPackageType extends AbstractType
             ->add('itineraryList', 'collection', array(
             		// each entry in the array will be an "PackageItinerary" field
             		'type'   => new PackageItineraryType(),
+            		'allow_add'    => true,
+            		'prototype'=>true,
+            		'required'    => false,
+            		// these options are passed to each "PackageItinerary" type
+            		//'entry_options'  => array(
+            		//   'attr'      => array('class' => '')
+            		//),
+            ))
+            ->add('contentList', 'collection', array(
+            		// each entry in the array will be an "PackageItinerary" field
+            		'type'   => new PackageContentType(),
             		'allow_add'    => true,
             		'prototype'=>true,
             		'required'    => false,

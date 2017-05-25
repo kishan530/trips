@@ -385,7 +385,7 @@ li.booking-price{font-size:25px !important;font-family:'LatoBold', serif !import
 .not-fullscreen .content-a,
 .fullscreen.not-overflow,
 .fullscreen.not-overflow .content-a{height:100%;overflow:hidden;}
-.section{background-color:#ffffff;position:relative;display:block;padding: 12px 0;overflow:hidden;}
+.section{background-color:#ffffff;position:relative;display:block;padding: 12px 0;}
 .section-grey{background-color:#eeeeee;}
 .section-light{background-color:#f6f6f6;}
 #page-header{background:url(../images/page-header.jpg) no-repeat scroll center center/cover rgba(0, 0, 0, 0);display:block;padding:70px 0;position:relative;text-align:center;}

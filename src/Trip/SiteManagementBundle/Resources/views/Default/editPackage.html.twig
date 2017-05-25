@@ -34,6 +34,30 @@ $("select").change(function() {
             newLi.appendTo(itineraryList);
         });
 
+
+    var contentCount = '{{ form.contentList|length }}';
+
+    $('#add-another-content').click(function(e) {
+            e.preventDefault();
+            /*if(itemCount>4){
+                alert('Max 5 only');
+                exit();
+            }*/
+
+            var contentList = $('#content-list');
+
+            // grab the prototype template
+            var newWidget = contentList.attr('data-prototype');
+            // replace the "__name__" used in the id and name of the prototype
+            // with a number that's unique to your city
+            newWidget = newWidget.replace(/__name__/g, contentCount);
+            contentCount++;
+
+            // create a new list element and add it to the list
+            var newLi = $('<div></div>').html(newWidget);
+            newLi.appendTo(contentList);
+        });
+    
  // keep track of how many city fields have been rendered
 
     $('#add-another-image').click(function(e) {
@@ -56,6 +80,60 @@ $("select").change(function() {
             var newLi = $('<div></div>').html(newWidget);
             newLi.appendTo(imageList);
         });
+
+    $("#itinerary-tbl").on('click', '.delete', function (e) {
+    	e.preventDefault(); //STOP default action
+    	  var url = $(this).attr('href');
+    	   var name = $(this).attr('title');
+            if (!confirm(" "+name+" details will be deleted permanently form the system, please confirm")) {
+    		            exit();
+    		  }	
+    	  var tr = $(this).parent().parent();
+    		        $.ajax({
+    					url: url,
+    					type: "GET",
+    					success: function(data) {
+    						//alert(data); 
+    						if(data=='true'){
+    							tr.remove();
+    						}else{
+    							$('#error').html(data);
+    						}
+    					},
+    					
+    					error: function(XMLHttpRequest, textStatus, errorThrown)
+    					{
+    					 alert('Error: ' +  errorThrown);
+    					}
+    				});			       
+    });
+
+    $("#content-tbl").on('click', '.delete', function (e) {
+    	e.preventDefault(); //STOP default action
+    	  var url = $(this).attr('href');
+    	   var name = $(this).attr('title');
+            if (!confirm(" "+name+" details will be deleted permanently form the system, please confirm")) {
+    		            exit();
+    		  }	
+    	  var tr = $(this).parent().parent();
+    		        $.ajax({
+    					url: url,
+    					type: "GET",
+    					success: function(data) {
+    						//alert(data); 
+    						if(data=='true'){
+    							tr.remove();
+    						}else{
+    							$('#error').html(data);
+    						}
+    					},
+    					
+    					error: function(XMLHttpRequest, textStatus, errorThrown)
+    					{
+    					 alert('Error: ' +  errorThrown);
+    					}
+    				});			       
+    });
 </script>
 {% endblock %}
 {% block body %}
@@ -175,7 +253,42 @@ $("select").change(function() {
                         	</div>
                             {% endfor %}
                         </div>
-                    <a href="#" id="add-another-itinerary">Add another Itinerary</a>                                             
+                    <a href="#" id="add-another-itinerary">Add another Itinerary</a> 
+                    
+                    
+                     <h4>Package Content</h4>
+                     
+                     <div class="row">               		
+                			<div class="col-lg-6">
+                            	<label>Title</label>
+                            </div> 
+                            <div class="col-lg-6">
+                            	<label>Description</label>
+                            </div> 
+                		</div>
+                    
+                    {% macro content_prototype(j) %}
+                        <div class="row form-group">
+                            <div class="col-lg-6">
+                                {{ form_widget(j.title) }}
+                            </div> 
+                                                    
+                            <div class="col-lg-6">
+                            	
+                                {{ form_widget(j.description) }}
+                            </div> 
+                                                    
+                        </div>
+                   
+                            
+                        {% endmacro %}
+                        <div id="content-list"
+                                                data-prototype="{{ _self.content_prototype(form.contentList.vars.prototype)|e }}">
+                            {% for j in form.contentList %}
+                             {{ _self.content_prototype(j) }}
+                            {% endfor %}
+                        </div>
+                    <a href="#" id="add-another-content">Add another Content</a>                                            
                     
                     {{ form_end(form) }}
                     </div>
@@ -184,7 +297,7 @@ $("select").change(function() {
             <h4>Existing Itinerary</h4>
             <div class="row">
                 <div id="fullwidth" class="col-sm-12">
-					<table class="table table-bordered col-lg-12 col-sm-12">
+					<table class="table table-bordered col-lg-12 col-sm-12" id="itinerary-tbl">
 					<tr>
 						<th>Sl.No</th>
 						<th>Title</th>						
@@ -198,7 +311,32 @@ $("select").change(function() {
                             </td>							
 							<td>
 								<a href="{{ path('trip_site_management_edit_itinerary',{ 'id': i.id }) }}"><i class="fa fa-pencil-square-o"></i></a>
-								<a href="{{ path('trip_site_management_delete_itinerary',{ 'id': i.id }) }}"><i class="fa fa-trash-o"></i></a>
+								<a href="{{ path('trip_site_management_delete_itinerary',{ 'id': i.id }) }}" class="delete" title="{{ i.title }}"><i class="fa fa-trash-o"></i></a>
+								
+							</td>
+                        </tr>
+                    {% endfor %}
+					</table>
+                </div>
+            </div>
+             <h4>Existing Content</h4>
+            <div class="row">
+                <div id="fullwidth" class="col-sm-12">
+					<table class="table table-bordered col-lg-12 col-sm-12" id="content-tbl">
+					<tr>
+						<th>Sl.No</th>
+						<th>Title</th>						
+						<th>/</th>
+					</tr>
+						{% for i in contentList %} 
+                        <tr>
+                        	<td>{{ loop.index }}</td>
+							 <td>
+                                {{ i.title }}
+                            </td>							
+							<td>
+								<a href="{{ path('trip_site_management_edit_package_content',{ 'id': i.id }) }}"><i class="fa fa-pencil-square-o"></i></a>
+								<a href="{{ path('trip_site_management_delete_package_content',{ 'id': i.id }) }}" class="delete" title="{{ i.title }}"><i class="fa fa-trash-o"></i></a>								
 							</td>
                         </tr>
                     {% endfor %}

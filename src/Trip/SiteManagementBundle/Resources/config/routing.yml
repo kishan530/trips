@@ -32,6 +32,12 @@ trip_site_management_edit_itinerary:
 trip_site_management_delete_itinerary:
     path:     /delete/{id}/itinerary
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:deleteItinerary }
+trip_site_management_edit_package_content:
+    path:     /edit/{id}/packag-content
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:editPackageContent }
+trip_site_management_delete_package_content:
+    path:     /delete/{id}/package-content
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:deletePackageContent }
 trip_site_management_add_packagelocations:
     path:     /add/packagelocations
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:addPackageLocations }    

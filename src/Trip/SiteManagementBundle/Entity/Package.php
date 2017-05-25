@@ -108,21 +108,26 @@ class Package
      */
     private $startPoint;
      /**
-     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\EndPoint", mappedBy="booking", cascade={"persist"}, fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\EndPoint", mappedBy="booking", cascade={"all"}, fetch="EAGER")
      */   
     private $endPoint;
     /**
-     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\EndPoint2", mappedBy="booking", cascade={"persist"}, fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\EndPoint2", mappedBy="booking", cascade={"all"}, fetch="EAGER")
      */ 
     private $endPoint2;
     /**
-     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\PackagePrice", mappedBy="package", cascade={"persist"},  fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\PackagePrice", mappedBy="package", cascade={"all"},  fetch="EAGER")
      */
     private $price;
     /**
-     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\PackageItinerary", mappedBy="package", cascade={"persist"}, fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\PackageItinerary", mappedBy="package", cascade={"all"})
      */
     private $itinerary;
+    /**
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\PackageContent", mappedBy="package", cascade={"all"})
+     */
+    private $content;
+    
     /**
      * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\PackageImages", mappedBy="package", cascade={"persist"}, fetch="EAGER")
      */
@@ -131,6 +136,10 @@ class Package
      * @var string
      */
     private $itineraryList;
+    /**
+     * @var string
+     */
+    private $contentList;
     /**
      * @var string
      */
@@ -144,8 +153,10 @@ class Package
     	$this->endPoint2 = new ArrayCollection();
         $this->price = new ArrayCollection();
          $this->itinerary = new ArrayCollection();
+         $this->content = new ArrayCollection();
          $this->images = new ArrayCollection();
          $this->itineraryList = new ArrayCollection();
+         $this->contentList = new ArrayCollection();
          $this->imageList = new ArrayCollection();
     }
 	
@@ -567,6 +578,43 @@ class Package
 		$this->imageList = $imageList;
 		return $this;
 	}
+	
+	/**
+	 *
+	 * @return the unknown_type
+	 */
+	public function getContent() {
+		return $this->content;
+	}
+	
+	/**
+	 *
+	 * @param unknown_type $content        	
+	 */
+	public function setContent($content) {
+		$this->content = $content;
+		return $this;
+	}
+	
+	/**
+	 *
+	 * @return the string
+	 */
+	public function getContentList() {
+		return $this->contentList;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$contentList
+	 */
+	public function setContentList($contentList) {
+		$this->contentList = $contentList;
+		return $this;
+	}
+	
+	
 	
 	
 	

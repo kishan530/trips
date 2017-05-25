@@ -294,6 +294,18 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                     </div>
                 </div>
             </div>
+            <div id="content">
+				
+                <div class="row">
+                    <div class="col-lg-12 text-justify">
+                    	{% for i in package.content %}
+							<h5 class="package-custome-title">{{ i.title }}</h5>
+							<p>{{ i.description|raw }}</p>
+							{% endfor %}
+                    </div>
+                </div>
+             </div>
+                    
 			 <div id="fareRules">
                 <div class="row">
                     <div class="col-lg-12">

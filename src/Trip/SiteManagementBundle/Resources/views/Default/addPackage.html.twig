@@ -33,6 +33,30 @@ $("select").change(function() {
             newLi.appendTo(itineraryList);
         });
 
+
+    var contentCount = '{{ form.contentList|length }}';
+
+    $('#add-another-content').click(function(e) {
+            e.preventDefault();
+            /*if(itemCount>4){
+                alert('Max 5 only');
+                exit();
+            }*/
+
+            var contentList = $('#content-list');
+
+            // grab the prototype template
+            var newWidget = contentList.attr('data-prototype');
+            // replace the "__name__" used in the id and name of the prototype
+            // with a number that's unique to your city
+            newWidget = newWidget.replace(/__name__/g, contentCount);
+            contentCount++;
+
+            // create a new list element and add it to the list
+            var newLi = $('<div></div>').html(newWidget);
+            newLi.appendTo(contentList);
+        });
+
  // keep track of how many city fields have been rendered
     var imageCount = '{{ form.itineraryList|length }}';
 
@@ -64,46 +88,46 @@ $("select").change(function() {
         <div class="container">
             <div class="row">
                 <div id="fullwidth" class="col-sm-12">
-               <div class="col-lg-5">
+               <div class="col-lg-12">
                     
                    {{ form_start(form) }}
                    <div class="row form-group">
-                            <div class="col-lg-8">
+                            <div class="col-lg-12">
                             	{{ form_label(form.title) }}
                                 {{ form_widget(form.title) }}
                             </div> 
                                                     
                     </div>
                      <div class="row form-group">
-                            <div class="col-lg-8">
+                            <div class="col-lg-12">
                             	{{ form_label(form.name) }}
                                 {{ form_widget(form.name) }}
                             </div> 
                                                     
                         </div>
                      <div class="row form-group">
-                            <div class="col-lg-8">
+                            <div class="col-lg-12">
                             	{{ form_label(form.overview) }}
                                 {{ form_widget(form.overview) }}
                             </div> 
                                                     
                         </div>   
                      <div class="row form-group">
-                            <div class="col-lg-8">
+                            <div class="col-lg-12">
                             	{{ form_label(form.metaKeywords) }}
                                 {{ form_widget(form.metaKeywords) }}
                             </div> 
                                                     
                         </div>   
                       <div class="row form-group">
-                            <div class="col-lg-8">
+                            <div class="col-lg-12">
                             	{{ form_label(form.metaDescription) }}
                                 {{ form_widget(form.metaDescription) }}
                             </div> 
                                                     
                         </div>   
                        <div class="row form-group">
-                            <div class="col-lg-8">
+                            <div class="col-lg-12">
                             	{{ form_label(form.metaTitle) }}
                                 {{ form_widget(form.metaTitle) }}
                             </div> 
@@ -112,7 +136,7 @@ $("select").change(function() {
                         
                         
                       <div class="row form-group">
-                            <div class="col-lg-8">
+                            <div class="col-lg-12">
                             	{{ form_label(form.packageUrl) }}
                                 {{ form_widget(form.packageUrl) }}
                             </div> 
@@ -120,7 +144,7 @@ $("select").change(function() {
                         </div>   
                         
                    <div class="row form-group">
-                            <div class="col-lg-8">
+                            <div class="col-lg-12">
                             	{{ form_label(form.type) }}
                                 {{ form_widget(form.type) }}
                             </div> 
@@ -128,7 +152,7 @@ $("select").change(function() {
                         </div>   
                         
                     <div class="row form-group">
-                            <div class="col-lg-8">
+                            <div class="col-lg-12">
                             	{{ form_label(form.active) }}
                                 {{ form_widget(form.active) }}
                             </div> 
@@ -162,20 +186,47 @@ $("select").change(function() {
                         <div id="itinerary-list"
                                                 data-prototype="{{ _self.information_prototype(form.itineraryList.vars.prototype)|e }}">
                             {% for j in form.itineraryList %}
-                             <div class="row form-group">
-	                            <div class="col-lg-6">
-	                                {{ form_widget(j.title) }}
-	                            </div> 
-	                                                    
-	                            <div class="col-lg-6">
-	                            	
-	                                {{ form_widget(j.description) }}
-	                            </div> 
-                                                    
-                        	</div>
+                            
+                            {{ _self.information_prototype(j) }}
+                             
                             {% endfor %}
                         </div>
                     <a href="#" id="add-another-itinerary">Add another Itinerary</a>
+                    
+                    
+                     <h4>Package Content</h4>
+                     
+                     <div class="row">               		
+                			<div class="col-lg-6">
+                            	<label>Title</label>
+                            </div> 
+                            <div class="col-lg-6">
+                            	<label>Description</label>
+                            </div> 
+                		</div>
+                    
+                    {% macro content_prototype(j) %}
+                        <div class="row form-group">
+                            <div class="col-lg-6">
+                                {{ form_widget(j.title) }}
+                            </div> 
+                                                    
+                            <div class="col-lg-6">
+                            	
+                                {{ form_widget(j.description) }}
+                            </div> 
+                                                    
+                        </div>
+                   
+                            
+                        {% endmacro %}
+                        <div id="content-list"
+                                                data-prototype="{{ _self.content_prototype(form.contentList.vars.prototype)|e }}">
+                            {% for j in form.contentList %}
+                             {{ _self.content_prototype(j) }}
+                            {% endfor %}
+                        </div>
+                    <a href="#" id="add-another-content">Add another Content</a>
                     
                      <h4>Images</h4>
                      
