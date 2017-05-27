@@ -20,10 +20,11 @@ img {
 
 .flight-item .item-price-more .price .amount, .trip-item .item-price-more .price .amount, .attraction-item .item-price-more .price .amount, .hotel-item .item-price-more .price .amount {
     display: block;
-    font-weight: 700;
+    font-weight: normal;
     font-style: normal;
-    font-size: 21px;
-    color: #f26722;
+    font-size: 30px;
+    float: right;
+    color: #eb2026;
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
     -ms-transition: all 0.3s ease;
@@ -65,6 +66,7 @@ width:100%;
     font-size: 16px;
     color: #000;
     font-weight: normal;
+	margin-bottom: 20px;
 }
 
 .flight-item,.trip-item,.attraction-item,.hotel-item {
@@ -72,7 +74,10 @@ background-color:#fff;
 overflow:hidden;
 -webkit-box-shadow:none;
 -moz-box-shadow:none;
-box-shadow:none;
+/*box-shadow:none;*/
+-webkit-box-shadow: 0px 0px 10px 0px rgba(204,204,204,.5);
+-moz-box-shadow: 0px 0px 10px 0px rgba(204,204,204,.5);
+box-shadow: 0px 0px 10px 0px rgba(204,204,204);
 }
 
 .flight-item .item-media,.trip-item .item-media,.attraction-item .item-media,.hotel-item .item-media {
@@ -82,7 +87,8 @@ float:left;
 }
 
 .oddClass{
-    background: #f2edcc;
+    /*background: #f2edcc;*/
+	background-color:#ffffff;
 }
 
 .flight-item .item-media .image-cover,.trip-item .item-media .image-cover,.attraction-item .item-media .image-cover,.hotel-item .item-media .image-cover {
@@ -105,8 +111,9 @@ width:50%;
 float:left;
 overflow:hidden;
 overflow-x:auto;
-padding:11px 34px;
-        text-transform: capitalize;
+/*padding:11px 34px;*/
+padding:10px 0px;
+text-transform: capitalize;
 }
 .search-widget{
     padding: 0;
@@ -119,7 +126,8 @@ padding:11px 34px;
 }
 
 .flight-item .item-body .item-title h2,.trip-item .item-body .item-title h2,.attraction-item .item-body .item-title h2,.hotel-item .item-body .item-title h2 {
-font-size:16px;
+font-family: "lato-bold",Arial,Helvetica,sans-serif!important;
+font-size: 20px;
 font-weight:600;
 margin:0;
 "Open Sans", sans-serif;
@@ -207,20 +215,22 @@ margin-left:15px;
 }
 
 .flight-item .item-price-more,.trip-item .item-price-more,.attraction-item .item-price-more,.hotel-item .item-price-more {
-position:relative;
-width:15%;
+/*position:relative;*/
+/*width:15%;*/
+width:100%;
 float:left;
 overflow:hidden;
 margin:7px 0;
 padding:0 30px;
 }
 .flight-item .item-price-more-book,.trip-item .item-price-more-book,.attraction-item .item-price-more-book,.hotel-item .item-price-more-book {
-position:relative;
-width:17%;
+/*position:relative;*/
+/*width:17%;*/
+width:100%;
 float:right;
 overflow:hidden;
 margin: 7px 0;
-padding: 17px 30px;
+padding: 17px 92px;
 }
 
 .flight-item .item-price-more:after,.trip-item .item-price-more:after,.attraction-item .item-price-more:after,.hotel-item .item-price-more:after {
@@ -277,7 +287,8 @@ color:#B1B1B1;
 }
 
 .flight-item .item-media {
-width:20%;
+/*width:20%;*/
+width:100%;
 }
 
 .flight-item .item-media .image-cover {
@@ -304,11 +315,13 @@ transform:translate(-50%,-50%);
 }
 
 .flight-item .item-body {
-width:47%;
+/*width:47%;*/
+width:100%;
 }
 
 .flight-item .item-price-more {
-padding:17px 30px;
+/*padding:17px 30px;*/
+  /*padding: 18px 100px;*/
 }
 .flight-item .item-price-more span {
     font-size: 12px;
@@ -318,6 +331,7 @@ padding:17px 30px;
 font-style:normal;
 font-size:11px;
 color:#666;
+padding-top: 65px;
 }
 
 .mfp-container {
@@ -715,4 +729,20 @@ background: transparent url('../images/ico-srp.png') 0 0 no-repeat;
     padding-top: 24.66%;
         float: none; 
     }
+}
+
+/******** SREEKANTH *******/
+.cab_type {
+    font-size: 12px;
+    line-height: 12px;
+    color: #9b9b9b;
+}
+.cab_dec{
+	font-size: 13px;
+    line-height: 12px;
+    color: #9b9b9b;
+    padding-left: 5px;
+    text-transform: uppercase;
+    font-weight: normal;
+    font-family: calibri;
 }

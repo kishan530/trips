@@ -241,25 +241,35 @@ $("select").change(function() {
                     
                     <div class="row">
 
-  <div class="col-md-10">
+  <div class="col-md-12">
     <div class="filter-page__content">
       <div class="filter-item-wrapper">
           
           {% for key,vehicle in result %}
+		<div class="col-md-6">
         <div class="flight-item border-box {% if loop.index is even %} oddClass {% endif %}">
           <div class="item-media">
+		     <div class="col-md-6">
             <div class="image-cover"><img src="{{ asset('images/cars/'~vehicle.imgPath) }}" alt="" style="height: 100%; width: auto;"></div>
+			</div>
+			<div class="col-md-6">
+			<div class="item-price-more text-center">
+            <div class="price"><span class="amount"> <i class="fa fa-inr"></i> {% if tripType=='roundtrip' %} {{ vehicle.returnPrice }} {% else %} {{ vehicle.price }}{% endif %}</span></div>
+               {% if tripType=='multicity' %}
+              <span> <i class="fa fa-inr"></i> {{ vehicle.vPrice }} / KM  </span>
+              {% endif %}
           </div>
+			</div>
+		  </div>
+		  <div class="col-md-6">
           <div class="item-body">
             <div class="item-title">
-                <div class="col-md-7">
-                    <h2><a href="#">{{ vehicle.model }}</a></h2>
+                <div class="">
+					<p class="cab_type">CAB TYPE</p>
+                    <h2>{{ vehicle.model }}<span class="cab_dec">{{ vehicle.capcity }}</span></h2>
                 </div>
-                <div class="col-md-5"><span>{{ vehicle.capcity }}</span></div>
-            </div>
-           
-            <div class="col-md-12">
-                    <ul class="list-inline">
+                <div class="">
+				<ul class="list-inline" style="color:#747474">
                         {% if tripType=='multicity' %}
                             <li>
                             {% for from in vehicle.lFrom %}
@@ -277,19 +287,17 @@ $("select").change(function() {
                         {% endif %}
                       
                     </ul>
-              </div>
-                  
+				</div>
+            </div>       
           </div>
-          <div class="item-price-more text-center">
-            <div class="price"><span class="amount"> <i class="fa fa-inr"></i> {% if tripType=='roundtrip' %} {{ vehicle.returnPrice }} {% else %} {{ vehicle.price }}{% endif %}</span></div>
-               {% if tripType=='multicity' %}
-              <span> <i class="fa fa-inr"></i> {{ vehicle.vPrice }} / KM  </span>
-              {% endif %}
           </div>
+		  <div class="col-md-6">
             <div class="item-price-more-book">
             <a href="{{ path('trip_booking_engine_confirm') }}?selected={{ key }}" class="awe-btn awe-btn btn btn-book btn-normal btn-md"><i class="fa fa-shopping-cart"></i> Book now</a>
           </div>
+		  </div>
         </div>
+		</div>
           {% else %}
           <div class="col-md-12 free-kms">
               <h2>Sorry, we didn't find any services matching for this, please call us For More Assistance .<br>Help
@@ -301,7 +309,7 @@ line No:+91-966313308</h2>
         
     </div>
   </div>
-   <div class="col-md-2">
+   <div class="col-md-6">
         {% if result|length>0 %}
             {% if tripType=='multicity' %}
            <div class="row free-kms">
