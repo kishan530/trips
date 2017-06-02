@@ -3,11 +3,11 @@ parameters:
     database_driver: pdo_mysql
     database_host: localhost
     database_port: null
-    database_name: testtrip
+    database_name: justtrip
     database_user: root
     database_password: null
     mailer_transport: smtp
-    mailer_host: gator3097.hostgator.com
+    mailer_host: mail.exclusivehosting.net
     mailer_user: noreply@justtrip.in
     mailer_password: Walk@123
     locale: en
