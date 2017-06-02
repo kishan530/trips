@@ -19,6 +19,8 @@ use Trip\BookingEngineBundle\Entity\PlacesToVisit;
 use Trip\BookingEngineBundle\Entity\VehicleBooking;
 use Trip\BookingEngineBundle\Entity\HotelBooking;
 use Trip\BookingEngineBundle\Form\CustomerType;
+use Trip\BookingEngineBundle\Form\EditCustomerType;
+use Trip\BookingEngineBundle\Form\NewPackageType;
 use Trip\BookingEngineBundle\Form\GuestType;
 use Trip\BookingEngineBundle\Form\CustomPackageType;
 use Trip\SiteManagementBundle\Entity\Contact;
@@ -64,7 +66,7 @@ class BookingController extends Controller
 	 */
     public function indexAction(){
     	//$mailService = $this->container->get( 'mail.services' );
-    	//$mailService->mail('mailwaseemsyed@gmail.com','Just Trip:Booking Confirmation','this is test');
+    	//$mailService->mail('kishan.kish530@gmail.com','Just Trip:Booking Confirmation','this is test');
     	return $this->getHome('TripSiteManagementBundle:Default:index.html.twig');
     }
     /**
@@ -827,18 +829,18 @@ class BookingController extends Controller
     
     }
     
-    private function createCoustomPackageForm(CustomerDto $customer){
+    private function createCustomPackageForm(CustomerDto $customer){
         $bookingService = $this->container->get( 'booking.services' );
         $security = $this->container->get ( 'security.context' );
         $form = $this->createForm(new CustomPackageType($bookingService,$security), $customer, array(
-            'action' => $this->generateUrl('trip_booking_engine_coustomPackage'),
+            'action' => $this->generateUrl('trip_booking_engine_customPackage'),
             'method' => 'POST',
         ));
        $form->add('submit', 'submit', array('label' => 'submit'));
 
         return $form;
     }
-    public function coustomPackageAction(Request $request){
+    public function customPackageAction(Request $request){
          
     	$security = $this->container->get ( 'security.context' );
         $em = $this->getDoctrine()->getManager();
@@ -846,7 +848,7 @@ class BookingController extends Controller
        $package = new NewPackage();
         $collection = $customer->getMultiple();
         $collection->add($package);
-    	$form   = $this->createCoustomPackageForm($customer);
+    	$form   = $this->createCustomPackageForm($customer);
     	$form->handleRequest($request);
         if ($form->isValid()) {
             
@@ -880,10 +882,7 @@ class BookingController extends Controller
             $totalPrice = 0;
             if ($security->isGranted ( 'ROLE_SUPER_ADMIN' ))
             	$totalPrice = $price;
-            
-           
-            
-            
+                     
             
             foreach($collection as $service){
             	$leavingFrom = $service->getLeavingFrom();
@@ -977,40 +976,245 @@ class BookingController extends Controller
              $em->persist($booking);
     		$em->flush();
             
-             $email =  $customer->getEmail();
-            $name = $customer->getName();
-            $mobile = $customer->getMobile();
-            $bookingId = $booking->getBookingId();
-            $mail = "Dear $name <br> Your Booking has been Successfully completed.Your Booking Id is $bookingId";
-            $adminMail = "Dear Admin, $name <br> has Done Booking Successfully and Booking Id is $bookingId";
-            $locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
-            $locations = $this->getLocationsByIndex($locations);
-            $mail = $this->renderView(
-    								'TripBookingEngineBundle:Mail:packageMailer.html.twig',
-    								array(
-    										'customer'   => $customer,
-    										'booking'=>$booking,
-                                            'locations'=>$locations,
-    										'services'=>$booking->getVehicleBooking(),
-    								)
-    						);
-
-            $mailService = $this->container->get( 'mail.services' );
-            $mailService->mail($email,'Just Trip:Booking Confirmation',$mail);
             
-           // echo var_dump($email);
-           // exit();
-            // $mailService->mail('Payment@justtrip.in','Just Trip:Booking Confirmation',$adminMail);
-			 $mailService->mail('info@justtrip.in','Just Trip:Booking Confirmation',$mail);
-    		return $this->redirect($this->generateUrl('trip_booking_engine_coustomPackage'));    
+    		return $this->redirect($this->generateUrl('trip_booking_engine_review_custom_package',array('id'=>$booking->getBookingId())));    
         
         }
         
-        return $this->render('TripBookingEngineBundle:Default:coustomPackage.html.twig',array(
+        return $this->render('TripBookingEngineBundle:Default:customPackage.html.twig',array(
     			
                 		'form'   => $form->createView(),
     	));
     }
+    
+    
+    public function reviewCustomPackageAction(Request $request,$id){
+    	 
+    	$security = $this->container->get ( 'security.context' );
+    	$em = $this->getDoctrine()->getManager();
+    	
+    	$booking = $em->getRepository('TripBookingEngineBundle:Booking')->findOneByBookingId($id);
+    	
+    	$customer = $em->getRepository('TripBookingEngineBundle:Customer')->find($booking->getCustomerId());
+    	
+    	$locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
+    	$locations = $this->getLocationsByIndex($locations);
+
+    	return $this->render('TripBookingEngineBundle:Default:reviewCustomPackage.html.twig',array(    			 
+    			'customer'   => $customer,
+    			'booking'=>$booking,
+                'locations'=>$locations,
+    			'services'=>$booking->getVehicleBooking(),
+    	));
+    }
+    
+    private function createEditCustomerDetailsForm(CustomerDto $customer,$id){
+    	$bookingService = $this->container->get( 'booking.services' );
+    	$security = $this->container->get ( 'security.context' );
+    	$form = $this->createForm(new EditCustomerType($bookingService,$security), $customer, array(
+    			'action' => $this->generateUrl('trip_booking_engine_edit_customer_details',array('id'=>$id)),
+    			'method' => 'POST',
+    	));
+    	$form->add('submit', 'submit', array('label' => 'Update'));
+    
+    	return $form;
+    }
+    
+    public function editCustomerDetailsAction(Request $request,$id){
+    
+    	$security = $this->container->get ( 'security.context' );
+    	$em = $this->getDoctrine()->getManager();
+    	$customer = new CustomerDto();
+    	$customerObj = $em->getRepository('TripBookingEngineBundle:Customer')->find($id);
+    	
+    	$customer->setEmail($customerObj->getEmail());
+    	$customer->setName($customerObj->getName());
+    	$customer->setMobile($customerObj->getMobile());
+    	$form   = $this->createEditCustomerDetailsForm($customer,$id);
+    	$form->handleRequest($request);
+    	if ($form->isValid()) {
+    		$customerObj->setEmail($customer->getEmail());
+    		$customerObj->setName($customer->getName());
+    		$customerObj->setMobile($customer->getMobile());
+    		$em->merge($customerObj);
+    		$em->flush();    	
+
+    		return $this->render('TripBookingEngineBundle:Default:customerDetails.html.twig',array(
+    				'customer'   => $customerObj,
+    		));
+    		//return new Response ( "true" );
+    	}
+    	return $this->render('TripBookingEngineBundle:Default:editCustomerDetails.html.twig',array(    			 
+    			'form'   => $form->createView(),
+    	));
+    }
+    private function createEditCustomPackageForm(NewPackage $package,$id){
+    	$bookingService = $this->container->get( 'booking.services' );
+    	$security = $this->container->get ( 'security.context' );
+    	$form = $this->createForm(new NewPackageType($bookingService,$security), $package, array(
+    			'action' => $this->generateUrl('trip_booking_engine_edit_custom_package',array('id'=>$id)),
+    			'method' => 'POST',
+    	));
+    	$form->add('submit', 'submit', array('label' => 'Update'));
+    
+    	return $form;
+    }
+    
+    public function editCustomPackageAction(Request $request,$id){
+    
+    	$security = $this->container->get ( 'security.context' );
+    	$em = $this->getDoctrine()->getManager();
+    	$package = new NewPackage();
+    	$service = $em->getRepository('TripBookingEngineBundle:VehicleBooking')->find($id);
+    	 
+    	$package->setLeavingFrom($service->getLeavingFrom());
+    	$package->setGoingTo($service->getGoingTo());
+    	$package->setDate($service->getDate());
+    	$package->setPreferTime($service->getPreferTime());
+    	$package->setVehicleId($service->getVehicleId());
+    	$package->setPrice($service->getPrice());
+    	$package->setNumAdult($service->getNumAdult());
+    	$package->setDescription($service->getDescription());
+    	
+    	$oldPrice = $service->getPrice();
+    	$placesToVisitOld = array();
+    	$placesToVisitByLocation = array();
+    	$placesToVisitCollection = $service->getPlacesToVisit();
+    	foreach($placesToVisitCollection as $location){
+    		$placesToVisitOld[] = $location->getLocation();
+    		$placesToVisitByLocation[$location->getLocation()] = $location;
+    	}
+    	$package->setPlacesToVisit($placesToVisitOld);
+    	$form   = $this->createEditCustomPackageForm($package,$id);
+    	$form->handleRequest($request);
+    	if ($form->isValid()) {
+    		$vehicles = $this->getVehicleByIndex();
+    		$service->setLeavingFrom($package->getLeavingFrom());
+	    	$service->setGoingTo($package->getGoingTo());
+	    	$service->setDate($package->getDate());
+	    	$service->setPreferTime($package->getPreferTime());
+	    	$service->setVehicleId($package->getVehicleId());
+	    	$service->setModel($vehicles[$service->getVehicleId()]);
+	    	$service->setPrice($package->getPrice());
+	    	$service->setNumAdult($package->getNumAdult());
+	    	$service->setDescription($package->getDescription());    		  		
+	    	$price = $package->getPrice();
+    		$placesToVisit = $package->getPlacesToVisit();
+    		
+    		$placesToVisitCollection = new ArrayCollection();
+    		 
+    		foreach($placesToVisit as $location){
+    			if (!in_array($location, $placesToVisitOld)){
+    			$placesToVisitObj = new PlacesToVisit();
+    			$placesToVisitObj->setLocation($location);
+    			$placesToVisitObj->setBooking($service);
+    			$placesToVisitCollection->add($placesToVisitObj);
+    			}
+    		}
+    		$service->setPlacesToVisit($placesToVisitCollection);
+    		
+    		$em->merge($service);
+    		$em->flush();
+    		
+    		foreach($placesToVisitOld as $location){
+    			if (!in_array($location, $placesToVisit)){
+    				$removedLocation = $placesToVisitByLocation[$location];
+    				$em->remove ( $removedLocation );
+    				$em->flush();
+    			}
+    		}
+    		    		
+    		
+    		$booking = $em->getRepository('TripBookingEngineBundle:Booking')->find($service->getBooking()->getId());
+    		  		
+    		if ($security->isGranted ( 'ROLE_SUPER_ADMIN' )){
+    		$totalPrice = $booking->getTotalPrice();
+    		
+    		$totalPrice = $totalPrice + $price - $oldPrice;
+    		$paymentMode = $booking->getPaymentMode();
+    		$tax = 0;
+    		$serviceTax = round($totalPrice*(5.6/100),2);
+    		$swachBharthCess = round($totalPrice*(0.2/100),2);
+    		$krishiKalyanCess = round($totalPrice*(0.2/100),2);
+    		$totalTax = $serviceTax+$swachBharthCess+$krishiKalyanCess;
+    		$finalPrice = $totalPrice+$totalTax;
+    		$booking->setTax($tax);
+    		$booking->setServiceTax($serviceTax);
+    		$booking->setSwachBharthCess($swachBharthCess);
+    		$booking->setKrishiKalyanCess($krishiKalyanCess);
+    		$booking->setTotalPrice($totalPrice);
+    		$booking->setFinalPrice($finalPrice);
+    		$em->merge($booking);
+    		$em->flush();
+    		}
+    		    		   		
+    		$locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
+    		$locations = $this->getLocationsByIndex($locations);
+    		
+    		$placesToVisitCollection = new ArrayCollection();
+    		 
+    		foreach($placesToVisit as $location){
+    			$placesToVisitObj = new PlacesToVisit();
+    			$placesToVisitObj->setLocation($location);
+    			$placesToVisitCollection->add($placesToVisitObj);
+    		}
+    		$service->setPlacesToVisit($placesToVisitCollection);
+	    	return $this->render('TripBookingEngineBundle:Default:serviceList.html.twig',array(    			 
+	    			'booking'=>$booking,
+	                'locations'=>$locations,
+	    			'services'=>$booking->getVehicleBooking(),
+	    	));
+	    }
+    	return $this->render('TripBookingEngineBundle:Default:editCustomPackage.html.twig',array(
+    			'form'   => $form->createView(),
+    	));
+    }
+    
+    
+    public function confirmCustomPackageAction(Request $request,$id){
+    
+    	$security = $this->container->get ( 'security.context' );
+    	$em = $this->getDoctrine()->getManager();
+    	 
+    	$booking = $em->getRepository('TripBookingEngineBundle:Booking')->findOneByBookingId($id);
+    	 
+    	$customer = $em->getRepository('TripBookingEngineBundle:Customer')->find($booking->getCustomerId());    	 	
+    	
+    	$booking->setStatus('booked');
+    	$em->merge($booking);
+    	$em->flush();
+    	
+    	$email =  $customer->getEmail();
+    	$name = $customer->getName();
+    	$mobile = $customer->getMobile();
+    	$bookingId = $booking->getBookingId();
+    	$mail = "Dear $name <br> Your Booking has been Successfully completed.Your Booking Id is $bookingId";
+    	$adminMail = "Dear Admin, $name <br> has Done Booking Successfully and Booking Id is $bookingId";
+    	$locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
+    	$locations = $this->getLocationsByIndex($locations);
+    	$mail = $this->renderView(
+    			'TripBookingEngineBundle:Mail:packageMailer.html.twig',
+    			array(
+    					'customer'   => $customer,
+    					'booking'=>$booking,
+    					'locations'=>$locations,
+    					'services'=>$booking->getVehicleBooking(),
+    			)
+    	);
+    	
+    	$mailService = $this->container->get( 'mail.services' );
+    	$mailService->mail($email,'Just Trip:Booking Confirmation',$mail);
+    	
+    	// $mailService->mail('Payment@justtrip.in','Just Trip:Booking Confirmation',$adminMail);
+    	$mailService->mail('info@justtrip.in','Just Trip:Booking Confirmation',$mail);
+    	
+    	
+    	
+    	return $this->render('TripBookingEngineBundle:Default:success.html.twig',array(
+    			'booking'   => $booking,
+    	));
+    }
+    
     
     public function getLocationsByIndex($locations){
         $temp = array();

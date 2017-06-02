@@ -1,0 +1,106 @@
+<table  class="table table-bordered col-lg-12 col-sm-12">
+<tr>
+	<th>#</th>
+	<th>Date</th>
+	<th>Prefer Time</th>
+	<th>Vehicle</th>
+	<th>Pick Up</th>
+	<th>Drop </th>
+	<th>Places to Visit </th>
+	<th>Adult</th>
+	 {% if is_granted('ROLE_SUPER_ADMIN') %}
+	<th>Price </th>
+	{% endif %}
+	<th>Edit </th>
+</tr>
+<tbody>
+{% if services|length>0 %}
+    {% for service in services  %} 
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td> {{ service.date|date('F jS Y') }}  </td>
+            <td>{{ service.preferTime }}</td>
+            <td>{{ service.model }}</td>
+            <td>           
+            {% if service.leavingFrom %} 
+                 {{ locations[service.leavingFrom].name }}
+			{% endif %}             
+    		</td>
+    		<td> 
+    		{% if service.goingTo %} 
+                 {{ locations[service.goingTo].name }}
+			{% endif %}     		        
+    		</td>
+    		<td>   
+    		 {% if service.placesToVisit|length>0 %}                                                    
+                                                            
+            {% for p in service.placesToVisit %} 
+                 {{ locations[p.location].name }} {% if loop.last is same as(false) %} , {% endif %}
+             {% endfor %}
+             {% else %}
+                   N/A
+              {% endif %}              
+    		</td>
+    		<td> {{ service.numAdult }} </td>
+    		 {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <td> {{ service.price }} </td>
+            {% endif %}
+             <td><a class="edit" href="{{ path('trip_booking_engine_edit_custom_package',{ 'id': service.id }) }}"><i class="fa fa-pencil-square-o"></i></a></td>
+        </tr>
+    {% endfor %}
+{% endif %}
+</tbody>
+</table>
+
+ {% if is_granted('ROLE_SUPER_ADMIN') %}
+  <div class="row">
+ </div>
+<hr>
+ <h4>Fare Details</h4>
+ 
+ <div class="row">
+ 		 <div class="col-lg-5">
+ 		 		<div class="row">
+ 					 <div class="col-lg-6">
+ 					 	<label>Total Fare</label>
+ 					 </div>
+ 					  <div class="col-lg-6">
+ 					  	<label>Rs {{ booking.totalPrice }}</label>
+ 					 </div>
+ 				</div>
+ 				<div class="row">
+ 					 <div class="col-lg-6">
+ 					 	<label>Service Tax (5.6%)</label>
+ 					 </div>
+ 					  <div class="col-lg-6">
+ 					  	<label>Rs {{ booking.serviceTax }}</label>
+ 					 </div>
+ 				</div>
+ 				<div class="row">
+ 					 <div class="col-lg-6">
+ 					 	<label>Swach Bharth Cess (0.2%)</label>
+ 					 </div>
+ 					  <div class="col-lg-6">
+ 					  	<label>Rs {{ booking.swachBharthCess }}</label>
+ 					 </div>
+ 				</div>
+ 				<div class="row">
+ 					 <div class="col-lg-6">
+ 					 	<label>Krishi Kalyan Cess (0.2%)</label>
+ 					 </div>
+ 					  <div class="col-lg-6">
+ 					  	<label>Rs {{ booking.krishiKalyanCess }}</label>
+ 					 </div>
+ 				</div>
+ 				<div class="row">
+ 					 <div class="col-lg-6">
+ 					 	<label>Final Price</label>
+ 					 </div>
+ 					  <div class="col-lg-6">
+ 					  	<label>Rs {{ booking.finalPrice }}</label>
+ 					 </div>
+ 				</div>
+ 		 </div>
+ </div>
+ 
+{% endif %}

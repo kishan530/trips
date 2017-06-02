@@ -31,6 +31,18 @@ trip_booking_engine_confirm:
 trip_booking_engine_apply_coupon:
     path:     /applyCoupon
     defaults: { _controller: TripBookingEngineBundle:Booking:applyCoupon }
-trip_booking_engine_coustomPackage:
+trip_booking_engine_customPackage:
     path:     /custom-package
-    defaults: { _controller: TripBookingEngineBundle:Booking:coustomPackage }
+    defaults: { _controller: TripBookingEngineBundle:Booking:customPackage }
+trip_booking_engine_review_custom_package:
+    path:     /review/{id}/custom-package
+    defaults: { _controller: TripBookingEngineBundle:Booking:reviewCustomPackage }
+trip_booking_engine_edit_customer_details:
+    path:     /edit/{id}/customer-details
+    defaults: { _controller: TripBookingEngineBundle:Booking:editCustomerDetails }
+trip_booking_engine_edit_custom_package:
+    path:     /edit/{id}/custom-package
+    defaults: { _controller: TripBookingEngineBundle:Booking:editCustomPackage }
+trip_booking_engine_confirm_custom_package:
+    path:     /confirm/{id}/custom-package
+    defaults: { _controller: TripBookingEngineBundle:Booking:confirmCustomPackage }
