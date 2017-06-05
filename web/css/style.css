@@ -388,7 +388,7 @@ li.booking-price{font-size:25px !important;font-family:'LatoBold', serif !import
 .section{background-color:#ffffff;position:relative;display:block;padding: 12px 0;}
 .section-grey{background-color:#eeeeee;}
 .section-light{background-color:#f6f6f6;}
-#page-header{background:url(../images/page-header.jpg) no-repeat scroll center center/cover rgba(0, 0, 0, 0);display:block;padding:70px 0;position:relative;text-align:center;}
+#page-header{background:url(../images/page-header.jpg) no-repeat scroll center center/cover rgba(0, 0, 0, 0);display:block;padding:25px 0;position:relative;text-align:center;}
 .absolute{padding:0;position:relative;margin-top:-75px;z-index:100;display:block;width:100%;}
 .absolute .tab-pane{background-color:#f6f6f6 !important;}
 .parallax-slider{z-index:100}
@@ -398,7 +398,7 @@ i{vertical-align:middle;}
 #page-header p{margin-top:20px;margin-bottom:0;}
 #page-header h3{font-size:25px;margin:0;padding:0;text-transform:uppercase;z-index:1;}
 .breadcrumb > li + li::before{content:">";padding:0 2px 0 0;font-size:12px;}
-.breadcrumb{background-color:transparent;border-radius:0;position:absolute;left:15px;top:-10px;font-weight:400;list-style:outside none none;margin:0;padding:0;}
+.breadcrumb{background-color:transparent;border-radius:0;position:absolute;left:15px;top: -25px;font-weight:400;list-style:outside none none;margin:0;padding: 10px;font-size: 13px;}
 .breadcrumb li a{color:#000000 !important;}
 .topbar{background:#ffffff;padding:0;border:0;position:relative;min-height:52px;line-height:50px;display:block;}
 .topbar .dropdown-menu{padding:0 !important;margin-top:0;min-width:auto !important;}

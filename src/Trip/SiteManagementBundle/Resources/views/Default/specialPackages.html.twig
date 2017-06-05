@@ -49,10 +49,9 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 {% endblock %}
 
 {% block breadcrumb %}
-                    <ul class="c1 breadcrumb text-left">
-                        <li><a href="#">Home</a></li>
-                        <li>{{ packagetitle.title }}</li>
-                    </ul>
+					<div class="c1 breadcrumb text-left">
+                        <div><span class="glyphicon glyphicon-home" style="padding:5px;"></span><a href="#">Home</a><span><span class="glyphicon glyphicon-chevron-right" style="padding:5px;"></span>{{ packagetitle.title }}</span></div>
+                    </div>
                     <h3></h3>
 {% endblock %}
 
@@ -229,24 +228,8 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                         </div>
                                 {% endfor %}
 								
-                                 <div class="specialtxt">
-									 {% for packagecontent in packagetitlecontents %} 
-								   <h5>{{ packagecontent.title }}</h5>
-								   <p>{{ packagecontent.description }}</p>
-								   
-									{% endfor %}
-								  
-								  
-								   <ul class="type">
-								   {% for packagelist in packagetitlelist %}
-								   <li>{{ packagelist.text }} </li>
-									{% endfor %}
-
-								   </ul></br>
-								</div><!-- specialtxt -->
-								 
-								 
                                </div>
+							   
                             </div>
                             <div class="col-md-3">
                                 <h3>All Packages</h3>
@@ -262,6 +245,22 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                        </div>
                     </div>
                     
+				<hr>
+							   <div class="specialtxt">
+									 {% for packagecontent in packagetitlecontents %} 
+								   <h5>{{ packagecontent.title }}</h5>
+								   <p>{{ packagecontent.description }}</p>
+								   
+									{% endfor %}
+								  
+								  
+								   <ul class="type">
+								   {% for packagelist in packagetitlelist %}
+								   <li>{{ packagelist.text }} </li>
+									{% endfor %}
+
+								   </ul></br>
+								</div><!-- specialtxt -->
             </div>
             
             
