@@ -92,6 +92,15 @@ $("select").change(function() {
 {{ facebook_initialize({'xfbml': true, 'fbAsyncInit': 'onFbInit();'}) }}
 {% endblock %}
 
+
+{% block breadcrumb %}
+                    <ul class="c1 breadcrumb text-left">
+                        <li><a href="#">Home</a></li>
+                        <li>Search</li>
+                    </ul>
+                    <h3></h3>
+{% endblock %}
+
 {% block body %}
 
     <section class="section clearfix" style="padding-top:0px">

@@ -69,6 +69,14 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
     <meta name="description" content="{{ package.metaDescription }}">  
 {% endblock %}
     {% block title %}{{ package.metaTitle }}{% endblock %}
+    
+   {% block breadcrumb %}
+                    <ul class="c1 breadcrumb text-left">
+                        <li><a href="#">Home</a></li>
+                        <li>{{ package.title }}</li>
+                    </ul>
+                    <h3></h3>
+{% endblock %}
 
 {% block body %}
 
