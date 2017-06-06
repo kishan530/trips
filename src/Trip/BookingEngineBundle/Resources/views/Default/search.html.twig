@@ -94,10 +94,9 @@ $("select").change(function() {
 
 
 {% block breadcrumb %}
-                    <ul class="c1 breadcrumb text-left">
-                        <li><a href="#">Home</a></li>
-                        <li>Search</li>
-                    </ul>
+                    <div class="c1 breadcrumb text-left">
+                        <div><span class="glyphicon glyphicon-home" style="padding:5px;"></span><a href="#">Home</a><span><span class="glyphicon glyphicon-chevron-right" style="padding:5px;"></span>Search</span></div>
+                    </div>
                     <h3></h3>
 {% endblock %}
 
