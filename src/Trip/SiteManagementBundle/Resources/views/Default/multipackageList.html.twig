@@ -1,0 +1,54 @@
+{% extends 'page.html.twig' %}
+{% block javascripts %}
+<script>
+$("select").change(function() {
+			$("#search").submit();						
+		});
+		 $("input").blur(function() {
+			$("#search").submit();						
+		});
+</script>
+{% endblock %}
+{% block body %}
+
+    <section class="section clearfix">
+        <div class="container">
+        <h3>Multi Package List</h3>
+            <div class="row">
+                <div id="fullwidth" class="col-sm-12">
+					<table class="table table-bordered col-lg-12 col-sm-12">
+					<tr>
+						<th>Sl.No</th>
+						<th>Name</th>
+						<th>Meta Title</th>
+						<th>Meta Description</th>
+						<th>id</th>
+						
+						<th>/</th>
+					</tr>
+                     {% for packagetitle in multipackageList %}
+                        <tr>
+                        	<td>{{ loop.index }}</td>
+                            <td>
+                                {{ packagetitle.title }}
+                            </td>
+							 <td>
+                                {{ packagetitle.metatitle }}
+                            </td>
+							 <td>
+                                {{ packagetitle.metaDescription }}
+                            </td>
+							<td>
+                                {{ packagetitle.id }}
+                            </td>
+							<td>
+								<a href="#"><i class="fa fa-pencil-square-o"></i></a>
+							</td>
+                        </tr>
+                    {% endfor %}
+					</table>
+                </div>
+            </div>
+        </div>
+</section>
+{% endblock %}

@@ -816,6 +816,14 @@ class SiteManagementController extends Controller
     			'packageList' => $packageList,
     	));
     }
+	public function multipackageListAction(Request $request){
+    	$em = $this->getDoctrine()->getManager();
+    	
+    	$multipackageList = $em->getRepository('TripSiteManagementBundle:Packagetitle')->findAll();
+    	return $this->render('TripSiteManagementBundle:Default:multipackageList.html.twig',array(
+    			'multipackageList' => $multipackageList,
+    	));
+    }
 	
 	/**
      *
@@ -1158,7 +1166,12 @@ class SiteManagementController extends Controller
     			'form'   => $form->createView(),
     	));
     }
-    
+	
+    public function editmultiPackageAction()
+    {
+        return $this->render('TripSiteManagementBundle:Default:editmultiPackage.html.twig');
+    }
+	
     private function createEditItineraryForm($package,$id){
     	$bookingService = $this->container->get( 'booking.services' );
     	$form = $this->createForm(new PackageItineraryType(), $package, array(

@@ -23,9 +23,15 @@ trip_site_management_add_package:
 trip_site_management_package_list:
     path:     /package-list
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:packageList }
+trip_site_management_multipackage_list:
+    path:     /multipackage-list
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:multipackageList }
 trip_site_management_edit_package:
     path:     /edit/{id}/package
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:editPackage }
+trip_site_management_edit_multipackage:
+    path:     /edit/{id}/package
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:editmultiPackage }
 trip_site_management_edit_itinerary:
     path:     /edit/{id}/itinerary
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:editItinerary }
