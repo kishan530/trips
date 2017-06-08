@@ -42,7 +42,7 @@ $("select").change(function() {
                                 {{ packagetitle.id }}
                             </td>
 							<td>
-								<a href="#"><i class="fa fa-pencil-square-o"></i></a>
+								<a href="{{ path('trip_site_management_edit_multipackage',{ 'id': packagetitle.id }) }}"><i class="fa fa-pencil-square-o"></i></a>
 							</td>
                         </tr>
                     {% endfor %}
