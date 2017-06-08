@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class PackageItineraryType extends AbstractType
+class MultiPackageTitle extends AbstractType
 {
     
     /**
@@ -17,7 +17,14 @@ class PackageItineraryType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('description','textarea')
+			->add('metatitle')
+			->add('metakeywords','textarea')
+            ->add('metadescription','textarea')
+			->add('statingprice')
+			->add('imgpath')
+			->add('locationurl')
+			
+			
            
         ;
     }
@@ -37,6 +44,6 @@ class PackageItineraryType extends AbstractType
      */
     public function getName()
     {
-        return 'trip_sitemanagementbundle_edit_multiPackage';
+        return 'trip_sitemanagementbundle_multipackage_title';
     }
 }

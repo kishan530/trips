@@ -5,6 +5,7 @@ namespace Trip\SiteManagementBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Trip\SiteManagementBundle\Entity\City;
 use Trip\SiteManagementBundle\Entity\Package;
+use Trip\SiteManagementBundle\Entity\PackageTitle;
 use Trip\SiteManagementBundle\Entity\StartPoint;
 use Trip\SiteManagementBundle\Entity\EndPoint;
 use Trip\SiteManagementBundle\Entity\EndPoint2;
@@ -16,6 +17,7 @@ use Trip\SiteManagementBundle\DTO\PackageLocations;
 use Trip\SiteManagementBundle\Form\PackageLocationsType;
 use Trip\BookingEngineBundle\Form\SearchType;
 use Trip\SiteManagementBundle\Form\PackageType;
+use Trip\SiteManagementBundle\Form\MultiPackageTitle;
 use Trip\SiteManagementBundle\Form\EditPackageType;
 use Trip\SiteManagementBundle\Form\PackageItineraryType;
 use Trip\SiteManagementBundle\Form\PackageContentType;
@@ -816,15 +818,16 @@ class SiteManagementController extends Controller
     			'packageList' => $packageList,
     	));
     }
+	//Sreekanth//
 	public function multipackageListAction(Request $request){
     	$em = $this->getDoctrine()->getManager();
     	
-    	$multipackageList = $em->getRepository('TripSiteManagementBundle:Packagetitle')->findAll();
+    	$multipackageList = $em->getRepository('TripSiteManagementBundle:PackageTitle')->findAll();
     	return $this->render('TripSiteManagementBundle:Default:multipackageList.html.twig',array(
     			'multipackageList' => $multipackageList,
     	));
     }
-	
+	//end//
 	/**
      *
      */
@@ -1166,12 +1169,38 @@ class SiteManagementController extends Controller
     			'form'   => $form->createView(),
     	));
     }
-	
-    public function editmultiPackageAction()
-    {
-        return $this->render('TripSiteManagementBundle:Default:editmultiPackage.html.twig');
+	//Sreekanth//
+    public function editmultiPackageAction(Request $request,$id){
+    	$em = $this->getDoctrine()->getManager();
+    	//$package = new Package();
+    	$package =$em->getRepository('TripSiteManagementBundle:PackageTitle')->find($id);
+    	 
+    	$form   = $this->createEditMultiPackageForm($package,$id);
+    	$form->handleRequest($request);
+    	if ($form->isValid()) {
+    		$package = $em->merge($package);
+    		$em->flush();
+    
+    		return $this->redirect($this->generateUrl('trip_site_management_multipackage_list'));
+    
+    	}
+    
+    	return $this->render('TripSiteManagementBundle:Default:editmultiPackage.html.twig',array(
+    			'package' => $package,
+    			'form'   => $form->createView(),
+    	));
     }
-	
+	private function createEditMultiPackageForm($package,$id){
+    	//$bookingService = $this->container->get( 'booking.services' );
+    	$form = $this->createForm(new MultiPackageTitle(), $package, array(
+    			'action' => $this->generateUrl('trip_site_management_edit_multipackage',array('id'=>$id)),
+    			'method' => 'POST',
+    	));
+    	$form->add('submit', 'submit', array('label' => 'Update'));
+    
+    	return $form;
+    }
+	//end//
     private function createEditItineraryForm($package,$id){
     	$bookingService = $this->container->get( 'booking.services' );
     	$form = $this->createForm(new PackageItineraryType(), $package, array(
