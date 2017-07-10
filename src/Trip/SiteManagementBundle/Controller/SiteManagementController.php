@@ -4,6 +4,7 @@ namespace Trip\SiteManagementBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Trip\SiteManagementBundle\Entity\City;
+use Trip\SiteManagementBundle\Entity\HotelImage;
 use Trip\SiteManagementBundle\Entity\Package;
 use Trip\SiteManagementBundle\Entity\PackageTitle;
 use Trip\SiteManagementBundle\Entity\StartPoint;
@@ -18,6 +19,7 @@ use Trip\SiteManagementBundle\Form\PackageLocationsType;
 use Trip\BookingEngineBundle\Form\SearchType;
 use Trip\SiteManagementBundle\Form\PackageType;
 use Trip\SiteManagementBundle\Form\MultiPackageTitle;
+use Trip\SiteManagementBundle\Form\EditHotelType;
 use Trip\SiteManagementBundle\Form\EditPackageType;
 use Trip\SiteManagementBundle\Form\PackageItineraryType;
 use Trip\SiteManagementBundle\Form\PackageContentType;
@@ -31,6 +33,11 @@ use Trip\BookingEngineBundle\DTO\SearchHotel;
 use Trip\BookingEngineBundle\Entity\Services;
 use Trip\BookingEngineBundle\Entity\Vehicle;
 use Trip\SiteManagementBundle\Entity\Hotel;
+use Trip\SiteManagementBundle\Entity\Billing;
+use Trip\SiteManagementBundle\DTO\BillingDto;
+use Trip\SiteManagementBundle\Entity\BillingPlacesToVisit;
+use Trip\SiteManagementBundle\Entity\Driver;
+use Trip\SiteManagementBundle\Form\BillingType;
 use Trip\SiteManagementBundle\Form\HotelType;
 use Trip\SiteManagementBundle\Entity\Contact;
 use Trip\SiteManagementBundle\Form\ContactType;
@@ -42,6 +49,7 @@ use Trip\SiteManagementBundle\Form\PackagePriceType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Collections\ArrayCollection;
+
 
 
 class SiteManagementController extends Controller
@@ -818,7 +826,7 @@ class SiteManagementController extends Controller
     			'packageList' => $packageList,
     	));
     }
-	//Sreekanth//
+	//*********************Sreekanth*********************************************//
 	public function multipackageListAction(Request $request){
     	$em = $this->getDoctrine()->getManager();
     	
@@ -827,7 +835,28 @@ class SiteManagementController extends Controller
     			'multipackageList' => $multipackageList,
     	));
     }
-	//end//
+    public function billingListAction(Request $request){
+    	$em = $this->getDoctrine()->getManager();
+    	//$booking = $em->getRepository('TripBookingEngineBundle:Booking')->findOneByBookingId($id);
+    	
+    	$locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
+    	$locations = $this->getLocationsByIndex($locations);
+    	$vehicles= $em->getRepository('TripBookingEngineBundle:Vehicle')->findAll();
+    	$vehicles= $this->getLocationsByIndex($vehicles);
+    	$bookingService = $this->container->get( 'booking.services' );
+    	$drivers = $em->getRepository('TripSiteManagementBundle:Driver')->findAll();
+    	$drivers= $bookingService->getDriverByIndex($drivers);
+    	$billingList = $em->getRepository('TripSiteManagementBundle:Billing')->findAll();
+    	return $this->render('TripSiteManagementBundle:Default:billingList.html.twig',array(
+    			'billingList' => $billingList,
+    			'locations'=>$locations,
+    			'vehicles' =>$vehicles,
+    			'drivers' =>$drivers,
+    			//'booking'=>$booking,
+    			//'services'=>$booking->getVehicleBooking(),
+    	));
+    }
+	//****************************end*****************************************************//
 	/**
      *
      */
@@ -1169,7 +1198,45 @@ class SiteManagementController extends Controller
     			'form'   => $form->createView(),
     	));
     }
-	//Sreekanth//
+	//*****************************Sreekanth***********************//
+	public function hotelsListAction(Request $request){
+    	$em = $this->getDoctrine()->getManager();
+    	
+    	$hotelsList = $em->getRepository('TripSiteManagementBundle:Hotel')->findAll();
+    	return $this->render('TripSiteManagementBundle:Default:hotelsList.html.twig',array(
+    			'hotelsList' => $hotelsList,
+    	));
+    }
+	public function editHotelAction(Request $request,$id){
+    	$em = $this->getDoctrine()->getManager();
+    	//$package = new Package();
+    	$package =$em->getRepository('TripSiteManagementBundle:Hotel')->find($id);
+    	 
+    	$form   = $this->createEditHotelForm($package,$id);
+    	$form->handleRequest($request);
+    	if ($form->isValid()) {
+    		$package = $em->merge($package);
+    		$em->flush();
+    
+    		return $this->redirect($this->generateUrl('trip_site_management_hotels_list'));
+    
+    	}
+    
+    	return $this->render('TripSiteManagementBundle:Default:editHotel.html.twig',array(
+    			'package' => $package,
+    			'form'   => $form->createView(),
+    	));
+    }
+	private function createEditHotelForm($package,$id){
+    	//$bookingService = $this->container->get( 'booking.services' );
+    	$form = $this->createForm(new EditHotelType(), $package, array(
+    			'action' => $this->generateUrl('trip_site_management_edit_hotel',array('id'=>$id)),
+    			'method' => 'POST',
+    	));
+    	$form->add('submit', 'submit', array('label' => 'Update'));
+    
+    	return $form;
+    }
     public function editmultiPackageAction(Request $request,$id){
     	$em = $this->getDoctrine()->getManager();
     	//$package = new Package();
@@ -1200,7 +1267,88 @@ class SiteManagementController extends Controller
     
     	return $form;
     }
-	//end//
+	public function viewHotelAction(Request $request,$id)
+    {
+    	//$search = new Search();
+    	//$form   = $this->createSearchForm($search);
+    	$em = $this->getDoctrine()->getManager();
+    	$hotel = $em->getRepository('TripSiteManagementBundle:Hotel')->find($id);
+    	return $this->render('TripSiteManagementBundle:Default:viewHotel.html.twig', array(
+    			//'form'   => $form->createView(),
+    			'hotel'=> $hotel
+    	));
+    }
+    public function billingDetailsAction(Request $request){
+    	$em = $this->getDoctrine()->getManager();
+    	$hotel = new BillingDto();
+    	$form   = $this->createBillingForm($hotel);
+    	
+    	//$collection = $hotel->getMultiple();
+    	$form->handleRequest($request);
+    	if ($form->isValid()) {
+    	
+    	$billingObj = new Billing();
+    	//$billingObj->setId($hotel->getId());
+    	$billingObj->setDiesel($hotel->getDiesel());
+    	$billingObj->setPrice($hotel->getPrice());
+    	$billingObj->setAdvance($hotel->getAdvance());
+    	$billingObj->setCash($hotel->getCash());
+    	$billingObj->setExpenses($hotel->getExpenses());
+    	$billingObj->setComments($hotel->getComments());
+    	$billingObj->setDate($hotel->getDate());
+    	$billingObj->setPickup($hotel->getPickup());
+    	$billingObj->setGoingTo($hotel->getGoingTo());
+    	$billingObj->setVehicleId($hotel->getVehicleId());
+    	$billingObj->setDriverId($hotel->getDriverId());
+    	
+    	$collection = $hotel->getLocations();
+    	$placesToVisitCollection= $billingObj->getLocations();
+    	foreach($collection as $location){
+    		$placesToVisitObj = new BillingPlacesToVisit();
+    		$placesToVisitObj->setLocation($location);
+    		$placesToVisitObj->setBilling($billingObj);
+    		$placesToVisitCollection->add($placesToVisitObj);
+    	}
+    	
+    	$em->persist($billingObj);
+    		$em->flush();
+    		return $this->redirect($this->generateUrl('trip_site_management_billing_details'));
+    	}
+    	/*$bookingService = $this->container->get( 'booking.services' );
+    	$hotels = $em->getRepository('TripSiteManagementBundle:Billing')->findAll();
+    	$drivers = $em->getRepository('TripSiteManagementBundle:Driver')->findAll();
+    	$drivers= $bookingService->getDriverByIndex($drivers);
+    	$locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
+    	$locations = $this->getLocationsByIndex($locations);*/
+    	//$collection = $locations->getMultiple();
+    	return $this->render('TripSiteManagementBundle:Default:billingDetails.html.twig',array(
+    			'form'   => $form->createView(),
+    	));
+    }
+    
+    private function createBillingForm($entity){
+    	$bookingService = $this->container->get( 'booking.services' );
+    	$form = $this->createForm(new BillingType($bookingService), $entity, array(
+    			'action' => $this->generateUrl('trip_site_management_billing_details'),
+    			'method' => 'POST',
+    	));
+    	$form->add('submit', 'submit', array('label' => 'submit'));
+    	
+    	return $form;
+    }
+    
+    public function exportBillingsAction(){
+    	$request = $this->container->get('request');
+    	$session = $request->getSession();
+    	$view = $session->get('exportBillings');
+    	header ( 'Content-Type: application/force-download' );
+    	header ( 'Content-disposition: attachment; filename=bookings.xls' );
+    	//echo var_dump($view);
+    	//exit();
+    	return $view;
+    }
+    
+	//*****************end**************************************//
     private function createEditItineraryForm($package,$id){
     	$bookingService = $this->container->get( 'booking.services' );
     	$form = $this->createForm(new PackageItineraryType(), $package, array(

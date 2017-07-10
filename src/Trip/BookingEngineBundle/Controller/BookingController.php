@@ -18,7 +18,9 @@ use Trip\BookingEngineBundle\Entity\Drop;
 use Trip\BookingEngineBundle\Entity\PlacesToVisit;
 use Trip\BookingEngineBundle\Entity\VehicleBooking;
 use Trip\BookingEngineBundle\Entity\HotelBooking;
+use Trip\BookingEngineBundle\Entity\Billing;
 use Trip\BookingEngineBundle\Form\CustomerType;
+use Trip\BookingEngineBundle\Form\BillingType;
 use Trip\BookingEngineBundle\Form\EditCustomerType;
 use Trip\BookingEngineBundle\Form\NewPackageType;
 use Trip\BookingEngineBundle\Form\GuestType;
@@ -1235,6 +1237,48 @@ class BookingController extends Controller
 		}
 		return $tempLocations;
 	}
-    
+	
+    //********** Sreekanth**************//
+	public function hotelBookingAction(Request $request){
+        $security = $this->container->get ( 'security.context' );
+    	if (! $security->isGranted ( 'IS_AUTHENTICATED_FULLY' )) {
+    		return $this->redirect ( $this->generateUrl ( "trip_security_sign_up" ) );
+    	}
+        $user = $security->getToken ()->getUser ();
+    	$username = $user->getUserName ();
+        $em = $this->getDoctrine()->getManager();
+        $bookings = $this->getHotelbooking($username);
+		$session = $request->getSession(); 
+		$searchFilter = $session->get('selectedData');
+		
+    	//$package->setDate($service->getDate());
+    	//$package->setPrice($service->getPrice());
+    	
+         $locations = $em->getRepository('TripSiteManagementBundle:city')->findAll();
+        $locations = $this->getLocationsByIndex($locations);
+    	return $this->render('TripBookingEngineBundle:Default:hotelBooking.html.twig',array(
+    			'bookings' => $bookings,
+            'locations' => $locations,
+			'step'=>'review',
+			'step'=>'personal',
+			'filter'=>$searchFilter,
+            //'customers' => $customers,
+    	));
+    }
+	public function getHotelbooking($username){
+            $dql3 = "SELECT b FROM TripBookingEngineBundle:Booking b,TripBookingEngineBundle:Customer c where c.id=b.customerId and c.email='$username' ORDER BY b.id DESC";
+            $em = $this->getDoctrine()->getManager();
+            $query = $em->createQuery($dql3);					
+            $result = $query->getResult();
+         return $result;        
+     }
+     
+     //public function billingAccountsAction(){
+     	//return $this->render('TripBookingEngineBundle:Default:billingAccounts.html.twig');
+     //}
+     
+     
+     
+	//**************End************//
     
 }

@@ -193,7 +193,7 @@ ul.package-Destination li{font-size:13px;}
 .package-info .form-control{font-size:13px;}
 .package-info h6{font-size:14px;text-transform:capitalize;padding-bottom: 5px;font-weight: normal;line-height: 20px;vertical-align: middle;padding-top: 10px;color:#404040;margin: 0}
 .package-info .price{font-family:'LatoBold', serif;color: #363636;font-size: 1.557em;vertical-align: middle;padding-top: 5px;}
-.package-vehicle span.vehicle-icon i{margin-top:10px;}
+.package-vehicle span.vehicle-icon i{/*margin-top:10px;*/}
 .bookform .btn{background-color:#f26722;border:0;}
 .bookform .btn i{font-size:24px;}
 ..hotel-title{padding-bottom:15px;}
@@ -371,7 +371,7 @@ li.booking-price{font-size:25px !important;font-family:'LatoBold', serif !import
 0 10px 10px rgba(0,0,0,.2),
 0 20px 20px rgba(0,0,0,.15);}
 .oddClass{background:#f2edcc;}
-.btn-book{color:#000000;background-color:#f8da15;border:none;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;}
+.btn-book{color:#000000;background-color:#f8da15;border:none;/*border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;*/}
 .price-details h6 span{color:#ea2330;font-family:'LatoBold', serif;}
 .price-details h6 {margin-top: 10px;text-transform: none;}
 .bookprice{display:block;position:relative;padding:20px;background:#fff6cc;}
@@ -777,5 +777,5 @@ label.required:after{
 .package-view .package-custome-title{color: #000;font-size: 1.42857em;text-transform: none;margin: 20px 0 20px 0!important;font-family: "LatoBold";}
 .package-view .subtitle {font: 1.28571em "LatoBold";text-transform: none !important;;}
 .package-price-details{ margin-top: 70px;}
-.package-view .list-view{padding-left: 20px;}
+.package-view .list-view{padding-left: 20px;font-size:13px;}
 .package-view .list-view li{font-size: 1.07143em;line-height: 22px;text-align: justify;}

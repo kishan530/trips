@@ -138,10 +138,10 @@
                                                 {% endfor %}
 											</div>
 										{% else %}
-                                        <h6>On {{ filter.date|date('F jS Y') }} {{ filter.preferTime }}</h6>
+											<h6>On {{ filter.date|date('F jS Y') }} {{ filter.preferTime }}</h6>
 										<div class="col-sm-3 text-center">
                                              <img src="{{ asset('images/cars/'~service.imgPath) }}" alt="" class="img-responsive">
-                                                <h6>{{ service.model }}</h6>
+												 <h6>{{ service.model }}</h6>
 										</div>
 										<div class="col-sm-4 text-center">
 												{{ service.lFrom }}

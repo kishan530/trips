@@ -20,7 +20,11 @@ class Catalogue
      /**
      * @var array
      */
-    private $vehicles;	
+    private $vehicles;
+    /**
+     * @var array
+     */
+    private $drivers;
 	
 	/**
 	 *
@@ -54,6 +58,23 @@ class Catalogue
 	 */
 	public function setVehicles($vehicles) {
 		$this->vehicles = $vehicles;
+		return $this;
+	}
+	/**
+	 *
+	 * @return the string
+	 */
+	public function getDriver() {
+		return $this->drivers;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$drivers
+	 */
+	public function setDriver($drivers) {
+		$this->drivers = $drivers;
 		return $this;
 	}
 }

@@ -46,3 +46,7 @@ trip_booking_engine_edit_custom_package:
 trip_booking_engine_confirm_custom_package:
     path:     /confirm/{id}/custom-package
     defaults: { _controller: TripBookingEngineBundle:Booking:confirmCustomPackage }
+trip_booking_engine_hotel_booking:
+    path:     /hotel-booking
+    defaults: { _controller: TripBookingEngineBundle:Booking:hotelBooking }
+

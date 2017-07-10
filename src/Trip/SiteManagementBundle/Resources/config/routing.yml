@@ -14,6 +14,12 @@ trip_site_management_add_locations:
 trip_site_management_add_hotel:
     path:     /add/hotel
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:addHotel }
+trip_site_management_hotels_list:
+    path:     /hotels-list
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:hotelsList }
+trip_site_management_edit_hotel:
+    path:     /edit/{id}/hotel
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:editHotel }
 trip_site_management_add_package_price:
     path:     /add/package-price
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:addPackagePrice }
@@ -75,6 +81,9 @@ trip_site_management_bookings:
 trip_site_management_export_bookings:
     path:     /exportBookings
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:exportBookings }
+trip_site_management_export_billings:
+    path:     /exportBillings
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:exportBillings }
 trip_site_management_my_bookings:
     path:     /my-bookings
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:myBookings }
@@ -110,4 +119,13 @@ trip_site_management_faq:
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:faq }
 trip_site_management_view_package:
     path:     /view-package/{url}
-    defaults: { _controller: TripSiteManagementBundle:SiteManagement:viewPackage }  
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:viewPackage }
+trip_site_management_view_hotel:
+    path:     /view-hotel/{id}
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:viewHotel }
+trip_site_management_billing_details:
+    path:     /billing-details
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:billingDetails }
+trip_site_management_billing_list:
+    path:     /billing-list
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:billingList }

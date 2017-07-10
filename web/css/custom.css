@@ -76,3 +76,72 @@ div.bhoechie-tab-content{
 div.bhoechie-tab div.bhoechie-tab-content:not(.active){
   display: none;
 }
+.item-title h5 a {
+    font-size: 16px;
+	color:#333333;
+    /*text-transform: uppercase;*/
+    font-weight: bold;
+	text-decoration: none !important;
+}
+.item-title h5 a:hover {
+    font-size: 16px;
+	color:#000000;
+    /*text-transform: uppercase;*/
+    font-weight: bold;
+	text-decoration: none;
+}
+.item-price-more_hotels {
+    padding-top: 32px;
+    display: block;
+    font-size: 15px;
+    font-family: "LatoBold";
+    color: #333333;
+}
+.item-address fa
+{
+	color: #F34F4F;
+}
+.list-view{padding-left: 20px;font-size:14px;}
+.mini-desti-desc .pull-left h6 {
+    float: left;
+    color: #2d67b2;
+    font-family: 'LatoBold', serif;
+    text-transform: none;
+    font-size: 19px;
+}
+.mini-desti-desc .pull-right h6 {
+    color: #f26722;
+    font-family: 'LatoBold', serif;
+    font-size: 20px;
+}
+
+@media (max-width:768px) {
+
+	.package-box {
+    width: 100%;
+	}
+}
+
+.btn-book {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    transition: all ease-in-out 0.30s;
+    -webkit-transition: all ease-in-out 0.30s;
+}
+/*.package-border {
+    border: none;
+}
+.package-vehicle span.vehicle-icon.active {
+    color: #fff;
+}
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
+    border-top: 1px solid #ddd;
+    background:none;
+}
+*/
+
+.billingpadding
+{
+	padding-bottom:20px;
+}
+
+/* End */

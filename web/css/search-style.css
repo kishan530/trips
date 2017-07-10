@@ -149,9 +149,9 @@ color:#FFD34E;
 }
 
 .flight-item .item-body .item-address,.trip-item .item-body .item-address,.attraction-item .item-body .item-address,.hotel-item .item-body .item-address {
-font-weight:600;
+font-weight:100;
 font-size:13px;
-color:#000;
+color: #747474;
 margin-top:5px;
 }
 

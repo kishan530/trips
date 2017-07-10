@@ -59,6 +59,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
     <div class="container">
         <div class="row">
                         <div class="col-lg-12 col-sm-12 col-xs-12">
+                        	
                             {% for package in packagetitle %} 
                             <div class="package-box border-l bgimg" style="background-image: url('{{ asset('images/package-titles/'~package.imgPath) }}');">
                             <div class="package-background">                                
@@ -74,8 +75,8 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                               
                               </div>
                             </div>
-                        
                            {% endfor %}
+                           
                     </div>
                     {#}
 					 <div class="col-lg-2 col-xs-12 text-center">
