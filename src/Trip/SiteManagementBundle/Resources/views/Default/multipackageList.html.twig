@@ -22,7 +22,6 @@ $("select").change(function() {
 						<th>Name</th>
 						<th>Meta Title</th>
 						<th>Meta Description</th>
-						<th>id</th>
 						
 						<th>/</th>
 					</tr>
@@ -38,9 +37,7 @@ $("select").change(function() {
 							 <td>
                                 {{ packagetitle.metaDescription }}
                             </td>
-							<td>
-                                {{ packagetitle.id }}
-                            </td>
+							
 							<td>
 								<a href="{{ path('trip_site_management_edit_multipackage',{ 'id': packagetitle.id }) }}"><i class="fa fa-pencil-square-o"></i></a>
 							</td>

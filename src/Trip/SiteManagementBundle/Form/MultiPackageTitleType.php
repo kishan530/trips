@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class MultiPackageTitle extends AbstractType
+class MultiPackageTitleType extends AbstractType
 {
     
     /**
@@ -21,7 +21,7 @@ class MultiPackageTitle extends AbstractType
 			->add('metakeywords','textarea')
             ->add('metadescription','textarea')
 			->add('statingprice')
-			->add('imgpath')
+			//->add('imgpath')
 			->add('locationurl')
 			
 			

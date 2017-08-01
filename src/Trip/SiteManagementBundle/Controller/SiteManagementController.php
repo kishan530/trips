@@ -17,7 +17,7 @@ use Trip\SiteManagementBundle\DTO\PackageLocations;
 use Trip\SiteManagementBundle\Form\PackageLocationsType;
 use Trip\BookingEngineBundle\Form\SearchType;
 use Trip\SiteManagementBundle\Form\PackageType;
-use Trip\SiteManagementBundle\Form\MultiPackageTitle;
+use Trip\SiteManagementBundle\Form\MultiPackageTitleType;
 use Trip\SiteManagementBundle\Form\EditPackageType;
 use Trip\SiteManagementBundle\Form\PackageItineraryType;
 use Trip\SiteManagementBundle\Form\PackageContentType;
@@ -1170,7 +1170,7 @@ class SiteManagementController extends Controller
     	));
     }
 	//Sreekanth//
-    public function editmultiPackageAction(Request $request,$id){
+    public function editMultiPackageAction(Request $request,$id){
     	$em = $this->getDoctrine()->getManager();
     	//$package = new Package();
     	$package =$em->getRepository('TripSiteManagementBundle:PackageTitle')->find($id);
@@ -1192,7 +1192,7 @@ class SiteManagementController extends Controller
     }
 	private function createEditMultiPackageForm($package,$id){
     	//$bookingService = $this->container->get( 'booking.services' );
-    	$form = $this->createForm(new MultiPackageTitle(), $package, array(
+    	$form = $this->createForm(new MultiPackageTitleType(), $package, array(
     			'action' => $this->generateUrl('trip_site_management_edit_multipackage',array('id'=>$id)),
     			'method' => 'POST',
     	));

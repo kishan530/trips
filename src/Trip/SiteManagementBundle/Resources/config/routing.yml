@@ -31,7 +31,7 @@ trip_site_management_edit_package:
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:editPackage }
 trip_site_management_edit_multipackage:
     path:     /edit/{id}/multipackage
-    defaults: { _controller: TripSiteManagementBundle:SiteManagement:editmultiPackage }
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:editMultiPackage }
 trip_site_management_edit_itinerary:
     path:     /edit/{id}/itinerary
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:editItinerary }
