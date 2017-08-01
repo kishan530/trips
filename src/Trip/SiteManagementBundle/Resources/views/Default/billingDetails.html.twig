@@ -1,0 +1,98 @@
+{% extends 'page.html.twig' %}
+{% block javascripts %}
+<script>
+$("select").change(function() {
+			$("#search").submit();						
+		});
+		 $("input").blur(function() {
+			$("#search").submit();						
+		});
+		 $(".preferDate").datepicker({
+			    dateFormat: "dd/mm/yy",
+			    numberOfMonths: 2,
+			    minDate: 0
+			});
+</script>
+{% endblock %}
+{% block body %}
+
+    <section class="section clearfix">
+        <div class="container">
+            {{ form_start(form) }}
+        	<div class="row billingpadding">
+        	
+        			<div class="col-lg-3">
+                            	{{ form_label(form.date) }} 
+                                {{ form_widget(form.date) }}
+                    </div>
+                    <div class="col-lg-3">
+                            	{{ form_label(form.pickup) }} 
+                                {{ form_widget(form.pickup) }}
+                    </div>
+                    <div class="col-lg-3">
+                            	{{ form_label(form.goingTo) }} 
+                                {{ form_widget(form.goingTo) }}
+                    </div>
+                    <div class="col-lg-3">
+                            	{{ form_label(form.locations) }} 
+                                {{ form_widget(form.locations) }}
+                    </div>
+        	</div>
+        	<div class="row billingpadding">
+        	
+        			<div class="col-lg-3">
+                            	{{ form_label(form.vehicle_id) }} 
+                                {{ form_widget(form.vehicle_id) }}
+                    </div>
+                    <div class="col-lg-3">
+                            	{{ form_label(form.driver_id) }} 
+                                {{ form_widget(form.driver_id) }}
+                    </div>
+                    <div class="col-lg-3">
+                            	{{ form_label(form.diesel) }} 
+                                {{ form_widget(form.diesel) }}
+                    </div>
+                    <div class="col-lg-3">
+                            	{{ form_label(form.price) }} 
+                                {{ form_widget(form.price) }}
+                    </div>
+            </div>
+            <div class="row">
+        	
+        			<div class="col-lg-3">
+                            	{{ form_label(form.advance) }} 
+                                {{ form_widget(form.advance) }}
+                    </div>
+                    <div class="col-lg-3">
+                            	{{ form_label(form.cash) }} 
+                                {{ form_widget(form.cash) }}
+                    </div>
+                    <div class="col-lg-3">
+                            	{{ form_label(form.expenses) }} 
+                                {{ form_widget(form.expenses) }}
+                    </div>
+                    <div class="col-lg-3">
+                            	{{ form_label(form.comments) }} 
+                                {{ form_widget(form.comments) }}
+                    </div>
+                   
+                    
+                    
+            
+        	</div>
+        	{{ form_end(form) }}
+            <div class="row">
+                <div id="fullwidth" class="col-sm-12">
+                    <div class="col-lg-5">
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+        </div>
+</section>
+{% endblock %}

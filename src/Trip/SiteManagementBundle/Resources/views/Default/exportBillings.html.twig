@@ -1,0 +1,75 @@
+ <table id="result" class="table table-bordered col-lg-12 col-sm-12" border="1">
+	               {% if billing|length>0 %}	
+                        <tr>
+						<th>Sl.No</th>
+						<th>Date</th>
+						<th>Pick Up</th>
+						<th>Places To Visit</th>
+						<th>Drop</th>
+						<th>Price</th>
+						<th>Expenses</th>
+						<th>Diesel</th>
+						<th>Comments</th>
+						<th>CarType</th>
+						<th>Driver Name</th>
+						{#}<th>/</th>{#}
+					</tr>
+					{% endif %}			
+						
+                    {% for billing in billingList %}
+                        <tr>
+                        	<td>{{ loop.index }}</td>
+                            <td> {{ billing.date|date('F jS Y') }}  </td>
+							 <td>           
+                                {% if billing.pickUp %} 
+                                     {{ locations[billing.pickUp].name }}
+                    			{% endif %}             
+    						</td>
+    						<td>   
+                        		 {% if billing.locations|length>0 %}                                                    
+                                                                                
+                                {% for p in billing.locations %} 
+                                     {{ locations[p.location].name }} {% if loop.last is same as(false) %} , {% endif %}
+                                 {% endfor %}
+                                 {% else %}
+                                       N/A
+                                  {% endif %}              
+    						</td>
+    						<td> 
+                        		{% if billing.goingTo %} 
+                                     {{ locations[billing.goingTo].name }}
+                    			{% endif %}     		        
+    						</td>
+							 <td>
+                                {{ billing.price }}
+                            </td>
+							<td>
+                                {{ billing.expenses }}
+                            </td>
+                            <td>
+                                {{ billing.diesel }}
+                            </td>
+                            <td>
+                                {{ billing.comments }}
+                            </td>
+                            {#}<td> 
+                        		{% if billing.goingTo %} 
+                                     {{ locations[billing.goingTo].name }}
+                    			{% endif %}     		        
+    						</td>{#}
+                            <td>
+                            	{% if billing.vehicleId %} 
+                                     {{ vehicles[billing.vehicleId].model }}
+                    			{% endif %}
+                            </td>
+                            <td> 
+                        		{% if billing.driverId %} 
+                                     {{ drivers[billing.driverId].name }}
+                    			{% endif %}     		        
+    						</td>
+							{#}<td>
+								<a href="#"><i class="fa fa-pencil-square-o"></i></a>
+							</td>{#}
+                        </tr>
+                    {% endfor %}
+                        </table>

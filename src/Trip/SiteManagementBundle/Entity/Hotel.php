@@ -3,6 +3,7 @@
 namespace Trip\SiteManagementBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Hotel
@@ -63,6 +64,12 @@ class Hotel
      */
     private $cityId;
     /**
+     * @var text
+     *
+     * @ORM\Column(name="overview", type="text")
+     */
+	 private $overview;
+    /**
      * @var boolean
      *
      * @ORM\Column(name="active", type="boolean")
@@ -71,16 +78,23 @@ class Hotel
     /**
      * @var Collection
      * @ORM\OneToOne(targetEntity="Trip\SiteManagementBundle\Entity\HotelAddress", mappedBy="hotel", cascade={"persist"})
+	 
      */
     protected $address;
-    
+	/**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\HotelImage", mappedBy="hotel", cascade={"persist"})
+     */
+	protected $image;
 
+	 
     /**
     *
     */
-   /* public function __construct() {
-        $this->address = new ArrayCollection();
-    }*/
+  public function __construct() {
+        //$this->address = new ArrayCollection();
+		$this->image = new ArrayCollection();
+    }
 
 
     /**
@@ -230,7 +244,23 @@ class Hotel
     {
         return $this->cityId;
     }
-    
+    /**
+	 *
+	 * @return the string
+	 */
+	public function getOverview() {
+		return $this->overview;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$overview
+	 */
+	public function setOverview($overview) {
+		$this->overview = $overview;
+		return $this;
+	}
      /**
      * Set address
      *
@@ -252,6 +282,28 @@ class Hotel
     public function getAddress()
     {
         return $this->address;
+    }
+	 /**
+     * Set image
+     *
+     * @param $image
+     * @return Hotel
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return image 
+     */
+    public function getImage()
+    {
+        return $this->image;
     }
     /**
      * Set active

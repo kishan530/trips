@@ -27,7 +27,7 @@ class Services
      * @ORM\Column(name="leaving_from", type="integer")
      */
     private $leavingFrom;
-        /**
+     /**
      * @var string
      * @ORM\Column(name="going_to", type="integer")
      */

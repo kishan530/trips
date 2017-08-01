@@ -41,6 +41,20 @@ class BookingServices
         $vehicles = $this->em->getRepository('TripBookingEngineBundle:Vehicle')->findAll();
         return $vehicles;
     }
+    
+    public function getDriver(){
+    	
+    	$drivers = $this->em->getRepository('TripSiteManagementBundle:Driver')->findAll();
+    	return $drivers;
+    }
+    public function getDriverByIndex($drivers)
+    {
+    	$tempDriver = array();
+    	foreach ($drivers as $driver){
+    		$tempDriver[$driver->getId()] = $driver;
+    	}
+    	return $tempDriver;
+    }
 	
 	/**
 	* Get catalog service. Will be calleat at entry. 

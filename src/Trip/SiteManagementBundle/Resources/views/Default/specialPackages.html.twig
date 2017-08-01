@@ -66,12 +66,157 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                     <div class="container">
 
                         <div class="row">
-                            <div id="fullwidth" class="col-sm-12 col-md-9">
+                            <div id="fullwidth" class="col-sm-12 col-md-8">
                                 <div class="row">
-                                 {% for key,package in packages %} 
-                                     
-                                         
-                                            <div class="col-md-4">
+                                
+                                {% for key,package in packages %}
+                                {#}
+                                	<div class="col-md-12 {% if loop.index is even %} oddClass {% endif %}" style="margin-bottom:20px;box-shadow: 0px 0 6px #cccccc;">
+                                	<div class="col-md-8" style="margin-top:10px;margin-bottom:10px">
+                                            	<div class="mini-desti-desc package-desc ">
+                                            		<table class="table" style="text-align:center">
+                                                      <tbody>
+                                                        <tr>
+                                                          <td>
+                                                          <!--<div class="helper">
+                                                           <ul class="list-unstyled">-->
+                                                               <span class="package-title"> Pick Up</span>
+<!--                                                             </ul>
+                                                        </div>-->
+                                                          </td>
+                                                          <td>
+                                                          <!--<div class="helper">
+                                                           <ul class="list-unstyled">-->
+                                                     <span class="package-title"> Places to Visit</span>
+                                                            <!-- </ul>
+                                                    </div>-->
+                                                          </td>
+                                                          <td>
+                                                          <span class="package-title"> Drop</span>
+                                                          </td>
+                                                        </tr>
+                         
+                                                        <tr>
+                                                          <td><!-- <div class="helper">
+                                                           <ul class="list-unstyled">-->
+                                                           {% for startPoint in package.startPoint %} 
+                                                                {{ locations[startPoint.name].name }} {% if loop.last is same as(false) %} / {% endif %}
+                                                           {% endfor %}
+                                                          <!-- </ul>
+                                                        </div>-->
+                                                        </td>
+                                                          <td>
+                                                           <div class="col-md-12 container package-visit-desc">
+                                                           <!--<div class="helper">
+                                                               <ul class="package-Destination">-->
+                                                            {% if package.endPoint|length>0 %}
+                                                               {% for endPoint in package.endPoint %} 
+                                                                    {{ locations[endPoint.name].name }}{% if loop.last is same as(false) %},{% endif %}
+                                                            
+                                                               {% endfor %}
+                                                             {% else %}
+                                                                    N/A
+                                                           
+                                                             {% endif %}
+                                                               <!--</ul> 
+                                                            </div>-->
+                                                        </div>
+                                                          </td>
+                                                          <td>
+                                                            {% if package.endPoint2|length>0 %}
+                                                            {% for endPoint2 in package.endPoint2  %} 
+                                                            {{ locations[endPoint2.name].name }} {% if loop.last is same as(false) %},{% endif %}
+                                                           
+                                                            {% endfor %}
+                                                           {% else %}
+                                                                    N/A
+                                                           
+                                                           {% endif %}
+                                                          </td>
+                                                        </tr>
+                                                        </tbody>
+                                                      </table>
+                                            	
+                                            	</div>
+                                            	<div class="col-md-12 package-border" style="/*background: #ffdf00;box-shadow: 0px 0 6px #cccccc;*/">
+                                                {% for index,price in package.price %} 
+                                                    <div class="col-md-2 package-vehicle">
+                                                        <span class="text-center">{{ price.name }}</span> 
+                                                    <span id="{{ index }}" value="{{ price.price }}" title="{{ package.id }}" class="vehicle{{ package.id }} vehicle-icon text-center {% if loop.index==1 %} active {% endif %}">
+                                                            <i class="fa fa-car"></i>
+                                                        </span>
+                                                        <span class="text-center"><i class="fa fa-inr"></i> {{ price.price }}</span> 
+                                                    </div>
+                                                {% endfor %}
+                                                </div>
+                                            	</div>
+                                            	
+                                            	<div class="col-md-4">
+                                            	<div class="clearfix"></div> 
+                                            <form action="{{ path('trip_site_management_homepage_package_submit') }}" action="post">
+                                            <div class="col-md-12 text-center package-info">
+                                  			                                                <div class="row">
+                                                    <div class="col-md-6 package-price-label">
+                                                        <h6>Starting From:</h6>
+                                                    </div>
+                                                    <div class="col-md-6 price">
+                                                        <i class="fa fa-inr"></i><span id="price{{ package.id }}"> {{ package.price.first.price }} </span>  
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-4 package-info-widget">
+
+                                                         <div class="form-group make-margin">
+                                                             <label class="required">Date</label>
+                                                    <input type="text" name="preferDate" placeholder="Prefer Date" class="form-control preferDate" required>                                          
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 package-info-widget">
+
+                                                         <div class="form-group make-margin">
+                                                        <label class="required">Time</label>
+                                                     <input type="text" name="preferTime" placeholder="Prefer Time" class="form-control preferTime" required>                                            
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 package-info-widget">
+
+                                                        <div class="form-group make-margin">
+                                                            <label class="required">Adults</label>
+                                                         <div class="input-group">
+                                                            <a class="adults input-group-addon" id="decrement" value="1" href="#">-</a> 
+                                                <input type="text" name="numAdult" placeholder="Adults" class="form-control numAdult" value="1" required> 
+                                                            <a class="adults input-group-addon" id="increment" href="#">+</a>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+                                            </div> 
+                                            <div class="clearfix"></div> 
+                                                <div class="text-center">
+                                                <div class="col-md-6" style="margin-bottom:10px">
+                                                 <input type="hidden" name="selected" value="{{ key }}"> 
+                                                <input id="vehicleIndex{{ package.id }}" type="hidden" name="vehicleIndex" value="{{ package.price.keys[0] }}">
+                                                <button type="submit" class="awe-btn awe-btn btn btn-book btn-block"><i class="fa fa-shopping-cart"></i> BOOK NOW</button>
+                                                </div>
+                                                <div class="col-md-6" style="margin-bottom:10px">
+                                                {% if package.packageUrl %}
+                                                 <a style="background-color: #f26722;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);transition: all ease-in-out 0.30s;-webkit-transition: all ease-in-out 0.30s;"  class="awe-btn awe-btn btn btn-primary btn-block" href="{{ path('trip_site_management_view_package',{'url':package.packageUrl}) }}"><i class="fa fa-eye"></i> MORE Details</a>
+                                                 {% endif %}
+                                                 </div>
+                                                </div>
+                                                </form>
+                                            	</div>
+                                            	
+                                            </div>
+                                            {#}
+                                {% endfor %}
+                                
+                                
+                                {% for key,package in packages %} 
+                                  <div class="col-md-6">
                                 <div class="mini-desti package row">
 
                                     <div class="col-md-12">
@@ -84,69 +229,96 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                             </div> 
                                             <div class="clearfix"></div>   
                                             <div class="mini-desti-desc package-desc {% if loop.index is even %} oddClass {% endif %}">
-
-                                                <div class="col-md-12 package-border"> 
-                                                    <div class="col-md-12 container">
-                                                         <!--<div class="helper">
+													
+													<table class="table">
+                                                      <tbody>
+                                                        <tr>
+                                                          <td>
+                                                          <!--<div class="helper">
                                                            <ul class="list-unstyled">-->
                                                                <span class="package-title"> Pick Up</span>
 <!--                                                             </ul>
                                                         </div>-->
-                                                     </div>
-                                                      <div class="col-md-12 container ">
-
-                                                      <!-- <div class="helper">
+                                                          </td>
+                                                          <td>
+                                                          <!--<div class="helper">
+                                                           <ul class="list-unstyled">-->
+                                                     <span class="package-title"> Places to Visit</span>
+                                                            <!-- </ul>
+                                                    </div>-->
+                                                          </td>
+                                                          <td>
+                                                          <span class="package-title"> Drop</span>
+                                                          </td>
+                                                        </tr>
+                         
+                                                        <tr>
+                                                          <td><!-- <div class="helper">
                                                            <ul class="list-unstyled">-->
                                                            {% for startPoint in package.startPoint %} 
                                                                 {{ locations[startPoint.name].name }} {% if loop.last is same as(false) %} / {% endif %}
                                                            {% endfor %}
                                                           <!-- </ul>
                                                         </div>-->
+                                                        </td>
+                                                          <td>
+                                                           <div class="col-md-12 container package-visit-desc">
+                                                           <!--<div class="helper">
+                                                               <ul class="package-Destination">-->
+                                                            {% if package.endPoint|length>0 %}
+                                                               {% for endPoint in package.endPoint %} 
+                                                                    {{ locations[endPoint.name].name }}{% if loop.last is same as(false) %},{% endif %}
+                                                            
+                                                               {% endfor %}
+                                                             {% else %}
+                                                                    N/A
+                                                           
+                                                             {% endif %}
+                                                               <!--</ul> 
+                                                            </div>-->
+                                                        </div>
+                                                          </td>
+                                                          <td>
+                                                            {% if package.endPoint2|length>0 %}
+                                                            {% for endPoint2 in package.endPoint2  %} 
+                                                            {{ locations[endPoint2.name].name }} {% if loop.last is same as(false) %},{% endif %}
+                                                           
+                                                            {% endfor %}
+                                                           {% else %}
+                                                                    N/A
+                                                           
+                                                           {% endif %}
+                                                          </td>
+                                                        </tr>
+                                                        </tbody>
+                                                      </table>
+													
+                                                <div class="col-md-4"> 
+                                                    <div class="col-md-12 container">
+                                                         
+                                                     </div>
+                                                      <div class="col-md-12 container ">
+
+                                                      
                                                     </div>
                                                 </div>
                                                     
                                                 
-                                                <div class="col-md-12"> 
+                                                <div class="col-md-4"> 
   
                                                 <div class="col-md-12 container">
-                                                         <!--<div class="helper">
-                                                           <ul class="list-unstyled">-->
-                                                     <span class="package-title"> Places to Visit</span>
-                                                            <!-- </ul>
-                                                    </div>-->
+                                                         
                                                      </div>
-                                                <div class="col-md-12 container package-visit-desc">
-                                                   <!--<div class="helper">
-                                                       <ul class="package-Destination">-->
-                                                    {% if package.endPoint|length>0 %}
-                                                       {% for endPoint in package.endPoint %} 
-                                                            {{ locations[endPoint.name].name }}{% if loop.last is same as(false) %},{% endif %}
-                                                    
-                                                       {% endfor %}
-                                                     {% else %}
-                                                            N/A
-                                                   
-                                                     {% endif %}
-                                                       <!--</ul> 
-                                                    </div>-->
-                                                </div>
+                                                
                                                 </div>
                                                        
-                                                   <div class="col-md-12 package-border">
+                                                   <div class="col-md-4">
                                                       
                                                  <div class="col-md-12 container">
-                                                          <span class="package-title"> Drop</span>
+                                                          
                                                  </div>
                                                <div class="col-md-12 container">
-                                                   {% if package.endPoint2|length>0 %}
-                                                    {% for endPoint2 in package.endPoint2  %} 
-                                                    {{ locations[endPoint2.name].name }} {% if loop.last is same as(false) %},{% endif %}
                                                    
-                                                    {% endfor %}
-                                                   {% else %}
-                                                            N/A
-                                                   
-                                                   {% endif %}
                                                       
                                                 </div>
                                                  
@@ -212,12 +384,16 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                             </div> 
                                             <div class="clearfix"></div> 
                                                 <div class="text-center">
+                                                <div class="col-md-6">
                                                  <input type="hidden" name="selected" value="{{ key }}"> 
                                                 <input id="vehicleIndex{{ package.id }}" type="hidden" name="vehicleIndex" value="{{ package.price.keys[0] }}">
                                                 <button type="submit" class="awe-btn awe-btn btn btn-book btn-block"><i class="fa fa-shopping-cart"></i> BOOK NOW</button>
+                                                </div>
+                                                <div class="col-md-6">
                                                 {% if package.packageUrl %}
                                                  <a style="background-color: #f26722;"  class="awe-btn awe-btn btn btn-primary btn-block" href="{{ path('trip_site_management_view_package',{'url':package.packageUrl}) }}"><i class="fa fa-eye"></i> MORE Details</a>
                                                  {% endif %}
+                                                 </div>
                                                 </div>
                                                 </form>
                                             <div class="clearfix"></div> 
@@ -231,7 +407,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                </div>
 							   
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <h3>All Packages</h3>
                             {% for packagetitle in packagetitles %} 
                                 <a class="package-links" href="{{ path('trip_site_management_homepage_special_packages',{ 'url':packagetitle.locationUrl }) }}">{{ packagetitle.title }}</a> <br>

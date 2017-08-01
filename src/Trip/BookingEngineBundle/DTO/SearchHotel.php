@@ -27,6 +27,37 @@ class SearchHotel
      * @var string
      */
     private $returnDate;
+	/**
+     * @var string
+     */
+    private $package;
+	/**
+     * @var string
+     */
+    private $multiple;
+	
+    public function __construct()
+    {
+        $this->multiple = new ArrayCollection();
+    }
+    
+    /**
+	 *
+	 * @return the string
+	 */
+	public function getMultiple() {
+		return $this->multiple;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$multiple
+	 */
+	public function setMultiple($multiple) {
+		$this->multiple = $multiple;
+		return $this;
+	}
    
     /**
 	 *
@@ -80,6 +111,24 @@ class SearchHotel
 		$this->returnDate = $returnDate;
 		return $this;
 	}
-    
+    /**
+     * Set package
+     * @param string $package
+     * @return Booking
+     */
+
+    public function setPackage($package)
+    {
+    	$this->package = $package;
+    	return $this;
+    }
+    /**
+     * Get package
+     * @return string
+     */
+    public function getPackage()
+    {
+    	return $this->package;
+    }
     
 }
