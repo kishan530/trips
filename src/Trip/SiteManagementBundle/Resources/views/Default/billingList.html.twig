@@ -20,18 +20,22 @@ $("select").change(function() {
 					{% if billingList|length>0 %}
 						<a href="{{ path('trip_site_management_export_billings') }}">Export Bookings</a>
 					{% endif %}
-					<tr>
+					<tr style="font-weight:bold;font-family:calibri">
 						<th>Sl.No</th>
 						<th>Date</th>
 						<th>Pick Up</th>
 						<th>Places To Visit</th>
 						<th>Drop</th>
-						<th>Price</th>
-						<th>Expenses</th>
-						<th>Diesel</th>
+						<th>Advance</th>
+						<th>Cash</th>
+						<th>Expences</th>
+						<th>Total Price</th>
+						<th>Desial</th>
 						<th>Comments</th>
 						<th>CarType</th>
+						<th>Car Number</th>
 						<th>Driver Name</th>
+						
 						{#}<th>/</th>{#}
 					</tr>
                      {% for billing in billingList %}
@@ -59,11 +63,22 @@ $("select").change(function() {
                     			{% endif %}     		        
     						</td>
 							 <td>
-                                {{ billing.price }}
+                                {{ billing.advance }}
                             </td>
 							<td>
+                                {{ billing.cash }}
+                            </td>
+                            <td>
                                 {{ billing.expenses }}
                             </td>
+                            <td><div ng-app>
+                            {% set adv = billing.advance %}
+                            {% set cash = billing.cash %}
+                            <p>{{ adv+cash }}</p>
+                            </div>
+                            
+                            </td>
+                            
                             <td>
                                 {{ billing.diesel }}
                             </td>
@@ -80,11 +95,15 @@ $("select").change(function() {
                                      {{ vehicles[billing.vehicleId].model }}
                     			{% endif %}
                             </td>
+                            <td>
+                                {{ billing.carnumber }}
+                            </td>
                             <td> 
                         		{% if billing.driverId %} 
                                      {{ drivers[billing.driverId].name }}
                     			{% endif %}     		        
     						</td>
+    						
 							{#}<td>
 								<a href="#"><i class="fa fa-pencil-square-o"></i></a>
 							</td>{#}

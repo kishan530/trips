@@ -88,6 +88,11 @@ class Billing
     private $vehicleId;
     /**
      * @var string
+     * @ORM\Column(name="carnumber", type="string")
+     */
+    private $carnumber;
+    /**
+     * @var string
      * @ORM\Column(name="driver_id", type="integer")
      */
     private $driverId;
@@ -314,6 +319,8 @@ class Billing
 		$this->vehicleId = $vehicleId;
 		return $this;
 	}
+	
+	
 	/**
 	 *
 	 * @return the string
@@ -353,4 +360,29 @@ class Billing
     {
     	return $this->locations;
     }
+    
+    
+    /**
+     * Set carnumber
+     *
+     * @param string $carnumber
+     * @return Billing
+     */
+    public function setCarnumber($carnumber)
+    {
+    	$this->carnumber= $carnumber;
+    	
+    	return $this;
+    }
+    
+    /**
+     * Get carnumber
+     *
+     * @return carnumber
+     */
+    public function getCarnumber()
+    {
+    	return $this->carnumber;
+    }
+    
 }

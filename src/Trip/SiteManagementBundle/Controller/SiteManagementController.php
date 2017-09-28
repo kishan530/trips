@@ -1286,8 +1286,11 @@ class SiteManagementController extends Controller
     	$em = $this->getDoctrine()->getManager();
     	$hotel = new BillingDto();
     	$form   = $this->createBillingForm($hotel);
+    	//$collection = $hotel->getMultiple();
+    	//$collection->add($hotel);
     	
     	//$collection = $hotel->getMultiple();
+    	
     	$form->handleRequest($request);
     	if ($form->isValid()) {
     	
@@ -1295,6 +1298,7 @@ class SiteManagementController extends Controller
     	//$billingObj->setId($hotel->getId());
     	$billingObj->setDiesel($hotel->getDiesel());
     	$billingObj->setPrice($hotel->getPrice());
+    	//$billingObj1->setPrice($hotel->getAdvance() + $hotel->getCash());
     	$billingObj->setAdvance($hotel->getAdvance());
     	$billingObj->setCash($hotel->getCash());
     	$billingObj->setExpenses($hotel->getExpenses());
@@ -1303,9 +1307,11 @@ class SiteManagementController extends Controller
     	$billingObj->setPickup($hotel->getPickup());
     	$billingObj->setGoingTo($hotel->getGoingTo());
     	$billingObj->setVehicleId($hotel->getVehicleId());
+    	$billingObj->setCarnumber($hotel->getCarnumber());
     	$billingObj->setDriverId($hotel->getDriverId());
     	
     	$collection = $hotel->getLocations();
+    	//$collection = $hotel->getMultiple();
     	$placesToVisitCollection= $billingObj->getLocations();
     	foreach($collection as $location){
     		$placesToVisitObj = new BillingPlacesToVisit();
@@ -1346,7 +1352,7 @@ class SiteManagementController extends Controller
     	$session = $request->getSession();
     	$view = $session->get('exportBillings');
     	header ( 'Content-Type: application/force-download' );
-    	header ( 'Content-disposition: attachment; filename=bookings.xls' );
+    	header ( 'Content-disposition: attachment; filename=billing.xls' );
     	//echo var_dump($view);
     	//exit();
     	return $view;
