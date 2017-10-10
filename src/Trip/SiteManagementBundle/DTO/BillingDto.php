@@ -73,6 +73,10 @@ class BillingDto
     /**
      * @var string
      */
+    private $carnumber;
+    /**
+     * @var string
+     */
     private $driverId;
     
 	 
@@ -336,5 +340,28 @@ class BillingDto
     public function getLocations()
     {
     	return $this->locations;
+    }
+    
+    /**
+     * Set carnumber
+     *
+     * @param $carnumber
+     * @return Billing
+     */
+    public function setCarnumber($carnumber)
+    {
+    	$this->carnumber= $carnumber;
+    	
+    	return $this;
+    }
+    
+    /**
+     * Get carnumber
+     *
+     * @return carnumber
+     */
+    public function getCarnumber()
+    {
+    	return $this->carnumber;
     }
 }

@@ -253,7 +253,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                                         </tr>
                          
                                                         <tr>
-                                                          <td><!-- <div class="helper">
+                                                          <td style="border-right: 1px solid #ddd"><!-- <div class="helper">
                                                            <ul class="list-unstyled">-->
                                                            {% for startPoint in package.startPoint %} 
                                                                 {{ locations[startPoint.name].name }} {% if loop.last is same as(false) %} / {% endif %}
@@ -261,7 +261,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                                           <!-- </ul>
                                                         </div>-->
                                                         </td>
-                                                          <td>
+                                                          <td style="border-right: 1px solid #ddd">
                                                            <div class="col-md-12 container package-visit-desc">
                                                            <!--<div class="helper">
                                                                <ul class="package-Destination">-->

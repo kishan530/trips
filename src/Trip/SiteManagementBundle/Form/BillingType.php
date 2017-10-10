@@ -123,12 +123,16 @@ class BillingType extends AbstractType
         		'required'    => true,
         		'empty_value'   => 'Driver',
         ))
-        
+        ->add('carnumber', 'text', array(
+        		
+        		'label' => 'Car Number',
+        		))
             ->add('diesel')
-            ->add('price', 'text', array(
-            				
-            				'label' => 'Total Price',
-            ))
+            //->add('price', 'text', array(
+            			
+            			//'label' => 'Total Price',
+            		
+           // ))
             ->add('advance',  'text', array(
             		
             		'label' => 'ADV',

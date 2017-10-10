@@ -343,12 +343,12 @@ you with the best price<i class="fa fa-quote-right" aria-hidden="true"></i></h3>
                    </div>
                             
                         {% endmacro %}
-                        <div id="package-list"
+							<div id="package-list"
                                                 data-prototype="{{ _self.information_prototype(form.multiple.vars.prototype)|e }}">
                             {% for j in form.multiple %}
                              {{ _self.information_prototype(j,loop.index) }}
                             {% endfor %}
-                        </div>
+							</div>
                     <a href="#" id="add-another-package">+ Add another Day</a>
                         
                     
