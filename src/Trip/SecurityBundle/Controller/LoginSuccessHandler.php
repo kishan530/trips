@@ -45,7 +45,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface, Auth
         elseif ($this->security->isGranted('ROLE_ADMIN'))
         {
 			
-            $response = new RedirectResponse($this->router->generate('trip_site_management_homepage'));
+            $response = new RedirectResponse($this->router->generate('trip_site_management_billing_list'));
         } 
         elseif ($this->security->isGranted('ROLE_USER'))
         {

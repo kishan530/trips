@@ -69,6 +69,10 @@ class BookingController extends Controller
     public function indexAction(){
     	//$mailService = $this->container->get( 'mail.services' );
     	//$mailService->mail('kishan.kish530@gmail.com','Just Trip:Booking Confirmation','this is test');
+		$security = $this->container->get ( 'security.context' );
+    	if ($security->isGranted ( 'ROLE_ADMIN' )){
+    			return $this->redirect ( $this->generateUrl ( "trip_site_management_billing_list" ) );
+    	}
     	return $this->getHome('TripSiteManagementBundle:Default:index.html.twig');
     }
     /**
@@ -797,13 +801,14 @@ class BookingController extends Controller
     {    
     	$request = $this->container->get ( 'request' );
     	$session = $request->getSession();
-    	$api = new Instamojo('85655d9228c3d547cc845cdb4d8fbb7f','90d771ae26098c1d76f69f76e518cdfb');
+    	//$api = new Instamojo('85655d9228c3d547cc845cdb4d8fbb7f','90d771ae26098c1d76f69f76e518cdfb');
+		$api = new Instamojo('448a0f2cc618bb5df30044662a2fc2d4','febeeeac04668b90469cda6487914b1d');
     	$redirect_url = $this->generateUrl('trip_booking_engine_success');
     	$host = $request->getHost();
     	$Instamojo =true;
     	$url = "";
     	if($Instamojo){
-    		try {
+    		//try {
     			
     			$response = $api->linkCreate(array(
     					'title'=>'Just Trip Services',
@@ -812,17 +817,26 @@ class BookingController extends Controller
     					'base_price'=>$pay,
     					'currency'=>'INR'
     			));
+				
+				
+				/* $response = $api->paymentRequestCreate(array(
+				"purpose" => "Just Trip Services",
+				"send_email" => false,
+				'redirect_url'=>'http://'.$host.$redirect_url,
+    			'amount'=>$pay,
+				));*/
+
     
     			$url =$response['url'];
     			$slug =$response['slug'];
     			$session->set('url',$url);
     			$session->set('slug',$slug);
     			//print_r($response);
-    		}
+    	/*	}
     		catch (\Exception $e) {
     			//print('Error: ' . $e->getMessage());
     			//exit();
-    		}
+    		}*/
     	}else {
     		$url ='http://'.$host.$redirect_url.'?status=success&payment_id=MOJOTEST12345';
     	}

@@ -837,6 +837,12 @@ class SiteManagementController extends Controller
     	));
     }
     public function billingListAction(Request $request){
+	
+		$security = $this->container->get ( 'security.context' );
+    	if (! $security->isGranted ( 'ROLE_SUPER_ADMIN' )) {
+    		if (! $security->isGranted ( 'ROLE_ADMIN' ))
+    			return $this->redirect ( $this->generateUrl ( "trip_security_sign_up" ) );
+    	}
     	$em = $this->getDoctrine()->getManager();
     	//$booking = $em->getRepository('TripBookingEngineBundle:Booking')->findOneByBookingId($id);
     	
@@ -1092,6 +1098,11 @@ class SiteManagementController extends Controller
     	));
     }
     public function addPackagePriceAction(Request $request){
+		$security = $this->container->get ( 'security.context' );
+    	if (! $security->isGranted ( 'ROLE_SUPER_ADMIN' )) {
+    		if (! $security->isGranted ( 'ROLE_ADMIN' ))
+    			return $this->redirect ( $this->generateUrl ( "trip_security_sign_up" ) );
+    	}
         $em = $this->getDoctrine()->getManager();
     	$packageprice = new PackagePrice();
     	$form   = $this->createAddPackagePriceForm($packageprice);
@@ -1283,6 +1294,11 @@ class SiteManagementController extends Controller
     	));
     }
     public function billingDetailsAction(Request $request){
+	$security = $this->container->get ( 'security.context' );
+    	if (! $security->isGranted ( 'ROLE_SUPER_ADMIN' )) {
+    		if (! $security->isGranted ( 'ROLE_ADMIN' ))
+    			return $this->redirect ( $this->generateUrl ( "trip_security_sign_up" ) );
+    	}
     	$em = $this->getDoctrine()->getManager();
     	$hotel = new BillingDto();
     	$form   = $this->createBillingForm($hotel);
@@ -1516,6 +1532,7 @@ class SiteManagementController extends Controller
      public function  viewPackageAction(Request $request,$url){
         $em = $this->getDoctrine()->getManager();
         $location = null;
+		$error = null;
         $package =$em->getRepository('TripSiteManagementBundle:Package')->findBy(array('packageUrl' => $url));
         if($package){
         	$package = $package[0];	       
@@ -1523,7 +1540,9 @@ class SiteManagementController extends Controller
 	        if($drop){
 	        $location =$em->getRepository('TripSiteManagementBundle:City')->find($drop->getName());
 	        }
-        }
+        }else{
+			$error = "Package not found";
+		}
         $locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
         $locations = $this->getLocationsByIndex($locations);
         //echo var_dump($package->getItinerary()->first());
@@ -1532,6 +1551,7 @@ class SiteManagementController extends Controller
         
         return $this->render('TripSiteManagementBundle:Default:viewPackage.html.twig',array(
     			'package' => $package,
+				'error'=>$error,
         		'location'=>$location,
         		'locations'=>$locations
                 

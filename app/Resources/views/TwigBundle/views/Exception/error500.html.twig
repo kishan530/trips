@@ -1,0 +1,45 @@
+
+<html>
+<head>
+
+ <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="16x16">	
+
+   <title>{% block title %}Cab, Hotels, Tour Packages across Pilgrim Places in India | Justtrip.in{% endblock %}</title>
+
+   <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}" />
+		<link rel="stylesheet" href="{{ asset('css/styles.css') }}" />
+        <link rel="stylesheet" href="{{ asset('css/font-awesome.css') }}" />
+      
+       <script src="{{ asset('js/modernizr.js') }}" defer="defer"></script>
+    </head>
+<body>
+	<div class="global-wrap">
+
+        <div class="full-page">
+            <div class="bg-holder full">
+                <div class="bg-mask"></div>
+                <div class="bg-blur underC-back"></div>
+                <div class="bg-holder-content full text-white">
+                    <a class="logo-holder" href="{{ path('trip_site_management_homepage') }}"  style="opacity:1">
+                         <img src="{{ asset('images/justtrip-logo.png') }}" alt="justtrip.in" title="Home" width="55%" height="50px"/>
+                    </a>
+                    <div class="full-center">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-6 col-md-offset-3">
+                                    <p class="text-hero">{{ status_code  }}</p>
+                                    <h1>Oops! Something went wrong.</h1>
+                                    <p>{{ status_text }}</p><a class="btn btn-white btn-ghost btn-lg mt5" href="{{ path('trip_site_management_homepage') }}"><i class="fa fa-long-arrow-left"></i> to Homepage</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+
+    </div>
+	
+</body>
+</html>
