@@ -144,4 +144,338 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 	padding-bottom:20px;
 }
 
+.bike-background {
+    background: #ffffff;
+    margin-bottom: 14px;
+    margin-top: -6px;
+    padding: 13px;
+    box-shadow: 0 5px 6px 0 rgba(201,201,201,.5);
+    /* -webkit-box-shadow: 0 5px 6px 0 rgba(201,201,201,.5); */
+    -moz-box-shadow: 0 5px 6px 0 rgba(201,201,201,.5);
+}
+.view-bike
+{
+	color: #fff;
+    background-color: #F34F4F;
+    font-size: 15px;
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 5px;
+    text-transform: capitalize;
+    font-family: calibri;
+    box-shadow: 0 5px 6px 0 rgba(201,201,201,.5);
+    /* -webkit-box-shadow: 0 5px 6px 0 rgba(201,201,201,.5); */
+    -moz-box-shadow: 0 5px 6px 0 rgba(201,201,201,.5);
+}
+.dec
+{
+	padding: 16px;
+	box-shadow: 0 5px 6px 0 rgba(201,201,201,.5);
+    /* -webkit-box-shadow: 0 5px 6px 0 rgba(201,201,201,.5); */
+    -moz-box-shadow: 0 5px 6px 0 rgba(201,201,201,.5);
+    min-height: 340px;
+}
+h3.details {
+    font-family: calibri;
+    font-size: 21px;
+    color: #555;
+}
+.brand-color
+{
+	padding: 16px;
+	box-shadow: 0 5px 6px 0 rgba(201,201,201,.5);
+    /* -webkit-box-shadow: 0 5px 6px 0 rgba(201,201,201,.5); */
+    -moz-box-shadow: 0 5px 6px 0 rgba(201,201,201,.5);
+    min-height: 340px;
+}
+.bike-book {
+    /*margin-top: -11px;*/
+}
+h2.sub-title1 {
+    color: #6d6d6d;
+    font-size: 18px;
+    font-weight: 400;
+    font-family: calibri;
+    margin: 0 0 5px;
+    text-align: center;
+}
+h3.price-book {
+    font-family: calibri;
+    font-size: 29px;
+    text-align: center;
+}
+.bike-price-book1 {
+    /*bottom: 600px;*/
+    position: relative;
+   /* right: -70px;*/
+}
+.bike-price-book2 {
+    /*bottom: 550px;*/
+    position: relative;
+}
+.sub-book1 {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    height: 100%;
+        margin: 80px 0 134px 0px;
+    
+}
+.sub-book2 {
+    background-color: rgb(255, 255, 255);
+    padding: 20px;
+    
+}
+.sub-book3 {
+    /*background-color: rgb(255, 255, 255);
+    padding: 10px;*/
+    font-size: 18px;
+    font-family: calibri;
+    
+}
+section.space {
+    position: relative;
+   /* margin-bottom: -600px;*/
+    /* bottom: 50px; */
+    display: block;
+}
+.dec-icons {
+    font-size: 30px;
+    text-align: center;
+    color:#F34F4F;
+}
+.dec-icons-list {
+    text-align: center;
+}
+.details-tilte
+{
+	margin-top: 10px;
+    color: #787878;
+    font-size: 21px;
+    /* font-weight: bold; */
+    font-family: calibri;
+}
+.details-p
+{
+	color: #787878;
+    font-size: 14px;
+}
+
+
+
+
+h3.hours-list {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 21px;
+    font-family: calibri;
+}
+span#demo {
+    color: #F34F4F;
+}
+span#calprice {
+    color: #F34F4F;
+    font-size: 31px;
+}
+.span-numbers
+{
+	color: #788787;
+    font-size: 13px;
+    font-family: calibri;
+    padding-right: 4px;
+    margin-left: 13px;
+}
+.span-line
+{
+	color: #788787;
+    font-size: 13px;
+    font-family: calibri;
+    padding-right: 8px;
+    margin-left: 13px;
+}
+p.brandtype {
+    color: #adadad;
+    font-size: 17px;
+    font-family: calibri;
+}
+filter-bikes
+{
+	
+}
+@media (max-width:768px)
+{
+	.bike-price-book2 {
+    bottom: 0px;
+    position: relative;
+    text-align:center;
+	}
+	.bike-price-book1 {
+    bottom: 0px;
+    position: relative;
+    right: 0px;
+	}
+	section.space {
+    position: relative;
+    margin-bottom: -500px;
+    /* bottom: 50px; */
+    display: none;
+}
+}
+@media (max-width:1024px)
+{
+	.bike-price-book2 {
+    bottom: 0px;
+    position: relative;
+    text-align:center;
+	}
+	.bike-price-book1 {
+    bottom: 0px;
+    position: relative;
+    right: 0px;
+	}
+	section.space {
+    position: relative;
+    margin-bottom: -500px;
+    /* bottom: 50px; */
+    display: none;
+}
+}
+.package-booknow {
+    background: #F34F4F;
+    text-decoration: none;
+    color: #fff;
+    font-size: 18px;
+    font-family: calibri;
+    padding: 4px;
+    width: 100%;
+    border: none;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 10px 10px rgba(0,0,0,.05);
+    box-shadow: 0 10px 10px rgba(0,0,0,.05);
+    margin-top: 16px;
+}
+.booking-price-details-border {
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(204,204,204,.5);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(204,204,204,.5);
+    box-shadow: 0px 0px 10px 0px rgba(204,204,204);
+        padding-bottom: 40px;
+}
+.package-price-total {
+    border: none;
+    color: #9b9b9b;
+    font-size: 18px;
+    font-family: calibri;
+}
+.fare-margin {
+    margin-top: 15px;
+}
+p.package-total {
+    color: #eb2026;
+    font-family: calibri;
+    font-size: 36px;
+    margin-top: 15px;
+    font-weight: normal;
+}
+.make-margin-border {
+    /*margin: 10px 0 15px !important;*/
+    border:none;
+}
+.contact-border
+{
+	border-bottom:1px solid #e0e0e0;
+	margin-bottom:10px;
+}
+label.control-label.required {
+    /*color: #0055b7;
+    font-family: calibri;*/
+}
+.contact-border-space {
+    margin-top: 6px;
+}
+.agree-space {
+    margin-top: 30px;
+}
+.label-color
+{
+	color: #0055b7;
+}
+.bikes-form-font
+{
+	font-size:13px;
+}
+.datepicker > .datepicker_header > .icon-close {
+     padding: 0px;
+}
+.black
+{
+	color:#000;
+}
+span.black1 {
+    font-size: 14px;
+    font-family: calibri;
+    color: #adadad;
+}
+.bike-grid-title
+{
+	text-align:center;color:#000;font-size: 16px;
+}
+.icon-font
+{
+	font-size: 24px;
+	color: #adadad;
+}
+.search-bike
+{
+	color: #fff;
+    background-color: #F34F4F;
+    font-size: 17px;
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 10px;
+    padding:10px;
+    text-transform: capitalize;
+    font-family: calibri;
+    box-shadow: 0 5px 6px 0 rgba(201,201,201,.5);
+    /* -webkit-box-shadow: 0 5px 6px 0 rgba(201,201,201,.5); */
+    -moz-box-shadow: 0 5px 6px 0 rgba(201,201,201,.5);
+}
+.search-bikes-onrent
+{
+	color: #fff;
+    background-color: #F34F4F;
+    font-size: 17px;
+    width: 100%;
+    margin: 0 auto;
+   margin-top: 23px;
+    padding: 8px;
+    text-transform: capitalize;
+    font-family: calibri;
+    box-shadow: 0 5px 6px 0 rgba(201,201,201,.5);
+    /* -webkit-box-shadow: 0 5px 6px 0 rgba(201,201,201,.5); */
+    -moz-box-shadow: 0 5px 6px 0 rgba(201,201,201,.5);
+}
+.viewbike_h4
+{
+	    text-align: center;
+    color: #0694b6;
+    margin-top: 10px;
+    font-family: calibri;
+    font-size: 20px;
+}
+.viewbike_h3 {
+    text-align: center;
+    color: #0694b6;
+    margin-top: 10px;
+    font-family: calibri;
+    font-size: 22px;
+    text-transform: uppercase;
+}
+h2.sub-title-bikesonrent {
+    color: #6d6d6d;
+    font-size: 18px;
+    font-weight: 400;
+    font-family: calibri;
+    margin: 0 0 5px;
+    /*text-align: center;*/
+}
 /* End */
+

@@ -1,0 +1,247 @@
+{% extends 'page.html.twig' %}
+{% block stylesheets %}
+<link href="{{ asset('css/jquery.timepicker.css') }}" rel="stylesheet" media="screen">
+{% endblock %}
+
+{% block meta %}
+    <meta name="keywords" content="{{ bike.metaKeywords }}">
+    <meta name="description" content="{{ bike.metaDescription }}">  
+{% endblock %}
+{% block title %} {{ bike.metaTitle }} {% endblock %}
+{% block javascripts %}
+<script src="{{ asset('js/jquery.timepicker.min.js') }}"></script>
+<script>
+    
+
+$('.preferTime').timepicker({ 'scrollDefault': 'now' });
+    
+         $('.adults').click(function(e){		
+			e.preventDefault(); //STOP default action 
+			 var id = $(this).attr('id');
+			 var value = parseInt($(this).attr('value'));
+             var numAdult = $(this).siblings("input[name=numAdult]");
+			 var adults =parseInt(numAdult.val());
+			 if (isNaN(adults)) { 
+				 adults= 0
+	            } 
+			 if(id=='decrement'){
+				 adults-=1;
+				 if(adults>=value) numAdult.val(adults); else exit();
+			  }else{
+				adults+=1;
+			    if(adults<=20)  numAdult.val(adults); else exit();
+				}	
+	    });
+    
+         $('.vehicle-icon').click(function(e){		
+			e.preventDefault(); //STOP default action 
+			 var id = $(this).attr('id');
+			 var price = $(this).attr('value');
+             var package = parseInt($(this).attr('title'));
+             $('.vehicle'+package).removeClass('active');
+             $(this).addClass('active');
+             $('#vehicleIndex'+package).val(id);
+             $('#price'+package).html(price);
+
+
+	       });
+        
+</script>
+<script type="text/javascript">
+		$(function(){
+			$('#datetime2').appendDtpicker();
+		});
+	</script>
+	<script type="text/javascript">
+		$(function(){
+			$('#datetime3').appendDtpicker();
+		});
+	</script>
+{% endblock %}
+
+{% block breadcrumb %}
+					<div class="c1 breadcrumb text-left">
+                        <div>
+                        	<span class="glyphicon glyphicon-home" style="padding:5px;"></span><a href="#">Home</a>
+                        	<span><span class="glyphicon glyphicon-chevron-right" style="padding:5px;"></span>Bike</span>
+                        	<span><span class="glyphicon glyphicon-chevron-right" style="padding:5px;"></span>{{ bike.title }}</span>
+                        
+                        	
+                        </div>
+                    </div>
+                    
+{% endblock %}
+
+{% block body %}
+<section class="section clearfix" style="padding:30px 0px 40px 0px;">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4 brand-color"> 
+			<h3 class="viewbike_h3">{{ bike.title }}</h3>
+			{% set url= bike.locationurl %}
+			
+			<hr>
+				<div class="col-md-12">
+                             <h2 class="sub-title1">Pick a preferred Hours</h2>
+                             {{ form_start(form) }}
+                             {{ form_errors(form) }}
+                             {{ form_errors(form.date) }}
+                             {{ form_errors(form.returndate) }}
+    
+                             	{{ form_label(form.date) }} 
+                                {{ form_widget(form.date, {'id': 'datetime2'}) }}
+                               
+                                {{ form_label(form.returndate) }} 
+                                {{ form_widget(form.returndate, {'id': 'datetime3'}) }}
+                                <input id="vehicleIndex{{ bike.locationurl }}" type="hidden" name="url" value="{{ url }}">
+                                {{ form_label(form.submit) }} 
+                                {{ form_widget(form.submit, { 'type': 'submit' }) }}
+                                
+                             {{ form_end(form) }}
+                  </div>    
+                  
+                  <div class="col-md-6">  
+                  <hr>
+                  <h4 class="viewbike_h4"><i class="fa fa-inr" aria-hidden="true"></i> {{ bike.statingPrice }} / Hour</h4>
+                  </div>
+                  <div class="col-md-6"> 
+                  <hr> 
+                  <h4 class="viewbike_h4"><i class="fa fa-inr" aria-hidden="true"></i> {{ bike.dayrent }} / Day</h4>
+                  </div>       
+                         
+			</div>
+			<div class="col-md-7">
+				<div class="bike-book">
+                    <img src="{{asset('images/bikes/'~bike.imgPath) }}" style="width: 100%;">
+                </div>
+			</div>
+		</div>
+		<hr>
+	</div>
+</section>
+<section class="space"></section>
+<section class="section clearfix">
+        <div class="container">
+        <div class="hotel-title">
+                <h3>{{ bike.title }}</h3>
+                <hr class="left">
+            </div>
+        	<div class="row">
+        		<div class="col-md-3">
+        			<div class="dec">
+        			<h3 class="details">Description</h3>
+        			<hr>
+        			<p>Justtrip.in is an aggregator of taxis and hotel accommodation service provider across pilgrim 
+        			centers over India. We work with various taxi operators and hotels/guest houses and enable them 
+        			with technology to ensure customers get an easily accessible.</p>
+        			</div>
+        			
+        		</div>
+        		<div class="col-md-3">
+        			<div class="brand-color">
+        			<h3 class="details">Brand & Color</h3>
+        			<hr>
+        			<p class="brandtype">Brand : </p>
+        			<p class="brandtype">Color : </p>
+        			</div>
+        			
+        		</div>
+        		<div class="col-md-3">
+        				<div class="dec">
+        			<h3 class="details">Bike Metrics</h3>
+        			<hr>
+        			<p class="brandtype">Displacement : </p>
+        			<p class="brandtype">Max Torque : </p>
+        			<p class="brandtype">Max Power : </p>
+        			</div>
+        		</div>
+        		<div class="col-md-3">
+        		<div class="brand-color">
+        			<h3 class="details">Features & Specs</h3>
+        			<hr>
+        			<p class="brandtype">Fuel Type : </p>
+        			<p class="brandtype">No. of Gears : </p>
+        			<p class="brandtype">Cooling System : </p>
+        			</div>
+        		</div>
+        	</div>
+        	<hr>
+        </div>
+</section>
+<section class="section clearfix">
+	<div class="container">
+		<div class="row">
+			<div class="hotel-title">
+                <h3>What we Do</h3>
+                <hr class="left">
+            </div>
+			<div class="col-md-3">
+				<div class="dec-icons-list">
+					<i class="fa fa-cogs dec-icons" aria-hidden="true"></i>
+					<h3 class="details-tilte">Free maintenance</h3>
+					<p class="details-p">Justtrip.in is an aggregator of taxis and hotel accommodation service provider across pilgrim centers over India.</p>
+				</div>
+        	</div>
+        	<div class="col-md-3">
+        		<div class="dec-icons-list">
+					<i class="glyphicon glyphicon-trash dec-icons"></i>
+					<h3 class="details-tilte">Cancel anytime</h3>
+					<p class="details-p">Justtrip.in is an aggregator of taxis and hotel accommodation service provider across pilgrim centers over India.</p>
+				</div>
+        	</div>
+        	<div class="col-md-3">
+        			<div class="dec-icons-list">
+					<i class="fa fa-recycle dec-icons" aria-hidden="true"></i>
+					<h3 class="details-tilte">Free relocation</h3>
+					<p class="details-p">Justtrip.in is an aggregator of taxis and hotel accommodation service provider across pilgrim centers over India.</p>
+				</div>
+        	</div>
+        	<div class="col-md-3">
+        		<div class="dec-icons-list">
+					<i class="glyphicon glyphicon-time dec-icons"></i>
+					<h3 class="details-tilte">As good as new</h3>
+					<p class="details-p">Justtrip.in is an aggregator of taxis and hotel accommodation service provider across pilgrim centers over India.</p>
+				</div>
+        	</div>
+		</div>
+		<hr>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="hotel-title">
+                <h3>What we don't have to Promise</h3>
+                <hr class="left">
+            </div>
+			<div class="col-md-3">
+				<div class="dec-icons-list">
+					<i class="glyphicon glyphicon-comment dec-icons"></i>
+					<h3 class="details-tilte">Quick responses</h3>
+					<p class="details-p">Justtrip.in is an aggregator of taxis and hotel accommodation service provider across pilgrim centers over India.</p>
+				</div>
+        	</div>
+        	<div class="col-md-3">
+        		<div class="dec-icons-list">
+					<i class="fa fa-inr dec-icons" aria-hidden="true"></i>
+					<h3 class="details-tilte">100% refund</h3>
+					<p class="details-p">Justtrip.in is an aggregator of taxis and hotel accommodation service provider across pilgrim centers over India.</p>
+				</div>
+        	</div>
+        	<div class="col-md-3">
+        			<div class="dec-icons-list">
+					<i class="glyphicon glyphicon-credit-card dec-icons"></i>
+					<h3 class="details-tilte">Use first, Pay after</h3>
+					<p class="details-p">Justtrip.in is an aggregator of taxis and hotel accommodation service provider across pilgrim centers over India.</p>
+				</div>
+        	</div>
+        	<div class="col-md-3">
+        		<div class="dec-icons-list">
+					<i class="fa fa-truck dec-icons" aria-hidden="true"></i>
+					<h3 class="details-tilte">Free delivery</h3>
+					<p class="details-p">Justtrip.in is an aggregator of taxis and hotel accommodation service provider across pilgrim centers over India.</p>
+				</div>
+        	</div>
+		</div>
+		<hr>
+	</div>
+</section>
+{% endblock %}
