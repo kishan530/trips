@@ -1,0 +1,34 @@
+trip_rest_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: TripRestBundle:Default:index }
+
+trip_rest_getlocation:
+    path:     /api/get-location
+    defaults: { _controller: TripRestBundle:Rest:index }
+
+trip_rest_getsearch:
+    path:     /api/get-search
+    defaults: { _controller: TripRestBundle:Rest:search }
+
+trip_rest_getbooking:
+    path:     /api/get-bookingsubmit
+    defaults: { _controller: TripRestBundle:Rest:bookSubmit }
+
+trip_rest_instamojo_getbooking:
+    path:     /api/get-bookinginstamojosubmit
+    defaults: { _controller: TripRestBundle:Rest:bookSubmitInstamojo }
+    
+trip_rest_instamojo_payment:
+    path:     /api/get-instamojo
+    defaults: { _controller: TripRestBundle:Rest:instamojo }
+trip_rest_payu_payment_trips:
+    path:     /api/pay/{bookingId}/online/
+    defaults: { _controller: TripRestBundle:Rest:payonline }
+
+trip_rest_booking_engine_success:
+    path:     /api/customerpaymentconfirmation
+    defaults: { _controller: TripRestBundle:Rest:paymentsucess }
+    
+trip_rest_getpaymentupdate:
+    path:     /api/get-paymentupdate
+    defaults: { _controller: TripRestBundle:Rest:paymentcomplete }

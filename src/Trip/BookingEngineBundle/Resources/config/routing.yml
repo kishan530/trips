@@ -28,6 +28,10 @@ trip_booking_engine_success:
 trip_booking_engine_confirm:
     path:     /confirm
     defaults: { _controller: TripBookingEngineBundle:Booking:confirm }
+trip_booking_engine_payment_payu:
+    path:     /payu
+    defaults: { _controller: TripBookingEngineBundle:Booking:payu }
+
 trip_booking_engine_apply_coupon:
     path:     /applyCoupon
     defaults: { _controller: TripBookingEngineBundle:Booking:applyCoupon }
@@ -49,4 +53,11 @@ trip_booking_engine_confirm_custom_package:
 trip_booking_engine_hotel_booking:
     path:     /hotel-booking
     defaults: { _controller: TripBookingEngineBundle:Booking:hotelBooking }
+remove_trailing_slash:
+    path: /{url}
+    defaults: { _controller: TripBookingEngineBundle:Booking:removeTrailingSlash }
+    requirements:
+        url: .*/$
+    methods: [GET]
+
 

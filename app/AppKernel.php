@@ -22,7 +22,7 @@ class AppKernel extends Kernel
             new Trip\BookingEngineBundle\TripBookingEngineBundle(),
             new Trip\SiteManagementBundle\TripSiteManagementBundle(),
             new Trip\SecurityBundle\TripSecurityBundle(),
-            
+            new Trip\RestBundle\TripRestBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

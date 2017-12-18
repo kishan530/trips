@@ -1,0 +1,58 @@
+C:\wamp64\www\trips>php app/console generate:bundle --namespace=TestingBundle
+
+
+  Welcome to the Symfony2 bundle generator
+
+
+
+In your code, a bundle is often referenced by its name. It can be the
+concatenation of all namespace parts but it's really up to you to come
+up with a unique name (a good practice is to start with the vendor name).
+Based on the namespace, we suggest TestingBundle.
+
+Bundle name [TestingBundle]:
+
+The bundle can be generated anywhere. The suggested default directory uses
+the standard conventions.
+
+Target directory [C:\wamp64\www\trips/src]: src/Trip/
+
+Determine the format to use for the generated configuration.
+
+Configuration format (yml, xml, php, or annotation): yml
+
+To help you get started faster, the command can generate some
+code snippets for you.
+
+Do you want to generate the whole directory structure [no]?
+
+
+  Summary before generation
+
+
+You are going to generate a "TestingBundle\TestingBundle" bundle
+in "src/Trip/" using the "yml" format.
+
+Do you confirm generation [yes]?
+
+
+  Bundle generation
+
+
+Generating the bundle code: OK
+Checking that the bundle is autoloaded: FAILED
+Confirm automatic update of your Kernel [yes]? y
+Enabling the bundle inside the Kernel: OK
+Confirm automatic update of the Routing [yes]? y
+Importing the bundle routing resource: OK
+
+
+  The command was not able to configure everything automatically.
+  You must do the following changes manually.
+
+
+- Edit the composer.json file and register the bundle
+  namespace in the "autoload" section:
+
+
+C:\wamp64\www\trips>

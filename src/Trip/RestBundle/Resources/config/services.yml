@@ -1,0 +1,4 @@
+services:
+#    trip_rest.example:
+#        class: Trip\RestBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]

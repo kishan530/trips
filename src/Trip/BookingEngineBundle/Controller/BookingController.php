@@ -200,8 +200,9 @@ class BookingController extends Controller
                     $resultSet = $this->getResult($goingTo,$goingFrom,$noDays,$noData);					
 					}
             }
-            //echo var_dump($noDays);
-           // exit();
+           // echo var_dump($searchFilter);
+            //echo var_dump($resultSet);
+           //exit();
             $errors = array();
             if(($tripType=="roundtrip")&&($returnDate<$date)){
                 $resultSet = array();
@@ -621,9 +622,19 @@ class BookingController extends Controller
     		$em->flush();
             $session->set('bookingObj',$booking);
              $session->set('amountToPay',$amountToPay);
-            $paymentLink = $this->getPaymentLink($amountToPay);
+            $paymentLink = $this->getPaymentLink($request,$amountToPay,$customer,$booking);
         //$paymentLink = "https://www.instamojo.com/Waseemsyed/tirupati-caars-services-cb8a4/";
-        $paymentLink.="?data_name=".$customer->getName()."&data_email=".$customer->getEmail()."&data_phone=".$customer->getMobile()."&embed=form";
+       // $paymentLink.="?data_name=".$customer->getName()."&data_email=".$customer->getEmail()."&data_phone=".$customer->getMobile()."&embed=form";
+           //  $paymentLink = '';
+            $payuLink = $this->generateUrl ( 'trip_booking_engine_payment_payu' );
+            
+            //var_dump($customer);
+            //var_dump($booking);
+            //var_dump($selectedService);
+            //var_dump($searchFilter);
+            //var_dump($paymentLink);
+                       
+           // exit();
         return $this->render('TripBookingEngineBundle:Default:payment.html.twig', array(
                 'customer'   => $customer,
              'booking'   => $booking,
@@ -632,6 +643,7 @@ class BookingController extends Controller
              'filter'=>$searchFilter,
             'discount'=>$discount,
             'paymentLink'   => $paymentLink,
+        		'payuLink' => $payuLink,
 			'locations' => $locations,
             ));
         }
@@ -709,7 +721,7 @@ class BookingController extends Controller
         
         $customer = $session->get('customer');
         
-        $paymentLink = $this->getPaymentLink($pay);
+        $paymentLink = $this->getPaymentLink($request,$amountToPay,$customer,$booking);
         //$paymentLink = "";
         return $this->render('TripBookingEngineBundle:Default:payment.html.twig', array(
                 'customer'   => $customer,
@@ -793,57 +805,181 @@ class BookingController extends Controller
         
     }
     
+    
+    
+    public function payuAction(Request $request){
+    	$session = $request->getSession ();
+    	$customer = $session->get ( 'customer');
+    	$booking = $session->get ( 'booking' );
+    	$redirectUrl = $this->generateUrl( 'trip_booking_engine_confirm' );
+    	//$total = $booking->getFinalAmount();
+    	 
+    	$finalPrice =$booking->getFinalPrice();
+    	$bookingId = $booking->getBookingId();
+    
+    	 
+    	$data = $this->getData($request,$finalPrice,$bookingId,$customer,$redirectUrl);
+    	$info = $this->curlCall($data);
+    	 
+    	return $this->redirect($info['redirect_url']);
+    }
+    
         /**
      * payment
      * @param Request $request
      */
-   private function getPaymentLink($pay)
-    {    
-    	$request = $this->container->get ( 'request' );
-    	$session = $request->getSession();
-    	//$api = new Instamojo('85655d9228c3d547cc845cdb4d8fbb7f','90d771ae26098c1d76f69f76e518cdfb');
-		$api = new Instamojo('448a0f2cc618bb5df30044662a2fc2d4','febeeeac04668b90469cda6487914b1d');
-    	$redirect_url = $this->generateUrl('trip_booking_engine_success');
-    	$host = $request->getHost();
-    	$Instamojo =true;
-    	$url = "";
-    	if($Instamojo){
-    		//try {
-    			
-    			$response = $api->linkCreate(array(
-    					'title'=>'Just Trip Services',
-    					'description'=>'If you have any payment related issue please contact us',    					
-    					'redirect_url'=>'http://'.$host.$redirect_url,
-    					'base_price'=>$pay,
-    					'currency'=>'INR'
-    			));
-				
-				
-				/* $response = $api->paymentRequestCreate(array(
-				"purpose" => "Just Trip Services",
-				"send_email" => false,
-				'redirect_url'=>'http://'.$host.$redirect_url,
-    			'amount'=>$pay,
-				));*/
 
+    public function getPaymentLink($request,$amountToPay,$customer,$booking){
     
-    			$url =$response['url'];
-    			$slug =$response['slug'];
-    			$session->set('url',$url);
-    			$session->set('slug',$slug);
-    			//print_r($response);
-    	/*	}
-    		catch (\Exception $e) {
-    			//print('Error: ' . $e->getMessage());
-    			//exit();
-    		}*/
-    	}else {
-    		$url ='http://'.$host.$redirect_url.'?status=success&payment_id=MOJOTEST12345';
-    	}
+    	$session = $request->getSession ();
     
-    	return $url;
+    	$bookingOld = $session->get('booking');
+    
+    
+    
+    	$redirectUrl = $this->generateUrl ( 'trip_booking_engine_success' );
+    	$bookingId = $booking->getBookingId();
+    
+    	//echo var_dump($redirectUrl);
+    	//exit();
+    
+    
+    	$data = $this->getData($request,$amountToPay,$bookingId,$customer,$redirectUrl);
+    	//echo var_dump($data);
+    	//exit();
+    
+    	$info = $this->curlCall($data);
+    
+    	 
+    	 
+    	 
+    	return  $data;
+    	 
+    	 
+    	 
+    	$info['redirect_url']='https://test.payu.in/_payment';
+    	 
+    	return $this->redirect($info['redirect_url']);
+    	 
+    	//return $info['redirect_url'];
+    }
+    
+    
+    private function getData($request,$finalPrice,$bookingId,$customer,$redirectUrl){
+    	// Merchant key here as provided by Payu
+    	//$MERCHANT_KEY = "rjQUPktU";
+    	$MERCHANT_KEY = "ze3IGP8w";
+    	
+    
+    	//$MERCHANT_KEY = "OwPbxU2k";
+    	//$SALT = "aa70fUA5Hh";
+    	// Merchant Salt as provided by Payu
+    
+    	//$SALT = "e5iIg1jwi8";
+    	$SALT = "OAAknA88Xf";
+    
+    	// End point - change to https://secure.payu.in for LIVE mode
+    	$PAYU_BASE_URL = "https://secure.payu.in";
+    
+    	//testing Mode
+    	//$PAYU_BASE_URL = "https://test.payu.in";
+    
+    	$action = $PAYU_BASE_URL . '/_payment';
+    	//$txnid = substr(hash('sha256', mt_rand() . microtime()), 0, 20);
+    	$txnid = 'PAYU'.$bookingId;
+    	$mobile = $customer->getMobile ();
+    	$name = $customer->getName ();
+    	$email = $customer->getEmail ();
+    	$host = $request->getHost ();
+    
+    	$sUrl = 'http://' . $host . $redirectUrl.'?payment_id='.$txnid.'&status=success';
+    	$fUrl = 'http://' . $host . $redirectUrl.'?status=fail';
+    
+    
+    	$data = array();
+    	$data['key']= $MERCHANT_KEY;
+    	$data['txnid']= $txnid;
+    	$data['amount']= $finalPrice;
+    	$data['firstname']= $name;
+    	$data['email']= $email;
+    	$data['phone']= $mobile;
+    	$data['productinfo']= 'SterlingSuit services';
+    	$data['surl']= $sUrl;
+    	$data['furl']= $fUrl;
+    	$data['service_provider']= 'payu_paisa';
+    	$hash = $this->getHash($data,$SALT);
+    	$data['hash']= $hash;
+    	$data['action']= $action;
+    
+    
+    	return $data;
+    
     
     }
+    
+    public function curlCall($data){
+    	$headers = array("application/x-www-form-urlencoded");
+    	$url = $data['action'];
+    	$postData = http_build_query($data);
+    
+    	$curl = curl_init($data['action']);
+    
+    	curl_setopt($curl, CURLOPT_POSTFIELDS, $postData);
+    	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    	curl_setopt($curl, CURLOPT_POST, true);
+    	curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+    	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+    	curl_exec($curl);
+    	$info = curl_getinfo($curl);
+    
+    	if($errno = curl_errno($curl)) {
+    		$error_message = curl_strerror($errno);
+    		echo "cURL error ({$errno}):\n {$error_message}";
+    	}
+    
+    
+    	$errno = curl_errno($curl);
+    	//echo var_dump($errno);
+    	//echo var_dump(curl_strerror($errno));
+    
+    	//echo var_dump($info);
+    	//exit();
+    
+    	return $info;
+    }
+    private function getHash($data,$SALT){
+    	$hashSequence = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10";
+    
+    	$hashVarsSeq = explode('|', $hashSequence);
+    	$hash_string = '';
+    	foreach($hashVarsSeq as $hash_var) {
+    		$hash_string .= isset($data[$hash_var]) ? $data[$hash_var] : '';
+    		$hash_string .= '|';
+    	}
+    
+    	$hash_string .= $SALT;
+    
+    
+    	$hash = strtolower(hash('sha512', $hash_string));
+    	return $hash;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     private function createCustomPackageForm(CustomerDto $customer){
         $bookingService = $this->container->get( 'booking.services' );
@@ -1291,7 +1427,16 @@ class BookingController extends Controller
      	//return $this->render('TripBookingEngineBundle:Default:billingAccounts.html.twig');
      //}
      
+     public function removeTrailingSlashAction(Request $request)
+     {
+     	$pathInfo = $request->getPathInfo();
+     	$requestUri = $request->getRequestUri();
      
+     	$url = str_replace($pathInfo, rtrim($pathInfo, ' /'), $requestUri);
+     
+     	return $this->redirect($url, 301);
+     }
+      
      
 	//**************End************//
     
