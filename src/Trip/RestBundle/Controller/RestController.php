@@ -910,13 +910,13 @@ class RestController extends Controller
     		
     			//$session = $request->getSession();
     			header("Access-Control-Allow-Origin: *");
-    			$session = $request->getSession();
+    			//$session = $request->getSession();
     			$name = $request->get('name');
     			$email = $request->get('email');
     			$mobileno = $request->get('mobileno');
     			
     			$paymentId = $request->get('payment_id');
-    			$bookingId = $request->get('booking_id');
+    			$bookingId = $request->get('bookingId');
     			//var_dump($bookingId);
     			//exit();
     		//$security = $this->container->get ( 'security.context' );
@@ -947,11 +947,11 @@ class RestController extends Controller
 //     		$paymentList['mobileno']=$mobileno;
 //     		$paymentList['imgPath']=$imgPath;
 //     		$paymentList['finalPrice']=$finalPrice;
-    		$paymentList['bookingId']=$bookingId;
+    		$payment['bookingId']=$bookingId; 
     	
     	$data['success']=true;
     	$extras['msg']='';
-    	$extras['payment'] = $paymentList;
+    	$extras['payment'] = $payment;
     	$data['extras']=$extras;
     	return new Response (json_encode($data));
     	
