@@ -68,26 +68,30 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
         {#}<img src="{{asset('images/bikes/s2.jpg') }}" style="width: 100%;">{#}
         <div class="container bike-price-book1">
        		<div class="row">
-       			<div class="col-md-2">
+       			<div class="col-md-1">
        			</div>
        			
-       			<div class="col-md-8 sub-book1">
+       			<div class="col-md-10 sub-book1">
        					<div>
                              <h2 class="sub-title-bikesonrent">Want To Hire A Bike On Rent</h2>
                              {{ form_start(form) }}
                              {{ form_errors(form) }}
                              {{ form_errors(form.date) }}
                              {{ form_errors(form.returndate) }}
-                             	<div class="col-md-4 bikes-form-font">
+								<div class="col-md-3 bikes-form-font">
+                             	{{ form_label(form.location) }} 
+                                {{ form_widget(form.location) }}
+                                </div>
+                             	<div class="col-md-3 bikes-form-font">
                              	{{ form_label(form.date) }} 
                                 {{ form_widget(form.date, {'id': 'datetime2'}) }}
                                 </div>
                                 
-                                <div class="col-md-4 bikes-form-font">
+                                <div class="col-md-3 bikes-form-font">
                                 {{ form_label(form.returndate) }} 
                                 {{ form_widget(form.returndate, {'id': 'datetime3'}) }}
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                 {{ form_label(form.submit) }} 
                                 {{ form_widget(form.submit) }}
                                 </div>
@@ -103,7 +107,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                              <button type="submit" class="btn aligncenter view-bike">Book Now</button>
                          </div>{#}
        			</div>
-       			<div class="col-md-2">
+       			<div class="col-md-1">
        			</div>
            	</div> 
            </div>  

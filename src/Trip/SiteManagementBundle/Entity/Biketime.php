@@ -52,6 +52,12 @@ class Biketime
      * @ORM\Column(name="location_url", type="string", length=100)
      */
     private $locationUrl;
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="location", type="string", length=255)
+     */
+    private $location;
     
 	/**
 	 *
@@ -161,6 +167,24 @@ class Biketime
 	 */
 	public function setLocationUrl($locationUrl) {
 		$this->locationUrl = $locationUrl;
+		return $this;
+	}
+	
+	/**
+	 *
+	 * @return the string
+	 */
+	public function getLocation() {
+		return $this->location;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$location
+	 */
+	public function setLocation($location) {
+		$this->location = $location;
 		return $this;
 	}
 	

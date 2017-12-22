@@ -1,0 +1,54 @@
+{% extends 'TripBookingEngineBundle:Default:bookingBike.html.twig' %}
+
+
+{% block breadcrumb %}
+                    <ul class="c1 breadcrumb text-left">
+                        <li><a href="#">Home</a></li>
+                        <li>Booking</li>
+                        <li>Review</li>
+                    </ul>
+                    <h3></h3>
+{% endblock %}
+
+{% block form %}
+<div class="row">
+<div class="hotel-title">
+                <h5 class="classic-title"><span>{% trans %}Login{% endtrans %}</span></h5>
+            </div>
+</div>
+<div class="row">
+	<div class="col-lg-6">{{ render(controller('FOSUserBundle:Security:login')) }}</div>
+	<div class="col-lg-6">
+	<div class="row text-center make-margin"><label>OR</label></div>
+		{{ form_start(form) }}
+		{{ form_errors(form, { 'global_errors': true }) }}
+	
+		<div class="row booking-price-details">
+		<div class="row make-margin">
+	                <div class="col-md-12 col-sm-12 col-xs-12">
+	                    {{ form_widget(form.email,{'attr':{'placeholder':'Email'}}) }}
+	                </div>
+	     </div>
+	    <div class="row make-margin">
+	                <div class="col-md-12 col-sm-12 col-xs-12">
+	                    {{ form_widget(form.mobile,{'attr':{'placeholder':'Mobile'}}) }}
+	                </div>
+	      </div>
+	    </div>
+	    <div class="row booking-price-details">       
+	            
+	                <input type="hidden" name="selected" value="{{ selected }}" />
+	                <button type="submit" class="btn btn-primary btn-block" style="padding: 9px;">Continue as Guest</button>
+	            
+	            
+	     </div>
+	     {{ form_end(form) }}<!-- end form -->
+	
+	</div>
+</div>
+            
+         
+
+        
+    
+{% endblock %}

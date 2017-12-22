@@ -1,0 +1,300 @@
+{% extends 'page.html.twig' %}
+{% block javascripts %}
+<script>
+    //$("#couponCode").hide();
+    if({{ discount }}<1)
+    $('#fee').hide();
+  /*   $('#trip_bookingenginebundle_customer_haveCoupon').change(function(){ 		 		 	
+		 var haveCoupon = $("#trip_bookingenginebundle_customer_haveCoupon").is(':checked');
+            haveCoupon ? $("#couponCode").show() : $("#couponCode").hide();
+         }); */
+
+    	$('#apply').click(function(e){		
+		e.preventDefault(); //STOP default action 		 		 	
+		 var optionSelected = $("#trip_bookingenginebundle_customer_couponCode").val();		
+		 $.ajax({
+		      url: "{{ path('trip_booking_engine_apply_coupon') }}",
+		      type: "GET",
+		       data: { "coupon" : optionSelected },
+		      success: function(data) {				     			        	  		        	
+				     if(data=='false')
+				     {
+				    	 $('#coupon-error').show();
+					  }
+				     else
+				     {
+				    	 $('#coupon-error').hide();
+                         $('#discount').html(50);
+					     $('#price').html(data);
+                         $('#fee').show();
+				     }			     
+				     
+		      },
+
+		      error: function(XMLHttpRequest, textStatus, errorThrown)
+		      {
+		        alert('Error: ' +  errorThrown);
+		      }
+		   });						 		   			   							
+    });
+
+</script>
+
+{% endblock %}
+{% block stylesheets %}
+<style>
+    #apply{
+        background-color: #0694b6 !important;
+        color: #FFF;
+    }
+</style>
+<style>
+.nav-justified>li{display:inline-block;width:31%}.nav-justified>li:after,.nav-justified>li:first-child:after{content:'';width:100%;height:2px;position:absolute;left:-50%;top:9px}.list-group-item-heading{margin-top:8px!important;font-size: initial !important;text-transform: none !important;}.nav-justified>li:after{background:#000;z-index:1}.nav-pills>li.active>a,.nav-pills>li.active>a:focus,.nav-pills>li.active>a:hover{color:#000!important;background:0 0!important}.nav-pills>li.active span,.nav-pills>li.active span:focus,.nav-pills>li.active span:hover{color:#FFF!important;background:#ea2330!important}.nav-justified>li:first-child:after{background:0 0!important;z-index:-1}.nav-justified>li a{margin-top:-13px;z-index:100}
+
+.badge {
+    padding: 9px 13px;
+    border-radius: 15px;
+}
+
+</style>
+{% endblock %}
+
+{% block breadcrumb %}
+                    <ul class="c1 breadcrumb text-left">
+                        <li><a href="#">Home</a></li>
+                        <li>Booking</li>
+                    </ul>
+                    <h3></h3>
+{% endblock %}
+
+{% block body %}
+
+    <section class="section clearfix" style="padding-top:15px">
+        <div class="container">
+            <div class="row">
+                <div id="fullwidth" class="col-sm-12">
+
+                    <!-- START CONTENT -->
+                    <div class="row">
+                        <div id="content" class="col-md-12 col-sm-12 col-xs-12">
+
+                            <div class="price-range text-center clearfix row">
+                                <div class="col-md-11">
+									<ul class="nav nav-pills nav-justified setup-panel">
+									
+									<li class="disabled {% if step=='personal' %}active{% endif %}"><a href="#personal">
+										<span class="badge">1</span>
+										 <h4 class="list-group-item-heading">Personal</h4>
+									</a></li>
+                                       
+									<li class="disabled {% if step=='payment' %}active{% endif %}"><a href="#payment">
+										<span class="badge">2</span>
+										 <h4 class="list-group-item-heading">Payment</h4>
+									</a></li>
+									</ul>
+                                  {#}  <img src="{{ asset('images/progress.png') }}" class="img-responsive" alt=""> {#}
+                                </div><!-- end price-range -->
+                            </div><!-- end price-range -->
+
+                            <div class="clearfix"></div>
+								<div class="row">
+                                    <div class="col-sm-8">
+                                    <div class="col-sm-12 booking-price-details-border price-details clearfix">
+									<div class="row">
+                                        <div class="hotel-title price-details">
+                                            <h5>Review Your Booking</h5>
+                                        </div>
+                                        </div>
+										<div class="col-md-12">
+												<h5 style="color: #ea2330;font-weight: bold;">{{ filter }}</h5>
+												<hr> 
+											</div>
+											<div class="col-md-3">
+												<p class="bikestitle">City</p>
+												<hr>
+												<h5 class="book-dates" style="font-size:18px;">{{ location }}</h5>
+											</div>
+											<div class="col-md-3">
+												<p class="bikestitle">Pickup DateTime</p>
+												<hr>
+												<h5 class="book-dates" style="font-size:18px;">{{ selected }}</h5>
+											</div>
+											<div class="col-md-3">
+											<p class="bikestitle">Return DateTime</p>
+											<hr>
+												<h5 class="book-dates" style="font-size:18px;">{{ locations }}</h5>
+											</div>
+											<div class="col-md-3">
+											<p class="bikestitle">Total Days & Hours</p>
+											<hr>
+												<h5 class="book-dates" style="font-size:18px;">{{ leftdays }} Days {{ hours }} Hours</h5>
+											</div>
+										    
+											
+									</div>
+                                    
+                                    
+                                
+                                <div class="col-sm-12 booking-price-details-border price-details clearfix">
+                                         {% block form %}
+                                        <div class="row">
+                                        <div class="hotel-title price-details">
+                                            <h5>Traveler Details</h5>
+                                        </div>
+                                        </div>
+                                            {{ form_start(form) }}
+                                            {{ form_errors(form, { 'global_errors': true }) }}
+                                        
+                                        <div class="row booking-price-details">
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                {{ form_widget(form.name,{'attr':{'class':'make-margin','placeholder':'Name'}}) }}
+                                            </div>
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                               {{ form_widget(form.email,{'attr':{'class':'make-margin','placeholder':'Email'}}) }}
+                                            </div>
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                            {{ form_widget(form.mobile,{'attr':{'class':'make-margin','placeholder':'10 Digit Mobile No'}}) }} 
+                                            </div>
+                                             <div class="row">
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                <div class="input-group">
+                                                 {{ form_widget(form.haveCoupon) }} {{ form_label(form.haveCoupon) }}
+                                                </div>
+                                            </div>
+                                             <div class="col-md-12 col-sm-12 col-xs-12">
+                                                <div class="input-group" id="couponCode">
+                                                {{ form_widget(form.couponCode,{'attr':{'placeholder':'Enter a Coupon code'}}) }}
+                                                    <a class="input-group-addon" id="apply" href="#">Apply</a>
+                                                </div>
+                                                <div class="row form-group has-error">
+                                                    <ul class="errors help-block">
+                                                        <li id="coupon-error" style="display:none">Invalid Coupon</li>
+                                                    </ul>
+                                                </div>
+                                            	</div>
+                                               </div>
+                                            
+                                                 <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                                    {{ form_label(form.paymentMode) }} 
+                                                    </div>
+                                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                                        {{ form_widget(form.paymentMode) }} 
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="make-margin"></div>
+                                             
+                                             <div class="col-md-8 col-sm-8 col-xs-12">
+                                                <input type="checkbox" required="required" name="cb" class="remove_margin">  {% trans %} I agree to the JustTrip {% endtrans%} <a target="_blank" href="{{ path('trip_site_management_terms') }}">{% trans %} Terms of Service{% endtrans%}</a>
+                                            </div>
+											{#<div class="col-md-4 col-sm-4 col-xs-12">
+                                                <button type="submit" class="btn btn-primary btn-block btn-lg"> BOOK NOW</button>
+                                            </div>#}
+                                            
+                                            {# <input type="text" class="form-control make-margin" placeholder="Country of Passport">  #}
+                                           
+                                        </div>
+                                       
+                                    </div><!-- end col -->
+                                    
+                                  </div>  
+                                    
+                                <div class="col-sm-4">
+                                <div class="booking-price-details-border price-details clearfix">
+                                <div class="hotel-title">
+                                    <h5>Fare Details</h5>
+                                </div>
+                                <div class="row booking-price-details">
+                                    <div class="col-md-12">
+                                        
+                                        <div class="row">
+                                           
+                                            <div class="col-sm-12">
+                                               
+													<div class="col-sm-12">
+                                               <h5 class="bike-price">RS. {{ price }}</h5>
+											   
+												<div class="col-md-12">
+												<hr>
+												<h3 class="contactdeatils center">TERMS & CONDITIONS</h3>
+												<hr>
+                                                <button type="submit" class="bike-booknow"> BOOK NOW</button>
+												</div>
+												
+												
+											
+                                            </div><!-- end col -->
+											 {{ form_end(form) }}<!-- end form -->
+                                    {% endblock %}
+                                                <ul class="clearfix">
+                                                  
+                                                    {% block details %}
+														{#<li class="text-right"><em>You Pay</em>
+                                                        <p><b><i class="fa fa-inr"></i><em id="price"> {{ price }} </em></b></p> 
+														</li>#}
+                                                    {% endblock %}
+                                                    
+                                                </ul>
+                                            </div><!-- end col -->
+											{#<div class="col-md-12">
+                                            <a class="sm-links" data-toggle="modal" data-target="#terms" href="#terms">View Fare Rules</a>
+                                            </div>#}
+                                        </div><!-- end row -->
+                                        
+                                            
+                                           
+                                       
+                                    </div><!-- end col -->
+
+                                    <div class="col-md-6">
+                                      
+                                    </div><!-- end col -->
+                                </div><!-- end row -->
+                            </div><!-- end pricing-details -->
+                                    </div>
+                                    
+                                    
+								
+
+
+                                    
+                                </div><!-- end row -->
+                           
+                        </div><!-- end col -->
+                    </div><!-- end row -->
+                    <!-- END CONTENT --> 
+                    
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+							 <div class="modal fade" id="terms" role="dialog">
+								    <div class="modal-dialog">
+								    
+								      <!-- Modal content-->
+								      <div class="modal-content">
+								        <div class="modal-header">
+								          <button type="button" class="close" data-dismiss="modal">&times;</button>
+								          <h4 class="modal-title">Terms and Conditions</h4>
+								        </div>
+								        <div class="modal-body">
+                                            <p> Toll , Parking, Food allowances and  State Permit extra</p>
+                                            <p>In ghat road A/C will not function.</p>
+                                            <p>Once the Journey is started, Tickets are not refundable and unchangeable.</p>
+                                            
+								             
+                                    
+                                    
+
+								        </div>
+								        
+								      </div>
+								      
+								    </div>
+								  </div>
+
+{% endblock %}

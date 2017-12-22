@@ -76,6 +76,10 @@ $('.vehicle-icon').click(function(e){
                              {{ form_errors(form) }}
                              {{ form_errors(form.date) }}
                              {{ form_errors(form.returndate) }}
+								<div class="col-md-12 bikes-form-font">
+                             	{{ form_label(form.location) }} 
+                                {{ form_widget(form.location) }}
+                                </div>
                              	<div class="col-md-12 bikes-form-font">
                              	{{ form_label(form.date) }} 
                                 {{ form_widget(form.date, {'id': 'datetime2'}) }}
@@ -94,7 +98,11 @@ $('.vehicle-icon').click(function(e){
                           1 day
                         {% else %}
                           {{ leftDays }} days 
-                     {% endif %}{{ hours }} Hours</span><br>
+						  
+                     {% endif %}
+					 {{ hours }} Hours
+					 </span><br>
+					 
                      {#}<div>{% set bike = 15 %}
                         {% set day = 150 %}
                         {% set fivehours = hours %}
@@ -105,7 +113,7 @@ $('.vehicle-icon').click(function(e){
                             <p>0</p>
                         {% endif %}</div>{#}
                      </p>
-            			{#}<div class="row">
+					 {#}<div class="row">
             			<div class="col-md-12">
             				<p class="brandtype">Pickup > <span class="black">{{ booking.date|date("d/m/Y h:m") }}</span></p>
             			</div>
@@ -153,30 +161,46 @@ $('.vehicle-icon').click(function(e){
                                         {% set fivehours = hours %}
                                         {% if fivehours==0 %}
                                         	<h4 style="text-align:center;color:#000"><i class="fa fa-inr" aria-hidden="true"></i> {{ dayret * leftDays }}</h4>
+											{% set price1 = dayret * leftDays  %}
                                         {% else %}
                                             {% if fivehours <= 5  %}
                                             	{% set fixhours=5 %}
                         						{%  set fivehoursbase = startprice * fixhours %}
-                                                <h4 style="text-align:center;color:#000"><i class="fa fa-inr" aria-hidden="true"></i> {{ fivehoursbase + dayret * leftDays  }}</h6>
-                                                {% else %}
+                                                <h4 style="text-align:center;color:#000"><i class="fa fa-inr" aria-hidden="true"></i> {{ fivehoursbase + dayret * leftDays  }}</h4>
+                                                {% set price1 =  fivehoursbase + dayret * leftDays  %}
+												{% else %}
                                                 	 {% if fivehours <= 10 %}
                                                         {% set inc= hours * startprice  %}
                                                         {% set dayscal= leftDays * dayret %}
                                      
-                                                		<h4 style="text-align:center;color:#000"><i class="fa fa-inr" aria-hidden="true"></i> {{ dayscal + inc }}</h6>
+                                                		<h4 style="text-align:center;color:#000"><i class="fa fa-inr" aria-hidden="true"></i> {{ dayscal + inc }}</h4>
+														{% set price1 =  dayscal + inc  %}
                                              			{% else %}
                                              			{% set totaldays= leftDays + 1 %}
                                              	
-                                             			<h4 style="text-align:center;color:#000"><i class="fa fa-inr" aria-hidden="true"></i> {{ totaldays * dayret }}</h6>
-                                                        {% endif %}
+                                             			<h4 style="text-align:center;color:#000"><i class="fa fa-inr" aria-hidden="true"></i> {{ totaldays * dayret }}</h4>
+                                                        {% set price1 =  totaldays * dayret  %}
+														{% endif %}
                                               {% endif %}
                                         {% endif %}
                                         </div>
                                  <div class="row">
                                          <div class="col-md-3" >
                                          </div>
-                                         <div class="col-md-6" >
-        								<a class="btn aligncenter view-bike"   href="{{ path('trip_booking_engine_confirm',{'url':bike.locationUrl }) }}">Rent Now</a>
+                                         <div class="col-md-12" >
+											<form action="{{ path('trip_site_management_homepage_bikes_submit') }}" method="get">
+												{% set preferDate = booking.date|date("d/m/Y h:i A") %}
+												{% set returnDate = booking.returndate|date("d/m/Y h:i A") %}
+												<input type="hidden" name="id" class="form-control" value="{{ bike.id }}"> 
+												<input type="hidden" name="title" class="form-control" value="{{ bike.title }}"> 
+												<input type="hidden" name="pDate" class="form-control" value="{{ preferDate }}"> 
+												<input type="hidden" name="rDate" class="form-control" value="{{ returnDate }}"> 
+												<input type="hidden" name="price" class="form-control" value="{{ price1 }}"> 
+												<input type="hidden" name="leftdays" class="form-control" value="{{ leftDays }}"> 
+												<input type="hidden" name="hours" class="form-control" value="{{ hours }}"> 
+												<input type="hidden" name="location" class="form-control" value="{{booking.location}}"> 
+												<button type="submit" class="btn aligncenter view-bike">Rent Now</button>
+											</form>
                                          </div>
                                          <div class="col-md-3" >
                                          </div>

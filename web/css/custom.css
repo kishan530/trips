@@ -477,5 +477,47 @@ h2.sub-title-bikesonrent {
     margin: 0 0 5px;
     /*text-align: center;*/
 }
+h5.bike-price {
+    font-family: calibri;
+    font-size: 32px;
+    text-align: center;
+    color: #F34F4F;
+}
+p.bikestitle {
+    border: none;
+    color: #9b9b9b;
+    font-size: 18px;
+    text-align: center;
+    /* font-weight: bold; */
+    font-family: calibri;
+    /* margin-bottom: -19px; */
+}
+.book-dates
+{
+	text-align: center;
+    font-size: 18px;
+    font-family: calibri;
+}
+.bike-booknow {
+    background: #F34F4F;
+    text-decoration: none;
+    color: #fff;
+    font-size: 18px;
+    font-family: calibri;
+    font-weight: bold;
+    padding: 4px;
+    width: 100%;
+    border: none;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 10px 10px rgba(0,0,0,.05);
+    box-shadow: 0 10px 10px rgba(0,0,0,.05);
+    margin-top: 13px;
+}
+h3.contactdeatils {
+    color: #000;
+    font-size: 21px;
+    font-family: calibri;
+    text-transform: uppercase;
+}
 /* End */
 

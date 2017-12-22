@@ -141,3 +141,6 @@ trip_site_management_review_viewbikes:
 trip_site_management_price_viewbikes:
     path:     /price/{id}/view-bikes
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:priceViewbikes }
+trip_site_management_homepage_bikes_submit:
+    path:     /bike/submit
+    defaults: { _controller:TripSiteManagementBundle:SiteManagement:bikesSubmit }

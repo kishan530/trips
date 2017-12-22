@@ -18,6 +18,7 @@ use Trip\BookingEngineBundle\Entity\Drop;
 use Trip\BookingEngineBundle\Entity\PlacesToVisit;
 use Trip\BookingEngineBundle\Entity\VehicleBooking;
 use Trip\BookingEngineBundle\Entity\HotelBooking;
+use Trip\BookingEngineBundle\Entity\BikeBooking;
 use Trip\BookingEngineBundle\Entity\Billing;
 use Trip\BookingEngineBundle\Form\CustomerType;
 use Trip\BookingEngineBundle\Form\BillingType;
@@ -1439,5 +1440,265 @@ class BookingController extends Controller
       
      
 	//**************End************//
+	//********** Bikes Booking Controllers**************//
+	private function createbikeGuestForm(Customer $entity){
+    	$form = $this->createForm(new GuestType(), $entity, array(
+    			'action' => $this->generateUrl('trip_booking_engine_confirm_bike'),
+    			'method' => 'POST',
+    	));
+    	
+    	return $form;
+    }
+    public function confirmBikeAction(Request $request)
+    {
+    	$em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        $id = $request->get('id');
+		$title = $request->get('title');
+        $pDate = $request->get('pDate');
+        $rDate = $request->get('rDate');
+        $price = $request->get('price');
+        //$vehicleIndex = $request->get('vehicleIndex');
+		 //echo var_dump($selected);
+		// exit();
+        $customer = new Customer();
+    	$form   = $this->createbikeGuestForm($customer);
+        $form->handleRequest($request);
+    	if ($form->isValid()) {
+    		$session->set('guest',$customer);
+    		return $this->redirect($this->generateUrl('trip_booking_engine_booking_bike'));
+        }
+
+        	//$searchFilter = $session->get('selectedData');
+        	//echo var_dump($searchFilter->getTripType()=='package');
+        	//exit();
+         return $this->render('TripBookingEngineBundle:Default:confirmBike.html.twig', array(
+                'form'   => $form->createView(),
+               'service'=> $id,
+             'filter'=> $title,
+             'discount'=>0,
+             'selected'=> $pDate,
+			 'locations' => $rDate,
+			 'price'=> $price,
+			 'step'=>'review',
+            ));
+        
+        
+    }
     
+	public function bookingBikeAction(Request $request)
+    {
+         $session = $request->getSession();
+         //$resultSet = $session->get('resultSet');
+		 //$searchFilter = $session->get('selectedData');
+		 //echo var_dump($session);
+		 //exit();
+		// $session->set('guest',$customer);
+		$id = $request->get('id');
+		$title = $request->get('title');
+        $pDate = $request->get('pDate');
+        $rDate = $request->get('rDate');
+        $price = $request->get('price');
+		$leftdays = $request->get('leftdays');
+		$hours = $request->get('hours');
+		$location = $request->get('location');
+		 //echo var_dump($location);
+		// exit();
+		
+		$session->set('id',$id);
+		$session->set('title',$title);
+		$session->set('pDate',$pDate);
+		$session->set('rDate',$rDate);
+		$session->set('price',$price);
+		$session->set('leftdays',$leftdays);
+		$session->set('hours',$hours);
+		$session->set('location',$location);
+		
+		$guest = $session->get('guest');
+        $customer = new Customer();
+        //$customer->setEmail($guest->getEmail());
+        //$customer->setMobile($guest->getMobile());
+    	$form   = $this->createBikeBookingForm($customer);
+        
+         return $this->render('TripBookingEngineBundle:Default:bookingBike.html.twig', array(
+                'form'   => $form->createView(),
+                'service'=> $id,
+             'filter'=> $title,
+                'discount'=>0,
+                'selected'=> $pDate,
+			 'locations' => $rDate,
+			 'location' => $location,
+			 'price'=> $price,
+			 'leftdays' => $leftdays,
+			 'hours' => $hours,
+				'step'=>'personal',
+            ));
+        
+    }
+	private function createBikeBookingForm(Customer $entity){
+    	$form = $this->createForm(new CustomerType(), $entity, array(
+    			'action' => $this->generateUrl('trip_booking_engine_book_bike_submit'),
+    			'method' => 'POST',
+    	));
+    	
+    	return $form;
+    }
+    public function bookbikeSubmitAction(Request $request)
+    {
+
+		 $session = $request->getSession();
+         /*$resultSet = $session->get('resultSet');
+        $searchFilter = $session->get('selectedData');
+        $selectedService = $session->get('selected');
+        $searchHotel = $session->get('searchHotel');
+		 $locations = $session->get('locations');*/
+		 $id = $session->get('id');
+		 $title = $session->get('title');
+		 $pDate = $session->get('pDate');
+		 $rDate = $session->get('rDate');
+		 $price = $session->get('price');
+		 $leftdays = $session->get('leftdays');
+		 $hours = $session->get('hours');
+		 $location = $session->get('location');
+		 //echo var_dump($id);
+		 //echo var_dump($title);
+		 //exit();
+		 
+		 $guest = $session->get('guest');
+
+		
+        $customer = new Customer();
+        //$customer->setEmail($guest->getEmail());
+        //$customer->setMobile($guest->getMobile());
+    	$form   = $this->createBookingForm($customer);
+        $form->handleRequest($request);
+    	if ($form->isValid()) {
+            $couponApplyed = $customer->getHaveCoupon();
+            $couponCode = $customer->getCouponCode();
+             $paymentMode = $customer->getPaymentMode();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($customer);
+    		$em->flush();
+             $session->set('customer',$customer);
+                /*if($searchFilter->getTripType()=='roundtrip'){
+                    $price = $selectedService['returnPrice'];
+                }else{
+                     if($searchFilter->getTripType()=='package'){
+                         $price = $selectedService->getPrice()->first()->getPrice();
+                     }else{
+                    $price = $selectedService['price'];
+                     }
+                }*/
+                $finalPrice = $price;
+                if($couponCode=='FIRSTRIDE'){
+                    $finalPrice = $price-50;
+                }     
+                /*if($searchFilter->getTripType()=='roundtrip'){
+                    $selectedService['returnPrice'] = $finalPrice;
+                }else{
+                    if($searchFilter->getTripType()=='package'){
+                         $selectedService->getPrice()->first()->setPrice($finalPrice);
+                     }else{
+                    $selectedService['price'] = $finalPrice;
+                    }
+                }*/
+            $booking = new Booking();
+            $booking->setCustomerId($customer->getId());
+            $booking->setBookingId($this->getBookingId());
+            $booking->setTotalPrice($price);
+            $booking->setFinalPrice($finalPrice);
+            $booking->setStatus('pending');
+			$booking->setJobStatus('Open');
+            $booking->setBookedOn(new \DateTime());
+            $booking->setNumDays($leftdays);
+            $booking->setNumAdult($hours);
+            $booking->setPreferTime($title);
+            $discount = 0;
+            if($couponApplyed){
+                $booking->setCouponApplyed(1);
+                $booking->setCouponCode($couponCode);
+                $booking->setDiscount(50);
+                $discount = 50;
+            }else{
+                $booking->setCouponApplyed(0);
+            }
+
+             
+			 
+            $booking->setPaymentMode($paymentMode);
+            
+            $amountToPay = $finalPrice; 
+            $tax = 0;
+            if($paymentMode=='advance'){
+                $amountToPay = round($finalPrice*(50/100));
+                //$tax = round($amountToPay*(3/100));
+                //$amountToPay = $amountToPay+$tax; 
+            }else{
+                $amountToPay = round($finalPrice*(30/100));
+                //$tax = round($amountToPay*(3/100));
+               // $amountToPay = $amountToPay+$tax;              
+            }
+            $serviceTax = round($finalPrice*(5.6/100),2);
+            $swachBharthCess = round($finalPrice*(2.5/100),2);
+            $krishiKalyanCess = round($finalPrice*(2.5/100),2);
+            $totalTax = $serviceTax+$swachBharthCess+$krishiKalyanCess;
+            $amountToPay = $amountToPay+$totalTax;
+            $finalPrice = $finalPrice+$totalTax;
+            $booking->setTax($tax);
+            $booking->setServiceTax($serviceTax);
+            $booking->setSwachBharthCess($swachBharthCess);
+            $booking->setKrishiKalyanCess($krishiKalyanCess);
+            $booking->setFinalPrice($finalPrice);
+            $em->persist($booking);
+    		$em->flush();
+            $session->set('bookingObj',$booking);
+             $session->set('amountToPay',$amountToPay);
+            $paymentLink = $this->getPaymentLink($request,$amountToPay,$customer,$booking);
+        //$paymentLink = "https://www.instamojo.com/Waseemsyed/tirupati-caars-services-cb8a4/";
+       // $paymentLink.="?data_name=".$customer->getName()."&data_email=".$customer->getEmail()."&data_phone=".$customer->getMobile()."&embed=form";
+           //  $paymentLink = '';
+            $payuLink = $this->generateUrl ( 'trip_booking_engine_payment_payu' );
+            
+            //var_dump($customer);
+            //var_dump($booking);
+            //var_dump($selectedService);
+            //var_dump($searchFilter);
+            //var_dump($paymentLink);
+                       
+           // exit();
+        return $this->render('TripBookingEngineBundle:Default:paymentBike.html.twig', array(
+                'customer'   => $customer,
+             'booking'   => $booking,
+			 'step'=>'payment',
+               //'service'=>$selectedService,
+             //'filter'=>$searchFilter,
+            //'discount'=>$discount,
+            'paymentLink'   => $paymentLink,
+        		'payuLink' => $payuLink,
+			//'locations' => $locations,
+			'service'=> $id,
+             'filter'=> $title,
+                'discount'=>0,
+                'selected'=> $pDate,
+			 'locations' => $rDate,
+			 'price'=> $price,
+			 'amountToPay' => $amountToPay,
+			 'leftdays' => $leftdays,
+			 'hours' => $hours,
+			 'location' => $location,
+            ));
+        }
+        
+         return $this->render('TripBookingEngineBundle:Default:bookingBike.html.twig', array(
+                'form'   => $form->createView(),
+               'service'=>$selectedService,
+             'discount'=>0,
+             'filter'=>$searchFilter,
+			 'locations' => $locations,
+			 'step'=>'personal',
+            ));
+        
+         
+    }
+   //**************End************//
 }

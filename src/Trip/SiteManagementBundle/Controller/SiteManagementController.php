@@ -1382,6 +1382,8 @@ class SiteManagementController extends Controller
     public function bikesonRentAction(Request $request){
     	$em = $this->getDoctrine()->getManager();
     	$bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
+		$locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
+    	$locations = $this->getLocationsByIndex($locations);
     	
     	$session = $request->getSession();
     	$session->set('resultSet',$bikes);
@@ -1408,11 +1410,13 @@ class SiteManagementController extends Controller
     	return $this->render('TripSiteManagementBundle:Default:bikesonRent.html.twig',array(
     			'bikes' => $bikes,
     			'form'   => $form->createView(),
+				'locations' => $locations,
     			
     	));
     }
     public function viewBikesAction(Request $request,$url){
     	$em = $this->getDoctrine()->getManager();
+		$session = $request->getSession();
     	$bike = $em->getRepository('TripSiteManagementBundle:bikes')->findBy(array('locationUrl' => $url));
     	if($bike){
     		$bike= $bike[0];
@@ -1420,6 +1424,8 @@ class SiteManagementController extends Controller
     	}else{
     		
     	}
+		$session->set('bikeurl',$bike);
+		
     	$entity= new Biketime();
     	$entity->setId($entity->getId());
     	//$entity->setPreferTime($entity->getPreferTime());
@@ -1464,11 +1470,17 @@ class SiteManagementController extends Controller
     	
     	$bookingService = $this->container->get( 'booking.services' );
     	$em = $this->getDoctrine()->getManager();
+		$session = $request->getSession();
+		
     	$bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
+		//$session->set('bikes',$bikes);
+		//$searchFilter->setUr($url);
+		//$bike->setEmail($bikes->getUrl());
     	//$booking = $em->getRepository('TripBookingEngineBundle:Booking')->findOneByBookingId($id);
     	
     	//$customer = $em->getRepository('TripBookingEngineBundle:Customer')->find($booking->getCustomerId());
     	$booking = $em->getRepository('TripSiteManagementBundle:Biketime')->findOneById($id);
+		
     	//$locations = test;
     	//$locations = $this->getLocationsByIndex($locations);
     	$form   = $this->createEditReviewbikesForm($booking,$id);
@@ -1494,30 +1506,43 @@ class SiteManagementController extends Controller
     	
     	$bookingService = $this->container->get( 'booking.services' );
     	$em = $this->getDoctrine()->getManager();
-    	$url = $request->get('url');
-    	//$bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
-    	//$bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll(array('locationUrl' => $url));
-    	//$booking = $em->getRepository('TripBookingEngineBundle:Booking')->findOneByBookingId($id);
+		$session = $request->getSession();
+		$bikeurl = $session->get('bikeurl');
+		$url = $bikeurl->getLocationUrl();
+		 //echo var_dump($bikeurl);
+		 
+		 //echo var_dump($url);
+		//exit();
+		
+		//$bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
+    	//$bike = $em->getRepository('TripSiteManagementBundle:bikes')->findBy(array('locationUrl' => $url));
+		$bike = $em->getRepository('TripSiteManagementBundle:bikes')->findBy(array('locationUrl' => $url));
+    	if($bike){
+    		$bike= $bike[0];
+    		$bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll(array('locationUrl' => $url));
+    	}else{
+    		
+    	}
     	
-    	//$customer = $em->getRepository('TripBookingEngineBundle:Customer')->find($booking->getCustomerId());
     	$booking = $em->getRepository('TripSiteManagementBundle:Biketime')->findOneById($id);
-    	//$locations = test;
-    	//$locations = $this->getLocationsByIndex($locations);
+    	
     	$form   = $this->createpriceviewbikesForm($booking,$id);
+		
     	$form->handleRequest($request);
     	if ($form->isValid()) {
     		$booking= $em->merge($booking);
     		$em->flush();
-    		
+    		 
     		return $this->redirect($this->generateUrl('trip_site_management_price_viewbikes',array('id'=>$booking->getId())));
     		
     	}
-    	
+    	//echo var_dump($url);
+		//exit();
     	return $this->render('TripSiteManagementBundle:Default:priceViewbikes.html.twig',array(
     			//'customer'   => $customer,
     			'booking'=>$booking,
-    			//'bikes' => $bikes,
-    			'url' => $url,
+    			'bike'=>$bike,
+    			'bikes'=>$bikes,
     			'form'   => $form->createView(),
     			//'locations'=>$locations,
     			//'services'=>$booking->getVehicleBooking(),
@@ -1547,6 +1572,7 @@ class SiteManagementController extends Controller
     }
     private function createEditPricebikesForm($booking,$id){
     	//$bookingService = $this->container->get( 'booking.services' );
+		
     	$form = $this->createForm(new PriceviewbikesType(), $booking, array(
     			'action' => $this->generateUrl('trip_site_management_price_viewbikes',array('id'=>$id)),
     			'method' => 'POST',
@@ -1555,7 +1581,24 @@ class SiteManagementController extends Controller
     	
     	return $form;
     }
-    
+   
+	public function bikesSubmitAction(Request $request){
+        $session = $request->getSession();
+        $id = $request->get('id');
+		$title = $request->get('title');
+        $pDate = $request->get('pDate');
+        $rDate = $request->get('rDate');
+        $price = $request->get('price');
+		$leftdays = $request->get('leftdays');
+		$hours = $request->get('hours');
+		$location = $request->get('location');
+       // echo var_dump($hours);
+		//echo var_dump($location);
+		 //exit();
+		
+        return $this->redirect($this->generateUrl('trip_booking_engine_booking_bike',array('id'=>$id,'title'=>$title,'pDate'=>$pDate,'rDate'=>$rDate,'price'=>$price,'leftdays'=>$leftdays,'hours'=>$hours,'location'=>$location)));
+			
+    }
     //***************************************end****************************************//
 	
     private function createEditItineraryForm($package,$id){

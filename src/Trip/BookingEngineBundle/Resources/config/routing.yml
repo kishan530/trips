@@ -53,6 +53,18 @@ trip_booking_engine_confirm_custom_package:
 trip_booking_engine_hotel_booking:
     path:     /hotel-booking
     defaults: { _controller: TripBookingEngineBundle:Booking:hotelBooking }
+trip_booking_engine_booking_bike:
+    path:     /booking-bike
+    defaults: { _controller: TripBookingEngineBundle:Booking:bookingBike }
+trip_booking_engine_confirm_bike:
+    path:     /confirm-bike
+    defaults: { _controller: TripBookingEngineBundle:Booking:confirmBike }
+trip_booking_engine_book_bike_submit:
+    path:     /book/bike/submit
+    defaults: { _controller: TripBookingEngineBundle:Booking:bookbikeSubmit }
+trip_booking_engine_payment_bike:
+    path:     /book/payment-bike
+    defaults: { _controller: TripBookingEngineBundle:Booking:paymentBike }
 remove_trailing_slash:
     path: /{url}
     defaults: { _controller: TripBookingEngineBundle:Booking:removeTrailingSlash }

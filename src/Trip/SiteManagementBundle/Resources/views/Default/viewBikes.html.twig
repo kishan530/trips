@@ -87,7 +87,10 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                              {{ form_errors(form) }}
                              {{ form_errors(form.date) }}
                              {{ form_errors(form.returndate) }}
-    
+								
+                             	{{ form_label(form.location) }} 
+                                {{ form_widget(form.location) }}
+                               
                              	{{ form_label(form.date) }} 
                                 {{ form_widget(form.date, {'id': 'datetime2'}) }}
                                
