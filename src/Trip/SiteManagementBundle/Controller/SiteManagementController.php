@@ -861,7 +861,7 @@ class SiteManagementController extends Controller
     	$bookingService = $this->container->get( 'booking.services' );
     	$drivers = $em->getRepository('TripSiteManagementBundle:Driver')->findAll();
     	$drivers= $bookingService->getDriverByIndex($drivers);
-    	$billingList = $em->getRepository('TripSiteManagementBundle:Billing')->findAll();
+    	$billingList = $em->getRepository('TripBookingEngineBundle:TestCustomer')->findAll();
     	return $this->render('TripSiteManagementBundle:Default:billingList.html.twig',array(
     			'billingList' => $billingList,
     			'locations'=>$locations,

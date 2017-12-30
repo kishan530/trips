@@ -129,6 +129,21 @@ trip_site_management_billing_details:
 trip_site_management_billing_list:
     path:     /billing-list
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:billingList }
+
+
+trip_site_management_insert_image:
+    path:     /insert-image/
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:insertImage }	
+trip_site_management_view_image:
+    path:     /view-image
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:viewImages }	
+trip_site_management_addPackageImage:
+    path:     /addPackageImage
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:addPackageImage }	
+trip_site_management_delete_image:
+    path:     /delete-image
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:deleteImagePackage }	
+
 trip_site_management_bikes_on_rent:
     path:     /bikes
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikesonRent }
@@ -162,3 +177,6 @@ trip_site_management_add_packagecat:
 trip_site_management_homepage_catpackage_submit:
     path:     /catpackage/submit
     defaults: { _controller:TripSiteManagementBundle:SiteManagement:catpackageSubmit }
+
+
+

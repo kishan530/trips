@@ -13,6 +13,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Billing
 {
+	
+	
     /**
      * @var integer
      *

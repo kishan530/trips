@@ -28,6 +28,7 @@ class PackageImageType extends AbstractType
         				'class'   => 'filestyle',
         		),
         ))
+		 
         ;
     }
     /**
