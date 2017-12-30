@@ -519,5 +519,45 @@ h3.contactdeatils {
     font-family: calibri;
     text-transform: uppercase;
 }
+.package-vehicle-two {
+    margin-left: -16px;
+    /* margin-right: 9px; */
+    padding: 0;
+    float: none !important;
+    display: inline-block;
+}
+.two-daypackage-title
+{
+	color: #f26722;
+    font-family: calibri;
+    font-size: 20px;
+    
+}
+.col-md-12.package-title-two {
+    margin-top: 10px;
+}
+.day1 {
+    float: left;
+    font-size: 16px;
+    margin-top: 16px;
+    background: #e0e0e0;
+    padding: 0px 17px 0px 17px;
+    text-align: center;
+}
+.day2 {
+    float: left;
+    font-size: 16px;
+   /* margin-top: 16px;*/
+    background: #e0e0e0;
+    padding: 0px 17px 0px 17px;
+    text-align: center;
+}
+.package-vehicle span {
+   
+    text-transform: lowercase;
+}
+.package-info .make-margin {
+    margin: 0px -7px 15px !important;
+}
 /* End */
 

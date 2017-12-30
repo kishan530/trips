@@ -25,6 +25,7 @@ class EditPackageType extends AbstractType
             ->add('metaDescription','textarea')
             ->add('metaTitle')
             ->add('packageUrl')
+            //->add('category')
             ->add('type', 'choice', array(
             		'expanded' => false,
             		'multiple' => false,
@@ -45,6 +46,8 @@ class EditPackageType extends AbstractType
 				            		),
             		'required'    => true,
             ))
+            
+            
             ->add('itineraryList', 'collection', array(
             		// each entry in the array will be an "PackageItinerary" field
             		'type'   => new PackageItineraryType(),

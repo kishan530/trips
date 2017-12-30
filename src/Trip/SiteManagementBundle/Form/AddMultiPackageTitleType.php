@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class MultiPackageTitleType extends AbstractType
+class AddMultiPackageTitleType extends AbstractType
 {
     
     /**
@@ -21,7 +21,7 @@ class MultiPackageTitleType extends AbstractType
 			->add('metakeywords','textarea')
             ->add('metadescription','textarea')
 			->add('statingprice')
-			->add('imgpath')
+			//->add('imgpath')
 			->add('locationurl')
 			->add('type', 'choice', array(
 			    'expanded' => false,
@@ -35,6 +35,18 @@ class MultiPackageTitleType extends AbstractType
 			    
 			    
 			))
+			->add('imgpath', 'file',array(
+			    'required' => false,
+			    'data_class' => null,
+			    'label'=>'Image',
+			    
+			    'attr'   =>  array(
+			        'class'   => 'filestyle',
+			        'allow_add'    => true,
+			        'prototype'=>true,
+			    ),
+			))
+			
 			
            
         ;
@@ -43,12 +55,12 @@ class MultiPackageTitleType extends AbstractType
     /**
      * @param OptionsResolverInterface $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    /* public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
       $resolver->setDefaults(array(
            'data_class' => 'Trip\SiteManagementBundle\Entity\PackageTitle'
        ));
-    }
+    }*/
 
     /**
      * @return string

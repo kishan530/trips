@@ -123,13 +123,17 @@ Date();a=s.createElement(o),
                                     
                                     	<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Packages</a>
                                         <ul class="dropdown-menu" role="menu">
-											<li><a href="{{ path('trip_site_management_homepage_packages')}}" >One Day Packages</a></li>											
+											<li><a href="{{ path('trip_site_management_homepage_packages')}}" >One Day Packages</a></li>
+											<li><a href="{{ path('trip_site_management_homepage_twoday_packages')}}" >Two Day Packages</a></li>
 											{% if is_granted('ROLE_SUPER_ADMIN') %}
                                              <li><a href="{{ path('trip_site_management_add_package') }}">Add Package</a></li>
+                                             <li><a href="{{ path('trip_site_management_add_packagecat') }}">Add Package Cat</a></li>
                                              <li><a href="{{ path('trip_site_management_add_packagelocations') }}">Add PackageLocation</a></li>
                                              <li><a href="{{ path('trip_site_management_add_package_price') }}">Add PackagePrice</a></li>
                                               <li><a href="{{ path('trip_site_management_package_list') }}">Package List</a></li>
 											  <li><a href="{{ path('trip_site_management_multipackage_list') }}">Multi Package List</a></li>
+											  <li><a href="{{ path('trip_site_management_add_multipackage') }}">Add Multi Packages</a></li>
+											  <li><a href="{{ path('trip_site_management_add_twoday_packagelocations') }}">Add Twoday PackageLocation</a></li>
 											  <li><a href="{{ path('trip_site_management_hotels_list') }}">Hotels List</a></li>
                                              {% endif %}  
                                             

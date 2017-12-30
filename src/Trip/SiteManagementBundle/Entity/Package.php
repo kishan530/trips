@@ -144,7 +144,18 @@ class Package
      * @var string
      */
     private $imageList;
-        
+    /**
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\TwoStartPoint", mappedBy="booking", cascade={"all"},  fetch="EAGER")
+     */
+    private $twostartPoint;
+    /**
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\TwoEndPoint2", mappedBy="booking", cascade={"all"}, fetch="EAGER")
+     */
+    private $twoendPoint2;
+    /**
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\TwoEndPoint", mappedBy="booking", cascade={"all"}, fetch="EAGER")
+     */
+    private $twoendPoint;
 
     
     public function __construct() {
@@ -158,6 +169,9 @@ class Package
          $this->itineraryList = new ArrayCollection();
          $this->contentList = new ArrayCollection();
          $this->imageList = new ArrayCollection();
+         $this->twostartPoint = new ArrayCollection();
+         $this->twoendPoint = new ArrayCollection();
+         $this->twoendPoint2 = new ArrayCollection();
     }
 	
 	/**
@@ -613,11 +627,53 @@ class Package
 		$this->contentList = $contentList;
 		return $this;
 	}
-	
-	
-	
-	
-	
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getTwostartPoint()
+    {
+        return $this->twostartPoint;
+    }
 
+    /**
+     * @param \Doctrine\Common\Collections\ArrayCollection $twostartPoint
+     */
+    public function setTwostartPoint($twostartPoint)
+    {
+        $this->twostartPoint = $twostartPoint;
+    }
+    /**
+     * @return mixed
+     */
+    public function getTwoendPoint2()
+    {
+        return $this->twoendPoint2;
+    }
+
+    /**
+     * @param mixed $twoendPoint2
+     */
+    public function setTwoendPoint2($twoendPoint2)
+    {
+        $this->twoendPoint2 = $twoendPoint2;
+    }
+    /**
+     * @return mixed
+     */
+    public function getTwoendPoint()
+    {
+        return $this->twoendPoint;
+    }
+
+    /**
+     * @param mixed $twoendPoint
+     */
+    public function setTwoendPoint($twoendPoint)
+    {
+        $this->twoendPoint = $twoendPoint;
+    }
+
+
+    
 
 }

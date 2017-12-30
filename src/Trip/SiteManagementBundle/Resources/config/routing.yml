@@ -144,3 +144,21 @@ trip_site_management_price_viewbikes:
 trip_site_management_homepage_bikes_submit:
     path:     /bike/submit
     defaults: { _controller:TripSiteManagementBundle:SiteManagement:bikesSubmit }
+trip_site_management_homepage_twoday_packages:
+    path:     /twoday-packages
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:twodaypackages }
+trip_site_management_homepage_twospecial_packages:
+    path:     /twoday-packages/{url}
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:twospecialPackages }
+trip_site_management_add_multipackage:
+    path:     /add-multipackage
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:addMultiPackage }
+trip_site_management_add_twoday_packagelocations:
+    path:     /addtwoday/packagelocations
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:addtwodayPackageLocations } 
+trip_site_management_add_packagecat:
+    path:     /package-cat
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:addPackagecat }
+trip_site_management_homepage_catpackage_submit:
+    path:     /catpackage/submit
+    defaults: { _controller:TripSiteManagementBundle:SiteManagement:catpackageSubmit }

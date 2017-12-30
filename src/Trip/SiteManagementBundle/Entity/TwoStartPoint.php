@@ -9,10 +9,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  *
  * Contact
- * @ORM\Table(name="package_start_point")
+ * @ORM\Table(name="package_two_start_point")
  * @ORM\Entity
  */
-class StartPoint
+class TwoStartPoint
 {
     /**
      * @var integer
@@ -36,16 +36,11 @@ class StartPoint
    
     private $active;
     /**
-     * @ORM\ManyToOne(targetEntity="Trip\SiteManagementBundle\Entity\Package", inversedBy="startPoint")
+     * @ORM\ManyToOne(targetEntity="Trip\SiteManagementBundle\Entity\Package", inversedBy="twostartPoint")
      * @ORM\JoinColumn(name="package_id", referencedColumnName="id")
      */
     private $booking;
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="type", type="string", length=255)
-     */
-    private $type;
+   
     
     
     
@@ -123,21 +118,7 @@ class StartPoint
 		$this->booking = $booking;
 		return $this;
 	}
-    /**
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param string $type
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-    }
+    
 
 	
     

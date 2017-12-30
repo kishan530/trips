@@ -56,6 +56,11 @@ class SearchFilter
      * @var string
      */
     private $multiple;
+    /**
+     * @var string
+     */
+    private $type;
+    
         public function __construct()
     {
         $this->multiple = new ArrayCollection();
@@ -243,6 +248,22 @@ class SearchFilter
     {
     	return $this->package;
     }
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
     
     
 }
