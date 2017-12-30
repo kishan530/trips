@@ -36,6 +36,7 @@ use Trip\BookingEngineBundle\Entity\Vehicle;
 use Trip\SiteManagementBundle\Entity\Hotel;
 use Trip\SiteManagementBundle\Entity\Billing;
 use Trip\SiteManagementBundle\DTO\BillingDto;
+use Trip\SiteManagementBundle\DTO\Billing as NewBilling;
 use Trip\SiteManagementBundle\Entity\BillingPlacesToVisit;
 use Trip\SiteManagementBundle\Entity\Driver;
 use Trip\SiteManagementBundle\Form\BillingType;
@@ -50,7 +51,9 @@ use Trip\SiteManagementBundle\Form\PackagePriceType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Collections\ArrayCollection;
+use Trip\SiteManagementBundle\Form\InsertImageType;
 
+use Trip\SiteManagementBundle\Entity\InsertImage;
 
 
 class SiteManagementController extends Controller
@@ -853,7 +856,7 @@ class SiteManagementController extends Controller
     	$bookingService = $this->container->get( 'booking.services' );
     	$drivers = $em->getRepository('TripSiteManagementBundle:Driver')->findAll();
     	$drivers= $bookingService->getDriverByIndex($drivers);
-    	$billingList = $em->getRepository('TripSiteManagementBundle:Billing')->findAll();
+    	$billingList = $em->getRepository('TripBookingEngineBundle:TestCustomer')->findAll();
     	return $this->render('TripSiteManagementBundle:Default:billingList.html.twig',array(
     			'billingList' => $billingList,
     			'locations'=>$locations,
@@ -1140,9 +1143,12 @@ class SiteManagementController extends Controller
     
     public function editPackageAction(Request $request,$id){
     	$em = $this->getDoctrine()->getManager();
-    	//$package = new Package();
+    	$package = new Package();
     	$package =$em->getRepository('TripSiteManagementBundle:Package')->find($id);
-    	
+		$package_id = $package->getId();
+    	$packageImg =$em->getRepository('TripSiteManagementBundle:PackageImages')->findBy(array('package' => $id));
+		
+		$packageImagesList = $package->getImages();
     	$package = $this->packageToPackage($package);
     	$itinerary = new PackageItinerary();
     	$content = new PackageContent();
@@ -1156,6 +1162,15 @@ class SiteManagementController extends Controller
     	$packageUrl =  $package->getPackageUrl();
     	$packageUrl = substr($packageUrl,0, strrpos($packageUrl, '-'));
     	$package->setPackageUrl($packageUrl);
+		
+		 $packageImage = new PackageImages();
+		$packageImages = $package->getImageList();
+        $packageImages->add($packageImage); 
+		$insertImage = new InsertImage(); 
+		$formupload   = $this->createInsertImageForm($insertImage,$id );
+    	$formupload->handleRequest($request);
+		$task = $formupload->getData();
+		//print_r($packageImages);
     	$form   = $this->createEditPackageForm($package,$id);
     	$form->handleRequest($request);
     	if ($form->isValid()) {   		
@@ -1195,6 +1210,21 @@ class SiteManagementController extends Controller
     		$package->setPackageUrl($packageUrl);
     		
     		//$package = $this->packageToPackage($package);
+			 $packageImageList =$package->getImageList();
+             $packageImages =$package->getImages();
+             foreach($packageImageList as $packageImage){
+             	$uploadedfile = $packageImage->getUrl ();
+             	if (!is_null($uploadedfile)) {
+             		$file_name = $uploadedfile->getClientOriginalName ();
+             		$dir = 'images/packages/';
+             		$uploadedfile->move ( $dir, $file_name );
+             		$packageImage->setUrl ($file_name );
+             		$packageImage->setPackage($package);
+             		$packageImages->add($packageImage);
+             			
+             	}
+             	
+             }
     		
     		$package = $em->merge($package);
     		$em->flush();
@@ -1202,12 +1232,16 @@ class SiteManagementController extends Controller
     		return $this->redirect($this->generateUrl('trip_site_management_package_list'));
     
     	}
-    
+			
+		
+		 
     	return $this->render('TripSiteManagementBundle:Default:editPackage.html.twig',array(
     			'package' => $package,
+				'packageImages' => $packageImg,
     			'itineraryList'=>$itineraryList,
     			'contentList'=>$contentCollection,
     			'form'   => $form->createView(),
+				'formupload'   => $formupload->createView(),
     	));
     }
 	
@@ -1301,33 +1335,30 @@ class SiteManagementController extends Controller
     	}
     	$em = $this->getDoctrine()->getManager();
     	$hotel = new BillingDto();
+		$collection = $hotel->getMultiple();
+		$newBilling = new NewBilling();
+		 $collection->add($hotel);
     	$form   = $this->createBillingForm($hotel);
-    	//$collection = $hotel->getMultiple();
-    	//$collection->add($hotel);
     	
     	//$collection = $hotel->getMultiple();
-    	
     	$form->handleRequest($request);
     	if ($form->isValid()) {
     	
     	$billingObj = new Billing();
     	//$billingObj->setId($hotel->getId());
-    	$billingObj->setDiesel($hotel->getDiesel());
-    	$billingObj->setPrice($hotel->getPrice());
-    	//$billingObj1->setPrice($hotel->getAdvance() + $hotel->getCash());
-    	$billingObj->setAdvance($hotel->getAdvance());
-    	$billingObj->setCash($hotel->getCash());
+    	$billingObj->setDiesel($newBilling->getDiesel());
+    	$billingObj->setPrice($newBilling->getPrice());
+    	$billingObj->setAdvance($newBilling->getAdvance());
+    	$billingObj->setCash($newBilling->getCash());
     	$billingObj->setExpenses($hotel->getExpenses());
     	$billingObj->setComments($hotel->getComments());
     	$billingObj->setDate($hotel->getDate());
     	$billingObj->setPickup($hotel->getPickup());
     	$billingObj->setGoingTo($hotel->getGoingTo());
     	$billingObj->setVehicleId($hotel->getVehicleId());
-    	$billingObj->setCarnumber($hotel->getCarnumber());
     	$billingObj->setDriverId($hotel->getDriverId());
     	
     	$collection = $hotel->getLocations();
-    	//$collection = $hotel->getMultiple();
     	$placesToVisitCollection= $billingObj->getLocations();
     	foreach($collection as $location){
     		$placesToVisitObj = new BillingPlacesToVisit();
@@ -1340,13 +1371,7 @@ class SiteManagementController extends Controller
     		$em->flush();
     		return $this->redirect($this->generateUrl('trip_site_management_billing_details'));
     	}
-    	/*$bookingService = $this->container->get( 'booking.services' );
-    	$hotels = $em->getRepository('TripSiteManagementBundle:Billing')->findAll();
-    	$drivers = $em->getRepository('TripSiteManagementBundle:Driver')->findAll();
-    	$drivers= $bookingService->getDriverByIndex($drivers);
-    	$locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
-    	$locations = $this->getLocationsByIndex($locations);*/
-    	//$collection = $locations->getMultiple();
+    
     	return $this->render('TripSiteManagementBundle:Default:billingDetails.html.twig',array(
     			'form'   => $form->createView(),
     	));
@@ -1368,7 +1393,7 @@ class SiteManagementController extends Controller
     	$session = $request->getSession();
     	$view = $session->get('exportBillings');
     	header ( 'Content-Type: application/force-download' );
-    	header ( 'Content-disposition: attachment; filename=billing.xls' );
+    	header ( 'Content-disposition: attachment; filename=bookings.xls' );
     	//echo var_dump($view);
     	//exit();
     	return $view;
@@ -1563,4 +1588,20 @@ class SiteManagementController extends Controller
                 
     	));
     }
+	
+	
+	 
+	
+	private function createInsertImageForm(InsertImage $entity,$id)
+    {
+        $form = $this->createForm(new InsertImageType(), $entity, array(
+            'action' => $this->generateUrl('trip_site_management_edit_package',array('id'=>$id)),
+            'method' => 'POST',
+        ));
+
+        $form->add('submit', 'submit', array('label' => 'Insert'));
+
+        return $form;
+    }
+	
 }

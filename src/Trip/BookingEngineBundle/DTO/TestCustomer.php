@@ -1,111 +1,103 @@
 <?php
 
-namespace Trip\SiteManagementBundle\Entity;
+namespace Trip\BookingEngineBundle\DTO;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Billing
- *
- * @ORM\Table(name="billing")
- * @ORM\Entity
+ * Customer
  */
-class Billing
+class TestCustomer
 {
-	
-	
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="diesel", type="string", length=100)
-     */
-    private $diesel;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="price", type="float")
-     */
-    private $price;
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="advance", type="float")
-     */
-    private $advance;
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="cash", type="float")
-     */
-    private $cash;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="expenses", type="string", length=100)
-     */
-    private $expenses;
-    /**
-     * @var text
-     *
-     * @ORM\Column(name="comments", type="text")
-     */
-    private $comments;
-    /**
+	/**
      * @var date
-     *
-     * @ORM\Column(name="date", type="date")
      */
     private $date;
+	/**
+     * @var string
+     */
+    private $diesel;
+	/**
+     * @var integer
+     */
+    private $price;
+	 /**
+     * @var integer
+     */
+    private $advance;
+	 /**
+     * @var integer
+     */
+    private $cash;
+	/**
+     * @var string
+     */
+    private $expenses;
+
     /**
      * @var string
-     * @ORM\Column(name="pickup", type="integer")
+     */
+    private $comments;
+	
+	/**
+     * @var string
      */
     private $pickup;
-    /**
-     * @var Collection
-     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\BillingPlacesToVisit", mappedBy="billing", cascade={"all"})
-     */
-    private $locations;
-    /**
-     * @var string
-     * @ORM\Column(name="going_to", type="integer")
+	/**
+     * @var integer
      */
     private $goingTo;
+/**
+     * @var Collection
+     */
+    private $locations;	
+    
+    
     /**
-     * @var string
-     * @ORM\Column(name="vehicle_id", type="integer")
+     * @var integer
      */
     private $vehicleId;
-    /**
+	/**
      * @var string
-     * @ORM\Column(name="carnumber", type="string")
      */
     private $carnumber;
     /**
      * @var string
-     * @ORM\Column(name="driver_id", type="integer")
      */
     private $driverId;
     
-	 
-    /**
-    *
-    */
-    public function __construct() {
-    	$this->locations = new ArrayCollection();
+  
+
+    private $placesToVisit;
+        public function __construct()
+    {
+        $this->multiple = new ArrayCollection();
+        //$this->placesToVisit = new ArrayCollection();
     }
+    
+    /**
+	 *
+	 * @return the string
+	 */
+	public function getMultiple() {
+		return $this->multiple;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$multiple
+	 */
+	public function setMultiple($multiple) {
+		$this->multiple = $multiple;
+		return $this;
+	}
 
 
     /**
@@ -144,7 +136,7 @@ class Billing
     /**
      * Set price
      *
-     * @param float $price
+     * @param integer $price
      * @return Billing
      */
     public function setPrice($price)
@@ -156,7 +148,7 @@ class Billing
     /**
      * Get price
      *
-     * @return float
+     * @return integer
      */
     public function getPrice()
     {
@@ -166,7 +158,7 @@ class Billing
     /**
      * Set advance
      *
-     * @param float $advance
+     * @param integer $advance
      * @return Billing
      */
     public function setAdvance($advance)
@@ -178,7 +170,7 @@ class Billing
     /**
      * Get advance
      *
-     * @return float
+     * @return integer
      */
     public function getAdvance()
     {
@@ -188,7 +180,7 @@ class Billing
     /**
      * Set cash
      *
-     * @param float $cash
+     * @param integer $cash
      * @return Billing
      */
     public function setCash($cash)
@@ -200,7 +192,7 @@ class Billing
     /**
      * Get cash
      *
-     * @return float
+     * @return integer
      */
     public function getCash()
     {
@@ -386,5 +378,8 @@ class Billing
     {
     	return $this->carnumber;
     }
-    
+	
+	
+
+
 }

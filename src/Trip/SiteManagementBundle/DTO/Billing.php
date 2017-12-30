@@ -1,101 +1,88 @@
 <?php
 
-namespace Trip\SiteManagementBundle\Entity;
+namespace Trip\SiteManagementBundle\DTO;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Billing
+ * This is a Entity to hold the data of City
  *
- * @ORM\Table(name="billing")
- * @ORM\Entity
+ *
+ * SearchFilter
  */
 class Billing
 {
 	
 	
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+   
 
     /**
      * @var string
      *
-     * @ORM\Column(name="diesel", type="string", length=100)
      */
     private $diesel;
 
     /**
      * @var float
-     *
-     * @ORM\Column(name="price", type="float")
+    
      */
     private $price;
     /**
      * @var float
-     *
-     * @ORM\Column(name="advance", type="float")
+    
      */
     private $advance;
     /**
      * @var float
-     *
-     * @ORM\Column(name="cash", type="float")
+   
      */
     private $cash;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="expenses", type="string", length=100)
+     
      */
     private $expenses;
     /**
      * @var text
-     *
-     * @ORM\Column(name="comments", type="text")
+     
      */
     private $comments;
     /**
      * @var date
-     *
-     * @ORM\Column(name="date", type="date")
+     
      */
     private $date;
     /**
      * @var string
-     * @ORM\Column(name="pickup", type="integer")
+    
      */
     private $pickup;
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\BillingPlacesToVisit", mappedBy="billing", cascade={"all"})
+     
      */
     private $locations;
     /**
      * @var string
-     * @ORM\Column(name="going_to", type="integer")
+   
      */
     private $goingTo;
     /**
      * @var string
-     * @ORM\Column(name="vehicle_id", type="integer")
+     
      */
     private $vehicleId;
     /**
      * @var string
-     * @ORM\Column(name="carnumber", type="string")
+   
      */
     private $carnumber;
     /**
      * @var string
-     * @ORM\Column(name="driver_id", type="integer")
+   
      */
     private $driverId;
     
@@ -108,15 +95,7 @@ class Billing
     }
 
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+   
 
     /**
      * Set diesel

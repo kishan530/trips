@@ -2,64 +2,64 @@
 {% block javascripts %}
 <script>
 $("select").change(function() {
-			$("#search").submit();						
-		});
-		 $("input").blur(function() {
-			$("#search").submit();						
-		});
-		 $(".preferDate").datepicker({
-			    dateFormat: "dd/mm/yy",
-			    numberOfMonths: 2,
-			    minDate: 0
-			});
-		
-		 function sum() 
-		 { 
-		     var fn, ln; 
-		     fn = document.getElementById("n1").value; 
-		     ln = document.getElementById("n2").value; 
-		     result =  +fn + +ln; 
-		     document.getElementById("demo2").innerHTML = result; 
-		 }
+                        $("#search").submit();                                                
+                });
+                 $("input").blur(function() {
+                        $("#search").submit();                                                
+                });
+                 $(".preferDate").datepicker({
+                            dateFormat: "dd/mm/yy",
+                            numberOfMonths: 2,
+                            minDate: 0
+                        });
+                
+                 function sum() 
+                 { 
+                     var fn, ln; 
+                     fn = document.getElementById("n1").value; 
+                     ln = document.getElementById("n2").value; 
+                     result =  +fn + +ln; 
+                     document.getElementById("demo2").innerHTML = result; 
+                 }
 
-		 $('#add-another-package').click(function(e) {
-	            e.preventDefault();
-	            /*if(itemCount>4){
-	                alert('Max 5 only');
-	                exit();
-	            }*/
+                 $('#add-another-package').click(function(e) {
+                    e.preventDefault();
+                    /*if(itemCount>4){
+                        alert('Max 5 only');
+                        exit();
+                    }*/
 
-	            var itineraryList = $('#package-list');
+                    var itineraryList = $('#package-list');
 
-	            // grab the prototype template
-	            var newWidget = itineraryList.attr('data-prototype');
-	            // replace the "__name__" used in the id and name of the prototype
-	            // with a number that's unique to your city
-	            newWidget = newWidget.replace(/__name__/g, packageCount);           
-	            packageCount++;
-	            newWidget = newWidget.replace(/Day/, 'Day '+packageCount);
-	        
-	            
-	            // create a new list element and add it to the list
-	            var newLi = $('<div></div>').html(newWidget);
-	            newLi.appendTo(itineraryList);
-	        
-	            var key = packageCount-1;
-	            var next = key+1;
-	            $(".chosen-select").chosen({
-	                no_results_text: "Oops, nothing found!"
-	            });
-	            $(".preferDate").datepicker({
-	                dateFormat: "dd/mm/yy",
-	                numberOfMonths: 2,
-	                minDate: 0
-	            });
-	            $('.preferTime').timepicker({ 'scrollDefault': 'now' });
+                    // grab the prototype template
+                    var newWidget = itineraryList.attr('data-prototype');
+                    // replace the "__name__" used in the id and name of the prototype
+                    // with a number that's unique to your city
+                    newWidget = newWidget.replace(/__name__/g, packageCount);           
+                    packageCount++;
+                    newWidget = newWidget.replace(/Day/, 'Day '+packageCount);
+                
+                    
+                    // create a new list element and add it to the list
+                    var newLi = $('<div></div>').html(newWidget);
+                    newLi.appendTo(itineraryList);
+                
+                    var key = packageCount-1;
+                    var next = key+1;
+                    $(".chosen-select").chosen({
+                        no_results_text: "Oops, nothing found!"
+                    });
+                    $(".preferDate").datepicker({
+                        dateFormat: "dd/mm/yy",
+                        numberOfMonths: 2,
+                        minDate: 0
+                    });
+                    $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 
 
-	     
-	            
-	        });
+             
+                    
+                });
 </script>
 {% endblock %}
 {% block body %}
@@ -67,87 +67,90 @@ $("select").change(function() {
     <section class="section clearfix">
         <div class="container">
             {{ form_start(form) }}
-        	<div class="row billingpadding">
-        	
-        			<div class="col-lg-3">
-                            	{{ form_label(form.date) }} 
+                <div class="row billingpadding">
+                
+                                <div class="col-lg-3">
+                                    {{ form_label(form.date) }} 
                                 {{ form_widget(form.date) }}
                     </div>
                     <div class="col-lg-3">
-                            	{{ form_label(form.pickup) }} 
+                                    {{ form_label(form.pickup) }} 
                                 {{ form_widget(form.pickup) }}
                     </div>
                     <div class="col-lg-3">
-                            	{{ form_label(form.goingTo) }} 
+                                    {{ form_label(form.goingTo) }} 
                                 {{ form_widget(form.goingTo) }}
                     </div>
                     <div class="col-lg-3">
-                            	{{ form_label(form.locations) }} 
+                                    {{ form_label(form.locations) }} 
                                 {{ form_widget(form.locations) }}
                     </div>
-        	</div>
-        	<div class="row billingpadding">
-        	
-        			<div class="col-lg-3">
-                            	{{ form_label(form.vehicle_id) }} 
+                </div>
+                <div class="row billingpadding">
+                
+                                <div class="col-lg-3">
+                                    {{ form_label(form.vehicle_id) }} 
                                 {{ form_widget(form.vehicle_id) }}
                     </div>
                     <div class="col-lg-3">
-                            	{{ form_label(form.carnumber) }} 
+                                    {{ form_label(form.carnumber) }} 
                                 {{ form_widget(form.carnumber) }}
                     </div>
                     <div class="col-lg-3">
-                            	{{ form_label(form.driver_id) }} 
+                                    {{ form_label(form.driver_id) }} 
                                 {{ form_widget(form.driver_id) }}
                     </div>
                     <div class="col-lg-3">
-                            	{{ form_label(form.diesel) }}
+                                    {{ form_label(form.diesel) }}
                                 {{ form_widget(form.diesel) }}
                     </div>
             </div>
             <div class="row billingpadding">
-        	
-        			<div class="col-lg-3">
-                            	{{ form_label(form.advance) }} 
+                
+                                <div class="col-lg-3">
+                                    {{ form_label(form.advance) }} 
                                 {{ form_widget(form.advance, { 'id': 'n1' }) }}
                                 
                     </div>
                     <div class="col-lg-3">
-                            	{{ form_label(form.cash) }} 
+                                    {{ form_label(form.cash) }} 
                                 {{ form_widget(form.cash, { 'id': 'n2' }) }}
                     </div>
                     <div class="col-lg-3">
-                    			<button onclick="sum()" style="width: 100%;height: 40px;margin-top: 23px;background: transparent;border: 1px solid #e0e0e0;">Total Price : <span id="demo2"> </span></button>
+                                            <button onclick="sum()" style="width: 100%;height:
+40px;margin-top: 23px;background: transparent;border: 1px
+solid #e0e0e0;">Total Price : <span id="demo2">
+</span></button>
                       
                     </div>
                     <div class="col-lg-3">
-                   				{{ form_label(form.expenses) }} 
+                                                   {{ form_label(form.expenses) }} 
                                 {{ form_widget(form.expenses) }}
-                            	
+                                    
                     </div>
                    
                     
                     
             
-        	</div>
-        	<div class="row">
-        	
-        			<div class="col-lg-3">
-        			
+                </div>
+                <div class="row">
+                
+                                <div class="col-lg-3">
+                                
                                 {{ form_label(form.comments) }} 
                                 {{ form_widget(form.comments) }}
                     </div>
                     <div class="col-lg-3">
-                            	
+                                    
                     </div>
                     <div class="col-lg-3">
-                            	
+                                    
                     </div>
                     <div class="col-lg-3">
-                            	
+                                    
                     </div>
-        	</div>
-        	{{ form_end(form) }}
+                </div>
+                {{ form_end(form) }}
             <div class="row">
                 <div id="fullwidth" class="col-sm-12">
                     <div class="col-lg-5">
@@ -159,7 +162,9 @@ $("select").change(function() {
             </div>
          
          {#<div id="package-list"
-                      data-prototype="{{ _self.information_prototype(form.multiple.vars.prototype)|e }}">
+                      data-prototype="{{
+_self.information_prototype(form.multiple.vars.prototype)|e
+}}">
                             {% for j in form.multiple %}
                              {{ _self.information_prototype(j,loop.index) }}
                             {% endfor %}

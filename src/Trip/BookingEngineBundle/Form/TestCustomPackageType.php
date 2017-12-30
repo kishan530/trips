@@ -1,6 +1,6 @@
 <?php
 
-namespace Trip\SiteManagementBundle\Form;
+namespace Trip\BookingEngineBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -11,17 +11,20 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\Event\DataEvent;
-use Trip\SiteManagementBundle\Entity\BillingPlacesToVisit;
+use Trip\BookingEngineBundle\Form\TestNewPackageType;
 
-class BillingType extends AbstractType
+class TestCustomPackageType extends AbstractType
 {
-	private $bookingService;
-	private $catalog;
 	
-	public function __construct($bookingService)
+	private $bookingService;
+	private $catalogService;
+	private $security;
+	
+	public function __construct($bookingService,$security)
 	{
 		$this->bookingService= $bookingService;
-		$this->catalog = $bookingService->getCatalog();
+		$this->catalogService = $bookingService->getCatalog();
+		$this->security = $security;
 	}
 	
 	/**
@@ -29,7 +32,7 @@ class BillingType extends AbstractType
 	 */
 	private function getLocations()
 	{
-		$locations = $this->catalog->getLocations();
+		$locations = $this->catalogService->getLocations();
 		$tempLocations = array();
 		foreach ($locations as $location){
 			$tempLocations[$location->getId()] = $location->getName();
@@ -39,42 +42,41 @@ class BillingType extends AbstractType
 	/**
 	 * @param OptionsResolverInterface $resolver
 	 */
-	private function getVehicles()
+	public function getVehicles()
 	{
-		$locations = $this->catalog->getVehicles();
+		$locations = $this->catalogService->getVehicles();
 		$tempLocations = array();
 		foreach ($locations as $location){
 			$tempLocations[$location->getId()] = $location->getModel();
 		}
 		return $tempLocations;
 	}
+	
 	/**
 	 * @param OptionsResolverInterface $resolver
 	 */
-	private function getDriver()
-	{
-		$drivers= $this->bookingService->getDriver();
-		$tempDriver = array();
-		foreach ($drivers as $driver){
-			$tempDriver[$driver->getId()] = $driver->getName();
-		}
-		return $tempDriver;
-	}
-    /**
+	
+     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        ->add('multiple', 'collection', array(
-        		'type'         => new NewBillingType($this->bookingService,$this->catalog),
+            
+        // ->add('submit', 'submit', array('label' => 'submit'))
+         ->add('multiple', 'collection', array(
+        		'type'         => new TestNewPackageType($this->catalogService,$this->security),
         		'allow_add'    => true,
                  'prototype'=>true,
         		'required'    => false,
         ))
-		 ->add('submit', 'submit', array('label' => 'submit'))
+     
         ;
+        
+        
+        
+                    
     }
     
     /**
@@ -82,9 +84,10 @@ class BillingType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Trip\SiteManagementBundle\DTO\BillingDto'
-        ));
+            $resolver->setDefaults(array(
+            'data_class' => 'Trip\BookingEngineBundle\DTO\TestCustomer',
+            'allow_extra_fields' => true,
+            ));
     }
 
     /**
@@ -92,6 +95,6 @@ class BillingType extends AbstractType
      */
     public function getName()
     {
-        return 'trip_sitemanagementbundle_billing';
+        return 'trip_custom_package';
     }
 }
