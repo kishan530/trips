@@ -10,7 +10,17 @@ use Trip\BookingEngineBundle\DTO\SearchFilter;
 use Trip\BookingEngineBundle\Form\SearchHotelType;
 use Trip\BookingEngineBundle\DTO\SearchHotel;
 use Trip\BookingEngineBundle\Entity\Customer;
+use Trip\BookingEngineBundle\Entity\TestCustomer;
+use Trip\BookingEngineBundle\Entity\Vendor;
+use Trip\BookingEngineBundle\Entity\VendorLogin;
+use Trip\BookingEngineBundle\Entity\VendorDriver;
+use Trip\BookingEngineBundle\Entity\VendorVehicles;
 use Trip\BookingEngineBundle\DTO\Customer as CustomerDto;
+use Trip\BookingEngineBundle\DTO\TestCustomer as TestCustomerDto;
+use Trip\BookingEngineBundle\DTO\Vendor as VendorDto;
+use Trip\BookingEngineBundle\DTO\TestNewPackage;
+use Trip\BookingEngineBundle\DTO\VendorVehicles as VendorVehiclesDto;
+use Trip\BookingEngineBundle\DTO\VendorDriver as VendorDriverDto;
 use Trip\BookingEngineBundle\DTO\NewPackage;
 use Trip\BookingEngineBundle\Entity\Booking;
 use Trip\BookingEngineBundle\Entity\Pickup;
@@ -19,7 +29,11 @@ use Trip\BookingEngineBundle\Entity\PlacesToVisit;
 use Trip\BookingEngineBundle\Entity\VehicleBooking;
 use Trip\BookingEngineBundle\Entity\HotelBooking;
 use Trip\BookingEngineBundle\Entity\Billing;
+use Trip\BookingEngineBundle\Form\VendorLoginType;
 use Trip\BookingEngineBundle\Form\CustomerType;
+use Trip\BookingEngineBundle\Form\VendorRegistraionType;
+use Trip\BookingEngineBundle\Form\TestCustomPackageType;
+use Trip\BookingEngineBundle\Form\TestNewPackageType;
 use Trip\BookingEngineBundle\Form\BillingType;
 use Trip\BookingEngineBundle\Form\EditCustomerType;
 use Trip\BookingEngineBundle\Form\NewPackageType;
@@ -28,6 +42,11 @@ use Trip\BookingEngineBundle\Form\CustomPackageType;
 use Trip\SiteManagementBundle\Entity\Contact;
 use Trip\SiteManagementBundle\Form\ContactType;
 use Trip\BookingEngineBundle\DependencyInjection\Instamojo;
+use Trip\SiteManagementBundle\Entity\BillingPlacesToVisit;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Trip\BookingEngineBundle\Form\VendorNewVehicleType;
+use Trip\BookingEngineBundle\Form\VendorNewDriverType;
+
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 class BookingController extends Controller
@@ -54,7 +73,7 @@ class BookingController extends Controller
      * @param Search $entity
      * @return unknown
      */
-    private function createBookingForm(Customer $entity){
+    private function sub(Customer $entity){
     	$form = $this->createForm(new CustomerType(), $entity, array(
     			'action' => $this->generateUrl('trip_booking_engine_book_submit'),
     			'method' => 'POST',
@@ -134,6 +153,7 @@ class BookingController extends Controller
     	$form->add('submit', 'submit', array('label' => 'Submit Now'));
     	return $form;
     }
+	
     
     
     public function searchAction(Request $request)
@@ -622,6 +642,7 @@ class BookingController extends Controller
             $session->set('bookingObj',$booking);
              $session->set('amountToPay',$amountToPay);
             $paymentLink = $this->getPaymentLink($amountToPay);
+			var_dump($paymentLink);
         //$paymentLink = "https://www.instamojo.com/Waseemsyed/tirupati-caars-services-cb8a4/";
         $paymentLink.="?data_name=".$customer->getName()."&data_email=".$customer->getEmail()."&data_phone=".$customer->getMobile()."&embed=form";
         return $this->render('TripBookingEngineBundle:Default:payment.html.twig', array(
@@ -863,6 +884,7 @@ class BookingController extends Controller
     	$customer = new CustomerDto();
        $package = new NewPackage();
         $collection = $customer->getMultiple();
+		//var_dump($collection);
         $collection->add($package);
     	$form   = $this->createCustomPackageForm($customer);
     	$form->handleRequest($request);
@@ -1294,5 +1316,782 @@ class BookingController extends Controller
      
      
 	//**************End************//
+	private function createTestCustomPackageForm(TestCustomerDto $customer){
+        $bookingService = $this->container->get( 'booking.services' );
+        $security = $this->container->get ( 'security.context' );
+        $form = $this->createForm(new TestCustomPackageType($bookingService,$security), $customer, array(
+            'action' => $this->generateUrl('trip_booking_engine_testcustomPackage'),
+            'method' => 'POST',
+        ));
+       $form->add('submit', 'submit', array('label' => 'submit'));
+
+        return $form;
+    }
+    public function testCustomPackageAction(Request $request){
+         
+    	$security = $this->container->get ( 'security.context' );
+        $em = $this->getDoctrine()->getManager();
+    	$hotel = new TestCustomerDto();
+       $newBilling = new TestNewPackage();
+        $collection = $hotel->getMultiple();
+		//var_dump($collection);
+        $collection->add($newBilling);
+		
+    	$form   = $this->createTestCustomPackageForm($hotel);
+    	$form->handleRequest($request);
+        if ($form->isValid()) {
+            
+          
+    	//$billingObj->setId($hotel->getId());
+		 foreach($collection as $service){
+			  $billingObj = new TestCustomer();
+    	$billingObj->setDiesel($service->getDiesel());
+    	$billingObj->setPrice($service->getPrice());
+    	$billingObj->setAdvance($service->getAdvance());
+    	$billingObj->setCash($service->getCash());
+    	$billingObj->setExpenses($service->getExpenses());
+    	$billingObj->setComments($service->getComments());
+    	$billingObj->setDate($service->getDate());
+    	$billingObj->setPickup($service->getPickup());
+    	$billingObj->setGoingTo($service->getGoingTo());
+    	$billingObj->setVehicleId($service->getVehicleId());
+    	$billingObj->setDriverId($service->getDriverId());
+    	$billingObj->setCarnumber($service->getCarnumber());
+		//$placesToVisitCollection = new ArrayCollection();
+    	//$collection = $hotel->getLocations();
+    	$billingObj->setLocations($service->getLocations());
+		$placesToVisitCollection= $billingObj->getLocations();
+		$test='test1';
+		var_dump($test);
+    	foreach($placesToVisitCollection as $location){
+			var_dump('test2');
+    		$placesToVisitObj = new BillingPlacesToVisit();
+    		$placesToVisitObj->setLocation($location);
+    		$placesToVisitObj->setBilling($billingObj);
+			$em->persist($placesToVisitObj);
+    		//$placesToVisitCollection->add($placesToVisitObj);
+    	}
+		$em->persist($billingObj);
+    	}
+    	
+    		$em->flush();
+            
+         
+            
+    		return $this->redirect($this->generateUrl('trip_booking_engine_testcustomPackage'));    
+        
+        }
+        
+        return $this->render('TripBookingEngineBundle:Default:testcustomPackage.html.twig',array(
+    			
+                		'form'   => $form->createView(),
+    	));
+    }
+    private function createVendorRegistraionForm(Vendor $vendor,$vendorId){
+        $bookingService = $this->container->get( 'booking.services' );
+        $security = $this->container->get ( 'security.context' );
+        $form = $this->createForm(new VendorRegistraionType($bookingService,$security), $vendor, array(
+            'action' => $this->generateUrl('trip_booking_engine_vendor_registraion_form',array('vendorId' => $vendorId)),
+            'method' => 'POST',
+        ));
+       $form->add('submit', 'submit', array('label' => 'submit'));
+
+        return $form;
+    }
+    public function vendorRegistraionAction(Request $request){
+        $name = $_GET['vendorName'];
+        $email = $_GET['vendorEmail'];
+        $mobileno = $_GET['vendorMobileno'];
+    	$security = $this->container->get ( 'security.context' );
+        $em = $this->getDoctrine()->getManager();
+		$vendorId = $request->query->get('vendorId');
+		
+    	$vendor = new Vendor();
+		
+       $newVehicle = new VendorVehicles();
+	    $newDriver = new VendorDriver();
+        $vehicleCollection = $vendor->getVehiclesList();
+		$driverCollection = $vendor->getDriversList();
+		$vehicleCollection->add($newVehicle);
+		$driverCollection->add($newDriver);
+		
+		
+    	$form   = $this->createVendorRegistraionForm($vendor,$vendorId);
+    	$form->handleRequest($request);
+        if ($form->isValid()) {
+			$vendorId = $request->query->get('vendorId');
+			$vendor->setVendorId($vendorId);
+				$uploadedPanfile = $vendor->getPancardid();
+			if (!is_null($uploadedPanfile)) {
+             		$file_name = $uploadedPanfile->getClientOriginalName ();
+             		$dir = 'images/packages/';
+             		$uploadedPanfile->move ( $dir, $file_name );
+             		$vendor->setPancardid ($file_name );
+             			
+             	}
+				$uploadedfile = $vendor->getidProof();
+			if (!is_null($uploadedfile)) {
+             		$file_name = $uploadedfile->getClientOriginalName ();
+             		$dir = 'images/packages/';
+             		$uploadedfile->move ( $dir, $file_name );
+             		$vendor->setidProof ($file_name );
+             		
+             			
+             	}
+			
+			
+			
+            $vehicleCollection = $vendor->getVehiclesList();
+			$collection = $vendor->getVehicles();
+			  foreach($vehicleCollection as $vehicle){
+				
+			 	  	$uploadedVehicleImage = $newVehicle->getVehicleImage();
+			if (!is_null($uploadedVehicleImage) && $uploadedVehicleImage instanceof UploadedFile) {
+             		$file_name = $uploadedVehicleImage->getClientOriginalName ();
+             		$dir = 'images/packages/';
+             		$uploadedVehicleImage->move ( $dir, $file_name );
+             		$newVehicle->setVehicleImage ($file_name );
+             		
+             			
+             	}
+				
+				$uploadedVehicleRegisCer = $newVehicle->getVehicleRegisCer();
+			if (!is_null($uploadedVehicleRegisCer) && $uploadedVehicleRegisCer instanceof UploadedFile) {
+             		$file_name = $uploadedVehicleRegisCer->getClientOriginalName ();
+             		$dir = 'images/packages/';
+             		$uploadedVehicleRegisCer->move ( $dir, $file_name );
+             		$newVehicle->setVehicleRegisCer ($file_name );
+             		
+             			
+             	}
+			$uploadedVehicleInsurance = $newVehicle->getVehicleInsurance();
+			if (!is_null($uploadedVehicleInsurance) && $uploadedVehicleInsurance instanceof UploadedFile) {
+             		$file_name = $uploadedVehicleInsurance->getClientOriginalName ();
+             		$dir = 'images/packages/';
+             		$uploadedVehicleInsurance->move ( $dir, $file_name );
+             		$newVehicle->setVehicleInsurance ($file_name );
+             		
+             			
+             	}
+				$uploadedVehiclePopulation = $newVehicle->getVehiclePopulation();
+			if (!is_null($uploadedVehiclePopulation) && $uploadedVehiclePopulation instanceof UploadedFile) {
+             		$file_name = $uploadedVehiclePopulation->getClientOriginalName ();
+             		$dir = 'images/packages/';
+             		$uploadedVehiclePopulation->move ( $dir, $file_name );
+             		$newVehicle->setVehiclePopulation ($file_name );
+             		
+             			
+             	} 	
+            	$vehicle->setVendor($vendor);
+				$collection->add($vehicle);
+            	
+			  }
+            	$driverCollection = $vendor->getDriversList();
+				$dcollection = $vendor->getDrivers();
+            	foreach($driverCollection as $driver){
+				 	$uploadedDrivingLicence = $newDriver->getDrivingLicence();
+			if (!is_null($uploadedDrivingLicence) && $uploadedDrivingLicence instanceof UploadedFile) {
+             		$file_name = $uploadedDrivingLicence->getClientOriginalName ();
+             		$dir = 'images/packages/';
+             		$uploadedDrivingLicence->move ( $dir, $file_name );
+             		$newDriver->setDrivingLicence ($file_name );
+             		
+             			
+             	}
+				$uploadedDriverIdproof = $newDriver->getDriverIdproof();
+			if (!is_null($uploadedDriverIdproof) && $uploadedDriverIdproof instanceof UploadedFile) {
+             		$file_name = $uploadedDriverIdproof->getClientOriginalName ();
+             		$dir = 'images/packages/';
+             		$uploadedDriverIdproof->move ( $dir, $file_name );
+             		$newDriver->setDriverIdproof ($file_name );
+             		
+             			
+             	}	 
+					
+					$driver->setVendor($vendor);
+				$dcollection->add($driver);
+					
+            	
+            	}
+				$em->persist($vendor);
+    		$em->flush();
+            	 return $this->redirect($this->generateUrl('trip_booking_engine_vendor_edit_login',array(
+            	     'vendorId' => $vendor->getId(),
+            	 )));    
+            
+            
+    		
+        
+        }
+        
+        return $this->render('TripBookingEngineBundle:Default:vendorRegistraion.html.twig',array(
+    			
+                		'form'   => $form->createView(),
+            'vendorName' => $name,
+            'vendorEmail' => $email,
+            'vendorMobileno' => $mobileno,
+    	));
+    }
+    private function createVendorLoginForm(VendorLogin $vendor){
+      
+        $form = $this->createForm(new VendorLoginType(), $vendor, array(
+            'action' => $this->generateUrl('trip_booking_engine_vendor_login'),
+            'method' => 'POST',
+        ));
+       $form->add('submit', 'submit', array('label' => 'submit'));
+
+        return $form;
+    }
+    public function vendorLoginAction(Request $request){
+        $name = $_GET['name']; 
+        $email = $_GET['email']; 
+        $mobileno = $_GET['mobileno']; 
+        $vendorPwd= $this->get('request')->request->get('pwd');
+        $vendorConPwd= $this->get('request')->request->get('confirmpwd');
+        if($vendorPwd == $vendorConPwd){
+        	$em = $this->getDoctrine()->getManager();
+        	$vendor = new VendorLogin();
+        	
+        	
+        	$highest_id = $em->createQueryBuilder()
+        	->select('MAX(e.id)')
+        	->from('TripBookingEngineBundle:VendorLogin', 'e')
+        	->getQuery()
+        	->getSingleScalarResult();
+        	
+        	$highest_id++;
+        	$highest_id = 'VD00' .$highest_id;
+        	
+        	$vendor->setName($name);
+        	$vendor->setEmail($email);
+        	$vendor->setmobileNo($mobileno);
+        	$vendor->setVendorPwd($vendorPwd);
+        	//$vendor->setVendorConPwd($vendorConPwd);
+        	$vendor->setVendor_id($highest_id);
+        	//$vendor->setVendor_id($vendor_id);
+        	$em->persist($vendor);
+        	$em->flush();
+        	
+        	
+        	$mail = "Dear $name. <br> Click on the following link to create a new password for your justtrip.in account<br>";
+        	$mail .= "<a href='http://localhost/trips/web/app_dev.php/vendor-registraion-form?name=$name&email=$email&mobileno=$mobileno' style='text-decoration:none;'>Confirm Now</a>";
+        	//$mail .= $name;
+        	$mailService = $this->container->get( 'mail.services' );
+        	$mailService->mail($email,'Just Trip:Vendor Registration',$mail);
+        	//$mailService->mail('info@justtrip.in','Just Trip:Vendor Registration',$mail);
+        	return $this->redirect($this->generateUrl('trip_booking_engine_vendor_validate_login'));    
+        }
+        else{
+        	return $this->redirect($this->generateUrl('trip_booking_engine_test_vendor_password',array(
+        			
+        			'name'   => $name,
+        			'email'   => $email,
+        			'mobileno'   => $mobileno,
+        	)));    
+        }
+       
+        
+        return $this->render('TripBookingEngineBundle:Default:vendorLogin.html.twig');
+    }
+	private function createTestVendorLoginForm(VendorLogin $vendor){
+      
+        $form = $this->createForm(new VendorLoginType(), $vendor, array(
+            'action' => $this->generateUrl('trip_booking_engine_test_vendor_success'),
+            'method' => 'POST',
+        ));
+       $form->add('submit', 'submit', array('label' => 'Register'));
+
+        return $form;
+    }
+	public function vendorTestLoginAction(Request $request){
+         
+    	
+	    $error = '';
+	    return $this->render('TripBookingEngineBundle:Default:vendorLogin.html.twig',array(
+	        
+	        'error'   => $error,
+	      
+	    ));
+    }
+	public function vendorTestSuccessAction(Request $request){
+		$name = $this->get('request')->request->get('vendorName');
+		
+		$email =$this->get('request')->request->get('vendorEmail');
+		$mobileno =$this->get('request')->request->get('vendorMobileno');
+		
+		$em = $this->getDoctrine()->getManager();
+		$vendor = $em->getRepository('TripBookingEngineBundle:VendorLogin')->findOneBy(
+				array('email' => $email)
+				);
+		if($vendor == null){
+		
+		$mail = " <p>Dear $name .<br> Click on the following link to create a  password for your justtrip.in account<br></p>";
+		//$mail .= "<a href='http://localhost/trips/web/app_dev.php/test-vendor-password?" . http_build_query(array('data' => $data)) ."' style='text-decoration:none;'>Confirm Now</a>";
+		$mail .= "<a href='http://localhost/trips/web/app_dev.php/test-vendor-password?name=$name&email=$email&mobileno=$mobileno' style='text-decoration:none;'>Confirm Now</a>";
+		//$mail .= $name;
+		$mailService = $this->container->get( 'mail.services' );
+		$mailService->mail($email,'Just Trip:Vendor Confirmation',$mail);
+		}
+		else 
+		{
+            $error ='The mail is already registered with justtrip.in';
+            return $this->redirect($this->generateUrl('trip_booking_engine_test_vendor_login',array(
+                'error'   => $error,
+            )));
+		}
+        return $this->render('TripBookingEngineBundle:Default:testvendor.html.twig');
+    }
+    public function vendorTestPasswordAction(Request $request){
+    	
+    	$name = $_GET['name'];
+    	$email = $_GET['email'];
+    	$mobileno = $_GET['mobileno'];
+    	
+    	return $this->render('TripBookingEngineBundle:Default:VendorPassword.html.twig',array(
+    			
+    			'name'   => $name,
+    			'email'   => $email,
+    			'mobileno'   => $mobileno,
+    	));
+    }
+    public function vendorConfirmLoginAction(Request $request){
+    	
+    	
+    	return $this->render('TripBookingEngineBundle:Default:vendorConfirmLogin.html.twig');
+    }
+    public function vendorValidateLoginAction(Request $request){
+        $error='';
+    		$email = $this->get('request')->request->get('email');
+    		$pwd = $this->get('request')->request->get('pwd');
+    		$em = $this->getDoctrine()->getManager();
+    		$vendor = $em->getRepository('TripBookingEngineBundle:VendorLogin')->findOneBy(
+    				array('email' => $email, 'vendorPwd' => $pwd)
+    				);
+    		if($vendor != null){
+    		$vendorEmail = $vendor->getEmail();
+    		$vendorName = $vendor->getName();
+    		$vendorMobileno = $vendor->getMobileNo();
+    		$vendorPwd = $vendor->getVendorPwd();
+    		if($email ==$vendorEmail && $pwd == $vendorPwd){
+    			
+    			
+    			return $this->redirect($this->generateUrl('trip_booking_engine_vendor_registraion_form',array(
+    			    'vendorName' => $vendorName,
+    			    'vendorEmail' => $vendorEmail,
+    			    'vendorMobileno' => $vendorMobileno,
+    			)));
+    		}
+    		
+    		else
+    		{
+    		    $error='You entered an incorrect username or password';
+    		    return $this->redirect($this->generateUrl('trip_booking_engine_vendor_confirm_login',array(
+    		        'error'   => $error,
+    		    )));
+    		
+    		}
+    		}
+    		
+    	
+    		return $this->render('TripBookingEngineBundle:Default:vendorConfirmLogin.html.twig');
+    }
+    public function vendorResetPasswordAction(Request $request){
+      
+        
+        return $this->render('TripBookingEngineBundle:Default:vendorResetPwd.html.twig');
+    }
+    public function vendorResetPasswordValidationAction(Request $request){
+        $error='';
+        $email = $this->get('request')->request->get('email');
+        $pwd = $this->get('request')->request->get('pwd');
+        $confirmpwd = $this->get('request')->request->get('confirmpwd');
+        $em = $this->getDoctrine()->getManager();
+        
+       
+        $vendor = $em->getRepository('TripBookingEngineBundle:VendorLogin')->findOneBy(
+            array('email' => $email)
+            );
+      
+            if($vendor != null){
+                if($pwd == $confirmpwd){
+                    $qb = $em->createQueryBuilder();
+                    $q = $qb->update('Trip\BookingEngineBundle\Entity\VendorLogin', 'v')
+                    ->set('v.vendorPwd', $qb->expr()->literal($pwd))
+                    ->where('v.email = ?1')
+                    ->setParameter(1, $email)
+                    ->getQuery();
+                    $p = $q->execute();
+                  
+                        return $this->redirect($this->generateUrl('trip_booking_engine_vendor_confirm_login'));
+                  
+                }
+                else {
+                     $error = 'password and confirm password should be same';
+                     return $this->redirect($this->generateUrl('trip_booking_engine_vendor_reset_password',array(
+                         'error'   => $error,
+                     )));
+                 }
+        
+          }
+        else
+        {
+            $error='You are not registered with justtrip.in';
+            return $this->redirect($this->generateUrl('trip_booking_engine_vendor_reset_password',array(
+                'error'   => $error,
+            )));
+            
+        }
+       
+        
+        return $this->render('TripBookingEngineBundle:Default:vendorResetPwd.html.twig');
+    }
+    public function vendorProfileAction(Request $request){
+        
+        $email = $_GET['email'];
+        $em = $this->getDoctrine()->getManager();
+        $vendor = $em->getRepository('TripBookingEngineBundle:Vendor')->findOneBy(
+            array( 'email' => $email)
+            );
+        
+        
+        return $this->render('TripBookingEngineBundle:Default:vendorProfile.html.twig',array(
+            'vendor' => $vendor,
+        ));
+    }
+    public function vendorEditLoginAction(Request $request){
+        
+        
+        return $this->render('TripBookingEngineBundle:Default:vendorEditLogin.html.twig');
+    }
+    public function vendorEditValidateLoginAction(Request $request){
+        $error='';
+        $email = $this->get('request')->request->get('email');
+        $cname = $this->get('request')->request->get('cname');
+        $em = $this->getDoctrine()->getManager();
+        $vendor = $em->getRepository('TripBookingEngineBundle:Vendor')->findOneBy(
+            array( 'companyname' => $cname,'email' => $email)
+            );
+        if($vendor != null){
+            $vendorEmail = $vendor->getEmail();
+            $vendorcname = $vendor->getCompanyname();
+            if($email ==$vendorEmail &&  $cname ==  $vendorcname){
+                
+                
+                return $this->redirect($this->generateUrl('trip_booking_engine_vendor_profile',array(
+                    'email' => $email,
+                )));
+            }
+        }
+        else
+        {
+            $error='You entered an incorrect Company Name or Email';
+            return $this->redirect($this->generateUrl('trip_booking_engine_vendor_edit_login',array(
+                'error'   => $error,
+            )));
+            
+        }
+    
+        
+        return $this->render('TripBookingEngineBundle:Default:vendorEditLogin.html.twig');
+    }
+    private function createVendorAddVehicleForm(VendorVehicles $vendor,$id){
+        $bookingService = $this->container->get( 'booking.services' );
+        $security = $this->container->get ( 'security.context' );
+        
+        $form = $this->createForm(new VendorNewVehicleType( $bookingService,$security), $vendor, array(
+            'action' => $this->generateUrl('trip_booking_engine_vendor_add_vehicle',array(
+                'id' => $id,
+            )),
+            'method' => 'POST',
+        ));
+        $form->add('submit', 'submit', array('label' => 'Add Vehicle'));
+        
+        return $form;
+    }
+    public function vendorAddVehicleAction(Request $request){
+        $id = $_GET['id'];
+       
+        $vehicle = new VendorVehicles();
+       
+       $form =  $this->createVendorAddVehicleForm($vehicle,$id);
+       $form->handleRequest($request);
+       if ($form->isValid()) {
+           $em = $this->getDoctrine()->getManager();
+          $vendor = $em->getRepository('TripBookingEngineBundle:Vendor')->findOneBy(array( 'id' => $id));
+        
+           $vehicle->setVendor($vendor);
+        
+           $collection = $vendor->getVehicles();
+           
+              
+               $uploadedVehicleImage = $vehicle->getVehicleImage();
+               if (!is_null($uploadedVehicleImage)) {
+                   $file_name = $uploadedVehicleImage->getClientOriginalName ();
+                   $dir = 'images/packages/';
+                   $uploadedVehicleImage->move ( $dir, $file_name );
+                   $vehicle->setVehicleImage ($file_name );
+                   }
+             
+               $uploadedVehicleRegisCer = $vehicle->getVehicleRegisCer();
+               if (!is_null($uploadedVehicleRegisCer)) {
+                   $file_name = $uploadedVehicleRegisCer->getClientOriginalName ();
+                   $dir = 'images/packages/';
+                   $uploadedVehicleRegisCer->move ( $dir, $file_name );
+                   $vehicle->setVehicleRegisCer ($file_name );
+                 }
+               $uploadedVehicleInsurance = $vehicle->getVehicleInsurance();
+               if (!is_null($uploadedVehicleInsurance)) {
+                   $file_name = $uploadedVehicleInsurance->getClientOriginalName ();
+                   $dir = 'images/packages/';
+                   $uploadedVehicleInsurance->move ( $dir, $file_name );
+                   $vehicle->setVehicleInsurance ($file_name );
+                   }
+               $uploadedVehiclePopulation = $vehicle->getVehiclePopulation();
+               if (!is_null( $uploadedVehiclePopulation)) {
+                   $file_name = $uploadedVehiclePopulation->getClientOriginalName ();
+                   $dir = 'images/packages/';
+                   $uploadedVehiclePopulation->move ( $dir, $file_name );
+                   $vehicle->setVehiclePopulation ($file_name );
+                   
+                   
+               } 
+               
+           $em->persist($vehicle);
+           $em->flush();
+       }
+        return $this->render('TripBookingEngineBundle:Default:vendorAddVehicle.html.twig',array(
+            'form' => $form->createView(),
+        ));
+    }
+    private function createVendorAddDriverForm(VendorDriver $driver,$id){
+        $bookingService = $this->container->get( 'booking.services' );
+        $security = $this->container->get ( 'security.context' );
+        
+        $form = $this->createForm(new VendorNewDriverType( $bookingService,$security), $driver, array(
+            'action' => $this->generateUrl('trip_booking_engine_vendor_add_driver',array(
+                'id' => $id,
+            )),
+            'method' => 'POST',
+        ));
+        $form->add('submit', 'submit', array('label' => 'Add Driver'));
+        
+        return $form;
+    }
+    public function vendorAddDriverAction(Request $request){
+        $id = $_GET['id'];
+        
+        $driver = new VendorDriver();
+       
+        $form =  $this->createVendorAddDriverForm($driver,$id);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $vendor = $em->getRepository('TripBookingEngineBundle:Vendor')->findOneBy(array( 'id' => $id));
+           
+            $driver->setVendor($vendor);
+            $collection = $vendor->getDrivers();
+            
+                $uploadedDrivingLicence = $driver->getDrivingLicence();
+                if (!is_null($uploadedDrivingLicence)) {
+                    $file_name = $uploadedDrivingLicence->getClientOriginalName ();
+                    $dir = 'images/packages/';
+                    $uploadedDrivingLicence->move ( $dir, $file_name );
+                    $driver->setDrivingLicence ($file_name );
+                   
+                    
+                }
+                $uploadedDriverIdproof = $driver->getDriverIdproof();
+                if (!is_null($uploadedDriverIdproof)) {
+                    $file_name = $uploadedDriverIdproof->getClientOriginalName ();
+                    $dir = 'images/packages/';
+                    $uploadedDriverIdproof->move ( $dir, $file_name );
+                    $driver->setDriverIdproof ($file_name );
+                    
+                }
+                
+              
+                $em->persist($driver);
+            $em->flush();
+        }
+        return $this->render('TripBookingEngineBundle:Default:vendorAddDriver.html.twig',array(
+            'form' => $form->createView(),
+        ));
+    }
+    public function vendorListDriversAction(Request $request){
+        $id = $_GET['id'];
+      
+            $em = $this->getDoctrine()->getManager();
+            $vendor = $em->getRepository('TripBookingEngineBundle:Vendor')->findOneBy(array( 'id' => $id));
+           
+            $driverList = $em->getRepository('TripBookingEngineBundle:VendorDriver')->findBy(array( 'vendor' =>  $id));
+         
+        return $this->render('TripBookingEngineBundle:Default:vendorListDrivers.html.twig',array(
+            'driverList' => $driverList,
+        ));
+    }
+    public function vendorListVehiclesAction(Request $request){
+        $id = $_GET['id'];
+        
+        $em = $this->getDoctrine()->getManager();
+        $vendor = $em->getRepository('TripBookingEngineBundle:Vendor')->findOneBy(array( 'id' => $id));
+       
+        $vehiclesList = $em->getRepository('TripBookingEngineBundle:VendorVehicles')->findBy(array( 'vendor' =>  $id));
+      
+        return $this->render('TripBookingEngineBundle:Default:vendorListVehicles.html.twig',array(
+            'vehiclesList' => $vehiclesList,
+        ));
+    }
+    public function vendorRemoveDriverAction(Request $request){
+        $id = $_GET['id'];
+        
+        $em = $this->getDoctrine()->getManager();
+        $vendorDriver = $em->getRepository('TripBookingEngineBundle:VendorDriver')->findOneBy(array( 'id' => $id));
+       $id =  $vendorDriver->getId();
+       
+       $vendorDriver = $em->getRepository('TripBookingEngineBundle:VendorDriver')->find( $id);
+      
+       $em->remove($vendorDriver);
+       $em->flush();
+        return $this->render('TripBookingEngineBundle:Default:vendorDeleteSuccess.html.twig');
+    }
+    public function vendorRemoveVehicleAction(Request $request){
+        $id = $_GET['id'];
+        
+        $em = $this->getDoctrine()->getManager();
+        $vendorVehicle = $em->getRepository('TripBookingEngineBundle:VendorVehicles')->findOneBy(array( 'id' => $id));
+        $id =  $vendorVehicle->getId();
+        
+        $vendorVehicle = $em->getRepository('TripBookingEngineBundle:VendorVehicles')->find( $id);
+       
+        $em->remove($vendorVehicle);
+        $em->flush();
+        return $this->render('TripBookingEngineBundle:Default:vendorDeleteSuccess.html.twig');
+    }
+    private function createVendorEditProfileForm(Vendor $vendor,$id){
+        $bookingService = $this->container->get( 'booking.services' );
+        $security = $this->container->get ( 'security.context' );
+        $form = $this->createForm(new VendorRegistraionType($bookingService,$security), $vendor, array(
+            'action' => $this->generateUrl('trip_booking_engine_vendor_edit_vendor',array(
+                'id' => $id,
+            ))));
+        $form->add('submit', 'submit', array('label' => 'Update'));
+        
+        return $form;
+    }
+    public function vendorEditProfileAction(Request $request){
+         $id = $_GET['id'];
+      //  $vendorNew = new Vendor();
+       
+        $request = $this->getRequest();
+        
+         $em = $this->getDoctrine()->getManager();
+        $vendor = $em->getRepository('TripBookingEngineBundle:Vendor')->find($id);
+        $uploadedPanfile =$vendor->getPancardid();
+        $uploadedfile =$vendor->getidProof();
+        $session = $this->getRequest()->getSession();
+        $session->set('pan', $uploadedPanfile);
+        $session->set('id', $uploadedfile);
+        
+      
+        $form = $this->createVendorEditProfileForm($vendor,$id);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $uploadedPanfile = $vendor->getPancardid();
+          
+            if (!is_null($uploadedPanfile)) {
+                $file_name = $uploadedPanfile->getClientOriginalName ();
+                $dir = 'images/packages/';
+                $uploadedPanfile->move ( $dir, $file_name );
+                $vendor->setPancardid ($file_name );
+               
+                
+            }else{
+                $vendor->setPancardid ($session->get('pan'));
+            }
+            $uploadedfile = $vendor->getidProof();
+            if (!is_null($uploadedfile)) {
+                $file_name = $uploadedfile->getClientOriginalName ();
+                $dir = 'images/packages/';
+                $uploadedfile->move ( $dir, $file_name );
+                $vendor->setidProof ($file_name );
+                
+                
+            }
+            else{
+                $vendor->setidProof ($session->get('id'));
+            }
+          
+            $em->merge($vendor);
+            $em->flush();
+        }
+        return $this->render('TripBookingEngineBundle:Default:vendorEditProfile.html.twig',array(
+            'form' => $form->createView(),
+            'vendor' => $vendor,
+        ));
+    }
+    private function createVendorEditDriverForm(VendorDriver $driver,$id){
+        $bookingService = $this->container->get( 'booking.services' );
+        $security = $this->container->get ( 'security.context' );
+        $form = $this->createForm(new VendorNewDriverType($bookingService,$security), $driver, array(
+            'action' => $this->generateUrl('trip_booking_engine_vendor_edit_driver',array(
+                'id' => $id,
+            ))));
+        $form->add('submit', 'submit', array('label' => 'Update'));
+        
+        return $form;
+    }
+    public function vendorEditDriverAction(Request $request){
+        $id = $_GET['id'];
+        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();
+        $vendorDriver = $em->getRepository('TripBookingEngineBundle:VendorDriver')->findOneBy(array( 'id' => $id));
+        $id =  $vendorDriver->getId();
+        
+        $driver = $em->getRepository('TripBookingEngineBundle:VendorDriver')->find( $id);
+        $drivingLicence = $driver->getdrivingLicence();
+        $driverIdproof = $driver->getdriverIdproof();
+        $session = $this->getRequest()->getSession();
+        $session->set('drivingLicence', $drivingLicence);
+        $session->set('driverIdproof', $driverIdproof);
+        
+       
+        $form = $this->createVendorEditDriverForm( $driver,$id);
+        $form->handleRequest($request);
+       
+        if ($form->isValid()) {
+            $drivingLicence =  $driver->getdrivingLicence();
+           
+            if (!is_null($drivingLicence)) {
+                $file_name = $drivingLicence->getClientOriginalName ();
+                $dir = 'images/packages/';
+                $drivingLicence->move ( $dir, $file_name );
+                $driver->setdrivingLicence ($file_name );
+              
+                
+            }else{
+                $driver->setdrivingLicence ($session->get('drivingLicence'));
+            }
+            $driverIdproof =  $driver->getdriverIdproof();
+            if (!is_null($driverIdproof)) {
+                $file_name = $driverIdproof->getClientOriginalName ();
+                $dir = 'images/packages/';
+                $driverIdproof->move ( $dir, $file_name );
+                $driver->setdriverIdproof ($file_name );
+                
+                
+            }
+            else{
+                $driver->setdriverIdproof ($session->get('driverIdproof'));
+            }
+            
+            $em->merge( $driver);
+            $em->flush();
+        }
+        return $this->render('TripBookingEngineBundle:Default:vendorEditDriver.html.twig',array(
+            'form' => $form->createView(),
+            'driver' =>  $driver,
+        ));
+    }
     
 }
+

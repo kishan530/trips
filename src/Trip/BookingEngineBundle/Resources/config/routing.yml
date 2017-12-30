@@ -3,7 +3,7 @@ trip_site_management_homepage:
     defaults: { _controller: TripBookingEngineBundle:Booking:index }
 trip_site_management_homepage_hotels:
     path:     /hotels
-    defaults: { _controller: TripBookingEngineBundle:Booking:hotels }
+    defaults: { _controller: TripBookingEngineBundle:trip_booking_engine_search:hotels }
 trip_site_management_homepage_deals:
     path:     /deals
     defaults: { _controller: TripBookingEngineBundle:Booking:deals }
@@ -34,6 +34,10 @@ trip_booking_engine_apply_coupon:
 trip_booking_engine_customPackage:
     path:     /custom-package
     defaults: { _controller: TripBookingEngineBundle:Booking:customPackage }
+trip_booking_engine_testcustomPackage:
+    path:     /test-billing-dateails
+    defaults: { _controller: TripBookingEngineBundle:Booking:testCustomPackage }
+
 trip_booking_engine_review_custom_package:
     path:     /review/{id}/custom-package
     defaults: { _controller: TripBookingEngineBundle:Booking:reviewCustomPackage }
@@ -49,4 +53,63 @@ trip_booking_engine_confirm_custom_package:
 trip_booking_engine_hotel_booking:
     path:     /hotel-booking
     defaults: { _controller: TripBookingEngineBundle:Booking:hotelBooking }
-
+trip_booking_engine_vendor_registraion_form:
+    path:     /vendor-registraion-form
+    defaults: { _controller: TripBookingEngineBundle:Booking:vendorRegistraion }
+trip_booking_engine_vendor_login:
+    path:     /test-vendor-login
+    defaults: { _controller: TripBookingEngineBundle:Booking:vendorLogin }
+trip_booking_engine_test_vendor_login:
+    path:     /vendor-login
+    defaults: { _controller: TripBookingEngineBundle:Booking:vendorTestLogin }
+trip_booking_engine_test_vendor_password:
+    path:     /test-vendor-password
+    defaults: { _controller: TripBookingEngineBundle:Booking:vendorTestPassword }
+trip_booking_engine_test_vendor_success:
+    path:     /test-vendor-success
+    defaults: { _controller: TripBookingEngineBundle:Booking:vendorTestSuccess }
+trip_booking_engine_vendor_confirm_login:
+    path:     /vendor-confirm-login
+    defaults: { _controller: TripBookingEngineBundle:Booking:vendorConfirmLogin }
+trip_booking_engine_vendor_validate_login:
+    path:     /vendor-validate-login
+    defaults: { _controller: TripBookingEngineBundle:Booking:vendorValidateLogin }
+trip_booking_engine_vendor_reset_password:
+    path:     /vendor-reset-password
+    defaults: { _controller: TripBookingEngineBundle:Booking:vendorResetPassword }
+trip_booking_engine_vendor_reset_pwd_validation:
+    path:     /vendor-reset-pwdvalidation
+    defaults: { _controller: TripBookingEngineBundle:Booking:vendorResetPasswordValidation }
+trip_booking_engine_vendor_profile:
+    path:     /vendor-profile
+    defaults: { _controller: TripBookingEngineBundle:Booking:vendorProfile }
+trip_booking_engine_vendor_edit_login:
+    path:     /vendor-edit-login
+    defaults: { _controller: TripBookingEngineBundle:Booking:vendorEditLogin }
+trip_booking_engine_vendor_edit_validate_login:
+    path:     /vendor-edit-validate-login
+    defaults: { _controller: TripBookingEngineBundle:Booking:vendorEditValidateLogin }
+trip_booking_engine_vendor_add_vehicle:
+    path:     /vendor-add-vehicle
+    defaults: { _controller: TripBookingEngineBundle:Booking:vendorAddVehicle }
+trip_booking_engine_vendor_add_driver:
+    path:     /vendor-add-driver
+    defaults: { _controller: TripBookingEngineBundle:Booking:vendorAddDriver }  
+trip_booking_engine_vendor_list_vehicles:
+    path:     /vendor-list-vehicles
+    defaults: { _controller: TripBookingEngineBundle:Booking:vendorListVehicles }
+trip_booking_engine_vendor_list_drivers:
+    path:     /vendor-list-drivers
+    defaults: { _controller: TripBookingEngineBundle:Booking:vendorListDrivers }
+trip_booking_engine_vendor_edit_driver:
+    path:     /vendor-edit-driver
+    defaults: { _controller: TripBookingEngineBundle:Booking:vendorEditDriver }  
+trip_booking_engine_vendor_remove_driver:
+    path:     /vendor-remove-driver
+    defaults: { _controller: TripBookingEngineBundle:Booking:vendorRemoveDriver }   
+trip_booking_engine_vendor_remove_vehicle:
+    path:     /vendor-remove-vehicle
+    defaults: { _controller: TripBookingEngineBundle:Booking:vendorRemoveVehicle }  
+trip_booking_engine_vendor_edit_vendor:
+    path:     /vendor-edit-profile
+    defaults: { _controller: TripBookingEngineBundle:Booking:vendorEditProfile} 
