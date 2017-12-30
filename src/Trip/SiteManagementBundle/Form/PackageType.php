@@ -26,6 +26,7 @@ class PackageType extends AbstractType
             ->add('metaDescription','textarea')
             ->add('metaTitle')
             ->add('packageUrl')
+            ->add('category')
             ->add('type', 'choice', array(
             		'expanded' => false,
             		'multiple' => false,

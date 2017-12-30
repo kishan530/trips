@@ -4,27 +4,27 @@ namespace Trip\SiteManagementBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+
 /**
- * This is a Entity to hold the data of City
+ * Endpoint2
  *
- *
- * Contact
- * @ORM\Table(name="package_start_point")
+ * @ORM\Table(name="package_two_end_point2")
  * @ORM\Entity
  */
-class StartPoint
+class TwoEndPoint2
 {
     /**
      * @var integer
+     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
-    /**
+     /**
      * @var string
-     * @ORM\Column(name="start_point", type="string", length=50)
+     * @ORM\Column(name="end_point2", type="string", length=50)
      * @Assert\Length(max = 100, maxMessage="Your Name cannot contain more then 50")
      * @Assert\Regex(
      *     pattern="/^[a-zA-Z&]+([s ][A-Za-z&]+)*$/",
@@ -36,17 +36,10 @@ class StartPoint
    
     private $active;
     /**
-     * @ORM\ManyToOne(targetEntity="Trip\SiteManagementBundle\Entity\Package", inversedBy="startPoint")
+     * @ORM\ManyToOne(targetEntity="Trip\SiteManagementBundle\Entity\Package", inversedBy="twoendPoint2")
      * @ORM\JoinColumn(name="package_id", referencedColumnName="id")
      */
     private $booking;
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="type", type="string", length=255)
-     */
-    private $type;
-    
     
     
 	
@@ -123,22 +116,4 @@ class StartPoint
 		$this->booking = $booking;
 		return $this;
 	}
-    /**
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param string $type
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-    }
-
-	
-    
 }

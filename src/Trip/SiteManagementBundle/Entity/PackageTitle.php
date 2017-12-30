@@ -77,7 +77,15 @@ class PackageTitle
      * @ORM\Column(name="location_url", type="string", length=100)
      */
     private $locationUrl;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="type", type="string", length=255)
+     */
+    private $type;
 
+
+    
 
     /**
      * Get id
@@ -267,6 +275,21 @@ class PackageTitle
 
     public function setLocation($location) {
         $this->location = $location;
+    }
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+    
+    /**
+     * @param string $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
     }
 
 

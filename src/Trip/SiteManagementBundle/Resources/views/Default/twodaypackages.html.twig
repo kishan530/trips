@@ -1,0 +1,97 @@
+{% extends 'page.html.twig' %}
+{% block stylesheets %}
+<link href="{{ asset('css/jquery.timepicker.css') }}" rel="stylesheet" media="screen">
+{% endblock %}
+{% block meta %}
+    <meta name="keywords" content="tirupati taxi package, tirupati car package, tirupati package, Pick & Drop">
+    <meta name="description" content="Find a complete list of south indian temples packages at the lowest price. Book Cabs service ,Hotels , local temples packages and custom packages to suit everyone with Justtrip.in">  
+{% endblock %}
+{% block title %}One Day Tour Packages for south indian temples | Justtrip.in {% endblock %}
+{% block javascripts %}
+<script src="{{ asset('js/jquery.timepicker.min.js') }}"></script>
+<script>
+$('.preferTime').timepicker({ 'scrollDefault': 'now' });
+    
+         $('.adults').click(function(e){		
+			e.preventDefault(); //STOP default action 
+			 var id = $(this).attr('id');
+			 var value = parseInt($(this).attr('value'));
+             var numAdult = $(this).siblings("input[name=numAdult]");
+			 var adults =parseInt(numAdult.val());
+			 if (isNaN(adults)) { 
+				 adults= 0
+	            } 
+			 if(id=='decrement'){
+				 adults-=1;
+				 if(adults>=value) numAdult.val(adults); else exit();
+			  }else{
+				adults+=1;
+			    if(adults<=20)  numAdult.val(adults); else exit();
+				}	
+	    });
+    
+         $('.vehicle-icon').click(function(e){		
+			e.preventDefault(); //STOP default action 
+			 var id = $(this).attr('id');
+			 var price = $(this).attr('value');
+             var package = parseInt($(this).attr('title'));
+             $('.vehicle'+package).removeClass('active');
+             $(this).addClass('active');
+             $('#vehicleIndex'+package).val(id);
+             $('#price'+package).html(price);
+
+
+	       });
+</script>
+{% endblock %}
+
+{% block breadcrumb %}
+                    <div class="c1 breadcrumb text-left">
+                        <div><span class="glyphicon glyphicon-home" style="padding:5px;"></span><a href="#">Home</a><span><span class="glyphicon glyphicon-chevron-right" style="padding:5px;"></span>Packages</span></div>
+                    </div>
+                    <h3></h3>
+{% endblock %}
+
+{% block body %}
+
+<section class="section clearfix">
+        
+    <div class="container">
+        <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-xs-12">
+                        	
+                            {% for package in packagetitle %} 
+                            <div class="package-box border-l bgimg" style="background-image: url('{{ asset('images/package-titles/'~package.imgPath) }}');">
+                            <div class="package-background">                                
+                                <h4 style="padding:40px;text-align:center;color:#FFF"><a style="color: #fff;" href="{{ path('trip_site_management_homepage_twospecial_packages',{ 'url':package.locationUrl }) }}">{{ package.title }}</a></h4>
+                                <div><h6 style="text-align:center;color:#ffffff">Starts @{{ package.statingPrice }}</h6></div>
+                                 <div class="row">
+								 {#}
+                                <a class="btn aligncenter" style="color: #fff;background-color:#000;width:60%; margin:0 auto;" href="{{ path('trip_site_management_homepage_special_packages',{ 'id': package.locationId,'url':package.locationUrl,'from':1 }) }}">From {{ package.location }}</a>
+                                <a class="btn aligncenter" style="color: #fff;background-color:#000;width:60%; margin:0 auto;margin-top:5px;" href="{{ path('trip_site_management_homepage_special_packages',{ 'id': package.locationId,'url':package.locationUrl,'from':0 }) }}">Via {{ package.location }}</a>
+								{#}
+								<a class="btn aligncenter" style="color: #fff;background-color:#000;width:60%; margin:0 auto;margin-top:5px;" href="{{ path('trip_site_management_homepage_twospecial_packages',{'url':package.locationUrl }) }}">Go</a>
+                                 </div>
+                              
+                              </div>
+                            </div>
+                           {% endfor %}
+                           
+                    </div>
+                    {#}
+					 <div class="col-lg-2 col-xs-12 text-center">
+					<img src="{{ asset('images/Sidebar.png') }}">
+	<h1 style="font-size:20px;">+91-9663133008</h1>
+       
+		</div>
+		{#}
+					
+           
+            
+        </div>
+    </div>
+   
+        
+        
+</section>
+{% endblock %}
