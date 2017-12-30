@@ -779,3 +779,9 @@ label.required:after{
 .package-price-details{ margin-top: 70px;}
 .package-view .list-view{padding-left: 20px;font-size:13px;}
 .package-view .list-view li{font-size: 1.07143em;line-height: 22px;text-align: justify;}
+
+li.mobilebooking-price {
+    font-size: 20px !important;
+    font-family: serif !important;
+}
+

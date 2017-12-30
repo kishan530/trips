@@ -28,6 +28,10 @@ trip_booking_engine_success:
 trip_booking_engine_confirm:
     path:     /confirm
     defaults: { _controller: TripBookingEngineBundle:Booking:confirm }
+trip_booking_engine_payment_payu:
+    path:     /payu
+    defaults: { _controller: TripBookingEngineBundle:Booking:payu }
+
 trip_booking_engine_apply_coupon:
     path:     /applyCoupon
     defaults: { _controller: TripBookingEngineBundle:Booking:applyCoupon }
@@ -53,6 +57,7 @@ trip_booking_engine_confirm_custom_package:
 trip_booking_engine_hotel_booking:
     path:     /hotel-booking
     defaults: { _controller: TripBookingEngineBundle:Booking:hotelBooking }
+
 trip_booking_engine_vendor_registraion_form:
     path:     /vendor-registraion-form
     defaults: { _controller: TripBookingEngineBundle:Booking:vendorRegistraion }
@@ -113,3 +118,24 @@ trip_booking_engine_vendor_remove_vehicle:
 trip_booking_engine_vendor_edit_vendor:
     path:     /vendor-edit-profile
     defaults: { _controller: TripBookingEngineBundle:Booking:vendorEditProfile} 
+
+trip_booking_engine_booking_bike:
+    path:     /booking-bike
+    defaults: { _controller: TripBookingEngineBundle:Booking:bookingBike }
+trip_booking_engine_confirm_bike:
+    path:     /confirm-bike
+    defaults: { _controller: TripBookingEngineBundle:Booking:confirmBike }
+trip_booking_engine_book_bike_submit:
+    path:     /book/bike/submit
+    defaults: { _controller: TripBookingEngineBundle:Booking:bookbikeSubmit }
+trip_booking_engine_payment_bike:
+    path:     /book/payment-bike
+    defaults: { _controller: TripBookingEngineBundle:Booking:paymentBike }
+remove_trailing_slash:
+    path: /{url}
+    defaults: { _controller: TripBookingEngineBundle:Booking:removeTrailingSlash }
+    requirements:
+        url: .*/$
+    methods: [GET]
+
+

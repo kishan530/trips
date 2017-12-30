@@ -43,6 +43,9 @@ use Trip\SiteManagementBundle\Form\BillingType;
 use Trip\SiteManagementBundle\Form\HotelType;
 use Trip\SiteManagementBundle\Entity\Contact;
 use Trip\SiteManagementBundle\Form\ContactType;
+use Trip\SiteManagementBundle\Entity\Biketime;
+use Trip\SiteManagementBundle\Form\biketimerangeType;
+use Trip\SiteManagementBundle\Form\PriceviewbikesType;
 use Trip\SiteManagementBundle\Entity\Cancel;
 use Trip\SiteManagementBundle\Form\CancelType;
 use Trip\SiteManagementBundle\DTO\BookingSearch;
@@ -1400,6 +1403,229 @@ class SiteManagementController extends Controller
     }
     
 	//*****************end**************************************//
+	 //************Bikes *******************//
+    public function bikesonRentAction(Request $request){
+    	$em = $this->getDoctrine()->getManager();
+    	$bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
+		$locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
+    	$locations = $this->getLocationsByIndex($locations);
+    	
+    	$session = $request->getSession();
+    	$session->set('resultSet',$bikes);
+    	//$package->setPreferTime($service->getPreferTime());
+    	$entity= new Biketime();
+    	$entity->setId($entity->getId());
+    	//$entity->setPreferTime($entity->getPreferTime());
+    	//$entity->setReturnTime($entity->getReturnTime());
+    	$entity->setDate($entity->getDate());
+    	$entity->setReturndate($entity->getReturndate());
+    	//$entity->setDate(new \DateTime());
+    	$form   = $this->createviewbikesForm($entity);
+    	$form->handleRequest($request);
+    	if ($form->isValid()) {
+    		//$preferTime = $entity->getPreferTime();
+    		//$entity->setPreferTime($entity->getPreferTime());
+    		//$entity->setReturnTime($entity->getReturnTime());
+    		$entity->setDate($entity->getDate());
+    		$entity->setReturndate($entity->getReturndate());
+    		$em->persist($entity);
+    		$em->flush();
+    		return $this->redirect($this->generateUrl('trip_site_management_review_viewbikes',array('id'=>$entity->getId())));
+    	}
+    	return $this->render('TripSiteManagementBundle:Default:bikesonRent.html.twig',array(
+    			'bikes' => $bikes,
+    			'form'   => $form->createView(),
+				'locations' => $locations,
+    			
+    	));
+    }
+    public function viewBikesAction(Request $request,$url){
+    	$em = $this->getDoctrine()->getManager();
+		$session = $request->getSession();
+    	$bike = $em->getRepository('TripSiteManagementBundle:bikes')->findBy(array('locationUrl' => $url));
+    	if($bike){
+    		$bike= $bike[0];
+    		$bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll(array('locationUrl' => $url));
+    	}else{
+    		
+    	}
+		$session->set('bikeurl',$bike);
+		
+    	$entity= new Biketime();
+    	$entity->setId($entity->getId());
+    	//$entity->setPreferTime($entity->getPreferTime());
+    	//$entity->setReturnTime($entity->getReturnTime());
+    	$entity->setDate($entity->getDate());
+    	$entity->setReturndate($entity->getReturndate());
+    	//$entity->setDate(new \DateTime());
+    	$form   = $this->createpriceviewbikesForm($entity,$url);
+    	$form->handleRequest($request);
+    	if ($form->isValid()) {
+    		//$preferTime = $entity->getPreferTime();
+    		//$entity->setPreferTime($entity->getPreferTime());
+    		//$entity->setReturnTime($entity->getReturnTime());
+    		$entity->setDate($entity->getDate());
+    		$entity->setReturndate($entity->getReturndate());
+    		$em->persist($entity);
+    		$em->flush();
+    		return $this->redirect($this->generateUrl('trip_site_management_price_viewbikes',array('id'=>$entity->getId())));
+    	}
+    	
+    	 
+    	 return $this->render('TripSiteManagementBundle:Default:viewBikes.html.twig',array(
+    			
+    			'bike'=>$bike,
+    			'bikes'=>$bikes,
+    	 		'form'   => $form->createView(),
+    	));
+    	 
+    }
+    private function createviewbikesForm($entity)
+    {
+    	$bookingService = $this->container->get( 'booking.services' );
+    	$form = $this->createForm(new biketimerangeType(), $entity, array(
+    			'action' => $this->generateUrl('trip_site_management_bikes_on_rent'),
+    			'method' => 'POST',
+    	));
+    	$form->add('submit', 'submit', array('label' => 'Search','attr'   =>  array('class'=>'search-bikes-onrent')));
+    	return $form;
+    }
+    
+    public function reviewViewbikesAction(Request $request,$id){
+    	
+    	$bookingService = $this->container->get( 'booking.services' );
+    	$em = $this->getDoctrine()->getManager();
+		$session = $request->getSession();
+		
+    	$bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
+		//$session->set('bikes',$bikes);
+		//$searchFilter->setUr($url);
+		//$bike->setEmail($bikes->getUrl());
+    	//$booking = $em->getRepository('TripBookingEngineBundle:Booking')->findOneByBookingId($id);
+    	
+    	//$customer = $em->getRepository('TripBookingEngineBundle:Customer')->find($booking->getCustomerId());
+    	$booking = $em->getRepository('TripSiteManagementBundle:Biketime')->findOneById($id);
+		
+    	//$locations = test;
+    	//$locations = $this->getLocationsByIndex($locations);
+    	$form   = $this->createEditReviewbikesForm($booking,$id);
+    	$form->handleRequest($request);
+    	if ($form->isValid()) {
+    		$booking= $em->merge($booking);
+    		$em->flush();
+    		
+    		return $this->redirect($this->generateUrl('trip_site_management_review_viewbikes',array('id'=>$booking->getId())));
+    		
+    	}
+    	
+    	return $this->render('TripSiteManagementBundle:Default:reviewViewbikes.html.twig',array(
+    			//'customer'   => $customer,
+    			'booking'=>$booking,
+    			'bikes' => $bikes,
+    			'form'   => $form->createView(),
+    			//'locations'=>$locations,
+    			//'services'=>$booking->getVehicleBooking(),
+    	));
+    }
+    public function priceViewbikesAction(Request $request,$id){
+    	
+    	$bookingService = $this->container->get( 'booking.services' );
+    	$em = $this->getDoctrine()->getManager();
+		$session = $request->getSession();
+		$bikeurl = $session->get('bikeurl');
+		$url = $bikeurl->getLocationUrl();
+		 //echo var_dump($bikeurl);
+		 
+		 //echo var_dump($url);
+		//exit();
+		
+		//$bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
+    	//$bike = $em->getRepository('TripSiteManagementBundle:bikes')->findBy(array('locationUrl' => $url));
+		$bike = $em->getRepository('TripSiteManagementBundle:bikes')->findBy(array('locationUrl' => $url));
+    	if($bike){
+    		$bike= $bike[0];
+    		$bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll(array('locationUrl' => $url));
+    	}else{
+    		
+    	}
+    	
+    	$booking = $em->getRepository('TripSiteManagementBundle:Biketime')->findOneById($id);
+    	
+    	$form   = $this->createpriceviewbikesForm($booking,$id);
+		
+    	$form->handleRequest($request);
+    	if ($form->isValid()) {
+    		$booking= $em->merge($booking);
+    		$em->flush();
+    		 
+    		return $this->redirect($this->generateUrl('trip_site_management_price_viewbikes',array('id'=>$booking->getId())));
+    		
+    	}
+    	//echo var_dump($url);
+		//exit();
+    	return $this->render('TripSiteManagementBundle:Default:priceViewbikes.html.twig',array(
+    			//'customer'   => $customer,
+    			'booking'=>$booking,
+    			'bike'=>$bike,
+    			'bikes'=>$bikes,
+    			'form'   => $form->createView(),
+    			//'locations'=>$locations,
+    			//'services'=>$booking->getVehicleBooking(),
+    	));
+    }
+    
+    private function createpriceviewbikesForm($entity,$url)
+    {
+    	$bookingService = $this->container->get( 'booking.services' );
+    	$form = $this->createForm(new PriceviewbikesType(), $entity, array(
+    			'action' => $this->generateUrl('trip_site_management_view_bikes',array('url'=>$url)),
+    			'method' => 'POST',
+    	));
+    	$form->add('submit', 'submit', array('label' => 'Search','attr'   =>  array('class'=>'search-bikes-onrent')));
+    	return $form;
+    }
+    
+    private function createEditReviewbikesForm($booking,$id){
+    	//$bookingService = $this->container->get( 'booking.services' );
+    	$form = $this->createForm(new biketimerangeType(), $booking, array(
+    			'action' => $this->generateUrl('trip_site_management_review_viewbikes',array('id'=>$id)),
+    			'method' => 'POST',
+    	));
+    	$form->add('submit', 'submit', array('label' => 'Search','attr'   =>  array('class'=>'search-bike')));
+    	
+    	return $form;
+    }
+    private function createEditPricebikesForm($booking,$id){
+    	//$bookingService = $this->container->get( 'booking.services' );
+		
+    	$form = $this->createForm(new PriceviewbikesType(), $booking, array(
+    			'action' => $this->generateUrl('trip_site_management_price_viewbikes',array('id'=>$id)),
+    			'method' => 'POST',
+    	));
+    	$form->add('submit', 'submit', array('label' => 'Search','attr'   =>  array('class'=>'search-bike')));
+    	
+    	return $form;
+    }
+   
+	public function bikesSubmitAction(Request $request){
+        $session = $request->getSession();
+        $id = $request->get('id');
+		$title = $request->get('title');
+        $pDate = $request->get('pDate');
+        $rDate = $request->get('rDate');
+        $price = $request->get('price');
+		$leftdays = $request->get('leftdays');
+		$hours = $request->get('hours');
+		$location = $request->get('location');
+       // echo var_dump($hours);
+		//echo var_dump($location);
+		 //exit();
+		
+        return $this->redirect($this->generateUrl('trip_booking_engine_booking_bike',array('id'=>$id,'title'=>$title,'pDate'=>$pDate,'rDate'=>$rDate,'price'=>$price,'leftdays'=>$leftdays,'hours'=>$hours,'location'=>$location)));
+			
+    }
+    //***************************************end****************************************//
+	
     private function createEditItineraryForm($package,$id){
     	$bookingService = $this->container->get( 'booking.services' );
     	$form = $this->createForm(new PackageItineraryType(), $package, array(

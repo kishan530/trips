@@ -205,6 +205,7 @@ $("#trip_search_multiple_1_leavingFrom").change(function() {
                         {% block navTabs %}
                         <ul class="nav nav-tabs" role="tablist">
                             <li class="active"><a href="#tab_01" aria-controls="tab_01" role="tab" data-toggle="tab"><i class="icon-sedan3"></i>   Cars</a></li>
+							<li><a href="{{ path('trip_site_management_bikes_on_rent')}}"><i class="fa fa-motorcycle" aria-hidden="true"></i>  Bikes</a></li>
                             <!--<li><a href="#tab_02" aria-controls="tab_02" role="tab" data-toggle="tab"><i class="icon-hotel68"></i>  Hotels</a></li>-->
                             <li><a href="{{ path('trip_site_management_homepage_packages')}}"><i class="icon-bag"></i>  Packages</a></li>
                             

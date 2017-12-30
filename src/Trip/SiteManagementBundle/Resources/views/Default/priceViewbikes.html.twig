@@ -1,0 +1,191 @@
+{% extends 'page.html.twig' %}
+{% block stylesheets %}
+
+{% endblock %}
+{% block javascripts %}
+<script type="text/javascript">
+$('.preferTime').timepicker({ 'scrollDefault': 'now' });
+
+$('.adults').click(function(e){		
+	e.preventDefault(); //STOP default action 
+	 var id = $(this).attr('id');
+	 var value = parseInt($(this).attr('value'));
+    var numAdult = $(this).siblings("input[name=numAdult]");
+	 var adults =parseInt(numAdult.val());
+	 if (isNaN(adults)) { 
+		 adults= 0
+       } 
+	 if(id=='decrement'){
+		 adults-=1;
+		 if(adults>=value) numAdult.val(adults); else exit();
+	  }else{
+		adults+=1;
+	    if(adults<=20)  numAdult.val(adults); else exit();
+		}	
+});
+
+$('.vehicle-icon').click(function(e){		
+	e.preventDefault(); //STOP default action 
+	 var id = $(this).attr('id');
+	 var price = $(this).attr('value');
+    var package = parseInt($(this).attr('title'));
+    $('.vehicle'+package).removeClass('active');
+    $(this).addClass('active');
+    $('#vehicleIndex'+package).val(id);
+    $('#price'+package).html(price);
+
+
+  });
+
+
+</script>
+<script type="text/javascript">
+		$(function(){
+			$('#datetime2').appendDtpicker();
+		});
+	</script>
+	<script type="text/javascript">
+		$(function(){
+			$('#datetime3').appendDtpicker();
+		});
+	</script>
+{% endblock %}
+
+{% block breadcrumb %}
+                    <ul class="c1 breadcrumb text-left">
+                        <li><a href="#">Home</a></li>
+                        <li>View Bikes</li>
+                        <li>{{bike.title}}</li>
+                    </ul>
+                    <h3></h3>
+{% endblock %}
+
+{% block body %}
+
+<section class="section clearfix">
+    
+    	
+        <div class="container">
+            <div class="row">
+            	<div class="">
+				{#<div class="brand-color">
+            			<h3 class="details">Date & Time For Pickup</h3>
+            			<hr>
+            			<div class="row">
+            				{{ form_start(form) }}
+                             {{ form_errors(form) }}
+                             {{ form_errors(form.date) }}
+                             {{ form_errors(form.returndate) }}
+								<div class="col-md-12 bikes-form-font">
+									{{ form_label(form.location) }} 
+                                {{ form_widget(form.location) }}
+								</div>
+                             	<div class="col-md-12 bikes-form-font">
+                             	{{ form_label(form.date) }} 
+                                {{ form_widget(form.date, {'id': 'datetime2'}) }}
+                                </div>
+                                <div class="col-md-12 bikes-form-font">
+                                {{ form_label(form.returndate) }} 
+                                {{ form_widget(form.returndate, {'id': 'datetime3'}) }}
+                                </div>
+                                
+                             {{ form_end(form) }}
+            			</div>
+            			
+            			
+            			<hr>
+            			
+            		</div>#}
+            		
+            	</div>
+            	<div class="col-md-8">
+            		<div class="row">
+            		
+					<div class="bike-book">
+                    <img src="{{asset('images/bikes/'~bike.imgPath) }}" style="width: 100%;">
+					</div>
+					</div>
+				</div>
+                <div class="col-lg-4 col-sm-4 col-xs-4">
+					<div class="brand-color">
+					<h3 class="details textcenter">{{bike.title}}</h3>
+					<hr>
+					<p class="brandtype" style="font-weight:bold"> > <span class="black" style="font-weight:normal">{{ booking.date|date("d/m/Y h:i A") }}</span></p>
+					<p class="brandtype" style="font-weight:bold"> < <span class="black" style="font-weight:normal">{{ booking.returndate|date("d/m/Y h:i A") }}</span></p>
+					<p class="brandtype">Duration > <span class="black">{% set difference = (booking.date).diff((booking.returndate)) %}
+                        {% set leftDays = difference.days %}
+                        {% set hours = difference.h %}
+                        {% if leftDays == 1 %}
+                          1 day
+                        {% else %}
+                          {{ leftDays }} days 
+                     {% endif %}{{ hours }} Hours</span><br>
+                     {#}<div>{% set bike = 15 %}
+                        {% set day = 150 %}
+                        {% set fivehours = hours %}
+                        {% if fivehours <= 5 %}
+    						{%  set test1 = bike * fivehours %}
+                            {{ test1 }}
+                            {% else %}
+                            <p>0</p>
+                        {% endif %}</div>{#}
+                     </p>
+					 <p class="brandtype"> Location <span class="black" style="font-weight:normal">{{booking.location}}</span>
+					<hr>
+                    {% set dayret = bike.dayrent %}
+                                        {% set test2 = 150 %}
+                                        {% set startprice = bike.statingPrice %}
+                                        {%  set test3 = leftDays * test2 %}
+                                        {%  set test5 = hours * startprice %}
+                                        {% set fivehours = hours %}
+                                        {% if fivehours==0 %}
+                                        	<h5 class="bike-price"><i class="fa fa-inr" aria-hidden="true"></i> {{ dayret * leftDays }}</h5>
+											{% set price1 = dayret * leftDays  %}
+                                        {% else %}
+                                            {% if fivehours <= 5  %}
+                                            	{% set fixhours=5 %}
+                        						{%  set fivehoursbase = startprice * fixhours %}
+                                                <h5 class="bike-price"><i class="fa fa-inr" aria-hidden="true"></i> {{ fivehoursbase + dayret * leftDays  }}</h5>
+                                                {% set price1 =  fivehoursbase + dayret * leftDays  %}
+												{% else %}
+                                                	 {% if fivehours <= 10 %}
+                                                        {% set inc= hours * startprice  %}
+                                                        {% set dayscal= leftDays * dayret %}
+                                     
+                                                		<h5 class="bike-price"><i class="fa fa-inr" aria-hidden="true"></i> {{ dayscal + inc }}</h5>
+														{% set price1 =  dayscal + inc  %}
+                                             			{% else %}
+                                             			{% set totaldays= leftDays + 1 %}
+                                             	
+                                             			<h5 class="bike-price"><i class="fa fa-inr" aria-hidden="true"></i> {{ totaldays * dayret }}</h5>
+                                                        {% set price1 =  totaldays * dayret  %}
+														{% endif %}
+                                              {% endif %}
+                                        {% endif %}   
+										<div class="row">
+                                         <div class="col-md-3" >
+                                         </div>
+                                         <div class="col-md-12" >
+											<form action="{{ path('trip_site_management_homepage_bikes_submit') }}" method="get">
+												{% set preferDate = booking.date|date("d/m/Y h:i A") %}
+												{% set returnDate = booking.returndate|date("d/m/Y h:i A") %}
+												<input type="hidden" name="id" class="form-control" value="{{ bike.id }}"> 
+												<input type="hidden" name="title" class="form-control" value="{{ bike.title }}"> 
+												<input type="hidden" name="pDate" class="form-control" value="{{ preferDate }}"> 
+												<input type="hidden" name="rDate" class="form-control" value="{{ returnDate }}"> 
+												<input type="hidden" name="price" class="form-control" value="{{ price1 }}"> 
+												<input type="hidden" name="leftdays" class="form-control" value="{{ leftDays }}"> 
+												<input type="hidden" name="hours" class="form-control" value="{{ hours }}"> 
+												<input type="hidden" name="location" class="form-control" value="{{booking.location}}"> 
+												<button type="submit" class="btn aligncenter view-bike">Rent Now</button>
+											</form>
+                                         </div>
+                                         <div class="col-md-3" >
+                                         </div>
+                                 </div>
+										
+									</div>
+				</div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,180 @@
+{% extends 'page.html.twig' %}
+{% block stylesheets %}
+<link href="{{ asset('css/jquery.timepicker.css') }}" rel="stylesheet" media="screen">
+{% endblock %}
+{% block meta %}
+    <meta name="keywords" content="">
+    <meta name="description" content="">  
+{% endblock %}
+{% block title %}Bikes On Rent | Justtrip.in {% endblock %}
+{% block javascripts %}
+<script src="{{ asset('js/jquery.timepicker.min.js') }}"></script>
+<script>
+$('.preferTime').timepicker({ 'scrollDefault': 'now' });
+    
+         $('.adults').click(function(e){		
+			e.preventDefault(); //STOP default action 
+			 var id = $(this).attr('id');
+			 var value = parseInt($(this).attr('value'));
+             var numAdult = $(this).siblings("input[name=numAdult]");
+			 var adults =parseInt(numAdult.val());
+			 if (isNaN(adults)) { 
+				 adults= 0
+	            } 
+			 if(id=='decrement'){
+				 adults-=1;
+				 if(adults>=value) numAdult.val(adults); else exit();
+			  }else{
+				adults+=1;
+			    if(adults<=20)  numAdult.val(adults); else exit();
+				}	
+	    });
+    
+         $('.vehicle-icon').click(function(e){		
+			e.preventDefault(); //STOP default action 
+			 var id = $(this).attr('id');
+			 var price = $(this).attr('value');
+             var package = parseInt($(this).attr('title'));
+             $('.vehicle'+package).removeClass('active');
+             $(this).addClass('active');
+             $('#vehicleIndex'+package).val(id);
+             $('#price'+package).html(price);
+
+
+	       });
+</script>
+<script type="text/javascript">
+		$(function(){
+			$('#datetime2').appendDtpicker();
+		});
+	</script>
+	<script type="text/javascript">
+		$(function(){
+			$('#datetime3').appendDtpicker();
+		});
+	</script>
+{% endblock %}
+
+{% block breadcrumb %}
+                    <div class="c1 breadcrumb text-left">
+                        <div><span class="glyphicon glyphicon-home" style="padding:5px;"></span><a href="#">Home</a><span><span class="glyphicon glyphicon-chevron-right" style="padding:5px;"></span>Bikes</span></div>
+                    </div>
+                    <h3></h3>
+{% endblock %}
+
+{% block body %}
+<section class="section clearfix" style="/*background-color:#f9f9f9;*/padding:30px;background-image:url({{ asset('images/bikes/s6.jpg') }});">
+	<div class="bike-book">
+        {#}<img src="{{asset('images/bikes/s2.jpg') }}" style="width: 100%;">{#}
+        <div class="container bike-price-book1">
+       		<div class="row">
+       			<div class="col-md-1">
+       			</div>
+       			
+       			<div class="col-md-10 sub-book1">
+       					<div>
+                             <h2 class="sub-title-bikesonrent">Want To Hire A Bike On Rent</h2>
+                             {{ form_start(form) }}
+                             {{ form_errors(form) }}
+                             {{ form_errors(form.date) }}
+                             {{ form_errors(form.returndate) }}
+								<div class="col-md-3 bikes-form-font">
+                             	{{ form_label(form.location) }} 
+                                {{ form_widget(form.location) }}
+                                </div>
+                             	<div class="col-md-3 bikes-form-font">
+                             	{{ form_label(form.date) }} 
+                                {{ form_widget(form.date, {'id': 'datetime2'}) }}
+                                </div>
+                                
+                                <div class="col-md-3 bikes-form-font">
+                                {{ form_label(form.returndate) }} 
+                                {{ form_widget(form.returndate, {'id': 'datetime3'}) }}
+                                </div>
+                                <div class="col-md-3">
+                                {{ form_label(form.submit) }} 
+                                {{ form_widget(form.submit) }}
+                                </div>
+                             {{ form_end(form) }}
+                              
+                         </div>
+                        
+                         {#}<div class="sub-book2">
+                         <h3 class="hours-list">Hours: <span id="demo"></span></h3>
+                             <p id="test"></p>
+                              	<h3 class="hours-list">Rent per Hour: <br><span id="calprice">Rs. {{ bike.statingPrice }} /-</span></h3>
+                             <h3 class="price-book"><span>Pay</span> Starts Rs. {{ bike.statingPrice }} /-</h3>
+                             <button type="submit" class="btn aligncenter view-bike">Book Now</button>
+                         </div>{#}
+       			</div>
+       			<div class="col-md-1">
+       			</div>
+           	</div> 
+           </div>  
+         {#} <div class="container bike-price-book2">
+       		<div class="row">
+       			<div class="col-md-2 sub-book3">
+       			 		<ul style="list-style: none;">
+                        {% for bike in bikes %}           
+                        <li style="margin-bottom: 10px;"><a style="color:#000;background-color: rgba(255, 255, 255, 0.8);padding: 6px;" href="{{ path('trip_site_management_view_bikes',{ 'url':bike.locationUrl }) }}">{{ bike.title }}</a></li>
+                         {% endfor %}
+                       </ul>
+       			</div>
+       			<div class="col-md-2">
+       			</div>
+       			<div class="col-md-2">
+       			</div>
+                <div class="col-md-2">
+       			</div>
+       			 <div class="col-md-2">
+       			</div>
+              </div>
+          </div>{#}
+          
+    </div>
+    
+</section>
+<section class="space"></section>
+<section class="section clearfix" style="background-color:#f9f9f9;">
+    <div class="container">
+        <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-xs-12">
+                            {% for bike in bikes %} 
+                            <div class="col-md-4" >
+                            <div>
+                            <img src="{{asset('images/bikes/'~bike.imgPath) }}" style="width: 100%;">
+                            </div>
+                            <div class="bike-background">                                
+                                <h4 style="text-align:center;color:#000"><a style="color: #000;" href="{{ path('trip_site_management_view_bikes',{ 'url':bike.locationUrl }) }}">{{ bike.title }}</a></h4>
+                                <div><h6 style="text-align:center;color:#000">Starts @{{ bike.statingPrice }}</h6></div>
+                                 <div class="row">
+                                         <div class="col-md-4" >
+                                         </div>
+                                         <div class="col-md-4" >
+        								<a class="btn aligncenter view-bike"   href="{{ path('trip_site_management_view_bikes',{'url':bike.locationUrl }) }}">Rent Now</a>
+                                         </div>
+                                         <div class="col-md-4" >
+                                         </div>
+                                 </div>
+                              
+                              </div>
+                            </div>
+                           {% endfor %}
+                    </div>
+                    {#}
+					 <div class="col-lg-2 col-xs-12 text-center">
+					<img src="{{ asset('images/Sidebar.png') }}">
+	<h1 style="font-size:20px;">+91-9663133008</h1>
+       
+		</div>
+		{#}
+					
+           
+            
+        </div>
+    </div>
+   
+        
+        
+</section>
+{% endblock %}
