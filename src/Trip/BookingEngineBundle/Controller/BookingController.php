@@ -1794,7 +1794,13 @@ class BookingController extends Controller
         $bookingService = $this->container->get( 'booking.services' );
         $security = $this->container->get ( 'security.context' );
         $form = $this->createForm(new VendorRegistraionType($bookingService,$security), $vendor, array(
-            'action' => $this->generateUrl('trip_booking_engine_vendor_registraion_form',array('vendorId' => $vendorId)),
+            'action' => $this->generateUrl('trip_booking_engine_vendor_registraion_form',array(
+                'vendorId' => $vendorId,
+                'vendorName' => $vendor->getName(),
+                'vendorEmail' => $vendor->getEmail(),
+                'vendorMobileno' => $vendor->getMobileNo(),
+                
+            )),
             'method' => 'POST',
         ));
         $form->add('submit', 'submit', array('label' => 'submit'));
@@ -1802,9 +1808,7 @@ class BookingController extends Controller
         return $form;
     }
     public function vendorRegistraionAction(Request $request){
-        $name = $_GET['vendorName'];
-        $email = $_GET['vendorEmail'];
-        $mobileno = $_GET['vendorMobileno'];
+        
         $security = $this->container->get ( 'security.context' );
         $em = $this->getDoctrine()->getManager();
         $vendorId = $request->query->get('vendorId');
@@ -1930,9 +1934,7 @@ class BookingController extends Controller
         return $this->render('TripBookingEngineBundle:Default:vendorRegistraion.html.twig',array(
             
             'form'   => $form->createView(),
-            'vendorName' => $name,
-            'vendorEmail' => $email,
-            'vendorMobileno' => $mobileno,
+           
         ));
     }
     private function createVendorLoginForm(VendorLogin $vendor){
@@ -2078,11 +2080,7 @@ class BookingController extends Controller
             if($email ==$vendorEmail && $pwd == $vendorPwd){
                 
                 
-                return $this->redirect($this->generateUrl('trip_booking_engine_vendor_registraion_form',array(
-                    'vendorName' => $vendorName,
-                    'vendorEmail' => $vendorEmail,
-                    'vendorMobileno' => $vendorMobileno,
-                )));
+                return $this->redirect($this->generateUrl('trip_booking_engine_vendor_registraion_form'));
             }
             
             else
