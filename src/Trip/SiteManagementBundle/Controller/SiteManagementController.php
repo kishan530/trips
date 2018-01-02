@@ -132,8 +132,8 @@ class SiteManagementController extends Controller
                $packagetitle = $packagetitle[0];
                 $id= $packagetitle->getId();
                $packages = $em->getRepository('TripSiteManagementBundle:Package')->findBy(array('category' => $id));
-                $locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
-                $locations = $this->getLocationsByIndex($locations);
+               $locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
+               $locations = $this->getLocationsByIndex($locations);
                 $session = $request->getSession();
                 $session->set('resultSet',$packages);
 				 $session->set('locations',$locations);
