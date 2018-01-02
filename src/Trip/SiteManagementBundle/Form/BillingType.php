@@ -67,83 +67,13 @@ class BillingType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        ->add('date','date',array(
-        		'required'    => true,
-        		'label' => 'Date',
-        		'widget'=> 'single_text',
-        		'format'=>'d/M/y',
-        		'attr'   =>  array(
-        				'data-date-format'=>'dd/mm/yyyy',
-        				//'placeholder'=>'Date',
-        				'class'=>'preferDate'
-        		),
-        		
-        ))
-        ->add('pickup', 'choice', array(
-        		'expanded' => false,
-        		'multiple' => false,
-        		'choices' => $this->getLocations(),
-        		'required'    => true,
-        		'label' => 'Pick Up',
-        ))
-        ->add('goingTo', 'choice', array(
-        		'expanded' => false,
-        		'multiple' => false,
-        		'choices' => $this->getLocations(),
-        		'required'    => true,
-        		'empty_value'   => 'Location',
-        		'label' => 'Drop',
-        ))
-        ->add('locations', 'choice', array(
-        		'expanded' => false,
-        		'multiple' => true,
-        		'choices' => $this->getLocations(),
+        ->add('multiple', 'collection', array(
+        		'type'         => new NewBillingType($this->bookingService,$this->catalog),
+        		'allow_add'    => true,
+                 'prototype'=>true,
         		'required'    => false,
-        		'label' => 'Places To Visit',
-        		'empty_value'   => 'Select',
-        		'attr'   =>  array(
-        				'class'=>'chosen-select',
-        				'data-style'=>'btn-white',
-        				'data-live-search'=>'true',
-        				'data-placeholder'=>'Select'
-        		),
         ))
-        ->add('vehicle_id', 'choice', array(
-        		'expanded' => false,
-        		'multiple' => false,
-        		'choices' => $this->getVehicles(),
-        		'required'    => true,
-        		'empty_value'   => 'vehicle',
-        		'label' => 'Vehicle',
-        ))
-        ->add('driver_id', 'choice', array(
-        		'expanded' => false,
-        		'multiple' => false,
-        		'choices' => $this->getDriver(),
-        		'required'    => true,
-        		'empty_value'   => 'Driver',
-        ))
-        ->add('carnumber', 'text', array(
-        		
-        		'label' => 'Car Number',
-        		))
-            ->add('diesel')
-            //->add('price', 'text', array(
-            			
-            			//'label' => 'Total Price',
-            		
-           // ))
-            ->add('advance',  'text', array(
-            		
-            		'label' => 'ADV',
-            ))
-            ->add('cash')
-            ->add('expenses')
-            ->add('comments','textarea')
-            
-             
-            //->add('address',new HotelAddressType($this->catalouge))
-        ->add('submit', 'submit', array('label' => 'submit'))
+		 ->add('submit', 'submit', array('label' => 'submit'))
         ;
     }
     

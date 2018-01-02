@@ -25,6 +25,7 @@ class EditPackageType extends AbstractType
             ->add('metaDescription','textarea')
             ->add('metaTitle')
             ->add('packageUrl')
+            //->add('category')
             ->add('type', 'choice', array(
             		'expanded' => false,
             		'multiple' => false,
@@ -45,6 +46,8 @@ class EditPackageType extends AbstractType
 				            		),
             		'required'    => true,
             ))
+            
+            
             ->add('itineraryList', 'collection', array(
             		// each entry in the array will be an "PackageItinerary" field
             		'type'   => new PackageItineraryType(),
@@ -67,6 +70,17 @@ class EditPackageType extends AbstractType
             		//   'attr'      => array('class' => '')
             		//),
             ))
+			/* ->add('imageList', 'collection', array(
+            		// each entry in the array will be an "PackageItinerary" field
+            		'type'   => new PackageImageType(),
+            		'allow_add'    => true,
+            		'prototype'=>true,
+            		'required'    => false,
+            		// these options are passed to each "PackageItinerary" type
+            		//'entry_options'  => array(
+            		//   'attr'      => array('class' => '')
+            		//),
+            )) */
              ->add('submit', 'submit', array('label' => 'submit'))
         ;
     }

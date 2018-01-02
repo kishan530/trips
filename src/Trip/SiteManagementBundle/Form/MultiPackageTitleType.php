@@ -21,9 +21,20 @@ class MultiPackageTitleType extends AbstractType
 			->add('metakeywords','textarea')
             ->add('metadescription','textarea')
 			->add('statingprice')
-			//->add('imgpath')
+			->add('imgpath')
 			->add('locationurl')
-			
+			->add('type', 'choice', array(
+			    'expanded' => false,
+			    'multiple' => false,
+			    'label' => 'Pacakge Type',
+			    'required'    => true,
+			    'choices' => array(
+			        'One' => 'One',
+			        'Two' => 'Two'
+			    ),
+			    
+			    
+			))
 			
            
         ;

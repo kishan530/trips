@@ -102,14 +102,14 @@
 
                             <div class="clearfix"></div>
 								<div class="row">
-                                    <div class="col-sm-8">
+                                    <div class="col-sm-9">
                                     <div class="col-sm-12 booking-price-details-border price-details clearfix">
 									<div class="row">
                                         <div class="hotel-title price-details">
                                             <h5>Review Your Booking</h5>
                                         </div>
                                         </div>
-										{% if filter.package|length>0 %}
+										{% if filter.package|length>0 and service.type=='one' %}
                                         <h6><span>{{ service.name }}</span> on {{ filter.date|date('F jS Y') }} {{ filter.preferTime }}</h6>
 											<div class="col-sm-2 text-center">
                                                 
@@ -120,6 +120,7 @@
 												    {% for startPoint in service.startPoint %} 
                                                     {{ locations[startPoint.name].name }} {% if loop.last is same as(false) %} / {% endif %}
                                                            {% endfor %}
+                                                    
 											</div>
 											<div class="col-sm-4 text-center">
 											<h5>Places to Visit</h5>
@@ -137,8 +138,8 @@
                                                     N/A
                                                 {% endfor %}
 											</div>
-										{% else %}
-											<h6>On {{ filter.date|date('F jS Y') }} {{ filter.preferTime }}</h6>
+										{% elseif service.imgPath %}
+										<h6>On {{ filter.date|date('F jS Y') }} {{ filter.preferTime }}</h6>
 										<div class="col-sm-3 text-center">
                                              <img src="{{ asset('images/cars/'~service.imgPath) }}" alt="" class="img-responsive">
 												 <h6>{{ service.model }}</h6>
@@ -152,6 +153,69 @@
 										<div class="col-sm-4 text-center">
 											{{ service.to }}
 										</div>
+									
+										{% else %}
+											
+										<h6><span>{{ service.name }}</span> on {{ filter.date|date('F jS Y') }} {{ filter.preferTime }}</h6>
+											<div class="col-sm-12">
+                                                
+                                                <h5>Package - <span style="color: #ea2330;font-weight: bold;">{{ service.code }}</span></h5>
+											</div>
+											<div class="col-sm-3 text-center">
+											<h5>Days</h5>
+											<hr>
+											Day1
+											<hr>
+											</div>
+											<div class="col-sm-3 text-center">
+											<h5>Pick Up</h5>
+											<hr>
+												    {% for startPoint in service.startPoint %} 
+                                                    {{ locations[startPoint.name].name }} {% if loop.last is same as(false) %} / {% endif %}
+                                                           {% endfor %}
+                                                    <hr>
+											</div>
+											<div class="col-sm-3 text-center">
+											<h5>Places to Visit</h5>
+											<hr>
+												{% for endPoint in service.endPoint if service.endPoint|length>0 %} 
+                                                            {{ locations[endPoint.name].name }}
+                                                     {% else %}
+                                                    N/A
+                                                 {% endfor %}
+                                                 <hr>
+											</div>
+											<div class="col-sm-3 text-center">
+											<h5>Drop</h5>
+											<hr>
+											 {% for endPoint2 in service.endPoint2 if service.endPoint2|length>0 %} 
+                                                    {{ locations[endPoint2.name].name }} 
+                                                {% else %}
+                                                    N/A
+                                                {% endfor %}
+                                                <hr>
+											</div>
+											
+											<div class="col-sm-3 text-center">
+											Day2
+											</div>
+											<div class="col-sm-3 text-center">
+												 {% for twostartPoint in service.twostartPoint %} 
+                                                    {{ locations[twostartPoint.name].name }} {% if loop.last is same as(false) %} / {% endif %}
+                                                           {% endfor %}
+											</div>
+												<div class="col-sm-3 text-center">	
+                                                    {% for twoendPoint in service.twoendPoint %} 
+                                                    {{ locations[twoendPoint.name].name }} {% if loop.last is same as(false) %} / {% endif %}
+                                                           {% endfor %}
+												</div>
+												<div class="col-sm-3 text-center">
+												{% for twoendPoint2 in service.twoendPoint2 if service.twoendPoint2|length>0 %} 
+                                                    {{ locations[twoendPoint2.name].name }} 
+                                                {% else %}
+                                                    N/A
+                                                {% endfor %}
+											</div>
 										{% endif %}
 										    
 											

@@ -134,9 +134,28 @@ $("select").change(function() {
     					}
     				});			       
     });
+	
 </script>
 {% endblock %}
 {% block body %}
+
+<section class="section clearfix">
+        <div class="container">
+		
+            <div class="row">
+				<div class="col-md-12" >
+				
+					{%set url=package.packageUrl ~ '-' ~ package.code%}
+					{{url}}
+					{%set package_id = package.id%}
+					{{package_id}}
+				<a style="float:right;text-decoration: none;color: #ffffff;background-color: #0694b6;padding: 8px 30px 8px 30px;" 
+											href="{{ path('trip_site_management_view_package',{'url':url}) }}" target="_blank">View Package</a></div>
+				
+			</div>
+		
+		</div>
+ </section>
 
     <section class="section clearfix">
         <div class="container">
@@ -294,6 +313,7 @@ $("select").change(function() {
                     </div>
                 </div>
             </div>
+			
             <h4>Existing Itinerary</h4>
             <div class="row">
                 <div id="fullwidth" class="col-sm-12">
@@ -343,6 +363,47 @@ $("select").change(function() {
 					</table>
                 </div>
             </div>
+			
+			
+			
+			
+			 <h4>Image List</h4>
+			 <section>
+			 <div class="container">
+				<div class="row">
+				<div  class="col-sm-1">
+					<h3>{{package.id}}<h3>
+				</div>
+				{% set image_id = 0 %}
+				{% for image in packageImages %}
+				{% set image_id = image.id %}
+					<div  class="col-sm-2">
+					
+					<a href="{{ asset('images/packages/'~image.url) }}" data-pretty="prettyPhoto[gallery1]" class="portfolio-image">
+						<img src="{{ asset('images/packages/'~image.url) }}" alt="" style="width:80px;height:80px;"/>
+					
+					</div>
+					{% endfor %}
+					</div>
+				<div class="row">
+					<div  class="col-sm-3">
+					{{ form_start(formupload) }}
+						
+						{{form_widget(formupload.url)}}
+						{#}{{form_label(formupload.package)}}
+						{{form_widget(formupload.package,{'attr':{'value': package.id}})}}{#}
+					{{ form_end(formupload) }}
+					<a href="{{ path('trip_site_management_addPackageImage',{ 'id': image_id }) }}"><i class="fa fa-plus-square-o"></i></a>
+					<a href="{{ path('trip_site_management_delete_image',{ 'id': image_id }) }}" class="delete" title=""><i class="fa fa-trash-o"></i></a>								
+				</div>
+				</div>
+			</div>
+			</section>
+					
+					
+						 
+						
+			
         </div>
     </section>
 {% endblock %}

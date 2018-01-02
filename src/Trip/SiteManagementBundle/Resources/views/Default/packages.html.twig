@@ -46,9 +46,9 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
     <div class="container">
         <ul class="nav nav-pills pactabs">
           <li class="active"><a data-toggle="pill" href="#1day">One day Package</a></li>
-        {#}  <li><a data-toggle="pill" href="#2day">Two day Package</a></li>
+          <li><a data-toggle="pill" href="#2day">Two day Package</a></li>
        <li><a data-toggle="pill" href="#3day">Three day Package</a></li>
-          <li><a data-toggle="pill" href="#4day">Four day Package</a></li> {#}
+          <li><a data-toggle="pill" href="#4day">Four day Package</a></li>
         </ul>
   
         <div class="tab-content">
@@ -138,9 +138,9 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                                     <div class="col-md-6 package-price-label">
                                                         <h6>Starting From:</h6>
                                                     </div>
-                                                    <div class="col-md-6 price">
+                                                    {#<div class="col-md-6 price">
                                                         <i class="fa fa-inr"></i><span id="price{{ package.id }}"> {{ package.price.first.price }} </span>  
-                                                    </div>
+                                                    </div>#}
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-4">
@@ -176,7 +176,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                             <div class="clearfix"></div> 
                                                 <div class="text-center">
                                                  <input type="hidden" name="selected" value="{{ key }}"> 
-                                                <input id="vehicleIndex{{ package.id }}" type="hidden" name="vehicleIndex" value="{{ package.price.keys[0] }}">
+													 {# <input id="vehicleIndex{{ package.id }}" type="hidden" name="vehicleIndex" value="{{ package.price.keys[0] }}">#}
                                                 <button type="submit" class="awe-btn awe-btn btn btn-book btn-block"><i class="fa fa-shopping-cart"></i> BOOK NOW</button>
                                                 </div>
                                                 </form>

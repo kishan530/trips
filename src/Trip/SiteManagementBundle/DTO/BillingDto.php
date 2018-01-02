@@ -83,9 +83,33 @@ class BillingDto
     /**
     *
     */
-    public function __construct() {
-    	$this->locations = array();
+	   public function __construct()
+    {
+        $this->multiple = new ArrayCollection();
+        //$this->placesToVisit = new ArrayCollection();
     }
+    
+    /**
+	 *
+	 * @return the string
+	 */
+	public function getMultiple() {
+		return $this->multiple;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$multiple
+	 */
+	public function setMultiple($multiple) {
+		$this->multiple = $multiple;
+		return $this;
+	}
+
+   /*  public function __construct() {
+    	$this->locations = array();
+    } */
 
 
     /**

@@ -1,0 +1,41 @@
+{% extends 'page.html.twig' %}
+{% block javascripts %}
+<script>
+    
+    
+</script>
+{% endblock %}
+{% block body %}
+
+    <section class="section clearfix">
+        <div class="container">
+            <div class="row">
+            
+                <div id="fullwidth" class="col-sm-4">
+                <hr>
+                    <form action="{{ path('trip_site_management_homepage_catpackage_submit') }}" method="post">
+                    <select type="text" name="cat" style="height: 35px;">
+                    	<option value="Select Page to create Package">Select Page to create Package</option>
+                    {% for packagetitle in packagetitle %}
+                    {% set title= packagetitle.id %}
+                    <option value= "{{ title }}">{{ packagetitle.title }}</option>
+                     {% endfor %}
+                    </select>
+                    
+                </div>
+                <div class="col-md-12">
+                
+                		<div class="col-md-4">
+                		<hr>
+                    	<button type="submit" class="view-bike" style="margin-top: 38px;border: none;">Submit</button>
+                    	</div>
+                    	
+                </div>
+                
+                    
+                    </form>
+            
+            </div>
+        </div>
+    </section>
+{% endblock %}
