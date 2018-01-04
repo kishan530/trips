@@ -102,8 +102,9 @@ you with the best price<i class="fa fa-quote-right" aria-hidden="true"></i></h3>
 					{#}<center>{{ form_end(form) }}</center>{#}
 						
 						
-						<center><input type="submit" value="Login" style="width:40%;background-color: #0694b6;border-color: #0694b6;color:#ffffff;" /></center>
+						<center><input type="submit" value="Login" style="width:40%;background-color: #0694b6;border-color: #0694b6;color:#ffffff;" />
 						</form>
+						<p><a href="{{path('trip_booking_engine_vendor_reset_password') }}">Forgot Password?</a></p></center>
 						<p style="color:red;"> {{ app.request.get('error') }}</p>
 						
 					</div>
