@@ -103,10 +103,20 @@ class Vendor
      */
     private $driversList;
 	 /**
-     * @var String
-     * 
+     * @var string
+     * @ORM\Column(name="vendor_id", type="string")
      */
     private $vendorId;
+    /**
+     * @var string
+     * @ORM\Column(name="vendorPwd", type="string")
+     */
+    private $vendorPwd;
+    /**
+     * @var string
+     * @ORM\Column(name="status", type="string")
+     */
+    private $status;
     
      private $multiple;
     
@@ -430,5 +440,38 @@ class Vendor
 		$this->vendorId = $vendorId;
 		return $this;
 	}
+	/**
+	 *
+	 * @return the string
+	 */
+	public function getVendorPwd() {
+	    return $this->vendorPwd;
+	}
 	
+	/**
+	 *
+	 * @param
+	 *        	$vendorPwd
+	 */
+	public function setVendorPwd($vendorPwd) {
+	    $this->vendorPwd = $vendorPwd;
+	    return $this;
+	}
+	/**
+	 *
+	 * @return the string
+	 */
+	public function getStatus() {
+	    return $this->status;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$status
+	 */
+	public function setStatus($status) {
+	    $this->status = $status;
+	    return $this;
+	}
 }

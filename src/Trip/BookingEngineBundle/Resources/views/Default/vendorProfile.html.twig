@@ -157,16 +157,27 @@ $(".preferDate").datepicker({
 	<section>
 		<div class="container">
 			<div class="row">
-				<div class="col-sm-3">
-					<a href="{{ path('trip_booking_engine_vendor_edit_vendor',{'id':vendor.id}) }}">Edit Profile</a></br>
-					vehicles</br>
+			{% if vendor.status == 'pending' %}
+			<p style="font-size:20px;background-color:#d9edf7;padding-top: 5px;padding-bottom: 5px;">You are one step ahead to complete registration with justtrip 
+			<form action="{{ paymentLink['action'] }}"  method="post">
+
+                    {% for key,option in paymentLink  %}
+                    
+                    <input type="hidden" name="{{ key }}" value="{{ option }}" >
+                    {% endfor %}
+                    <center><input type="submit" class="btn btn-primary " style="float:right;margin-top: -41px; margin-left: 80px;margin-bottom: 10px;background-color: #0694b6;border-color: #0694b6;color:#ffffff;" value="Pay Now" ></center>
+     		   </form></p>
+     		   {% endif %}
+				<div class="col-sm-2" style="border:1px solid #0694b6;"><center>
+					<button style="background-color: #0694b6;border: #0694b6;color:#ffffff;"><a href="{{ path('trip_booking_engine_vendor_edit_vendor',{'id':vendor.id}) }}" style="color:#ffffff;">Edit Profile</a></button></br>
+					Vehicles</br>
 					<a href="{{ path('trip_booking_engine_vendor_add_vehicle',{'id':vendor.id}) }}" target="_blank">Add Vehicle</a></br>
 					
 					<a href="{{ path('trip_booking_engine_vendor_list_vehicles',{'id':vendor.id}) }}" target="_blank"">Show Vehicles</a></br>
 					Drivers</br>
 					<a href="{{ path('trip_booking_engine_vendor_add_driver',{'id':vendor.id}) }}" target="_blank">Add Driver</a></br>
 					
-					<a href="{{ path('trip_booking_engine_vendor_list_drivers',{'id':vendor.id}) }}" target="_blank"">Show Drivers</a></br>
+					<a href="{{ path('trip_booking_engine_vendor_list_drivers',{'id':vendor.id}) }}" target="_blank"">Show Drivers</a></br></center>
 				</div>
 				<div class="col-sm-9">
 					<table class="table table-bordered">
