@@ -32,3 +32,7 @@ trip_rest_booking_engine_success:
 trip_rest_getpaymentupdate:
     path:     /api/get-paymentupdate
     defaults: { _controller: TripRestBundle:Rest:paymentcomplete }
+    
+trip_rest_management_homepage_packages:
+    path:     /api/get-packages
+    defaults: { _controller: TripRestBundle:Restpackages:multipackages }

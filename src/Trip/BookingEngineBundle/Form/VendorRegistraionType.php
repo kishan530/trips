@@ -69,15 +69,21 @@ class VendorRegistraionType extends AbstractType
         		'data_class' => null,
         		'label'=>'Company Name',
         		))
-            ->add('name')
-            ->add('email')
+        		->add('name','text', array(
+        		    'attr' => ['readonly' => true],
+        		))
+        		->add('email','text' ,array(
+        		    'attr' => ['readonly' => true],
+        		))
 			->add('mobileno','text',array(
         		'required' => true,
         		'data_class' => null,
+			   
         		'label'=>'Mobile Number',
 			    'attr'   =>  array(
 			        'title' => 'Enter Valid 10 Digit mobile number',
 			        'pattern' => '[0-9]{10}',
+			        'readonly' => true,
 			    ),
         		))
             ->add('address','textarea',array(
@@ -121,13 +127,7 @@ class VendorRegistraionType extends AbstractType
                  'prototype'=>true,
         		'required'    => false,
         ))
-            //->add('driver')
-            ->add('registraionFee','text',array(
-        		'required' => true,
-        		'data_class' => null,
-        		'label'=>'Registraion Fee',
-				'read_only' => true,
-        		))
+         
 			
             
        

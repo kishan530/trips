@@ -63,7 +63,14 @@ class VendorNewDriverType extends AbstractType
         				'class'   => 'filestyle',
         		),
         ))
-            
+        ->add('policeVerificationLetter', 'file',array(
+            'required' => false,
+            'data_class' => null,
+            'label'=>'Police Verification Letter',
+            'attr'   =>  array(
+                'class'   => 'filestyle',
+            ),
+        ))
               ;
                    
     }
