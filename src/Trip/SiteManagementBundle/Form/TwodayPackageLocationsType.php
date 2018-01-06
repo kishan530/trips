@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Trip\SiteManagementBundle\Form\HotelAddressType;
 
-class PackageLocationsType extends AbstractType
+class TwodayPackageLocationsType extends AbstractType
 {
     public function __construct($BookingServices)
 	{
@@ -35,7 +35,15 @@ class PackageLocationsType extends AbstractType
 		}
 		return $tempPackage;
         }
-	
+        public function getVehicles()
+        {
+            $locations = $this->BookingServices->getVehicles();
+            $tempLocations = array();
+            foreach ($locations as $location){
+                $tempLocations[$location->getId()] = $location->getModel();
+            }
+            return $tempLocations;
+        }
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -43,7 +51,14 @@ class PackageLocationsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        
+            ->add('package', 'choice', array(
+                'expanded' => false,
+                'multiple' => false,
+                'label' => 'PackageCode',
+                'choices' => $this->getPackageList(),
+                'required'    => true,
+                
+            ))
             ->add('location', 'choice', array(
             		'expanded' => false,
             		'multiple' => false,
@@ -52,14 +67,7 @@ class PackageLocationsType extends AbstractType
             		'required'    => true,
                     
             ))
-            ->add('package', 'choice', array(
-            		'expanded' => false,
-            		'multiple' => false,
-                    'label' => 'PackageCode',
-            		'choices' => $this->getPackageList(),
-            		'required'    => true,
-                    
-            ))
+             
 
              ->add('type', 'choice', array(
             		'expanded' => false,
@@ -69,6 +77,9 @@ class PackageLocationsType extends AbstractType
                                         'PickUp'=>'PickUp',
                                         'FirstDay'=>'Places to Visit',
                                         'SecondDay'=>'Drop',
+                            		    'TwoPickUp'=>'Two Day PickUp',
+                            		    'TwoFirstDay'=>'Two Places to Visit',
+                            		    'TwoSecondDay'=>'Two Drop',
 				            		),
             		'required'    => true,
                    
@@ -83,15 +94,17 @@ class PackageLocationsType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Trip\SiteManagementBundle\Dto\PackageLocations'
+            'data_class' => 'Trip\SiteManagementBundle\Dto\TwodayPackageLocations'
+            
         ));
     }
+    
 
     /**
      * @return string
      */
     public function getName()
     {
-        return 'trip_site_management_packagelocations';
+        return 'trip_site_management_add_twoday_packagelocations';
     }
 }
