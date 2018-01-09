@@ -43,4 +43,8 @@ trip_rest_management_homepage_packagedetail_new:
 
 trip_rest_management_packagebookingsubmit:
     path:     /api/get-packagebookingsubmit
-    defaults: { _controller: TripRestBundle:Restpackages:packagebookingsubmit }   
+    defaults: { _controller: TripRestBundle:Restpackages:packagebookingsubmit }
+
+trip_rest_management_Loginuserdetails:
+    path:     /api/get-logindetail
+    defaults: { _controller: TripRestBundle:Rest:userLogin }

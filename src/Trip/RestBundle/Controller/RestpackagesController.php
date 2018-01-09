@@ -49,10 +49,6 @@ class RestpackagesController extends Controller
     		$packagetitleId =  $packagetitle->getId();
     		$title =  $packagetitle->getTitle();
     		
-    		
-    		    	
-    		
-    		
     		$statingPrice = $packagetitle->getStatingPrice();
     		$location =  $packagetitle->getLocation();
     		//$imgPath = $packagetitle->getImgPath();
@@ -108,8 +104,7 @@ class RestpackagesController extends Controller
     			//echo var_dump($id);
     			//exit();
     			$packages = $em->getRepository('TripSiteManagementBundle:Package')->findBy(array('category' => $id));
-    			echo var_dump($packages);
-    			exit();
+    			
     			$locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
     			$locations = $this->getLocationsByIndex($locations);
     			//$session = $request->getSession();

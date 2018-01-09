@@ -1008,4 +1008,78 @@ class RestController extends Controller
     	));
     }
     
+    public function userLoginAction(Request $request){
+    	
+    	header("Access-Control-Allow-Origin: *");
+    	//$username = $request->request->get('username');
+    	//$password = $request->request->get('password');
+    	$username = $request->get('username');
+    	$password = $request->get('password');
+    	 
+    	//$paramList = $this->getRequest()->request->all();
+    	//$username = $paramList['username'];
+    	$user_manager = $this->get('fos_user.user_manager');
+    	$factory = $this->get('security.encoder_factory');
+    	// 	$username = '8880541921';
+    	//	$password = 'DK3647';
+    	$user = $user_manager->findUserByUsername($username);
+    	
+    	//echo var_dump($user);
+    	//exit();
+    	
+    	if (null === $user)
+    	$user = $user_manager->findUserByEmail ( $username );
+    	 
+   		
+    	
+    	$encoder = $factory->getEncoder($user);
+    	
+    	
+//     	$customerId = $user->getCustomerId();
+//     	$customerGroupId = $user->getCustomerGroupId();
+//     	$customerType = $user->getCustomerType();
+//     	$schoolDao = $this->container->get ( 'drive.school.services' );
+//     	$customerDao = $this->container->get ( 'drive.customer.services' );
+//     	if($customerType=='vendor' || $customerType=='school')
+//     		$customerDetails = $schoolDao->getEmployee($customerId);
+//     	else
+//     		$customerDetails = $customerDao->getCustomer($customerId);
+    	 
+//     	$customerMobile=$customerDetails->getUserMob();
+//     	$customerEmail=$customerDetails->getUserEmail();
+    	 
+    	
+    	$data['success']= false;
+    	$extras['msg']=1;
+    	$bool = ($encoder->isPasswordValid($user->getPassword(),$password,$user->getSalt())) ? true : false;
+    	if($bool){
+    		$data['success']=true;
+    		//$profile['id']= $customerId;
+    		$profile['name']= $user->getUserName();
+    		$profile['id']= $user->getId();
+    		//$profile['type']= $customerType;
+    		//$profile['groupId']= $customerGroupId;
+    		//$profile['mobile']= $customerMobile;
+    		//$profile['email']= $customerEmail;
+    		$extras['userProfileModel']=$profile;
+    		//echo var_dump($profile);
+    		//exit();
+//     		if($customerType=='school')
+//     			$extras['sessionId']='SCH'.$customerId;
+//     		else
+//     			$extras['sessionId']='CSR'.$customerId;
+    		$extras['msg']='success';
+    	}
+    	 
+    	$data['success']=true;
+    	//$extras['msg']='';
+    	//$extras['searchList'] = $searchList;
+    	//$data['extras']=$extras;
+    	//return new Response (json_encode($data));
+    	$data['extras']=$extras;
+    	 
+    	return new Response (json_encode($data));
+    	
+    }
+    
 }
