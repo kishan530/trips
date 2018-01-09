@@ -103,10 +103,30 @@ class Vendor
      */
     private $driversList;
 	 /**
-     * @var String
-     * 
+     * @var string
+     * @ORM\Column(name="vendor_id", type="string")
      */
     private $vendorId;
+    /**
+     * @var string
+     * @ORM\Column(name="vendorPwd", type="string")
+     */
+    private $vendorPwd;
+    /**
+     * @var string
+     * @ORM\Column(name="status", type="string")
+     */
+    private $status;
+    /**
+     * @var integer
+     * @ORM\Column(name="amountPaid", type="integer")
+     */
+    private $amountPaid;
+    /**
+     * @var integer
+     * @ORM\Column(name="amountPending", type="integer")
+     */
+    private $amountPending;
     
      private $multiple;
     
@@ -430,5 +450,72 @@ class Vendor
 		$this->vendorId = $vendorId;
 		return $this;
 	}
+	/**
+	 *
+	 * @return the string
+	 */
+	public function getVendorPwd() {
+	    return $this->vendorPwd;
+	}
 	
+	/**
+	 *
+	 * @param
+	 *        	$vendorPwd
+	 */
+	public function setVendorPwd($vendorPwd) {
+	    $this->vendorPwd = $vendorPwd;
+	    return $this;
+	}
+	/**
+	 *
+	 * @return the string
+	 */
+	public function getStatus() {
+	    return $this->status;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$status
+	 */
+	public function setStatus($status) {
+	    $this->status = $status;
+	    return $this;
+	}
+	/**
+	 *
+	 * @return the integer
+	 */
+	public function getAmountPaid() {
+	    return $this->amountPaid;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$amountPaid
+	 */
+	public function setAmountPaid($amountPaid) {
+	    $this->amountPaid = $amountPaid;
+	    return $this;
+	}
+	/**
+	 *
+	 * @return the integer
+	 */
+	public function getAmountPending() {
+	    return $this->amountPending;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$amountPending
+	 */
+	public function setAmountPending($amountPending) {
+	    $this->amountPending = $amountPending;
+	    return $this;
+	}
 }

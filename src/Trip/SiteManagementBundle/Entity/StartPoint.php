@@ -40,12 +40,6 @@ class StartPoint
      * @ORM\JoinColumn(name="package_id", referencedColumnName="id")
      */
     private $booking;
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="type", type="string", length=255)
-     */
-    private $type;
     
     
     
@@ -123,22 +117,7 @@ class StartPoint
 		$this->booking = $booking;
 		return $this;
 	}
-    /**
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param string $type
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-    }
-
+    
 	
     
 }

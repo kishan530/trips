@@ -38,7 +38,7 @@ class VendorNewVehicleType extends AbstractType
             		 'choices'  => array(
         'Hatch Back' => 'Hatch Back',
 		'Sedan' => 'Sedan',
-		'Suv' => 'Suv',
+		'Suv' => 'Suv(Innova,Tavera,Etica)',
 		'Tempo' => 'Tempo',
 		'Bus' => 'Bus',
 		
@@ -73,7 +73,7 @@ class VendorNewVehicleType extends AbstractType
 		->add('vehiclePopulation', 'file',array(
         		'required' => false,
         		'data_class' => null,
-        		'label'=>'Vehicle Population Certificate',
+        		'label'=>'Vehicle Pollution Certificate',
         		'attr'   =>  array(
         				'class'   => 'filestyle',
         		),

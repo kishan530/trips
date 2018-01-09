@@ -124,15 +124,15 @@ $(".preferDate").datepicker({
                     </div>
 					 <div class="col-lg-3">
                         {{ form_label(form.name) }} 
-                        {{ form_widget(form.name,{'attr':{'class':'make-margin'}}) }}
+                        {{ form_widget(form.name,{'value':vendorName},{'attr':{'class':'make-margin'}}) }}
                     </div>
 					 <div class="col-lg-3">
                         {{ form_label(form.email) }} 
-                        {{ form_widget(form.email,{'attr':{'class':'make-margin'}}) }}
+                        {{ form_widget(form.email,{'value':vendorEmail},{'attr':{'class':'make-margin'}}) }}
                     </div>
 					 <div class="col-lg-3">
                         {{ form_label(form.mobileno) }} 
-                        {{ form_widget(form.mobileno,{'attr':{'class':'make-margin'}}) }}
+                        {{ form_widget(form.mobileno,{'value':vendorMobileno},{'attr':{'class':'make-margin'}}) }}
                     </div>
 				</div>
 				<div class="row billingpadding">
@@ -160,10 +160,7 @@ $(".preferDate").datepicker({
                         {{ form_label(form.idproof) }} 
                         {{ form_widget(form.idproof,{'attr':{'class':'make-margin'}}) }}
                     </div>
-                    <div class="col-lg-3">
-                        {{ form_label(form.registraionFee) }} 
-                        {{ form_widget(form.registraionFee,{'value':'3000'},{'attr':{'class':'make-margin'}}) }}
-                    </div>
+                   
 					
 					
 				</div>
@@ -225,6 +222,15 @@ $(".preferDate").datepicker({
                              {{ form_label(d.driverIdproof) }} 
                                 {{ form_widget(d.driverIdproof) }}
                             </div>
+                         </div>
+                          <div class="row form-group">
+                           
+                                                      
+                           <div class="col-lg-3">
+                           {{ form_label(d.policeVerificationLetter) }} 
+                                {{ form_widget(d.policeVerificationLetter) }}
+                            </div>
+                            
                          </div>
 						 </div>
                           {% endmacro %}

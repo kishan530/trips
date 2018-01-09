@@ -126,15 +126,15 @@ Date();a=s.createElement(o),
 											<li><a href="{{ path('trip_site_management_homepage_packages')}}" >One Day Packages</a></li>
 											<li><a href="{{ path('trip_site_management_homepage_twoday_packages')}}" >Two Day Packages</a></li>
 											{% if is_granted('ROLE_SUPER_ADMIN') %}
-                                             <li><a href="{{ path('trip_site_management_add_package') }}">Add Package</a></li>
-                                             <li><a href="{{ path('trip_site_management_add_packagecat') }}">Add Package Cat</a></li>
-                                             <li><a href="{{ path('trip_site_management_add_packagelocations') }}">Add PackageLocation</a></li>
-                                             <li><a href="{{ path('trip_site_management_add_package_price') }}">Add PackagePrice</a></li>
+                                            {# <li><a href="{{ path('trip_site_management_add_package') }}">Add Package</a></li>#}
+                                             {#<li><a href="{{ path('trip_site_management_add_packagelocations') }}">Add PackageLocation</a></li>#}
+                                             {#<li><a href="{{ path('trip_site_management_add_package_price') }}">Add PackagePrice</a></li>#}
                                               <li><a href="{{ path('trip_site_management_package_list') }}">Package List</a></li>
 											  <li><a href="{{ path('trip_site_management_multipackage_list') }}">Multi Package List</a></li>
-											  <li><a href="{{ path('trip_site_management_add_multipackage') }}">Add Multi Packages</a></li>
-											  <li><a href="{{ path('trip_site_management_add_twoday_packagelocations') }}">Add Twoday PackageLocation</a></li>
 											  <li><a href="{{ path('trip_site_management_hotels_list') }}">Hotels List</a></li>
+											  <li><a href="{{ path('trip_site_management_add_multipackage') }}">Add Multi Packages</a></li>
+											  <li><a href="{{ path('trip_site_management_add_packagecat') }}">Add Package Cat</a></li>
+											  <li><a href="{{ path('trip_site_management_add_twoday_packagelocations') }}">Add PackageDetails</a></li>
                                              {% endif %}  
                                             
                                         </ul>
@@ -144,7 +144,7 @@ Date();a=s.createElement(o),
 								    {% endif %}
 								    {% if is_granted('ROLE_ADMIN') %}
 									
-									 <li><a href="{{ path ('trip_site_management_billing_details') }}">Add Accounts</a></li>
+									 <li><a href="{{ path ('trip_booking_engine_testcustomPackage') }}">Add  Accounts</a></li>
                                      <li><a href="{{ path ('trip_site_management_billing_list') }}">Accounts List</a></li>
 									 {% if is_granted('IS_AUTHENTICATED_FULLY') %}  
                                                 <li><a href="{{ path('fos_user_security_logout') }}"><b>{% trans%}Logout{% endtrans %}</b></a> </li>
@@ -160,7 +160,7 @@ Date();a=s.createElement(o),
                                             <li><a href="{{ path('trip_site_management_add_services') }}">Add Services</a></li>
                                              <li><a href="{{ path('trip_site_management_add_hotel') }}">Add Hotel</a></li>                                           
 											 <li><a href="{{ path('trip_site_management_booking_update_price') }}">Update Price</a></li>
-											 <li><a href="{{ path ('trip_site_management_billing_details') }}">Justtrip Accounts</a></li>
+											 <li><a href="{{ path ('trip_booking_engine_testcustomPackage') }}">Justtrip Accounts</a></li>
                                             <li><a href="{{ path ('trip_site_management_billing_list') }}">Justtrip Accounts List</a></li>
                                             
                                         </ul>

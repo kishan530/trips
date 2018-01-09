@@ -43,6 +43,7 @@ class PackageLocationsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+        
             ->add('location', 'choice', array(
             		'expanded' => false,
             		'multiple' => false,

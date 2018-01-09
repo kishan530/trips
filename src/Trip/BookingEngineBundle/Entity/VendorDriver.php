@@ -48,6 +48,12 @@ class VendorDriver
      * @ORM\Column(name="driver_idproof", type="string")
      */
     private $driverIdproof;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="policeVerificationLetter", type="string")
+     */
+    private $policeVerificationLetter;
     
 	  /**
      * @ORM\ManyToOne(targetEntity="Trip\BookingEngineBundle\Entity\Vendor", inversedBy="drivers")
@@ -149,6 +155,27 @@ class VendorDriver
     public function getDriverIdproof()
     {
     	return $this->driverIdproof;
+    }
+    /**
+     * Set policeVerificationLetter
+     *
+     * @param string $policeVerificationLetter
+     * @return VendorDriver
+     */
+    public function setPoliceVerificationLetter($policeVerificationLetter)
+    {
+        $this->policeVerificationLetter = $policeVerificationLetter;
+        
+        return $this;
+    }
+    /**
+     * Get policeVerificationLetter
+     *
+     * @return string
+     */
+    public function getPoliceVerificationLetter()
+    {
+        return $this->policeVerificationLetter;
     }
     
 	/**

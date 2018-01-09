@@ -3,7 +3,7 @@ trip_site_management_homepage:
     defaults: { _controller: TripBookingEngineBundle:Booking:index }
 trip_site_management_homepage_hotels:
     path:     /hotels
-    defaults: { _controller: TripBookingEngineBundle:trip_booking_engine_search:hotels }
+    defaults: { _controller: TripBookingEngineBundle:Booking:hotels }
 trip_site_management_homepage_deals:
     path:     /deals
     defaults: { _controller: TripBookingEngineBundle:Booking:deals }
@@ -65,7 +65,7 @@ trip_booking_engine_vendor_login:
     path:     /test-vendor-login
     defaults: { _controller: TripBookingEngineBundle:Booking:vendorLogin }
 trip_booking_engine_test_vendor_login:
-    path:     /vendor-login
+    path:     /partner-with-us
     defaults: { _controller: TripBookingEngineBundle:Booking:vendorTestLogin }
 trip_booking_engine_test_vendor_password:
     path:     /test-vendor-password
@@ -118,7 +118,6 @@ trip_booking_engine_vendor_remove_vehicle:
 trip_booking_engine_vendor_edit_vendor:
     path:     /vendor-edit-profile
     defaults: { _controller: TripBookingEngineBundle:Booking:vendorEditProfile} 
-
 trip_booking_engine_booking_bike:
     path:     /booking-bike
     defaults: { _controller: TripBookingEngineBundle:Booking:bookingBike }
@@ -137,5 +136,19 @@ remove_trailing_slash:
     requirements:
         url: .*/$
     methods: [GET]
-
-
+trip_booking_engine_vendor_payment:
+    path:     /vendor-payment
+    defaults: { _controller: TripBookingEngineBundle:Booking:vendorPayment} 
+trip_booking_engine_vendor_payment_success:
+    path:     /vendor-payment-success
+    defaults: { _controller: TripBookingEngineBundle:Booking:vendorPaymentSuccess} 
+trip_booking_engine_vendor_payment_fail:
+    path:     /vendor-payment-fail
+    defaults: { _controller: TripBookingEngineBundle:Booking:vendorPaymentFail} 
+trip_booking_engine_vendor_list:
+    path:     /vendor-list
+    defaults: { _controller: TripBookingEngineBundle:Booking:vendorList} 
+trip_booking_engine_vendor_list_view_more:
+    path:     /vendor-list-view -more
+    defaults: { _controller: TripBookingEngineBundle:Booking:vendorListViewMore} 
+       
