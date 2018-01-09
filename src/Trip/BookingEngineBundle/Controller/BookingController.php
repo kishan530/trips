@@ -987,21 +987,6 @@ class BookingController extends Controller
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     private function createCustomPackageForm(CustomerDto $customer){
         $bookingService = $this->container->get( 'booking.services' );
         $security = $this->container->get ( 'security.context' );
@@ -1911,6 +1896,8 @@ class BookingController extends Controller
                     
                     
                 }
+                $vehicle->setInsertdate(date("d-m-Y"));
+                $vehicle->setPaymentStatus('pending');
                 $vehicle->setVendor($vendor);
                 $collection->add($vehicle);
                 
@@ -1954,6 +1941,8 @@ class BookingController extends Controller
                 $vendor->setVendorId($vendorId);
                 $vendor->setVendorPwd($vendorPwd);
                 $vendor->setStatus('pending');
+                $vendor->setAmountPaid(0);
+                $vendor->setAmountPending($amountToPay);
             }
             //exit();
             $em->persist($vendor);
@@ -2220,6 +2209,8 @@ class BookingController extends Controller
         $vendor = $em->getRepository('TripBookingEngineBundle:Vendor')->findOneBy(
             array( 'email' => $email)
             );
+        $session = $this->getRequest()->getSession();
+        $session->set('vendor', $vendor);
         $vendorId = $vendor->getVendorId();
         $paymentLink = $this->getVendorPaymentLink($request,$vendor,$vendorId);
         
@@ -2280,7 +2271,7 @@ class BookingController extends Controller
     }
     public function vendorAddVehicleAction(Request $request){
         $id = $_GET['id'];
-        
+        $amountPending =0;
         $vehicle = new VendorVehicles();
         
         $form =  $this->createVendorAddVehicleForm($vehicle,$id);
@@ -2288,10 +2279,24 @@ class BookingController extends Controller
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $vendor = $em->getRepository('TripBookingEngineBundle:Vendor')->findOneBy(array( 'id' => $id));
-            
+            $registraionFee = $vendor->getRegistraionFee();
+            $amountPending = $vendor->getAmountPending();
             $vehicle->setVendor($vendor);
             
             $collection = $vendor->getVehicles();
+            $vehicleName = $vehicle->getVehicleName();
+            // var_dump($vehicleName);
+            $vendorVehicleFee = $em->getRepository('TripBookingEngineBundle:VendorVehicleFee')->findOneBy(
+                array('vehicleName' => $vehicleName)
+                );
+            if($vendorVehicleFee != null){
+                $vehicleFee = $vendorVehicleFee->getVehicleFee();
+                $registraionFee = $registraionFee+$vehicleFee;
+                $amountPending =$amountPending + $vehicleFee;
+                $vendor->setRegistraionFee($registraionFee);
+                $vendor->setAmountPending($amountPending);
+                $em->merge($vendor);
+            }
             
             
             $uploadedVehicleImage = $vehicle->getVehicleImage();
@@ -2325,9 +2330,16 @@ class BookingController extends Controller
                 
                 
             }
-            
+           
+            $vehicle->setInsertdate(date("d-m-Y"));
+            $vehicle->setPaymentStatus('pending');
             $em->persist($vehicle);
+            
             $em->flush();
+            
+            return $this->redirect($this->generateUrl('trip_booking_engine_vendor_profile',array(
+                'email' => $vendor->getEmail(),
+            )));
         }
         return $this->render('TripBookingEngineBundle:Default:vendorAddVehicle.html.twig',array(
             'form' => $form->createView(),
@@ -2349,6 +2361,7 @@ class BookingController extends Controller
     }
     public function vendorAddDriverAction(Request $request){
         $id = $_GET['id'];
+        
         
         $driver = new VendorDriver();
         
@@ -2389,6 +2402,9 @@ class BookingController extends Controller
             
             $em->persist($driver);
             $em->flush();
+            return $this->redirect($this->generateUrl('trip_booking_engine_vendor_profile',array(
+                'email' => $vendor->getEmail(),
+            )));
         }
         return $this->render('TripBookingEngineBundle:Default:vendorAddDriver.html.twig',array(
             'form' => $form->createView(),
@@ -2420,6 +2436,8 @@ class BookingController extends Controller
     }
     public function vendorRemoveDriverAction(Request $request){
         $id = $_GET['id'];
+        $session = $this->getRequest()->getSession();
+        $vendor = $session->get('vendor');
         
         $em = $this->getDoctrine()->getManager();
         $vendorDriver = $em->getRepository('TripBookingEngineBundle:VendorDriver')->findOneBy(array( 'id' => $id));
@@ -2429,20 +2447,39 @@ class BookingController extends Controller
         
         $em->remove($vendorDriver);
         $em->flush();
-        return $this->render('TripBookingEngineBundle:Default:vendorDeleteSuccess.html.twig');
+        return $this->redirect($this->generateUrl('trip_booking_engine_vendor_profile',array(
+            'email' => $vendor->getEmail(),
+        )));
+        
     }
     public function vendorRemoveVehicleAction(Request $request){
         $id = $_GET['id'];
-        
+        $session = $this->getRequest()->getSession();
+        $vendor = $session->get('vendor');
+        $amountPending = $vendor->getAmountPending();
+        $registraionFee = $vendor->getRegistraionFee();
         $em = $this->getDoctrine()->getManager();
         $vendorVehicle = $em->getRepository('TripBookingEngineBundle:VendorVehicles')->findOneBy(array( 'id' => $id));
         $id =  $vendorVehicle->getId();
         
         $vendorVehicle = $em->getRepository('TripBookingEngineBundle:VendorVehicles')->find( $id);
-        
+        $vehicleName = $vendorVehicle->getVehicleName();
+        $vendorVehicleFee = $em->getRepository('TripBookingEngineBundle:VendorVehicleFee')->findOneBy(array( 'vehicleName' => $vehicleName));
+        $vehicleFee =  $vendorVehicleFee->getVehicleFee();
+        $paymentStatus = $vendorVehicle->getPaymentStatus();
+        if($paymentStatus == 'pending'){
+           
+            $amountPending =$amountPending - $vehicleFee;
+            $registraionFee = $registraionFee - $vehicleFee;
+            $vendor->setAmountPending($amountPending);
+            $vendor->setRegistraionFee($registraionFee);
+            $em->merge($vendor);
+        }
         $em->remove($vendorVehicle);
         $em->flush();
-        return $this->render('TripBookingEngineBundle:Default:vendorDeleteSuccess.html.twig');
+        return $this->redirect($this->generateUrl('trip_booking_engine_vendor_profile',array(
+            'email' => $vendor->getEmail(),
+        )));
     }
     private function createVendorEditProfileForm(Vendor $vendor,$id){
         $bookingService = $this->container->get( 'booking.services' );
@@ -2466,6 +2503,7 @@ class BookingController extends Controller
         $uploadedPanfile =$vendor->getPancardid();
         $uploadedfile =$vendor->getidProof();
         $session = $this->getRequest()->getSession();
+        
         $session->set('pan', $uploadedPanfile);
         $session->set('id', $uploadedfile);
         
@@ -2500,6 +2538,9 @@ class BookingController extends Controller
             
             $em->merge($vendor);
             $em->flush();
+            return $this->redirect($this->generateUrl('trip_booking_engine_vendor_profile',array(
+                'email' => $vendor->getEmail(),
+            )));
         }
         return $this->render('TripBookingEngineBundle:Default:vendorEditProfile.html.twig',array(
             'form' => $form->createView(),
@@ -2519,12 +2560,16 @@ class BookingController extends Controller
     }
     public function vendorEditDriverAction(Request $request){
         $id = $_GET['id'];
+        
         $request = $this->getRequest();
         $em = $this->getDoctrine()->getManager();
-        $vendorDriver = $em->getRepository('TripBookingEngineBundle:VendorDriver')->findOneBy(array( 'id' => $id));
-        $id =  $vendorDriver->getId();
+        //$vendor = $em->getRepository('TripBookingEngineBundle:Vendor')->find($id);
+       //$vendorDriver = $em->getRepository('TripBookingEngineBundle:VendorDriver')->findOneBy(array( 'id' => $id));
+        //$id =  $vendorDriver->getId();
         
         $driver = $em->getRepository('TripBookingEngineBundle:VendorDriver')->find( $id);
+        $vendorId = $driver->getVendor();
+        $vendor = $em->getRepository('TripBookingEngineBundle:Vendor')->find($vendorId);
         $drivingLicence = $driver->getdrivingLicence();
         $driverIdproof = $driver->getdriverIdproof();
         $policeVerificationLetter = $driver->getPoliceVerificationLetter();
@@ -2577,6 +2622,9 @@ class BookingController extends Controller
             
             $em->merge( $driver);
             $em->flush();
+            return $this->redirect($this->generateUrl('trip_booking_engine_vendor_profile',array(
+                'email' => $vendor->getEmail(),
+            )));
         }
         return $this->render('TripBookingEngineBundle:Default:vendorEditDriver.html.twig',array(
             'form' => $form->createView(),
@@ -2588,14 +2636,15 @@ class BookingController extends Controller
         
         $session = $request->getSession ();
         $redirectUrl = $this->generateUrl ( 'trip_booking_engine_vendor_payment_success' );
-        $data = $this->getVendorData($request,$vendor,$id,$redirectUrl);
+        $redirectUrlFail = $this->generateUrl ( 'trip_booking_engine_vendor_payment_fail' );
+        $data = $this->getVendorData($request,$vendor,$id,$redirectUrl,$redirectUrlFail);
         return  $data;
         $info['redirect_url']='https://test.payu.in/_payment';
         return $this->redirect($info['redirect_url']);
        
     }
    
-    private function getVendorData($request,$vendor,$id,$redirectUrl){
+    private function getVendorData($request,$vendor,$id,$redirectUrl,$redirectUrlFail){
         // Merchant key here as provided by Payu
         //$MERCHANT_KEY = "rjQUPktU";
         $MERCHANT_KEY = "ze3IGP8w";
@@ -2620,7 +2669,7 @@ class BookingController extends Controller
         $mobile = $vendor->getmobileNo ();
         $name = $vendor->getName ();
         $email = $vendor->getEmail ();
-        $amount = $vendor->getRegistraionFee ();
+        $amount = $vendor->getAmountPending ();
         $host = $request->getHost ();
         
         $sUrl = 'http://' . $host . $redirectUrl.'?payment_id='.$txnid.'&status=success';
@@ -2662,31 +2711,43 @@ class BookingController extends Controller
        // $selectedService = $session->get('selected');
         
         $vendor = $session->get('vendor');
-        
+        $amountPaid =  $vendor->getRegistraionFee();
        // $booking = $session->get('bookingObj');
        // $amountToPay = $session->get('amountToPay');
         $em = $this->getDoctrine()->getManager();
         if($status=='success'){
             $vendor->setStatus('Rigistered');
-            
+            $vendor->setAmountPaid($amountPaid);
+            $vendor->setAmountPending(0);
             $em->merge($vendor);
             $em->flush();
             $email =  $vendor->getEmail();
             $name = $vendor->getName();
             $mobile = $vendor->getMobileno();
             $vendorId = $vendor->getVendorId();
+            $vehicles = $em->getRepository('TripBookingEngineBundle:VendorVehicles')->findBy(array( 'vendor' => $vendor->getId()));
+            //var_dump($vehicles);
+            
+            if($vehicles != ''){
+                    var_dump($vehicles);
+                foreach ($vehicles as $vehicle) {
+                    var_dump($vehicle);
+                    $vehicle->setPaymentStatus('paid');
+                    $em->merge($vehicle);
+                    $em->flush();
+                }
+            }
+            //exit();
             $mail = "Dear $name <br> Your Vendor Registration has been Successfully completed.Your Vendor Id is $vendorId";
             $adminMail = "Dear Admin, $name <br> has done Vendor Registration Successfully and Vendor Id is $vendorId";
            
             
             $mailService = $this->container->get( 'mail.services' );
-            $mailService->mail($email,'Just Trip:Vendor Booking Confirmation',$mail);
-           // $mailService->mail('Payment@justtrip.in','Just Trip:Booking Confirmation',$adminMail);
-            $mailService->mail('info@justtrip.in','Just Trip:Vendor Booking Confirmation',$adminMail);
+            $mailService->mail($email,'Just Trip:Vendor Registration Confirmation',$mail);
+           
+            $mailService->mail('info@justtrip.in','Just Trip:Vendor Registration Confirmation',$adminMail);
         }else{
-            $vendor->setStatus('fail');
-            $em->merge($vendor);
-            $em->flush();
+            $status = 'fail';
         }
         
         
@@ -2696,7 +2757,27 @@ class BookingController extends Controller
         ));
         
     }
-    
-    
+    public function vendorListAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $vendorList = $em->getRepository('TripBookingEngineBundle:Vendor')->findAll();
+        return $this->render('TripBookingEngineBundle:Default:vendorList.html.twig', array(
+            'vendorList'   => $vendorList,
+            
+        ));
+        
+    }
+    public function vendorListViewMoreAction(Request $request)
+    {
+        $id = $request->get('vendorid');
+        $em = $this->getDoctrine()->getManager();
+        $vendorList = $em->getRepository('TripBookingEngineBundle:Vendor')->find( $id);
+       
+        return $this->render('TripBookingEngineBundle:Default:vendorListViewMore.html.twig', array(
+            'vendor'   => $vendorList,
+            
+        ));
+        
+    }
     //**************End************//
 }

@@ -62,8 +62,20 @@ class VendorVehicles
      * @ORM\JoinColumn(name="vendor_id", referencedColumnName="id")
      */
 	 private $vendor;
-	
-	
+	 /**
+	  * @var string
+	  *
+	  * @ORM\Column(name="paymentStatus", type="string")
+	  *
+	  */
+	 private $paymentStatus;
+	 /**
+	  * @var string
+	  *
+	  * @ORM\Column(name="insertdate", type="string")
+	  *
+	  */
+	 private $insertdate;
     /**
      * Get id
      *
@@ -196,5 +208,46 @@ class VendorVehicles
 		return $this->vendor;
 	}
 	
-	
+	/**
+	 * Set paymentStatus
+	 *
+	 * @param string $paymentStatus
+	 * @return VendorVehicles
+	 */
+	public function setPaymentStatus($paymentStatus)
+	{
+	    $this->paymentStatus = $paymentStatus;
+	    
+	    return $this;
+	}
+	/**
+	 * Get paymentStatus
+	 *
+	 * @return string
+	 */
+	public function getPaymentStatus()
+	{
+	    return $this->paymentStatus;
+	}
+	/**
+	 * Set insertdate
+	 *
+	 * @param string $insertdate
+	 * @return VendorVehicles
+	 */
+	public function setInsertdate($insertdate)
+	{
+	    $this->insertdate = $insertdate;
+	    
+	    return $this;
+	}
+	/**
+	 * Get insertdate
+	 *
+	 * @return string
+	 */
+	public function getInsertdate()
+	{
+	    return $this->insertdate;
+	}
 }

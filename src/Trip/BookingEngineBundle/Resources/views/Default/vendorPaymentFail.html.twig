@@ -1,0 +1,46 @@
+{% extends 'page.html.twig' %}
+{% block javascripts %}
+
+{% endblock %}
+{% block stylesheets %}
+
+{% endblock %}
+
+{% block breadcrumb %}
+                    <ul class="c1 breadcrumb text-left">
+                        <li><a href="#">Home</a></li>
+                        <li>vendor</li>
+                        <li>Success</li>
+                    </ul>
+                    <h3></h3>
+{% endblock %}
+
+{% block body %}
+
+    <section class="section clearfix">
+        <div class="container">
+            <div class="row">
+                <div id="fullwidth" class="col-sm-12">
+
+                    <!-- START CONTENT -->
+                    <div class="row">
+                        <div id="content" class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="post-wrapper text-center clearfix">
+                                <div class="successful">
+                                    <img src="{{ asset('images/payment_cross.png') }}" alt="" width="150" height="150">
+                                </div>
+                                <h6>Dear customer,</h6>
+                                <p>Payment unsuccessful.<br>
+                                For any problems please right to us <a href="mailto:info@justtrip.in">info@justtrip.in</a> </p>
+                                
+                            </div><!-- end post-wrapper -->
+                        </div><!-- end col -->
+                    </div><!-- end row -->
+                    <!-- END CONTENT -->
+
+                </div><!-- end fullwidth -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </section><!-- end section -->
+
+{% endblock %}

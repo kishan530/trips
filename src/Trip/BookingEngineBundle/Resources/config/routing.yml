@@ -3,7 +3,7 @@ trip_site_management_homepage:
     defaults: { _controller: TripBookingEngineBundle:Booking:index }
 trip_site_management_homepage_hotels:
     path:     /hotels
-    defaults: { _controller: TripBookingEngineBundle:trip_booking_engine_search:hotels }
+    defaults: { _controller: TripBookingEngineBundle:Booking:hotels }
 trip_site_management_homepage_deals:
     path:     /deals
     defaults: { _controller: TripBookingEngineBundle:Booking:deals }
@@ -142,3 +142,13 @@ trip_booking_engine_vendor_payment:
 trip_booking_engine_vendor_payment_success:
     path:     /vendor-payment-success
     defaults: { _controller: TripBookingEngineBundle:Booking:vendorPaymentSuccess} 
+trip_booking_engine_vendor_payment_fail:
+    path:     /vendor-payment-fail
+    defaults: { _controller: TripBookingEngineBundle:Booking:vendorPaymentFail} 
+trip_booking_engine_vendor_list:
+    path:     /vendor-list
+    defaults: { _controller: TripBookingEngineBundle:Booking:vendorList} 
+trip_booking_engine_vendor_list_view_more:
+    path:     /vendor-list-view -more
+    defaults: { _controller: TripBookingEngineBundle:Booking:vendorListViewMore} 
+       

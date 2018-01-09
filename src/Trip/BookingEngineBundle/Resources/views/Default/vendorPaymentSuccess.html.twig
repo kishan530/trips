@@ -25,6 +25,7 @@
                     <!-- START CONTENT -->
                     <div class="row">
                         <div id="content" class="col-md-12 col-sm-12 col-xs-12">
+                         {% if status == 'success' %}
                             <div class="post-wrapper text-center clearfix">
                                 <div class="successful">
                                     <img src="{{ asset('images/successful.png') }}" alt="">
@@ -34,6 +35,18 @@
                                 For any problems please right to us <a href="mailto:info@justtrip.in">info@justtrip.in</a> </p>
                                 
                             </div><!-- end post-wrapper -->
+                            {% endif %}
+                            {% if status == 'fail' %}
+			<div class="post-wrapper text-center clearfix">
+                                <div class="successful">
+                                    <img src="{{ asset('images/payment_cross.png') }}" alt="" width="150" height="150">
+                                </div>
+                                <h6>Dear customer,</h6>
+                                <p>Sorry, payment unsuccessful.<br>
+                                For any problems please right to us <a href="mailto:info@justtrip.in">info@justtrip.in</a> </p>
+                                
+                            </div><!-- end post-wrapper -->
+     		   {% endif %}
                         </div><!-- end col -->
                     </div><!-- end row -->
                     <!-- END CONTENT -->
