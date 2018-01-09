@@ -38,6 +38,7 @@ class SearchType extends AbstractType
 		          $tempLocations[$location->getId()] = $location->getName();
              }
 		}
+		
 		return $tempLocations;
 	}
 	

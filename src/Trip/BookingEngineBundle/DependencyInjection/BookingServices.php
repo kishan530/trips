@@ -34,7 +34,8 @@ class BookingServices
 		$this->logger = $this->container->get('logger');
     }
     public function getLocations(){
-        $locations = $this->em->getRepository('TripSiteManagementBundle:City')->findAll();
+    	$locations = $this->em->getRepository('TripSiteManagementBundle:City')->findAll();
+       
         return $locations;
     }
     public function getVehicles(){
