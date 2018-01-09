@@ -368,7 +368,7 @@ $("select").change(function() {
 			
 			
 			 <h4>Image List</h4>
-			 <section>
+			{#} <section>
 			 <div class="container">
 				<div class="row">
 				<div  class="col-sm-1">
@@ -390,15 +390,15 @@ $("select").change(function() {
 					{{ form_start(formupload) }}
 						
 						{{form_widget(formupload.url)}}
-						{#}{{form_label(formupload.package)}}
-						{{form_widget(formupload.package,{'attr':{'value': package.id}})}}{#}
+						{{form_label(formupload.package)}}
+						{{form_widget(formupload.package,{'attr':{'value': package.id}})}}
 					{{ form_end(formupload) }}
 					<a href="{{ path('trip_site_management_addPackageImage',{ 'id': image_id }) }}"><i class="fa fa-plus-square-o"></i></a>
 					<a href="{{ path('trip_site_management_delete_image',{ 'id': image_id }) }}" class="delete" title=""><i class="fa fa-trash-o"></i></a>								
 				</div>
 				</div>
 			</div>
-			</section>
+			</section>{#}
 					
 					
 						 

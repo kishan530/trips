@@ -14,7 +14,7 @@
                 <div id="fullwidth" class="col-sm-4">
                 <hr>
                     <form action="{{ path('trip_site_management_homepage_catpackage_submit') }}" method="post">
-                    <select type="text" name="cat" style="height: 35px;">
+                    <select type="text" name="cat" style="height: 35px;width: 100%;">
                     	<option value="Select Page to create Package">Select Page to create Package</option>
                     {% for packagetitle in packagetitle %}
                     {% set title= packagetitle.id %}

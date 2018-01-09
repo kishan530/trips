@@ -1565,8 +1565,10 @@ class BookingController extends Controller
         $leftdays = $session->get('leftdays');
         $hours = $session->get('hours');
         $location = $session->get('location');
+        $paymentMode = $request->get('mode');
         //echo var_dump($id);
-        //echo var_dump($title);
+       // echo var_dump($title);
+        //echo var_dump($paymentMode);
         //exit();
         
         $guest = $session->get('guest');
@@ -1580,7 +1582,7 @@ class BookingController extends Controller
         if ($form->isValid()) {
             $couponApplyed = $customer->getHaveCoupon();
             $couponCode = $customer->getCouponCode();
-            $paymentMode = $customer->getPaymentMode();
+            //$paymentMode = $customer->getPaymentMode();
             $em = $this->getDoctrine()->getManager();
             $em->persist($customer);
             $em->flush();

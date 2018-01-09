@@ -27,7 +27,7 @@ class CustomerType extends AbstractType
            // ->add('address','textarea')
         ;
         
-        $builder->add('paymentMode', 'choice', array(
+        /*$builder->add('paymentMode', 'choice', array(
 
     				'expanded' => true,
 
@@ -42,7 +42,7 @@ class CustomerType extends AbstractType
                 'label'     => 'Payment Mode',
     				'required'    => true,
 
-    		));
+    		));*/
     }
     
     /**

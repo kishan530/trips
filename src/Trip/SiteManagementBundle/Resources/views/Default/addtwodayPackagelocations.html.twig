@@ -7,14 +7,68 @@
     <section class="section clearfix">
         <div class="container">
             <div class="row">
-                <div id="fullwidth" class="col-sm-12">
+                <div id="fullwidth" class="col-sm-12" style="margin-top:30px">
                     <div class="col-lg-5">
-                    {{ form_start(form) }}
-                    {{ form_widget(form) }}
-                    {{ form_end(form) }}
+                    
                     </div>
                 </div>
+                
             </div>
         </div>
+    </section>
+    <section class="section clearfix">
+        <div class="container">
+            {#}<div class="row">
+            
+                <div id="fullwidth" class="col-sm-4">
+                <hr>
+                    <form action="{{ path('trip_site_management_homepage_packagedetails_submit') }}" method="post">
+                    <select type="text" name="cat" style="height: 35px;width: 100%;">
+                    	<option value="Select Page to create Package">Select Package to create Package Details</option>
+                    {% for package in package %}
+                    {% set title= package.id %}
+                    <option value= "{{ title }}">{{ package.code }}</option>
+                     {% endfor %}
+                    </select>
+                 
+                    	<button type="submit" class="view-bike" style="margin-top: 38px;border: none;">Submit</button>
+                    
+                    </form>
+            </div>
+            </div>{#}
+            
+        </div>
+    </section>
+   
+    <section class="section clearfix">
+    	 <div class="container">
+    	 <hr>
+            <div class="row">
+            	<h4>
+            		
+            	</h4>
+            	<div class="col-lg-5">
+                    {{ form_start(form) }}
+                    			{{ form_label(form.package) }}
+                                {{ form_widget(form.package) }}
+                   		        {{ form_label(form.location) }}
+                                {{ form_widget(form.location) }}
+                        
+                    {{ form_end(form) }}
+                </div>
+                <div class="col-lg-2">
+                </div>
+                <div class="col-lg-5">
+                    {{ form_start(form1) }}
+                    			{{ form_label(form1.package) }}
+                                {{ form_widget(form1.package) }}
+                   		        {{ form_label(form1.vehicleId) }}
+                                {{ form_widget(form1.vehicleId) }}
+                        
+                    {{ form_end(form1) }}
+                </div>
+            </div>
+          </div>
+          
     </section>
 {% endblock %}

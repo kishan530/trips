@@ -357,7 +357,9 @@ filter-bikes
     -webkit-box-shadow: 0px 0px 10px 0px rgba(204,204,204,.5);
     -moz-box-shadow: 0px 0px 10px 0px rgba(204,204,204,.5);
     box-shadow: 0px 0px 10px 0px rgba(204,204,204);
-        padding-bottom: 40px;
+        padding-bottom: 5px;
+        border-radius: 7px;
+        border: none;
 }
 .package-price-total {
     border: none;
@@ -485,12 +487,12 @@ h5.bike-price {
 }
 p.bikestitle {
     border: none;
-    color: #9b9b9b;
-    font-size: 18px;
+    color: #0055b7;
+    font-size: 14px;
     text-align: center;
     /* font-weight: bold; */
     font-family: calibri;
-    /* margin-bottom: -19px; */
+    margin-bottom: -3px;
 }
 .book-dates
 {
@@ -558,6 +560,71 @@ h3.contactdeatils {
 }
 .package-info .make-margin {
     margin: 0px -7px 15px !important;
+}
+.form-control {
+    
+    height: 100%;
+}
+.bikes-form {
+    border: none;
+}
+.bikes-form-border {
+    border-top: 1px solid #e0e0e0;
+    margin-top: -15px;
+}
+.bikes-accept-terms {
+    margin-top: 23px;
+}
+.bikes-form-labels {
+    margin-top: 10px;
+    margin-bottom: -16px;
+    color: #0055b7;
+    font-size: 14px;
+}
+#page-header {
+    
+    padding: 15px 0;
+}
+.breadcrumb {
+    padding-top: 12px;
+    font-size: 14px;
+    font-family: calibri;
+}
+.price-details .hotel-title, .price-details.hotel-title {
+     background: #fff;
+     border: none;
+}
+.bike-booknow-50 {
+    background: transparent;
+    text-decoration: none;
+    color: #0055b7;
+    font-size: 19px;
+    font-family: calibri;
+    font-weight: 400;
+    padding: 4px;
+    width: 100%;
+    border: none;
+    border-radius: 4px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    margin-top: 15px;
+}
+.dec-50
+{
+	text-align: center;
+    font-size: 16px;
+    color: #888;
+    margin-top: 16px;
+    margin-bottom: -21PX;
+}
+.terms-list{
+	font-size: 12px;
+    font-family: calibri;
+    line-height: 15px;
+}
+.justify
+{
+	text-align: justify;
 }
 /* End */
 
