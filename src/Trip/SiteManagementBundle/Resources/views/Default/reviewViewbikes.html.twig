@@ -199,7 +199,14 @@ $('.vehicle-icon').click(function(e){
 												<input type="hidden" name="leftdays" class="form-control" value="{{ leftDays }}"> 
 												<input type="hidden" name="hours" class="form-control" value="{{ hours }}"> 
 												<input type="hidden" name="location" class="form-control" value="{{booking.location}}"> 
-												<button type="submit" class="btn aligncenter view-bike">Rent Now</button>
+												
+												{% if (bike.soldOut) %}
+                                          			<a class="btn btn-book-now view-bike" disabled>
+                                                      Sold Out
+                                                    </a>   
+                                          	{% else %}
+                                                <button type="submit" class="btn aligncenter view-bike">Rent Now</button>
+                                            {% endif %}
 											</form>
                                          </div>
                                          <div class="col-md-3" >

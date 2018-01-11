@@ -53,6 +53,16 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 			$('#datetime3').appendDtpicker();
 		});
 	</script>
+	<script type="text/javascript">
+		$(function(){
+			$('#datetime4').appendDtpicker();
+		});
+	</script>
+	<script type="text/javascript">
+		$(function(){
+			$('#datetime5').appendDtpicker();
+		});
+	</script>
 {% endblock %}
 
 {% block breadcrumb %}
@@ -96,7 +106,8 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                 {{ form_widget(form.submit) }}
                                 </div>
                              {{ form_end(form) }}
-                              
+                             
+                             
                          </div>
                         
                          {#}<div class="sub-book2">
@@ -151,7 +162,16 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                          <div class="col-md-4" >
                                          </div>
                                          <div class="col-md-4" >
-        								<a class="btn aligncenter view-bike"   href="{{ path('trip_site_management_view_bikes',{'url':bike.locationUrl }) }}">Rent Now</a>
+                                         {% if (bike.soldOut) %}
+                                          			<a class="btn btn-book-now view-bike" disabled>
+                                                      Sold Out
+                                                    </a>   
+                                          	{% else %}
+                                                <a class="btn btn-book-now view-bike" href="{{ path('trip_site_management_view_bikes',{ 'url':bike.locationUrl }) }}">
+                                                  Rent Now
+                                                </a>
+                                            {% endif %}
+        								{#<a class="btn aligncenter view-bike"   href="{{ path('trip_site_management_view_bikes',{'url':bike.locationUrl }) }}">Rent Now</a>#}
                                          </div>
                                          <div class="col-md-4" >
                                          </div>

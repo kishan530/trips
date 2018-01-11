@@ -185,5 +185,12 @@ trip_site_management_homepage_addPackage_details:
 trip_site_management_bikes_terms:
     path:     /privacy-policy-bikes
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikesterms }
-
-
+trip_site_management_edit_bikes:
+    path:     /edit/{id}/bikes
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:editBikes }
+trip_site_management_bikes_list:
+    path:     /bikes-list
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikesList }
+trip_site_management_add_bike:
+    path:     /add-bike
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:addBike }
