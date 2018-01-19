@@ -1330,7 +1330,7 @@
 			"futureOnly": false,
 			"minDate" : null,
 			"maxDate" : null,
-			"autodateOnStart": true,
+			"autodateOnStart": false,
 			"minTime":"00:00",
 			"maxTime":"23:59",
 			"onShow": null,

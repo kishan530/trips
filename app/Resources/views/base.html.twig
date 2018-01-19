@@ -27,12 +27,15 @@
 
     <!-- Bootstrap -->
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
-    
+    <link rel="stylesheet" href="{{ asset('css/font-awesome.css') }}">
     <!-- Default Styles -->
     <link href="{{ asset('css/style.css?version=1.15') }}" rel="stylesheet">
     <!-- Custom Styles -->
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
 	<link type="text/css" href="{{ asset('css/jquery.simple-dtpicker.css') }}" rel="stylesheet" />
+	<link type="text/css" href="{{ asset('css/contact-buttons.css') }}" rel="stylesheet" />
+	
+	
     <!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
     {#
     <link href="{{ asset('rs-plugin/css/settings.css') }}" rel="stylesheet">
@@ -62,6 +65,9 @@ Date();a=s.createElement(o),
   ga('create', 'UA-68699839-1', 'auto');
   ga('send', 'pageview');
 
+  
+
+  
 </script>
 
 </head>
@@ -86,7 +92,7 @@ Date();a=s.createElement(o),
             </div><!-- end right -->
             <div class="pull-right">
                 <ul class="topbar-drops list-inline">
-                    <a href="mailto:info@justtrip.in"><i class="icon-wallet17"></i> info@justtrip.in</a>
+                    <a href="mailto:info@justtrip.in"><i class="fa fa-envelope" aria-hidden="true"></i> info@justtrip.in</a>
                     <li><i class="icon-telephone5"></i> +91-9663133008</li>
                 </ul><!-- end list-style -->
             </div><!-- end left -->
@@ -288,7 +294,9 @@ Date();a=s.createElement(o),
     <script defer="defer" src="{{ asset('js/bootstrap-select.js') }}"></script>
 	<!-- Date Picker -->
 	<script type="text/javascript" src="{{ asset('js/jquery.simple-dtpicker.js') }}"></script>
-    
+	<script type="text/javascript" src="{{ asset('js/jquery.contact-buttons.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/demo.js') }}"></script>
+   
     <!-- SLIDER REVOLUTION 4.x SCRIPTS  -->
     
     

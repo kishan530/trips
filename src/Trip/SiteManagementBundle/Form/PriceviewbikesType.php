@@ -52,7 +52,7 @@ class PriceviewbikesType extends AbstractType
         		'attr'   =>  array(
         				'data-date-format'=>'yyyy-MM-dd HH:mm:ss',
         				//'data-date-format'=>'dd/mm/yyyy HH:mm:ss',
-        				//'placeholder'=>'Date',
+        				'placeholder'=>'Pickup Date',
         				//'class'=>'preferDate'
         				//'class'=>'date',
         				//'name' => 'date',
@@ -79,7 +79,7 @@ class PriceviewbikesType extends AbstractType
         		'attr'   =>  array(
         				'data-date-format'=>'yyyy-MM-dd HH:mm:ss',
         				//'data-date-format'=>'dd/mm/yyyy',
-        				//'placeholder'=>'Date',
+        				'placeholder'=>'Return Date',
         				//'class'=>'preferDate'
         		),
         		

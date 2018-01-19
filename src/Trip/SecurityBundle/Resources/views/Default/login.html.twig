@@ -7,10 +7,9 @@
 
 
 {% block breadcrumb %}
-                    <ul class="c1 breadcrumb text-left">
-                        <li><a href="#">Home</a></li>
-                        <li>Login</li>
-                    </ul>
+                    <div class="c1 breadcrumb text-left">
+                        <div><span class="glyphicon glyphicon-home" style="padding:5px;"></span><a href="{{ path('trip_site_management_homepage')}}">Home</a><span><span class="glyphicon glyphicon-chevron-right" style="padding:5px;"></span>Login</span></div>
+                    </div>
 {% endblock %}
 
 {% block body %}

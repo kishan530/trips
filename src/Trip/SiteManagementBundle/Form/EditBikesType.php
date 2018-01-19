@@ -21,6 +21,8 @@ class EditBikesType extends AbstractType
 			->add('metakeywords','textarea')
             ->add('metadescription','textarea')
 			->add('statingprice')
+			->add('fivehours')
+			->add('dayrent')
 			//->add('imgpath')
 			->add('locationurl')
 			->add('soldOut', 'choice', array(
