@@ -48,3 +48,11 @@ trip_rest_management_packagebookingsubmit:
 trip_rest_management_Loginuserdetails:
     path:     /api/get-logindetail
     defaults: { _controller: TripRestBundle:Rest:userLogin }
+ 
+trip_rest_management_registeruser:
+    path:     /api/user-register
+    defaults: { _controller: TripRestBundle:Rest:register }
+    
+trip_rest_management_homepage_rentbikes:
+    path:     /api/get-bikes
+    defaults: { _controller: TripRestBundle:Restbikes:bikesonRent}
