@@ -60,11 +60,9 @@
 {% endblock %}
 
 {% block breadcrumb %}
-                    <ul class="c1 breadcrumb text-left">
-                        <li><a href="#">Home</a></li>
-                        <li>Booking</li>
-                    </ul>
-                    <h3></h3>
+                    <div class="c1 breadcrumb text-left">
+                        <div><span class="glyphicon glyphicon-home" style="padding:5px;"></span><a href="{{ path('trip_site_management_homepage')}}">Home</a><span><span class="glyphicon glyphicon-chevron-right" style="padding:5px;"></span>Booking</span></div>
+                    </div>
 {% endblock %}
 
 {% block body %}
@@ -187,12 +185,12 @@
                                         	<div class="col-md-6">
                                         		<div class="col-md-12 col-sm-12 col-xs-12">
                                         		
-                                                <div class="input-group">
+                                                <div class="input-group" style="margin-bottom: 22px;">
                                                  {{ form_widget(form.haveCoupon) }} {{ form_label(form.haveCoupon) }}
                                                 </div>
                                             	</div>
                                             	<div class="col-md-12 col-sm-12 col-xs-12">
-                                                <div class="input-group" id="couponCode">
+                                                <div class="input-group" id="couponCode" style="border-bottom: 1px solid #e0e0e0;">
                                                 {{ form_widget(form.couponCode,{'attr':{'class':'bikes-form','placeholder':'Enter a Coupon code'}}) }}
                                                 	
                                                     <a class="input-group-addon" id="apply" href="#">Apply</a>

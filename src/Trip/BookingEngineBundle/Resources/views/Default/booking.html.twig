@@ -60,10 +60,9 @@
 {% endblock %}
 
 {% block breadcrumb %}
-                    <ul class="c1 breadcrumb text-left">
-                        <li><a href="#">Home</a></li>
-                        <li>Booking</li>
-                    </ul>
+                    <div class="c1 breadcrumb text-left">
+                        <div><span class="glyphicon glyphicon-home" style="padding:5px;"></span><a href="{{ path('trip_site_management_homepage')}}">Home</a><span><span class="glyphicon glyphicon-chevron-right" style="padding:5px;"></span>Booking</span></div>
+                    </div>
                     <h3></h3>
 {% endblock %}
 
@@ -265,11 +264,15 @@
                                             
                                                  <div class="col-md-6 col-sm-6 col-xs-12">
                                                     <div class="col-md-12 col-sm-12 col-xs-12">
+                                                     <button type="submit" class="bike-booknow" value="30" name="mode">Pay 30% Now & Book</button>
+                                                        <p class="dec-50">Or you may opt to</p>
+                                                      	<button type="submit" class="bike-booknow-50" value="50" name="mode">Pay 50% Now & Book</button>
+                                                    
+                                                    </div>
+                                                    {#}<div class="col-md-12 col-sm-12 col-xs-12">
                                                     {{ form_label(form.paymentMode) }} 
-                                                    </div>
-                                                    <div class="col-md-12 col-sm-12 col-xs-12">
                                                         {{ form_widget(form.paymentMode) }} 
-                                                    </div>
+                                                    </div>{#}
                                                 </div>
                                             </div>
                                             <div class="make-margin"></div>
@@ -277,9 +280,9 @@
                                              <div class="col-md-8 col-sm-8 col-xs-12">
                                                 <input type="checkbox" required="required" name="cb" class="remove_margin">  {% trans %} I agree to the JustTrip {% endtrans%} <a target="_blank" href="{{ path('trip_site_management_terms') }}">{% trans %} Terms of Service{% endtrans%}</a>
                                             </div>
-                                             <div class="col-md-4 col-sm-4 col-xs-12">
+                                             {#<div class="col-md-4 col-sm-4 col-xs-12">
                                                 <button type="submit" class="btn btn-primary btn-block btn-lg"> BOOK NOW</button>
-                                            </div>
+                                            </div>#}
                                             
                                             {# <input type="text" class="form-control make-margin" placeholder="Country of Passport">  #}
                                            

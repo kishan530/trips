@@ -520,7 +520,9 @@ class BookingController extends Controller
         $locations = $session->get('locations');
         $guest = $session->get('guest');
         
-        
+        $paymentMode = $request->get('mode');
+        //echo var_dump($paymentMode);
+        //exit();
         $customer = new Customer();
         $customer->setEmail($guest->getEmail());
         $customer->setMobile($guest->getMobile());
@@ -529,7 +531,7 @@ class BookingController extends Controller
         if ($form->isValid()) {
             $couponApplyed = $customer->getHaveCoupon();
             $couponCode = $customer->getCouponCode();
-            $paymentMode = $customer->getPaymentMode();
+            //$paymentMode = $customer->getPaymentMode();
             $em = $this->getDoctrine()->getManager();
             $em->persist($customer);
             $em->flush();
@@ -628,9 +630,10 @@ class BookingController extends Controller
                 //$tax = round($amountToPay*(3/100));
                 // $amountToPay = $amountToPay+$tax;
             }
-            $serviceTax = round($finalPrice*(5.6/100),2);
-            $swachBharthCess = round($finalPrice*(0.2/100),2);
-            $krishiKalyanCess = round($finalPrice*(0.2/100),2);
+            //$serviceTax = round($finalPrice*(5.6/100),2);
+            $serviceTax = '0';
+            $swachBharthCess = round($finalPrice*(2.5/100),2);
+            $krishiKalyanCess = round($finalPrice*(2.5/100),2);
             $totalTax = $serviceTax+$swachBharthCess+$krishiKalyanCess;
             $amountToPay = $amountToPay+$totalTax;
             $finalPrice = $finalPrice+$totalTax;
@@ -666,6 +669,8 @@ class BookingController extends Controller
                 'paymentLink'   => $paymentLink,
                 'payuLink' => $payuLink,
                 'locations' => $locations,
+                'amountToPay' => $amountToPay,
+                'paymentMode' => $paymentMode,
             ));
         }
         if(!is_null($searchHotel)){
@@ -1645,7 +1650,7 @@ class BookingController extends Controller
                 //$tax = round($amountToPay*(3/100));
                 // $amountToPay = $amountToPay+$tax;
             }
-            $serviceTax = round($finalPrice*(5.6/100),2);
+            $serviceTax = 0;
             $swachBharthCess = round($finalPrice*(2.5/100),2);
             $krishiKalyanCess = round($finalPrice*(2.5/100),2);
             $totalTax = $serviceTax+$swachBharthCess+$krishiKalyanCess;
@@ -1693,6 +1698,8 @@ class BookingController extends Controller
                 'leftdays' => $leftdays,
                 'hours' => $hours,
                 'location' => $location,
+                'paymentMode' => $paymentMode,
+                'finalPrice' => $finalPrice,
             ));
         }
         

@@ -626,5 +626,10 @@ h3.contactdeatils {
 {
 	text-align: justify;
 }
+
+.package-links {
+    
+    text-transform: capitalize;
+}
 /* End */
 

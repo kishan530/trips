@@ -144,7 +144,18 @@ class Package
      * @var string
      */
     private $imageList;
-        
+    /**
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\TwoStartPoint", mappedBy="booking", cascade={"all"},  fetch="EAGER")
+     */
+    private $twostartPoint;
+    /**
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\TwoEndPoint2", mappedBy="booking", cascade={"all"}, fetch="EAGER")
+     */
+    private $twoendPoint2;
+    /**
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\TwoEndPoint", mappedBy="booking", cascade={"all"}, fetch="EAGER")
+     */
+    private $twoendPoint;
 
     
     public function __construct() {
@@ -618,6 +629,54 @@ class Package
 	public function _toString(){
 		return "";
 	}
+    /**
+     * @return mixed
+     */
+    public function getTwostartPoint()
+    {
+        return $this->twostartPoint;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTwoendPoint2()
+    {
+        return $this->twoendPoint2;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTwoendPoint()
+    {
+        return $this->twoendPoint;
+    }
+
+    /**
+     * @param mixed $twostartPoint
+     */
+    public function setTwostartPoint($twostartPoint)
+    {
+        $this->twostartPoint = $twostartPoint;
+    }
+
+    /**
+     * @param mixed $twoendPoint2
+     */
+    public function setTwoendPoint2($twoendPoint2)
+    {
+        $this->twoendPoint2 = $twoendPoint2;
+    }
+
+    /**
+     * @param mixed $twoendPoint
+     */
+    public function setTwoendPoint($twoendPoint)
+    {
+        $this->twoendPoint = $twoendPoint;
+    }
+
 	
 	
 
