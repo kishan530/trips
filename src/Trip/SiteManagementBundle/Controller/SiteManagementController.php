@@ -1545,6 +1545,7 @@ class SiteManagementController extends Controller
 		$session = $request->getSession();
 		
     	$bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
+    	
 		//$session->set('bikes',$bikes);
 		//$searchFilter->setUr($url);
 		//$bike->setEmail($bikes->getUrl());
@@ -1552,6 +1553,7 @@ class SiteManagementController extends Controller
     	
     	//$customer = $em->getRepository('TripBookingEngineBundle:Customer')->find($booking->getCustomerId());
     	$booking = $em->getRepository('TripSiteManagementBundle:Biketime')->findOneById($id);
+    	
 		
     	//$locations = test;
     	//$locations = $this->getLocationsByIndex($locations);
@@ -1638,6 +1640,7 @@ class SiteManagementController extends Controller
     			'action' => $this->generateUrl('trip_site_management_review_viewbikes',array('id'=>$id)),
     			'method' => 'POST',
     	));
+    	
     	$form->add('submit', 'submit', array('label' => 'Search','attr'   =>  array('class'=>'search-bike')));
     	
     	return $form;

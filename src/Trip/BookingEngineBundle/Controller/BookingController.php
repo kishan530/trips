@@ -889,22 +889,22 @@ class BookingController extends Controller
     
     private function getData($request,$finalPrice,$bookingId,$customer,$redirectUrl){
         // Merchant key here as provided by Payu
-        //$MERCHANT_KEY = "rjQUPktU";
-        $MERCHANT_KEY = "ze3IGP8w";
+        $MERCHANT_KEY = "rjQUPktU";
+        //$MERCHANT_KEY = "ze3IGP8w";
         
         
         //$MERCHANT_KEY = "OwPbxU2k";
         //$SALT = "aa70fUA5Hh";
         // Merchant Salt as provided by Payu
         
-        //$SALT = "e5iIg1jwi8";
-        $SALT = "OAAknA88Xf";
+        $SALT = "e5iIg1jwi8";
+        //$SALT = "OAAknA88Xf";
         
         // End point - change to https://secure.payu.in for LIVE mode
-        $PAYU_BASE_URL = "https://secure.payu.in";
+      //  $PAYU_BASE_URL = "https://secure.payu.in";
         
         //testing Mode
-        //$PAYU_BASE_URL = "https://test.payu.in";
+        $PAYU_BASE_URL = "https://test.payu.in";
         
         $action = $PAYU_BASE_URL . '/_payment';
         //$txnid = substr(hash('sha256', mt_rand() . microtime()), 0, 20);
@@ -2664,22 +2664,22 @@ class BookingController extends Controller
    
     private function getVendorData($request,$vendor,$id,$redirectUrl,$redirectUrlFail){
         // Merchant key here as provided by Payu
-        //$MERCHANT_KEY = "rjQUPktU";
-        $MERCHANT_KEY = "ze3IGP8w";
+        $MERCHANT_KEY = "rjQUPktU";
+        //$MERCHANT_KEY = "ze3IGP8w";
         
         
         //$MERCHANT_KEY = "OwPbxU2k";
         //$SALT = "aa70fUA5Hh";
         // Merchant Salt as provided by Payu
         
-        //$SALT = "e5iIg1jwi8";
-        $SALT = "OAAknA88Xf";
+        $SALT = "e5iIg1jwi8";
+        //$SALT = "OAAknA88Xf";
         
         // End point - change to https://secure.payu.in for LIVE mode
-        $PAYU_BASE_URL = "https://secure.payu.in";
+       // $PAYU_BASE_URL = "https://secure.payu.in";
         
         //testing Mode
-        //$PAYU_BASE_URL = "https://test.payu.in";
+        $PAYU_BASE_URL = "https://test.payu.in";
         $bookingId = $id;
         $action = $PAYU_BASE_URL . '/_payment';
         //$txnid = substr(hash('sha256', mt_rand() . microtime()), 0, 20);

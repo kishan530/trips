@@ -1055,7 +1055,7 @@ class RestController extends Controller
     	if($bool){
     		$data['success']=true;
     		//$profile['id']= $customerId;
-    		$profile['name']= $user->getUserName();
+    		$profile['userName']= $user->getUserName();
     		$profile['id']= $user->getId();
     		//$profile['type']= $customerType;
     		//$profile['groupId']= $customerGroupId;
@@ -1081,5 +1081,80 @@ class RestController extends Controller
     	return new Response (json_encode($data));
     	
     }
+    
+    public function registerAction(Request $request)
+    {
+    	header("Access-Control-Allow-Origin: *");
+    	$name = $request->get('name');
+    	$email = $request->get('username');
+    	//$mobile = $request->request->get('mobile');
+    	$password = $request->get('password');
+    
+    	//$this->sendEmail ( $name, $email,$mobile, $password );
+    
+    	//$user = $this->createUser($name,$email,$mobile,$password);
+    	$user = $this->createUser($name,$email,$password);
+    	$data['success']=true;
+    	//$extras['userProfileModel']=$user->getCustomerName();
+    	$extras['userProfileModel']= $name;
+    	$extras['userProfileModel']= $email;
+    	//$extras['userProfileModel']= $id;    	
+    	$extras['sessionId']='sessionId';
+    	$extras['msg']=5;
+    	$data['extras']=$extras;
+    
+    	return new Response (json_encode($data));
+    }
+    
+    public function createUser($name,$email,$password){
+    	$userManager = $this->get('fos_user.user_manager');
+    	//$customerDao = $this->container->get ( 'drive.customer.services' );
+    	// Do a check for existing user with userManager->findByUsername
+    	//$user = $userManager->findUserByEmail ( $email );
+    	//echo var_dump($email);
+    	//exit();
+    	if (!is_null($email)) {
+    		$user = $userManager->findUserByEmail ( $email );
+//     		if (null === $user)
+//     			$user = $userManager->findUserByUsername ( $mobile );
+    	}
+//     	else {
+//     		$user = $userManager->findUserByUsername ( $mobile );
+//     	}
+    	 
+    	if (null === $user) {
+    		 
+    		// User with email not found. Do whatever you want here
+    		$user = $userManager->createUser ();
+    		if (!is_null($email))
+    			$user->setEmail ( $email );
+    	}
+    	//$user->setUsername ( $mobile );
+    	$user->setEnabled ( true );
+    	$user->setPlainPassword ( $password );
+    
+//     	$customerId = $user->getCustomerId();
+//     	if(is_null($customerId)){
+//     		$customer = $customerDao->getOneCustomerByMob($mobile);
+//     		if(!$customer){
+//     			$customer = new CustomerEntity();
+//     			$customer->setFirstName($name);
+//     			$customer->setUserMob($mobile);
+//     			$customer->setUserEmail($email);
+//     			$customer->setSmsAlerts(1);
+//     			$customer->setEmailAlerts(1);
+//     			$customer->setStatus(1);
+    
+//     			$customer = $customerDao->saveCustomer($customer);
+//     		}
+//     		$user->setCustomerId($customer->getId ());
+//     		$user->setCustomerName($customer->getFirstName ());
+//     		$user->setCustomerType('customer');
+//     	}
+    	$userManager->updateUser ( $user );
+    	 
+    	return $user;
+    }
+    
     
 }
