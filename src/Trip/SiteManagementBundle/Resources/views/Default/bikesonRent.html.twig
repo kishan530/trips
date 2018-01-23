@@ -162,7 +162,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                          <div class="col-md-4" >
                                          </div>
                                          <div class="col-md-4" >
-                                         {% if (bike.soldOut) %}
+                                         {% if (bike.count <= 0) %}
                                           			<a class="btn btn-book-now view-bike" disabled>
                                                       Sold Out
                                                     </a>   

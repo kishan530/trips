@@ -31,7 +31,6 @@ use Trip\SiteManagementBundle\Form\ContactType;
 use Trip\BookingEngineBundle\DependencyInjection\Instamojo;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Trip\BookingEngineBundle\Entity\TestCustomer;
 use Trip\BookingEngineBundle\Entity\Vendor;
 use Trip\BookingEngineBundle\Entity\VendorLogin;
@@ -234,8 +233,6 @@ class BookingController extends Controller
             $searchFilter->setNumDays($noDays);
             $session->set('selectedData',$searchFilter);
             $session->set('resultSet',$resultSet);
-            
-            
             
             $contact = new Contact();
             $contactForm   = $this->createContactForm($contact);
@@ -510,8 +507,7 @@ class BookingController extends Controller
     
     public function bookSubmitAction(Request $request)
     {
-        
-        
+       
         $session = $request->getSession();
         $resultSet = $session->get('resultSet');
         $searchFilter = $session->get('selectedData');
@@ -1499,6 +1495,7 @@ class BookingController extends Controller
     public function bookingBikeAction(Request $request)
     {
         $session = $request->getSession();
+        $em = $this->getDoctrine()->getManager();
         //$resultSet = $session->get('resultSet');
         //$searchFilter = $session->get('selectedData');
         //echo var_dump($session);
@@ -1512,7 +1509,11 @@ class BookingController extends Controller
         $leftdays = $request->get('leftdays');
         $hours = $request->get('hours');
         $location = $request->get('location');
-        //echo var_dump($location);
+        $countinsert = $request->get('countinsert');
+        $package =$em->getRepository('TripSiteManagementBundle:bikes')->find($id);
+        $count = $package->getCount();
+        //echo var_dump($package);
+        //echo var_dump($count);
         // exit();
         
         $session->set('id',$id);
@@ -1523,6 +1524,8 @@ class BookingController extends Controller
         $session->set('leftdays',$leftdays);
         $session->set('hours',$hours);
         $session->set('location',$location);
+        $session->set('count',$count);
+        $session->set('countinsert',$countinsert);
         
         $guest = $session->get('guest');
         $customer = new Customer();
@@ -1555,7 +1558,7 @@ class BookingController extends Controller
     }
     public function bookbikeSubmitAction(Request $request)
     {
-        
+        $em = $this->getDoctrine()->getManager();
         $session = $request->getSession();
         /*$resultSet = $session->get('resultSet');
          $searchFilter = $session->get('selectedData');
@@ -1571,14 +1574,17 @@ class BookingController extends Controller
         $hours = $session->get('hours');
         $location = $session->get('location');
         $paymentMode = $request->get('mode');
-        //echo var_dump($id);
-       // echo var_dump($title);
-        //echo var_dump($paymentMode);
-        //exit();
+        $countinsert = $session->get('countinsert');
+        $dql3 = "UPDATE TripSiteManagementBundle:bikes b SET b.count = '$countinsert' WHERE b.id = '$id' ";
+        $query = $em->createQuery($dql3);
+        $query -> execute();
+        //$count = $session->get('count');
+        //echo var_dump($countinsert);
         
+        //$newDate = date("Y-m-d H:i:s", $pDate);
+        //echo var_dump($newDate);
+        // exit();
         $guest = $session->get('guest');
-        
-        
         $customer = new Customer();
         //$customer->setEmail($guest->getEmail());
         //$customer->setMobile($guest->getMobile());
@@ -1592,28 +1598,12 @@ class BookingController extends Controller
             $em->persist($customer);
             $em->flush();
             $session->set('customer',$customer);
-            /*if($searchFilter->getTripType()=='roundtrip'){
-             $price = $selectedService['returnPrice'];
-             }else{
-             if($searchFilter->getTripType()=='package'){
-             $price = $selectedService->getPrice()->first()->getPrice();
-             }else{
-             $price = $selectedService['price'];
-             }
-             }*/
+            
             $finalPrice = $price;
-            if($couponCode=='FIRSTRIDE'){
+            /*if($couponCode=='FIRSTRIDE'){
                 $finalPrice = $price-50;
-            }
-            /*if($searchFilter->getTripType()=='roundtrip'){
-             $selectedService['returnPrice'] = $finalPrice;
-             }else{
-             if($searchFilter->getTripType()=='package'){
-             $selectedService->getPrice()->first()->setPrice($finalPrice);
-             }else{
-             $selectedService['price'] = $finalPrice;
-             }
-             }*/
+            }*/
+            
             $booking = new Booking();
             $booking->setCustomerId($customer->getId());
             $booking->setBookingId($this->getBookingId());
@@ -1625,6 +1615,19 @@ class BookingController extends Controller
             $booking->setNumDays($leftdays);
             $booking->setNumAdult($hours);
             $booking->setPreferTime($title);
+           // $booking = $this->setBikeBooking($price,$title,$id,$booking);
+            
+            $bikebooking= new BikeBooking();
+            $bikebooking->setPrice($price);
+            $bikebooking->setBikeId($id);
+            $bikebooking->setBikeId($id);
+            $bikebooking->setBikeName($title);
+            $bikebooking->setPdate($pDate);
+            $bikebooking->setRdate($rDate);
+            $bikebooking->setLeftdays($leftdays);
+            $bikebooking->setHours($hours);
+            $bikebooking->setBikelocation($location);
+            $booking->setBikeBooking($bikebooking);
             $discount = 0;
             if($couponApplyed){
                 $booking->setCouponApplyed(1);
@@ -1661,6 +1664,10 @@ class BookingController extends Controller
             $booking->setSwachBharthCess($swachBharthCess);
             $booking->setKrishiKalyanCess($krishiKalyanCess);
             $booking->setFinalPrice($finalPrice);
+            
+            
+            $bikebooking->setBooking($booking);
+            
             $em->persist($booking);
             $em->flush();
             $session->set('bookingObj',$booking);
@@ -1671,13 +1678,13 @@ class BookingController extends Controller
             //  $paymentLink = '';
             $payuLink = $this->generateUrl ( 'trip_booking_engine_payment_payu' );
             
-            //var_dump($customer);
-            //var_dump($booking);
+           // var_dump($customer);
+            // var_dump($booking);
             //var_dump($selectedService);
             //var_dump($searchFilter);
-            //var_dump($paymentLink);
+           // var_dump($paymentLink);
             
-            // exit();
+             //exit();
             return $this->render('TripBookingEngineBundle:Default:paymentBike.html.twig', array(
                 'customer'   => $customer,
                 'booking'   => $booking,
@@ -1703,6 +1710,7 @@ class BookingController extends Controller
             ));
         }
         
+        
         return $this->render('TripBookingEngineBundle:Default:bookingBike.html.twig', array(
             'form'   => $form->createView(),
             'service'=>$selectedService,
@@ -1714,6 +1722,7 @@ class BookingController extends Controller
         
         
     }
+   
     private function createTestCustomPackageForm(TestCustomerDto $customer){
         $bookingService = $this->container->get( 'booking.services' );
         $security = $this->container->get ( 'security.context' );
