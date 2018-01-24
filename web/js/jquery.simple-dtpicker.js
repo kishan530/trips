@@ -11,7 +11,7 @@
 			days: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
 			months: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
 			sep: '-',
-			format: 'YYYY-MM-DD hh:mm',
+			format: 'DD-MM-YYYY hh:mm',
 			prevMonth: 'Previous month',
 			nextMonth: 'Next month',
 			today: 'Today'
@@ -1215,10 +1215,10 @@
 		}
 		$picker.data("state", 0);
 
-		if( 5 <= opt.minuteInterval && opt.minuteInterval <= 30 ){
+		if( 5 <= opt.minuteInterval && opt.minuteInterval <= 60 ){
 			$picker.data("minuteInterval", opt.minuteInterval);
 		} else {
-			$picker.data("minuteInterval", 30);
+			$picker.data("minuteInterval", 60);
 		}
 			opt.minTime = opt.minTime.split(':');
 			opt.maxTime = opt.maxTime.split(':');
@@ -1318,16 +1318,16 @@
 			"dateFormat": "default",
 			"locale": "en",
 			"animation": true,
-			"minuteInterval": 30,
+			"minuteInterval": 60,
 			"firstDayOfWeek": 0,
-			"closeOnSelected": false,
+			"closeOnSelected": true,
 			"timelistScroll": true,
 			"calendarMouseScroll": true,
-			"todayButton": true,
-			"closeButton": true,
+			"todayButton": false,
+			"closeButton": false,
 			"dateOnly": false,
 			"timeOnly": false,
-			"futureOnly": false,
+			"futureOnly": true,
 			"minDate" : null,
 			"maxDate" : null,
 			"autodateOnStart": false,

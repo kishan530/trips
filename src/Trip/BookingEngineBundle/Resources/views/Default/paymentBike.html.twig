@@ -28,10 +28,15 @@
  {% block details %}
 
 <li class="booking-price clearfix">
-       <span>Total Amount</span>
-       <span> <i class="fa fa-inr"></i> <em > {{ price }} </em></span>
-                                                        
+       <div><span>Total Amount</span>
+       <span> <i class="fa fa-inr"></i> <em > {{ price }} </em></span></div>                                        
 </li> 
+<hr>
+<li class="booking-price clearfix">
+	<div><span>You Have Been Selected {{ paymentMode }} % Payment Mode</span>
+       <span> <i class="fa fa-inr"></i> <em > {{ amountToPayadv }} Plus Taxes</em></span>       
+       </div>  
+</li>
 <hr>
 <li class="booking-price clearfix">
        <span>SGST (2.5%)</span>
@@ -46,20 +51,22 @@
                                                         
 </li> 
 <hr>
-<li class="booking-price clearfix">
+{#}<li class="booking-price clearfix">
        <span>Total Amount</span>
        <span> <i class="fa fa-inr"></i> <em > {{ finalPrice }} </em></span>
                                                         
 </li> 
-<hr>
-<li class="text-right">
-	<span>You Have Been Selected </span>
-       <span>  <em > {{ paymentMode }} % Payment Mode </em></span>
-   <h5 class="bike-price">RS. {{ amountToPay }}</h5>
+<hr>{#}
+<li class="booking-price clearfix">
+	<span>Amount To Pay</span>
+   <span><em ><h5 class="bike-price"> RS. {{ amountToPay }}</h5></em></span>
 </li>
 <li>
-	
-	<form action="{{ paymentLink['action'] }}"  method="post">
+	<div class="col-md-12">
+		<div class="col-md-4">
+		</div>
+		<div class="col-md-4">
+			<form action="{{ paymentLink['action'] }}"  method="post">
 
                     {% for key,option in paymentLink  %}
                     
@@ -67,6 +74,12 @@
                     {% endfor %}
                     <input type="submit" class="btn btn-primary pull-right bike-booknow" style="" value="Pay Now" >
      		   </form> 
+		
+		</div>
+		<div class="col-md-4">
+		</div>
+	</div>
+	
 </li>
                                        
 {% endblock %}

@@ -518,7 +518,7 @@ class BookingController extends Controller
         
         $paymentMode = $request->get('mode');
         //echo var_dump($paymentMode);
-        //exit();
+        
         $customer = new Customer();
         $customer->setEmail($guest->getEmail());
         $customer->setMobile($guest->getMobile());
@@ -617,12 +617,16 @@ class BookingController extends Controller
             
             $amountToPay = $finalPrice;
             $tax = 0;
-            if($paymentMode=='advance'){
+            if($paymentMode){
                 $amountToPay = round($finalPrice*(50/100));
                 //$tax = round($amountToPay*(3/100));
                 //$amountToPay = $amountToPay+$tax;
+                //echo $paymentMode;
+                //exit();
             }else{
                 $amountToPay = round($finalPrice*(30/100));
+                //echo $paymentMode;
+                //exit();
                 //$tax = round($amountToPay*(3/100));
                 // $amountToPay = $amountToPay+$tax;
             }
@@ -1582,8 +1586,8 @@ class BookingController extends Controller
         //echo var_dump($countinsert);
         
         //$newDate = date("Y-m-d H:i:s", $pDate);
-        //echo var_dump($newDate);
-        // exit();
+        //echo var_dump($paymentMode);
+         //exit();
         $guest = $session->get('guest');
         $customer = new Customer();
         //$customer->setEmail($guest->getEmail());
@@ -1644,20 +1648,28 @@ class BookingController extends Controller
             
             $amountToPay = $finalPrice;
             $tax = 0;
-            if($paymentMode=='advance'){
-                $amountToPay = round($finalPrice*(50/100));
+            if($paymentMode){
+                $amountToPayadv = round($finalPrice*(50/100));
                 //$tax = round($amountToPay*(3/100));
                 //$amountToPay = $amountToPay+$tax;
+                /*$test = 'test50%';
+                echo $amountToPay;
+                echo $test;
+                exit();*/
             }else{
-                $amountToPay = round($finalPrice*(30/100));
+                $amountToPayadv = round($finalPrice*(30/100));
                 //$tax = round($amountToPay*(3/100));
                 // $amountToPay = $amountToPay+$tax;
+                /*$test = 'test30%';
+                echo $amountToPay;
+                echo $test;
+                exit();*/
             }
             $serviceTax = 0;
             $swachBharthCess = round($finalPrice*(2.5/100),2);
             $krishiKalyanCess = round($finalPrice*(2.5/100),2);
             $totalTax = $serviceTax+$swachBharthCess+$krishiKalyanCess;
-            $amountToPay = $amountToPay+$totalTax;
+            $amountToPay = round($amountToPayadv+$totalTax);
             $finalPrice = $finalPrice+$totalTax;
             $booking->setTax($tax);
             $booking->setServiceTax($serviceTax);
@@ -1707,6 +1719,7 @@ class BookingController extends Controller
                 'location' => $location,
                 'paymentMode' => $paymentMode,
                 'finalPrice' => $finalPrice,
+                'amountToPayadv' => $amountToPayadv,
             ));
         }
         
