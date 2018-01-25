@@ -59,6 +59,8 @@ use Trip\SiteManagementBundle\Form\TwodayPackageLocationsType;
 use Trip\SiteManagementBundle\Form\AddBikesType;
 use Trip\SiteManagementBundle\DTO\TwodayPackageLocations;
 use Trip\SiteManagementBundle\Entity\bikes;
+use Trip\BookingEngineBundle\Entity\BikeBooking;
+use Trip\BookingEngineBundle\Entity\Booking;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -1447,23 +1449,29 @@ class SiteManagementController extends Controller
     	$bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
 		$locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
     	$locations = $this->getLocationsByIndex($locations);
+    	$id='22/01/2018 05:00 PM';
     	
+    	$dql3 = "SELECT b.id from TripBookingEngineBundle:BikeBooking b where b.rdate= '$id' ";
+    	$query = $em->createQuery($dql3);
+    	$query -> execute();
+    	$brdate = $query->getResult();
+    	    	
+    	//exit();
+    	
+    	$sysdate= new \DateTime('Asia/Kolkata');
+    	//echo var_dump($sysdate);
+    	//echo var_dump($bikes);
+        
     	$session = $request->getSession();
     	$session->set('resultSet',$bikes);
-    	//$package->setPreferTime($service->getPreferTime());
     	$entity= new Biketime();
     	$entity->setId($entity->getId());
-    	//$entity->setPreferTime($entity->getPreferTime());
-    	//$entity->setReturnTime($entity->getReturnTime());
     	$entity->setDate($entity->getDate());
     	$entity->setReturndate($entity->getReturndate());
     	//$entity->setDate(new \DateTime());
     	$form   = $this->createviewbikesForm($entity);
     	$form->handleRequest($request);
     	if ($form->isValid()) {
-    		//$preferTime = $entity->getPreferTime();
-    		//$entity->setPreferTime($entity->getPreferTime());
-    		//$entity->setReturnTime($entity->getReturnTime());
     		$entity->setDate($entity->getDate());
     		$entity->setReturndate($entity->getReturndate());
     		$em->persist($entity);
@@ -1472,6 +1480,7 @@ class SiteManagementController extends Controller
     	}
     	return $this->render('TripSiteManagementBundle:Default:bikesonRent.html.twig',array(
     			'bikes' => $bikes,
+    	    //'bookrdate'=> $bookrdate,
     			'form'   => $form->createView(),
 				'locations' => $locations,
     			
@@ -1649,6 +1658,7 @@ class SiteManagementController extends Controller
     }
    
 	public function bikesSubmitAction(Request $request){
+	    $em = $this->getDoctrine()->getManager();
         $session = $request->getSession();
         $id = $request->get('id');
 		$title = $request->get('title');
@@ -1658,11 +1668,20 @@ class SiteManagementController extends Controller
 		$leftdays = $request->get('leftdays');
 		$hours = $request->get('hours');
 		$location = $request->get('location');
-       // echo var_dump($hours);
-		//echo var_dump($location);
+		$countadd = $request->get('countadd');
+		$count = $request->get('count');
+		//echo var_dump($countadd);
+		//echo var_dump($id);
+		$countinsert = $count-$countadd;
+		//$session->set('countinsert',$countinsert);
+		//echo var_dump($countinsert);
 		 //exit();
-		
-        return $this->redirect($this->generateUrl('trip_booking_engine_booking_bike',array('id'=>$id,'title'=>$title,'pDate'=>$pDate,'rDate'=>$rDate,'price'=>$price,'leftdays'=>$leftdays,'hours'=>$hours,'location'=>$location)));
+		 
+		/* $dql3 = "UPDATE TripSiteManagementBundle:bikes b SET b.count = '$countinsert' WHERE b.id = '$id' ";
+		 $query = $em->createQuery($dql3);
+		 $query -> execute();
+		 */
+		 return $this->redirect($this->generateUrl('trip_booking_engine_booking_bike',array('id'=>$id,'title'=>$title,'pDate'=>$pDate,'rDate'=>$rDate,'price'=>$price,'leftdays'=>$leftdays,'hours'=>$hours,'location'=>$location,'countinsert'=>$countinsert)));
 			
     }
     //***************************************end****************************************//

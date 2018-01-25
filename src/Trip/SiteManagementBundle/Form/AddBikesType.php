@@ -36,6 +36,7 @@ class AddBikesType extends AbstractType
 			    ),
 			    'required'    => true,
 			))
+			->add('count')
 			->add('imgpath', 'file',array(
 			    'required' => false,
 			    'data_class' => null,

@@ -51,11 +51,13 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 		$(function(){
 			$('#datetime2').appendDtpicker();
 		});
+		
 	</script>
 	<script type="text/javascript">
 		$(function(){
 			$('#datetime3').appendDtpicker();
 		});
+		
 	</script>
 {% endblock %}
 
@@ -63,7 +65,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 					<div class="c1 breadcrumb text-left">
                         <div>
                         	<span class="glyphicon glyphicon-home" style="padding:5px;"></span><a href="{{ path('trip_site_management_homepage')}}">Home</a>
-                        	<span><span class="glyphicon glyphicon-chevron-right" style="padding:5px;"></span>Bike</span>
+                        	<span><span class="glyphicon glyphicon-chevron-right" style="padding:5px;"></span><a href="{{ path('trip_site_management_bikes_on_rent')}}">Bikes</a></span>
                         	<span><span class="glyphicon glyphicon-chevron-right" style="padding:5px;"></span>{{ bike.title }}</span>
                         
                         	

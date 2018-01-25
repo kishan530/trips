@@ -43,11 +43,14 @@ $('.vehicle-icon').click(function(e){
 		$(function(){
 			$('#datetime2').appendDtpicker();
 		});
+		
+		
 	</script>
 	<script type="text/javascript">
 		$(function(){
 			$('#datetime3').appendDtpicker();
 		});
+		
 	</script>
 {% endblock %}
 
@@ -200,9 +203,10 @@ $('.vehicle-icon').click(function(e){
 												<input type="hidden" name="price" class="form-control" value="{{ price1 }}"> 
 												<input type="hidden" name="leftdays" class="form-control" value="{{ leftDays }}"> 
 												<input type="hidden" name="hours" class="form-control" value="{{ hours }}"> 
-												<input type="hidden" name="location" class="form-control" value="{{booking.location}}"> 
-												
-												{% if (bike.soldOut) %}
+												<input type="hidden" name="location" class="form-control" value="{{booking.location}}">
+												<input type="hidden" name="countadd" class="form-control" value="1"> 
+												<input type="hidden" name="count" class="form-control" value="{{ bike.count }}"> 
+												{% if (bike.count <= 0) %}
                                           			<a class="btn btn-book-now view-bike" disabled>
                                                       Sold Out
                                                     </a>   

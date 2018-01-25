@@ -36,7 +36,7 @@ class EditBikesType extends AbstractType
 			    ),
 			    'required'    => true,
 			))
-			
+			->add('count')
            
         ;
     }

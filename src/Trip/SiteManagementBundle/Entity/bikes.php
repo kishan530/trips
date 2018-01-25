@@ -100,6 +100,12 @@ class bikes
      * @ORM\Column(name="soldOut", type="boolean")
      */
     private $soldOut;
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="count", type="integer")
+     */
+    private $count;
 
     /**
      * Get id
@@ -351,6 +357,22 @@ class bikes
     {
         $this->soldOut = $soldOut;
     }
+    /**
+     * @return integer
+     */
+    public function getCount()
+    {
+        return $this->count;
+    }
+
+    /**
+     * @param integer $count
+     */
+    public function setCount($count)
+    {
+        $this->count = $count;
+    }
+
 
 	
 	

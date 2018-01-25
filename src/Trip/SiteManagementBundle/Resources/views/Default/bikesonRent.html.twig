@@ -45,23 +45,16 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 </script>
 <script type="text/javascript">
 		$(function(){
-			$('#datetime2').appendDtpicker();
+			$('#datetime2').appendDtpicker();	
 		});
+		
 	</script>
 	<script type="text/javascript">
 		$(function(){
 			$('#datetime3').appendDtpicker();
+			
 		});
-	</script>
-	<script type="text/javascript">
-		$(function(){
-			$('#datetime4').appendDtpicker();
-		});
-	</script>
-	<script type="text/javascript">
-		$(function(){
-			$('#datetime5').appendDtpicker();
-		});
+		
 	</script>
 {% endblock %}
 
@@ -162,7 +155,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                          <div class="col-md-4" >
                                          </div>
                                          <div class="col-md-4" >
-                                         {% if (bike.soldOut) %}
+                                         {% if (bike.count <= 0) %}
                                           			<a class="btn btn-book-now view-bike" disabled>
                                                       Sold Out
                                                     </a>   
