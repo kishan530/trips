@@ -98,8 +98,8 @@ class RestpackagesController extends Controller
     		if($packagetitle){
     			
     			$packagetitle = $packagetitle[0];
-    			//echo var_dump($packagetitle);
-    			//exit();
+    		//	echo var_dump($packagetitle);
+    		//	exit();
     			$id= $packagetitle->getId();
     			//echo var_dump($id);
     			//exit();
@@ -192,7 +192,7 @@ class RestpackagesController extends Controller
    					$startpointinfo['name']=$start->getName();
    					$startpointinfo['active']=$start->getActive();
    					$startpointinfo['booking']=$start->getBooking();
-   					$startpointinfo['type']=$start->getType();
+   				//	$startpointinfo['type']=$start->getType();
    					$sartpoints[]=$startpointinfo;
    				}
    				foreach($pricevalues as $pricevalue){
@@ -292,7 +292,8 @@ class RestpackagesController extends Controller
     			$data['extras']=$extras;
     			return new Response (json_encode($data));
     			    			
-    		}else{
+    		}
+    		else{
     			 
     		}
     	
