@@ -63,11 +63,7 @@ use Trip\BookingEngineBundle\Entity\Booking;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Collections\ArrayCollection;
-<<<<<<< HEAD
 
-//use DateTime;
-=======
->>>>>>> 65a01f6b24885024b19e25e0855d4ed6bf0cfcfb
 use Trip\SiteManagementBundle\DTO\Billing as NewBilling;
 use Trip\SiteManagementBundle\Form\InsertImageType;
 use Trip\SiteManagementBundle\Entity\InsertImage;
