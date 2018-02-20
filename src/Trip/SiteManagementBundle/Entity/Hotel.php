@@ -2,8 +2,10 @@
 
 namespace Trip\SiteManagementBundle\Entity;
 
+
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Hotel
@@ -21,42 +23,79 @@ class Hotel
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
+    
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=100)
      */
     private $name;
-
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="overview", type="string", length=3000)
+     */
+    private $overview;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="property_type", type="string", length=50)
+     */
+    private $propertyType;
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="category", type="integer")
+     */
+    private $category;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="check_in", type="string", length=100)
+     */
+    private $checkIn;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="check_out", type="string", length=100)
+     */
+    private $checkOut;
+    
     /**
      * @var float
      *
      * @ORM\Column(name="price", type="float")
      */
     private $price;
-
+    
     /**
      * @var string
      *
      * @ORM\Column(name="city", type="string", length=100)
      */
     private $city;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="image_path", type="string", length=100)
-     */
-    private $imagePath;
-
+    
     /**
      * @var integer
      *
      * @ORM\Column(name="num_rooms", type="integer")
      */
     private $numRooms;
-
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="sold_out", type="boolean")
+     */
+    private $soldOut;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="priority", type="integer")
+     */
+    private $priority;
+    
     /**
      * @var integer
      *
@@ -64,267 +103,647 @@ class Hotel
      */
     private $cityId;
     /**
-     * @var text
-     *
-     * @ORM\Column(name="overview", type="text")
-     */
-	 private $overview;
-    /**
      * @var boolean
      *
      * @ORM\Column(name="active", type="boolean")
      */
     private $active;
+    
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="footer_display", type="boolean")
+     */
+    private $footerDisplay;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="url", type="string", length=100)
+     */
+    private $url;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="metaTitle", type="string", length=100)
+     */
+    private $metaTitle;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="metaKeywords", type="string", length=100)
+     */
+    private $metaKeywords;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="metaDescription", type="string", length=1000)
+     */
+    private $metaDescription;
+    
+    /**
+     * @var string
+     * @ORM\Column(name="hotelblock_start_date", type="date")
+     */
+    private $hotelblockStartDate;
+    
+    /**
+     * @var string
+     * @ORM\Column(name="hotelblock_end_date", type="date")
+     */
+    private $hotelblockEndDate;
+    
+    
+    
+    /**
+     * @var string
+     * @ORM\Column(name="audit_info_CREATED_AT", type="datetime", nullable=true)
+     * @Assert\Date()
+     */
+    private $auditInfocreatedAt;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="audit_info_CREATED_BY", type="string", length=100)
+     */
+    private $auditInfocreatedBy;
+    
+    /**
+     * @var string
+     * @ORM\Column(name="audit_info_UPDATED_AT", type="datetime", nullable=true)
+     * @Assert\Date()
+     */
+    private $auditInfoupdatedAt;
+    
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="audit_info_UPDATED_BY", type="string", length=5000)
+     */
+    private $auditInfoupdatedBy;
+    
+    
+    
+    
+    
     /**
      * @var Collection
      * @ORM\OneToOne(targetEntity="Trip\SiteManagementBundle\Entity\HotelAddress", mappedBy="hotel", cascade={"persist"})
-	 
      */
     protected $address;
-	/**
+    /**
      * @var Collection
      * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\HotelImage", mappedBy="hotel", cascade={"persist"})
      */
-	protected $image;
-
-	 
+    protected $images;
     /**
-    *
-    */
-  public function __construct() {
-        //$this->address = new ArrayCollection();
-		$this->image = new ArrayCollection();
-    }
-
-
-    /**
-     * Get id
-     *
-     * @return integer 
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\HotelAmenities", mappedBy="hotel", cascade={"persist"})
      */
-    public function getId()
-    {
+    protected $amenities;
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\HotelRoom", mappedBy="hotel", cascade={"all"})
+     */
+    protected $hotelRooms;
+    
+    /**
+     *
+     */
+    public function __construct() {
+        $this->images = new ArrayCollection();
+        $this->amenities = new ArrayCollection();
+        $this->hotelRooms = new ArrayCollection();
+        
+    }
+    
+    /**
+     *
+     * @return the integer
+     */
+    public function getId() {
         return $this->id;
     }
-
+    
     /**
-     * Set name
      *
-     * @param string $name
-     * @return Hotel
+     * @param
+     *        	$id
      */
-    public function setName($name)
-    {
-        $this->name = $name;
-
+    public function setId($id) {
+        $this->id = $id;
         return $this;
     }
-
+    
     /**
-     * Get name
      *
-     * @return string 
+     * @return the string
      */
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
-
+    
     /**
-     * Set price
      *
-     * @param float $price
-     * @return Hotel
+     * @param
+     *        	$name
      */
-    public function setPrice($price)
-    {
-        $this->price = $price;
-
+    public function setName($name) {
+        $this->name = $name;
         return $this;
     }
-
+    
     /**
-     * Get price
      *
-     * @return float 
+     * @return the string
      */
-    public function getPrice()
-    {
+    public function getOverview() {
+        return $this->overview;
+    }
+    
+    /**
+     *
+     * @param
+     *        	$overview
+     */
+    public function setOverview($overview) {
+        $this->overview = $overview;
+        return $this;
+    }
+    
+    /**
+     *
+     * @return the string
+     */
+    public function getPropertyType() {
+        return $this->propertyType;
+    }
+    
+    /**
+     *
+     * @param
+     *        	$propertyType
+     */
+    public function setPropertyType($propertyType) {
+        $this->propertyType = $propertyType;
+        return $this;
+    }
+    
+    /**
+     *
+     * @return the integer
+     */
+    public function getCategory() {
+        return $this->category;
+    }
+    
+    /**
+     *
+     * @param
+     *        	$category
+     */
+    public function setCategory($category) {
+        $this->category = $category;
+        return $this;
+    }
+    
+    /**
+     *
+     * @return the string
+     */
+    public function getCheckIn() {
+        return $this->checkIn;
+    }
+    
+    /**
+     *
+     * @param
+     *        	$checkIn
+     */
+    public function setCheckIn($checkIn) {
+        $this->checkIn = $checkIn;
+        return $this;
+    }
+    
+    /**
+     *
+     * @return the string
+     */
+    public function getCheckOut() {
+        return $this->checkOut;
+    }
+    
+    /**
+     *
+     * @param
+     *        	$checkOut
+     */
+    public function setCheckOut($checkOut) {
+        $this->checkOut = $checkOut;
+        return $this;
+    }
+    
+    /**
+     *
+     * @return the float
+     */
+    public function getPrice() {
         return $this->price;
     }
-
+    
     /**
-     * Set city
      *
-     * @param string $city
-     * @return Hotel
+     * @param
+     *        	$price
      */
-    public function setCity($city)
-    {
-        $this->city = $city;
-
+    public function setPrice($price) {
+        $this->price = $price;
         return $this;
     }
-
+    
     /**
-     * Get city
      *
-     * @return string 
+     * @return the string
      */
-    public function getCity()
-    {
+    public function getCity() {
         return $this->city;
     }
-
+    
     /**
-     * Set imagePath
      *
-     * @param string $imagePath
-     * @return Hotel
+     * @param
+     *        	$city
      */
-    public function setImagePath($imagePath)
-    {
-        $this->imagePath = $imagePath;
-
+    public function setCity($city) {
+        $this->city = $city;
         return $this;
     }
-
+    
     /**
-     * Get imagePath
      *
-     * @return string 
+     * @return the integer
      */
-    public function getImagePath()
-    {
-        return $this->imagePath;
-    }
-
-    /**
-     * Set numRooms
-     *
-     * @param integer $numRooms
-     * @return Hotel
-     */
-    public function setNumRooms($numRooms)
-    {
-        $this->numRooms = $numRooms;
-
-        return $this;
-    }
-
-    /**
-     * Get numRooms
-     *
-     * @return integer 
-     */
-    public function getNumRooms()
-    {
+    public function getNumRooms() {
         return $this->numRooms;
     }
-
+    
     /**
-     * Set cityId
      *
-     * @param integer $cityId
-     * @return Hotel
+     * @param
+     *        	$numRooms
      */
-    public function setCityId($cityId)
-    {
-        $this->cityId = $cityId;
-
+    public function setNumRooms($numRooms) {
+        $this->numRooms = $numRooms;
         return $this;
     }
-
+    
     /**
-     * Get cityId
      *
-     * @return integer 
+     * @return the integer
      */
-    public function getCityId()
-    {
+    public function getCityId() {
         return $this->cityId;
     }
+    
     /**
-	 *
-	 * @return the string
-	 */
-	public function getOverview() {
-		return $this->overview;
-	}
-	
-	/**
-	 *
-	 * @param
-	 *        	$overview
-	 */
-	public function setOverview($overview) {
-		$this->overview = $overview;
-		return $this;
-	}
-     /**
-     * Set address
      *
-     * @param $address
-     * @return Hotel
+     * @param
+     *        	$cityId
      */
-    public function setAddress($address)
-    {
-        $this->address = $address;
-
+    public function setCityId($cityId) {
+        $this->cityId = $cityId;
         return $this;
     }
-
+    
     /**
-     * Get address
      *
-     * @return address 
+     * @return the boolean
      */
-    public function getAddress()
-    {
-        return $this->address;
-    }
-	 /**
-     * Set image
-     *
-     * @param $image
-     * @return Hotel
-     */
-    public function setImage($image)
-    {
-        $this->image = $image;
-
-        return $this;
-    }
-
-    /**
-     * Get image
-     *
-     * @return image 
-     */
-    public function getImage()
-    {
-        return $this->image;
-    }
-    /**
-     * Set active
-     *
-     * @param $active
-     * @return Hotel
-     */
-    public function setActive($active)
-    {
-        $this->active = $active;
-
-        return $this;
-    }
-
-    /**
-     * Get active
-     *
-     * @return active 
-     */
-    public function getActive()
-    {
+    public function getActive() {
         return $this->active;
     }
+    
+    /**
+     *
+     * @param
+     *        	$active
+     */
+    public function setActive($active) {
+        $this->active = $active;
+        return $this;
+    }
+    
+    /**
+     *
+     * @return the Collection
+     */
+    public function getAddress() {
+        return $this->address;
+    }
+    
+    /**
+     *
+     * @param
+     *        	$address
+     */
+    public function setAddress($address) {
+        $this->address = $address;
+        return $this;
+    }
+    
+    /**
+     *
+     * @return the Collection
+     */
+    public function getImages() {
+        return $this->images;
+    }
+    
+    /**
+     *
+     * @param
+     *        	$images
+     */
+    public function setImages($images) {
+        $this->images = $images;
+        return $this;
+    }
+    
+    /**
+     *
+     * @return the Collection
+     */
+    public function getAmenities() {
+        return $this->amenities;
+    }
+    
+    /**
+     *
+     * @param
+     *        	$amenities
+     */
+    public function setAmenities($amenities) {
+        $this->amenities = $amenities;
+        return $this;
+    }
+    
+    /**
+     *
+     * @return the boolean
+     */
+    public function getSoldOut() {
+        return $this->soldOut;
+    }
+    
+    /**
+     *
+     * @param
+     *        	$soldOut
+     */
+    public function setSoldOut($soldOut) {
+        $this->soldOut = $soldOut;
+        return $this;
+    }
+    
+    /**
+     *
+     * @return the integer
+     */
+    public function getPriority() {
+        return $this->priority;
+    }
+    
+    /**
+     *
+     * @param
+     *        	$priority
+     */
+    public function setPriority($priority) {
+        $this->priority = $priority;
+        return $this;
+    }
+    
+    /**
+     *
+     * @return the Collection
+     */
+    public function getHotelRooms() {
+        return $this->hotelRooms;
+    }
+    
+    /**
+     *
+     * @param
+     *        	$hotelRooms
+     */
+    public function setHotelRooms($hotelRooms) {
+        $this->hotelRooms = $hotelRooms;
+        return $this;
+    }
+    
+    /**
+     *
+     * @return the boolean
+     */
+    public function getFooterDisplay() {
+        return $this->footerDisplay;
+    }
+    
+    /**
+     *
+     * @param
+     *        	$footerDisplay
+     */
+    public function setFooterDisplay($footerDisplay) {
+        $this->footerDisplay = $footerDisplay;
+        return $this;
+    }
+    
+    /**
+     *
+     * @return the string
+     */
+    public function getUrl() {
+        return $this->url;
+    }
+    
+    /**
+     *
+     * @param
+     *        	$url
+     */
+    public function setUrl($url) {
+        $this->url = $url;
+        return $this;
+    }
+    
+    /**
+     *
+     * @return the string
+     */
+    public function getMetaTitle() {
+        return $this->metaTitle;
+    }
+    
+    /**
+     *
+     * @param
+     *        	$metaTitle
+     */
+    public function setMetaTitle($metaTitle) {
+        $this->metaTitle = $metaTitle;
+        return $this;
+    }
+    
+    /**
+     *
+     * @return the string
+     */
+    public function getMetaKeywords() {
+        return $this->metaKeywords;
+    }
+    
+    /**
+     *
+     * @param
+     *        	$metaKeywords
+     */
+    public function setMetaKeywords($metaKeywords) {
+        $this->metaKeywords = $metaKeywords;
+        return $this;
+    }
+    
+    /**
+     *
+     * @return the string
+     */
+    public function getMetaDescription() {
+        return $this->metaDescription;
+    }
+    
+    /**
+     *
+     * @param
+     *        	$metaDescription
+     */
+    public function setMetaDescription($metaDescription) {
+        $this->metaDescription = $metaDescription;
+        return $this;
+    }
+    
+    /**
+     *
+     * @return the string
+     */
+    public function getHotelblockStartDate() {
+        return $this->hotelblockStartDate;
+    }
+    
+    /**
+     *
+     * @param
+     *        	$hotelblockStartDate
+     */
+    public function setHotelblockStartDate($hotelblockStartDate) {
+        $this->hotelblockStartDate = $hotelblockStartDate;
+        return $this;
+    }
+    
+    /**
+     *
+     * @return the string
+     */
+    public function getHotelblockEndDate() {
+        return $this->hotelblockEndDate;
+    }
+    
+    /**
+     *
+     * @param
+     *        	$hotelblockEndDate
+     */
+    public function setHotelblockEndDate($hotelblockEndDate) {
+        $this->hotelblockEndDate = $hotelblockEndDate;
+        return $this;
+    }
+    
+    /**
+     *
+     * @return the string
+     */
+    public function getAuditInfocreatedAt() {
+        return $this->auditInfocreatedAt;
+    }
+    
+    /**
+     *
+     * @param
+     *        	$auditInfocreatedAt
+     */
+    public function setAuditInfocreatedAt($auditInfocreatedAt) {
+        $this->auditInfocreatedAt = $auditInfocreatedAt;
+        return $this;
+    }
+    
+    /**
+     *
+     * @return the string
+     */
+    public function getAuditInfocreatedBy() {
+        return $this->auditInfocreatedBy;
+    }
+    
+    /**
+     *
+     * @param
+     *        	$auditInfocreatedBy
+     */
+    public function setAuditInfocreatedBy($auditInfocreatedBy) {
+        $this->auditInfocreatedBy = $auditInfocreatedBy;
+        return $this;
+    }
+    
+    /**
+     *
+     * @return the string
+     */
+    public function getAuditInfoupdatedAt() {
+        return $this->auditInfoupdatedAt;
+    }
+    
+    /**
+     *
+     * @param
+     *        	$auditInfoupdatedAt
+     */
+    public function setAuditInfoupdatedAt($auditInfoupdatedAt) {
+        $this->auditInfoupdatedAt = $auditInfoupdatedAt;
+        return $this;
+    }
+    
+    /**
+     *
+     * @return the string
+     */
+    public function getAuditInfoupdatedBy() {
+        return $this->auditInfoupdatedBy;
+    }
+    
+    /**
+     *
+     * @param
+     *        	$auditInfoupdatedBy
+     */
+    public function setAuditInfoupdatedBy($auditInfoupdatedBy) {
+        $this->auditInfoupdatedBy = $auditInfoupdatedBy;
+        return $this;
+    }
+    
+    
 }

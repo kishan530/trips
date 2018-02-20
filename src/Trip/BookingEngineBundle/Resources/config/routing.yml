@@ -151,4 +151,27 @@ trip_booking_engine_vendor_list:
 trip_booking_engine_vendor_list_view_more:
     path:     /vendor-list-view -more
     defaults: { _controller: TripBookingEngineBundle:Booking:vendorListViewMore} 
-       
+trip_booking_engine_hotel_book_room:
+    path:     /hotel-book-room
+    defaults: { _controller: TripBookingEngineBundle:Booking:hotelBookRoom}  
+trip_booking_engine_hotel_filter:
+    path:     /hotel-filter
+    defaults: { _controller: TripBookingEngineBundle:Booking:hotelFilter}     
+trip_booking_engine_add_room:
+    path:     /add-room
+    defaults: { _controller: TripBookingEngineBundle:Booking:addRoom }
+trip_booking_engine_add_adults:
+    path:     /add-adults
+    defaults: { _controller: TripBookingEngineBundle:Booking:addAdults }
+trip_booking_engine_add_childs:
+    path:     /add-child
+    defaults: { _controller: TripBookingEngineBundle:Booking:addChilds }
+trip_booking_engine_update_room:
+    path:     /update-room
+    defaults: { _controller: TripBookingEngineBundle:Booking:updateRomms }   
+trip_booking_engine_hotel_book_submit:
+    path:     /book/hotel/submit
+    defaults: { _controller: TripBookingEngineBundle:Booking:bookHotelSubmit }
+trip_hotel_booking_engine_success:
+    path:     /hotel/success
+    defaults: { _controller: TripBookingEngineBundle:Booking:hotelPaymentSuccess }   
