@@ -33,7 +33,6 @@ use Trip\SiteManagementBundle\Form\ContactType;
 use Trip\BookingEngineBundle\DependencyInjection\Instamojo;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Trip\BookingEngineBundle\Entity\TestCustomer;
 use Trip\BookingEngineBundle\Entity\Vendor;
 use Trip\BookingEngineBundle\Entity\VendorLogin;
@@ -330,8 +329,6 @@ class BookingController extends Controller
             $searchFilter->setNumDays($noDays);
             $session->set('selectedData',$searchFilter);
             $session->set('resultSet',$resultSet);
-            
-            
             
             $contact = new Contact();
             $contactForm   = $this->createContactForm($contact);
@@ -770,8 +767,7 @@ class BookingController extends Controller
     
     public function bookSubmitAction(Request $request)
     {
-        
-        
+       
         $session = $request->getSession();
         $resultSet = $session->get('resultSet');
         $searchFilter = $session->get('selectedData');
@@ -780,6 +776,8 @@ class BookingController extends Controller
         $locations = $session->get('locations');
         $guest = $session->get('guest');
         
+        $paymentMode = $request->get('mode');
+        //echo var_dump($paymentMode);
         
         $customer = new Customer();
         //$customer->setEmail($guest->getEmail());
@@ -790,7 +788,7 @@ class BookingController extends Controller
         if ($form->isValid()) {
             $couponApplyed = $customer->getHaveCoupon();
             $couponCode = $customer->getCouponCode();
-            $paymentMode = $customer->getPaymentMode();
+            //$paymentMode = $customer->getPaymentMode();
             $em = $this->getDoctrine()->getManager();
             $em->persist($customer);
             $em->flush();
@@ -881,18 +879,23 @@ class BookingController extends Controller
             
             $amountToPay = $finalPrice;
             $tax = 0;
-            if($paymentMode=='advance'){
+            if($paymentMode){
                 $amountToPay = round($finalPrice*(50/100));
                 //$tax = round($amountToPay*(3/100));
                 //$amountToPay = $amountToPay+$tax;
+                //echo $paymentMode;
+                //exit();
             }else{
                 $amountToPay = round($finalPrice*(30/100));
+                //echo $paymentMode;
+                //exit();
                 //$tax = round($amountToPay*(3/100));
                 // $amountToPay = $amountToPay+$tax;
             }
-            $serviceTax = round($finalPrice*(5.6/100),2);
-            $swachBharthCess = round($finalPrice*(0.2/100),2);
-            $krishiKalyanCess = round($finalPrice*(0.2/100),2);
+            //$serviceTax = round($finalPrice*(5.6/100),2);
+            $serviceTax = '0';
+            $swachBharthCess = round($finalPrice*(2.5/100),2);
+            $krishiKalyanCess = round($finalPrice*(2.5/100),2);
             $totalTax = $serviceTax+$swachBharthCess+$krishiKalyanCess;
             $amountToPay = $amountToPay+$totalTax;
             $finalPrice = $finalPrice+$totalTax;
@@ -928,6 +931,8 @@ class BookingController extends Controller
                 'paymentLink'   => $paymentLink,
                 'payuLink' => $payuLink,
                 'locations' => $locations,
+                'amountToPay' => $amountToPay,
+                'paymentMode' => $paymentMode,
             ));
         }
         if(!is_null($searchHotel)){
@@ -1184,22 +1189,22 @@ class BookingController extends Controller
     
     private function getData($request,$finalPrice,$bookingId,$customer,$redirectUrl){
         // Merchant key here as provided by Payu
-        //$MERCHANT_KEY = "rjQUPktU";
-        $MERCHANT_KEY = "ze3IGP8w";
+        $MERCHANT_KEY = "rjQUPktU";
+        //$MERCHANT_KEY = "ze3IGP8w";
         
         
         //$MERCHANT_KEY = "OwPbxU2k";
         //$SALT = "aa70fUA5Hh";
         // Merchant Salt as provided by Payu
         
-        //$SALT = "e5iIg1jwi8";
-        $SALT = "OAAknA88Xf";
+        $SALT = "e5iIg1jwi8";
+        //$SALT = "OAAknA88Xf";
         
         // End point - change to https://secure.payu.in for LIVE mode
-        $PAYU_BASE_URL = "https://secure.payu.in";
+      //  $PAYU_BASE_URL = "https://secure.payu.in";
         
         //testing Mode
-        //$PAYU_BASE_URL = "https://test.payu.in";
+        $PAYU_BASE_URL = "https://test.payu.in";
         
         $action = $PAYU_BASE_URL . '/_payment';
         //$txnid = substr(hash('sha256', mt_rand() . microtime()), 0, 20);
@@ -1790,6 +1795,7 @@ class BookingController extends Controller
     public function bookingBikeAction(Request $request)
     {
         $session = $request->getSession();
+        $em = $this->getDoctrine()->getManager();
         //$resultSet = $session->get('resultSet');
         //$searchFilter = $session->get('selectedData');
         //echo var_dump($session);
@@ -1803,7 +1809,11 @@ class BookingController extends Controller
         $leftdays = $request->get('leftdays');
         $hours = $request->get('hours');
         $location = $request->get('location');
-        //echo var_dump($location);
+        $countinsert = $request->get('countinsert');
+        $package =$em->getRepository('TripSiteManagementBundle:bikes')->find($id);
+        $count = $package->getCount();
+        //echo var_dump($package);
+        //echo var_dump($count);
         // exit();
         
         $session->set('id',$id);
@@ -1814,6 +1824,8 @@ class BookingController extends Controller
         $session->set('leftdays',$leftdays);
         $session->set('hours',$hours);
         $session->set('location',$location);
+        $session->set('count',$count);
+        $session->set('countinsert',$countinsert);
         
         $guest = $session->get('guest');
         $customer = new Customer();
@@ -1846,7 +1858,7 @@ class BookingController extends Controller
     }
     public function bookbikeSubmitAction(Request $request)
     {
-        
+        $em = $this->getDoctrine()->getManager();
         $session = $request->getSession();
         /*$resultSet = $session->get('resultSet');
          $searchFilter = $session->get('selectedData');
@@ -1862,14 +1874,17 @@ class BookingController extends Controller
         $hours = $session->get('hours');
         $location = $session->get('location');
         $paymentMode = $request->get('mode');
-        //echo var_dump($id);
-       // echo var_dump($title);
+        $countinsert = $session->get('countinsert');
+        $dql3 = "UPDATE TripSiteManagementBundle:bikes b SET b.count = '$countinsert' WHERE b.id = '$id' ";
+        $query = $em->createQuery($dql3);
+        $query -> execute();
+        //$count = $session->get('count');
+        //echo var_dump($countinsert);
+        
+        //$newDate = date("Y-m-d H:i:s", $pDate);
         //echo var_dump($paymentMode);
-        //exit();
-        
+         //exit();
         $guest = $session->get('guest');
-        
-        
         $customer = new Customer();
         //$customer->setEmail($guest->getEmail());
         //$customer->setMobile($guest->getMobile());
@@ -1883,28 +1898,12 @@ class BookingController extends Controller
             $em->persist($customer);
             $em->flush();
             $session->set('customer',$customer);
-            /*if($searchFilter->getTripType()=='roundtrip'){
-             $price = $selectedService['returnPrice'];
-             }else{
-             if($searchFilter->getTripType()=='package'){
-             $price = $selectedService->getPrice()->first()->getPrice();
-             }else{
-             $price = $selectedService['price'];
-             }
-             }*/
+            
             $finalPrice = $price;
-            if($couponCode=='FIRSTRIDE'){
+            /*if($couponCode=='FIRSTRIDE'){
                 $finalPrice = $price-50;
-            }
-            /*if($searchFilter->getTripType()=='roundtrip'){
-             $selectedService['returnPrice'] = $finalPrice;
-             }else{
-             if($searchFilter->getTripType()=='package'){
-             $selectedService->getPrice()->first()->setPrice($finalPrice);
-             }else{
-             $selectedService['price'] = $finalPrice;
-             }
-             }*/
+            }*/
+            
             $booking = new Booking();
             $booking->setCustomerId($customer->getId());
             $booking->setBookingId($this->getBookingId());
@@ -1916,6 +1915,19 @@ class BookingController extends Controller
             $booking->setNumDays($leftdays);
             $booking->setNumAdult($hours);
             $booking->setPreferTime($title);
+           // $booking = $this->setBikeBooking($price,$title,$id,$booking);
+            
+            $bikebooking= new BikeBooking();
+            $bikebooking->setPrice($price);
+            $bikebooking->setBikeId($id);
+            $bikebooking->setBikeId($id);
+            $bikebooking->setBikeName($title);
+            $bikebooking->setPdate($pDate);
+            $bikebooking->setRdate($rDate);
+            $bikebooking->setLeftdays($leftdays);
+            $bikebooking->setHours($hours);
+            $bikebooking->setBikelocation($location);
+            $booking->setBikeBooking($bikebooking);
             $discount = 0;
             if($couponApplyed){
                 $booking->setCouponApplyed(1);
@@ -1932,26 +1944,38 @@ class BookingController extends Controller
             
             $amountToPay = $finalPrice;
             $tax = 0;
-            if($paymentMode=='advance'){
-                $amountToPay = round($finalPrice*(50/100));
+            if($paymentMode){
+                $amountToPayadv = round($finalPrice*(50/100));
                 //$tax = round($amountToPay*(3/100));
                 //$amountToPay = $amountToPay+$tax;
+                /*$test = 'test50%';
+                echo $amountToPay;
+                echo $test;
+                exit();*/
             }else{
-                $amountToPay = round($finalPrice*(30/100));
+                $amountToPayadv = round($finalPrice*(30/100));
                 //$tax = round($amountToPay*(3/100));
                 // $amountToPay = $amountToPay+$tax;
+                /*$test = 'test30%';
+                echo $amountToPay;
+                echo $test;
+                exit();*/
             }
-            $serviceTax = round($finalPrice*(5.6/100),2);
+            $serviceTax = 0;
             $swachBharthCess = round($finalPrice*(2.5/100),2);
             $krishiKalyanCess = round($finalPrice*(2.5/100),2);
             $totalTax = $serviceTax+$swachBharthCess+$krishiKalyanCess;
-            $amountToPay = $amountToPay+$totalTax;
+            $amountToPay = round($amountToPayadv+$totalTax);
             $finalPrice = $finalPrice+$totalTax;
             $booking->setTax($tax);
             $booking->setServiceTax($serviceTax);
             $booking->setSwachBharthCess($swachBharthCess);
             $booking->setKrishiKalyanCess($krishiKalyanCess);
             $booking->setFinalPrice($finalPrice);
+            
+            
+            $bikebooking->setBooking($booking);
+            
             $em->persist($booking);
             $em->flush();
             $session->set('bookingObj',$booking);
@@ -1962,13 +1986,13 @@ class BookingController extends Controller
             //  $paymentLink = '';
             $payuLink = $this->generateUrl ( 'trip_booking_engine_payment_payu' );
             
-            //var_dump($customer);
-            //var_dump($booking);
+           // var_dump($customer);
+            // var_dump($booking);
             //var_dump($selectedService);
             //var_dump($searchFilter);
-            //var_dump($paymentLink);
+           // var_dump($paymentLink);
             
-            // exit();
+             //exit();
             return $this->render('TripBookingEngineBundle:Default:paymentBike.html.twig', array(
                 'customer'   => $customer,
                 'booking'   => $booking,
@@ -1989,8 +2013,12 @@ class BookingController extends Controller
                 'leftdays' => $leftdays,
                 'hours' => $hours,
                 'location' => $location,
+                'paymentMode' => $paymentMode,
+                'finalPrice' => $finalPrice,
+                'amountToPayadv' => $amountToPayadv,
             ));
         }
+        
         
         return $this->render('TripBookingEngineBundle:Default:bookingBike.html.twig', array(
             'form'   => $form->createView(),
@@ -2003,6 +2031,7 @@ class BookingController extends Controller
         
         
     }
+   
     private function createTestCustomPackageForm(TestCustomerDto $customer){
         $bookingService = $this->container->get( 'booking.services' );
         $security = $this->container->get ( 'security.context' );
@@ -2959,22 +2988,22 @@ class BookingController extends Controller
    
     private function getVendorData($request,$vendor,$id,$redirectUrl,$redirectUrlFail){
         // Merchant key here as provided by Payu
-        //$MERCHANT_KEY = "rjQUPktU";
-        $MERCHANT_KEY = "ze3IGP8w";
+        $MERCHANT_KEY = "rjQUPktU";
+        //$MERCHANT_KEY = "ze3IGP8w";
         
         
         //$MERCHANT_KEY = "OwPbxU2k";
         //$SALT = "aa70fUA5Hh";
         // Merchant Salt as provided by Payu
         
-        //$SALT = "e5iIg1jwi8";
-        $SALT = "OAAknA88Xf";
+        $SALT = "e5iIg1jwi8";
+        //$SALT = "OAAknA88Xf";
         
         // End point - change to https://secure.payu.in for LIVE mode
-        $PAYU_BASE_URL = "https://secure.payu.in";
+       // $PAYU_BASE_URL = "https://secure.payu.in";
         
         //testing Mode
-        //$PAYU_BASE_URL = "https://test.payu.in";
+        $PAYU_BASE_URL = "https://test.payu.in";
         $bookingId = $id;
         $action = $PAYU_BASE_URL . '/_payment';
         //$txnid = substr(hash('sha256', mt_rand() . microtime()), 0, 20);

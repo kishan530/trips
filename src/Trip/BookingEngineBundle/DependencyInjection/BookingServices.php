@@ -39,7 +39,8 @@ class BookingServices
         return $locations;
     }
     public function getLocations(){
-        $locations = $this->em->getRepository('TripSiteManagementBundle:City')->findAll();
+    	$locations = $this->em->getRepository('TripSiteManagementBundle:City')->findAll();
+       
         return $locations;
     }
     public function getVehicles(){

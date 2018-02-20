@@ -94,7 +94,18 @@ class bikes
      * @ORM\Column(name="day_rent", type="float")
      */
     private $dayrent;
-    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="soldOut", type="boolean")
+     */
+    private $soldOut;
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="count", type="integer")
+     */
+    private $count;
 
     /**
      * Get id
@@ -331,6 +342,38 @@ class bikes
 		$this->dayrent = $dayrent;
 		return $this;
 	}
+    /**
+     * @return boolean
+     */
+    public function isSoldOut()
+    {
+        return $this->soldOut;
+    }
+
+    /**
+     * @param boolean $soldOut
+     */
+    public function setSoldOut($soldOut)
+    {
+        $this->soldOut = $soldOut;
+    }
+    /**
+     * @return integer
+     */
+    public function getCount()
+    {
+        return $this->count;
+    }
+
+    /**
+     * @param integer $count
+     */
+    public function setCount($count)
+    {
+        $this->count = $count;
+    }
+
+
 	
 	
 	

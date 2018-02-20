@@ -140,11 +140,16 @@ class Booking
      * @ORM\OneToMany(targetEntity="Trip\BookingEngineBundle\Entity\VehicleBooking", mappedBy="booking", cascade={"persist"})
      */
     private $vehicleBooking;
+    /**
+     * @ORM\OneToOne(targetEntity="Trip\BookingEngineBundle\Entity\BikeBooking", mappedBy="booking", cascade={"persist"})
+     */
+    private $bikeBooking;
 
     
     public function __construct() {
     	$this->hotelBooking = new ArrayCollection();
     	$this->vehicleBooking = new ArrayCollection();
+    	//$this->bikeBooking = new ArrayCollection();
     }
      
     
@@ -801,6 +806,22 @@ class Booking
 		$this->vehicleBooking->add($vehicleBooking);
 		return $this;
 	}
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getBikeBooking()
+    {
+        return $this->bikeBooking;
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\ArrayCollection $bikeBooking
+     */
+    public function setBikeBooking($bikeBooking)
+    {
+        $this->bikeBooking = $bikeBooking;
+    }
+
 	 
     
     

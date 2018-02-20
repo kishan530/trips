@@ -36,3 +36,23 @@ trip_rest_getpaymentupdate:
 trip_rest_management_homepage_packages:
     path:     /api/get-packages
     defaults: { _controller: TripRestBundle:Restpackages:multipackages }
+    
+trip_rest_management_homepage_packagedetail_new:
+    path:     /api/get-packagedetail
+    defaults: { _controller: TripRestBundle:Restpackages:specialPackages }
+
+trip_rest_management_packagebookingsubmit:
+    path:     /api/get-packagebookingsubmit
+    defaults: { _controller: TripRestBundle:Restpackages:packagebookingsubmit }
+
+trip_rest_management_Loginuserdetails:
+    path:     /api/get-logindetail
+    defaults: { _controller: TripRestBundle:Rest:userLogin }
+ 
+trip_rest_management_registeruser:
+    path:     /api/user-register
+    defaults: { _controller: TripRestBundle:Rest:register }
+    
+trip_rest_management_homepage_rentbikes:
+    path:     /api/get-bikes
+    defaults: { _controller: TripRestBundle:Restbikes:bikesonRent}

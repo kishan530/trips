@@ -45,19 +45,22 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 </script>
 <script type="text/javascript">
 		$(function(){
-			$('#datetime2').appendDtpicker();
+			$('#datetime2').appendDtpicker();	
 		});
+		
 	</script>
 	<script type="text/javascript">
 		$(function(){
 			$('#datetime3').appendDtpicker();
+			
 		});
+		
 	</script>
 {% endblock %}
 
 {% block breadcrumb %}
                     <div class="c1 breadcrumb text-left">
-                        <div><span class="glyphicon glyphicon-home" style="padding:5px;"></span><a href="#">Home</a><span><span class="glyphicon glyphicon-chevron-right" style="padding:5px;"></span>Bikes</span></div>
+                        <div><span class="glyphicon glyphicon-home" style="padding:5px;"></span><a href="{{ path('trip_site_management_homepage')}}">Home</a><span><span class="glyphicon glyphicon-chevron-right" style="padding:5px;"></span>Bikes</span></div>
                     </div>
                     <h3></h3>
 {% endblock %}
@@ -96,7 +99,8 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                 {{ form_widget(form.submit) }}
                                 </div>
                              {{ form_end(form) }}
-                              
+                             
+                             
                          </div>
                         
                          {#}<div class="sub-book2">
@@ -151,7 +155,16 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                          <div class="col-md-4" >
                                          </div>
                                          <div class="col-md-4" >
-        								<a class="btn aligncenter view-bike"   href="{{ path('trip_site_management_view_bikes',{'url':bike.locationUrl }) }}">Rent Now</a>
+                                         {% if (bike.count <= 0) %}
+                                          			<a class="btn btn-book-now view-bike" disabled>
+                                                      Sold Out
+                                                    </a>   
+                                          	{% else %}
+                                                <a class="btn btn-book-now view-bike" href="{{ path('trip_site_management_view_bikes',{ 'url':bike.locationUrl }) }}">
+                                                  Rent Now
+                                                </a>
+                                            {% endif %}
+        								{#<a class="btn aligncenter view-bike"   href="{{ path('trip_site_management_view_bikes',{'url':bike.locationUrl }) }}">Rent Now</a>#}
                                          </div>
                                          <div class="col-md-4" >
                                          </div>

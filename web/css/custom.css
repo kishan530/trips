@@ -626,5 +626,13 @@ h3.contactdeatils {
 {
 	text-align: justify;
 }
+
+.package-links {
+    
+    text-transform: capitalize;
+}
+input[type="checkbox"] {
+    margin: 4px 6px 0;
+}
 /* End */
 

@@ -186,7 +186,7 @@ $("#trip_search_multiple_1_leavingFrom").change(function() {
     }
     }
 </style>
-    <section class="section fullscreen background parallax" style="background-image:url({{ asset('images/Just-Trip-banner-6.jpg') }});" data-img-width="1920" data-img-height="1003" data-diff="100">
+    <section class="section fullscreen background parallax" style="background-image:url({{ asset('images/Just-Trip-banner-6.jpg') }});position: relative;padding: 73px 0;" data-img-width="1920" data-img-height="1003" data-diff="100">
         <div class="container">
             <div class="row homeform">
                 {#
@@ -206,8 +206,12 @@ $("#trip_search_multiple_1_leavingFrom").change(function() {
                         {% block navTabs %}
                         <ul class="nav nav-tabs" role="tablist">
                             <li class="active"><a href="#tab_01" aria-controls="tab_01" role="tab" data-toggle="tab"><i class="icon-sedan3"></i>   Cars</a></li>
-							<li><a href="{{ path('trip_site_management_bikes_on_rent')}}"><img src="{{ asset('images/bike.png') }}" style="width: 26px;height: 23px;" /> <span>Bikes</span></a></li>
+
+							
                             <li><a href="{{ path('trip_site_management_homepage_hotels')}}"> <span><i class="icon-hotel68"></i> Hotels</span></a></li>
+
+							<li><a href="{{ path('trip_site_management_bikes_on_rent')}}"><img src="{{ asset('images/bike.png') }}" style="width:27px;height:23px;padding-right: 4px;top: 3px;position: relative;" /><span>Bikes</span></a></li>
+
                             <!--<li><a href="#tab_02" aria-controls="tab_02" role="tab" data-toggle="tab"><i class="icon-hotel68"></i>  Hotels</a></li>-->
                             <li><a href="{{ path('trip_site_management_homepage_packages')}}"><i class="icon-bag"></i>  Packages</a></li>
                             

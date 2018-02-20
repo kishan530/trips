@@ -1,10 +1,11 @@
  {% extends 'TripBookingEngineBundle:Default:booking.html.twig' %}
 {% block breadcrumb %}
-                    <ul class="c1 breadcrumb text-left">
-                        <li><a href="#">Home</a></li>
-                        <li>Booking</li>
-                        <li>Payment</li>
-                    </ul>
+<div class="c1 breadcrumb text-left">
+                        <div><span class="glyphicon glyphicon-home" style="padding:5px;"></span><a href="{{ path('trip_site_management_homepage')}}">Home</a>
+                        <span><span class="glyphicon glyphicon-chevron-right" style="padding:5px;"></span>Booking</span>
+                        <span><span class="glyphicon glyphicon-chevron-right" style="padding:5px;"></span>Payment</span></div>
+                    </div>
+                    
                     <h3></h3>
 {% endblock %}
 {% block form %}
@@ -26,30 +27,30 @@
 {% endblock %}
  {% block details %}
 
-<li class="booking-price clearfix">
-       <span>Service Tax (5.6%)</span>
-       <span> <i class="fa fa-inr"></i> <em > {{ booking.serviceTax }} </em></span>
-                                                        
-</li> 
-<hr>
+
 
 <li class="booking-price clearfix">
-       <span>Swach Bharth Cess (0.2%)</span>
+       <span>CGST (2.5%)</span>
        <span> <i class="fa fa-inr"></i> <em > {{ booking.swachBharthCess }} </em></span>
                                                         
 </li>  
 
 <hr>
 <li class="booking-price clearfix">
-       <span>Krishi Kalyan Cess (0.2%)</span>
+       <span>SGST (2.5%)</span>
        <span> <i class="fa fa-inr"></i> <em > {{ booking.krishiKalyanCess }} </em></span>
                                                         
 </li> 
 <hr>
 
-<li class="text-right"><em>You Pay</em>
-    <p><b><i class="fa fa-inr"></i><em id="price"> {{ booking.finalPrice }} </em></b></p> 
-</li>
+<li class="text-right">
+<span>You Have Been Selected </span>
+       <span>  <em > {{ paymentMode }} % Payment Mode </em></span>
 
+</li>
+<li  class="booking-price clearfix">
+	<span>You Pay</span></em>
+    <span><b><i class="fa fa-inr"></i><em id="price"> {{ amountToPay }} </em></b></span> 
+</li>
                                        
 {% endblock %}

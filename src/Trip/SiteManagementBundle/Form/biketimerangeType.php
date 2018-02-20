@@ -57,11 +57,11 @@ class biketimerangeType extends AbstractType
         		'widget'=> 'single_text',
         		'input' => 'datetime',
         		//'format'=>'d/M/y h:m A',
-        		'format' => 'yyyy-MM-dd H:mm',
+        		'format' => 'dd-MM-yyyy H:mm',
         		'attr'   =>  array(
         				'data-date-format'=>'yyyy-MM-dd HH:mm:ss',
         				//'data-date-format'=>'dd/mm/yyyy HH:mm:ss',
-        				//'placeholder'=>'Date',
+        				'placeholder'=>'Pickup Date',
         				//'class'=>'preferDate'
         				//'class'=>'date',
         				//'name' => 'date',
@@ -84,11 +84,11 @@ class biketimerangeType extends AbstractType
         		'widget'=> 'single_text',
         		'input' => 'datetime',
         		//'format'=>'d/M/y h:m A',
-        		'format' => 'yyyy-MM-dd H:mm',
+        		'format' => 'dd-MM-yyyy H:mm',
         		'attr'   =>  array(
         				'data-date-format'=>'yyyy-MM-dd HH:mm:ss',
         				//'data-date-format'=>'dd/mm/yyyy',
-        				//'placeholder'=>'Date',
+        				'placeholder'=>'Return Date',
         				//'class'=>'preferDate'
         		),
         		

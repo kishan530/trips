@@ -50,16 +50,24 @@ use Trip\SiteManagementBundle\DTO\BookingSearch;
 use Trip\SiteManagementBundle\Form\BookingSearchType;
 use Trip\SiteManagementBundle\Form\PackagePriceType;
 use Trip\SiteManagementBundle\Form\AddMultiPackageTitleType;
+use Trip\SiteManagementBundle\Form\EditBikesType;
 use Trip\SiteManagementBundle\Entity\TwoStartPoint;
 use Trip\SiteManagementBundle\Entity\TwoEndPoint;
 use Trip\SiteManagementBundle\Entity\TwoEndPoint2;
 use Trip\SiteManagementBundle\Form\TwodayPackageLocationsType;
+use Trip\SiteManagementBundle\Form\AddBikesType;
 use Trip\SiteManagementBundle\DTO\TwodayPackageLocations;
+use Trip\SiteManagementBundle\Entity\bikes;
+use Trip\BookingEngineBundle\Entity\BikeBooking;
+use Trip\BookingEngineBundle\Entity\Booking;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Collections\ArrayCollection;
+<<<<<<< HEAD
 
 //use DateTime;
+=======
+>>>>>>> 65a01f6b24885024b19e25e0855d4ed6bf0cfcfb
 use Trip\SiteManagementBundle\DTO\Billing as NewBilling;
 use Trip\SiteManagementBundle\Form\InsertImageType;
 use Trip\SiteManagementBundle\Entity\InsertImage;
@@ -2103,23 +2111,29 @@ class SiteManagementController extends Controller
     	$bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
 		$locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
     	$locations = $this->getLocationsByIndex($locations);
+    	$id='22/01/2018 05:00 PM';
     	
+    	$dql3 = "SELECT b.id from TripBookingEngineBundle:BikeBooking b where b.rdate= '$id' ";
+    	$query = $em->createQuery($dql3);
+    	$query -> execute();
+    	$brdate = $query->getResult();
+    	    	
+    	//exit();
+    	
+    	$sysdate= new \DateTime('Asia/Kolkata');
+    	//echo var_dump($sysdate);
+    	//echo var_dump($bikes);
+        
     	$session = $request->getSession();
     	$session->set('resultSet',$bikes);
-    	//$package->setPreferTime($service->getPreferTime());
     	$entity= new Biketime();
     	$entity->setId($entity->getId());
-    	//$entity->setPreferTime($entity->getPreferTime());
-    	//$entity->setReturnTime($entity->getReturnTime());
     	$entity->setDate($entity->getDate());
     	$entity->setReturndate($entity->getReturndate());
     	//$entity->setDate(new \DateTime());
     	$form   = $this->createviewbikesForm($entity);
     	$form->handleRequest($request);
     	if ($form->isValid()) {
-    		//$preferTime = $entity->getPreferTime();
-    		//$entity->setPreferTime($entity->getPreferTime());
-    		//$entity->setReturnTime($entity->getReturnTime());
     		$entity->setDate($entity->getDate());
     		$entity->setReturndate($entity->getReturndate());
     		$em->persist($entity);
@@ -2128,6 +2142,7 @@ class SiteManagementController extends Controller
     	}
     	return $this->render('TripSiteManagementBundle:Default:bikesonRent.html.twig',array(
     			'bikes' => $bikes,
+    	    //'bookrdate'=> $bookrdate,
     			'form'   => $form->createView(),
 				'locations' => $locations,
     			
@@ -2192,6 +2207,7 @@ class SiteManagementController extends Controller
 		$session = $request->getSession();
 		
     	$bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
+    	
 		//$session->set('bikes',$bikes);
 		//$searchFilter->setUr($url);
 		//$bike->setEmail($bikes->getUrl());
@@ -2199,6 +2215,7 @@ class SiteManagementController extends Controller
     	
     	//$customer = $em->getRepository('TripBookingEngineBundle:Customer')->find($booking->getCustomerId());
     	$booking = $em->getRepository('TripSiteManagementBundle:Biketime')->findOneById($id);
+    	
 		
     	//$locations = test;
     	//$locations = $this->getLocationsByIndex($locations);
@@ -2285,6 +2302,7 @@ class SiteManagementController extends Controller
     			'action' => $this->generateUrl('trip_site_management_review_viewbikes',array('id'=>$id)),
     			'method' => 'POST',
     	));
+    	
     	$form->add('submit', 'submit', array('label' => 'Search','attr'   =>  array('class'=>'search-bike')));
     	
     	return $form;
@@ -2302,6 +2320,7 @@ class SiteManagementController extends Controller
     }
    
 	public function bikesSubmitAction(Request $request){
+	    $em = $this->getDoctrine()->getManager();
         $session = $request->getSession();
         $id = $request->get('id');
 		$title = $request->get('title');
@@ -2311,11 +2330,20 @@ class SiteManagementController extends Controller
 		$leftdays = $request->get('leftdays');
 		$hours = $request->get('hours');
 		$location = $request->get('location');
-       // echo var_dump($hours);
-		//echo var_dump($location);
+		$countadd = $request->get('countadd');
+		$count = $request->get('count');
+		//echo var_dump($countadd);
+		//echo var_dump($id);
+		$countinsert = $count-$countadd;
+		//$session->set('countinsert',$countinsert);
+		//echo var_dump($countinsert);
 		 //exit();
-		
-        return $this->redirect($this->generateUrl('trip_booking_engine_booking_bike',array('id'=>$id,'title'=>$title,'pDate'=>$pDate,'rDate'=>$rDate,'price'=>$price,'leftdays'=>$leftdays,'hours'=>$hours,'location'=>$location)));
+		 
+		/* $dql3 = "UPDATE TripSiteManagementBundle:bikes b SET b.count = '$countinsert' WHERE b.id = '$id' ";
+		 $query = $em->createQuery($dql3);
+		 $query -> execute();
+		 */
+		 return $this->redirect($this->generateUrl('trip_booking_engine_booking_bike',array('id'=>$id,'title'=>$title,'pDate'=>$pDate,'rDate'=>$rDate,'price'=>$price,'leftdays'=>$leftdays,'hours'=>$hours,'location'=>$location,'countinsert'=>$countinsert)));
 			
     }
     //***************************************end****************************************//
@@ -2399,27 +2427,26 @@ class SiteManagementController extends Controller
         $form   = $this->createAddMultiPackageForm($package);
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $package = $em->merge($package);
-            $em->flush();
+           
             
             $packageImageList =$package->getImgPath();
             $packageImages =$package->getImgPath();
-            foreach($packageImageList as $packageImage){
-                $uploadedfile = $packageImage->getImgPath();
-                if (!is_null($uploadedfile)) {
-                    $file_name = $uploadedfile->getClientOriginalName ();
-                    $dir = 'images/package-titles/';
-                    $uploadedfile->move ( $dir, $file_name );
-                    $packageImage->setImgPath ($file_name );
-                    $packageImage->setImgPath($package);
-                   // echo var_dump($packageImage);
-                    //exit();
-                    $packageImages->add($packageImage);
-                    
-                }
+            
+            //echo var_dump($packageImages);
+            // exit();
+            if (!is_null($packageImages)) {
+                $file_name = $packageImages->getClientOriginalName ();
+                $dir = 'images/package-titles/';
+                $packageImages->move ( $dir, $file_name );
+                $package->setImgPath ($file_name );
+                // $packageImage->setImgPath($package);
+                // echo var_dump($packageImage);
+                //exit();
+                // $packageImages->add($packageImage);
                 
             }
-            
+            $package = $em->merge($package);
+            $em->flush();
             return $this->redirect($this->generateUrl('trip_site_management_add_multipackage'));
             
         }
@@ -2619,6 +2646,95 @@ class SiteManagementController extends Controller
         
         return $this->redirect($this->generateUrl('trip_site_management_add_package',array('cat'=>$cat)));
         
+    }
+    public function editBikesAction(Request $request,$id){
+        $em = $this->getDoctrine()->getManager();
+        //$package = new Package();
+        $package =$em->getRepository('TripSiteManagementBundle:bikes')->find($id);
+        
+        $form   = $this->createEditBikesForm($package,$id);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $package = $em->merge($package);
+            $em->flush();
+            
+            return $this->redirect($this->generateUrl('trip_site_management_bikes_list'));
+            
+        }
+        
+        return $this->render('TripSiteManagementBundle:Default:editBikes.html.twig',array(
+            'package' => $package,
+            'form'   => $form->createView(),
+        ));
+    }
+    private function createEditbikesForm($package,$id){
+        //$bookingService = $this->container->get( 'booking.services' );
+        $form = $this->createForm(new EditBikesType(), $package, array(
+            'action' => $this->generateUrl('trip_site_management_edit_bikes',array('id'=>$id)),
+            'method' => 'POST',
+        ));
+        $form->add('submit', 'submit', array('label' => 'Update'));
+        
+        return $form;
+    }
+    public function bikesListAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        
+        $multipackageList = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
+        return $this->render('TripSiteManagementBundle:Default:bikesList.html.twig',array(
+            'multipackageList' => $multipackageList,
+        ));
+    }
+    public function addbikeAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $package = new bikes();
+        //$package =$em->getRepository('TripSiteManagementBundle:PackageTitle')->find($id);
+        $packageImages = $package->getImgPath();
+         //$packageImages->add($packageImage);
+        
+        $form   = $this->createAddBikeForm($package);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            
+            
+            $packageImageList =$package->getImgPath();
+            $packageImages =$package->getImgPath();
+       
+            //echo var_dump($packageImages);
+               // exit();
+            if (!is_null($packageImages)) {
+                $file_name = $packageImages->getClientOriginalName ();
+                    $dir = 'images/bikes/';
+                    $packageImages->move ( $dir, $file_name );
+                    $package->setImgPath ($file_name );
+                   // $packageImage->setImgPath($package);
+                    // echo var_dump($packageImage);
+                    //exit();
+                   // $packageImages->add($packageImage);
+                    
+                }
+                
+            
+            $package = $em->merge($package);
+            $em->flush();
+            return $this->redirect($this->generateUrl('trip_site_management_add_bike'));
+            
+        }
+        
+        return $this->render('TripSiteManagementBundle:Default:addbike.html.twig',array(
+            //'package' => $package,
+            'form'   => $form->createView(),
+        ));
+    }
+    private function createAddBikeForm($package){
+        $bookingService = $this->container->get( 'booking.services' );
+        $form = $this->createForm(new AddBikesType(), $package, array(
+            'action' => $this->generateUrl('trip_site_management_add_bike'),
+            'method' => 'POST',
+        ));
+        $form->add('submit', 'submit', array('label' => 'submit'));
+        
+        return $form;
     }
 	//***************************************end****************************************//
     private function createEditItineraryForm($package,$id){
