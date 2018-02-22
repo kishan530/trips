@@ -56,7 +56,7 @@ class SearchHotelType extends AbstractType
             'required'    => TRUE,
             'attr'   =>  array(
                
-                'style' => 'border-radius: 5px;margin-bottom:10px;'
+                'style' => 'border-radius: 5px;margin-bottom:-15px;border-color:#eee;'
             ),
             
         ))

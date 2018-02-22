@@ -23,7 +23,7 @@ class CustomerType extends AbstractType
     				'label'     => 'I have an Coupon code?',
     				'required'  => false,
     		))
-            
+    		->add('adminCoupon')
            // ->add('address','textarea')
         ;
         

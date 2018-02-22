@@ -163,6 +163,7 @@ $('#guests').click(function(e){
     
 $("#guests-box").on('click','.guestclose',function(e){ 
 	 e.preventDefault(); //STOP default action 
+	 var id=$(this).attr('id');
 	 //alert('hi');
 	 $('#guests').popover('hide');
 	
@@ -255,17 +256,13 @@ $(document).ready(function() {
 
                   <!-- Start Hotel -->
                 
-                  <div id="search-form" class="row search-form-boxnew" style="margin-top:90px;color:#000;margin-left:90px;">
+                  <div id="search-form" class="search-form-boxnew" >
                   <h1 style="text-transform: uppercase;text-align: center;font-family: calibri;color:#EE2E24;">Book Your Hotel Now</h1>
                     {{ form_start(hotelForm) }}
                     
            <div class="col-lg-12 col-sm-12 form-group has-error">
-			<ul class="errors">
-	          
-            </ul>
-			</div>
-                    
-                    
+			    <div class="col-lg-1 col-sm-12 form-group has-error" style="width:60px;">
+			    </div>
                      <span class="city select-box" style="">
                         {{ form_widget(hotelForm.goingTo) }}
                       </span>
@@ -315,11 +312,12 @@ $(document).ready(function() {
 							{#}
                       
                       	
-						<a class="close btnguestclosecase guestclose" id="guestclose">&times;</a>
-						 
+						
 						               	 
                       	<div class="guests-room" id="guests-room">
                       	 {% for key,room in rooms %}
+                      	
+						 
                       	<h5>Room {{ loop.index }}</h5>
 	                      	<a class="close btnguestclosecase guestclose" id="guestclose">&times;</a>
                       	<div class="row">
@@ -387,7 +385,7 @@ $(document).ready(function() {
                      </div>
                   </li>
                   <!-- End Hotel -->
-				
+				</div>
                  
 
                 </ul>

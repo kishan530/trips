@@ -10,8 +10,11 @@
  {% endblock %}
 {% block javascripts %}
 <script src="{{ asset('js/ionrangeslider.min.js') }}"></script>
-
+<script src="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/stickyfill/2.0.3/stickyfill.js') }}"></script>
+<script src="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/stickyfill/2.0.3/stickyfill.min.js') }}"></script>
 <script type="text/javascript">
+var elements = document.getElementById('wrapper');
+Stickyfill.add(elements);
 $("#filter-search").on('change', ':checkbox', function (e) {
 	   $("form[name='hotel_search_filter']").submit();
 	});
@@ -259,116 +262,102 @@ $(document).ready(function() {
     <section class="section clearfix" style="font-family:calibri;">
         <div class="container">
             <div class="row">
-                <div id="fullwidth" class="col-sm-12" style="margin-bottom: 20px;height:100px;">
-
-                  <div role="tabpanel" class="tab-pane active" id="tab_02" style="margin-left:90px;">
-                                <h3 style="text-transform: uppercase;text-align: center;font-family: calibri;color:#EE2E24;">Book Your Hotel Now</h3>
-                                    <div id="search-form">
- {{ form_start(form) }}
-                                        {{ form_errors(form, { 'global_errors': true }) }}
-                                
-                                
+                <div id="fullwidth" class="col-sm-12" style="margin-bottom: 0px;">
+                  <div role="tabpanel" class="tab-pane active" id="tab_02" >
+                        <h3 style="text-transform: uppercase;text-align: center;font-family: calibri;color:#EE2E24;">Book Your Hotel Now</h3>
+                            <div id="search-form">
+                                 {{ form_start(form) }}
+                                 {{ form_errors(form, { 'global_errors': true }) }}
                                 <div class="row" style="margin-left:0px;">  
                                  <div id="search-form">
-                    {{ form_start(form) }}
-                     <span class="city select-box ">
-                        {{ form_widget(form.goingTo) }}
-                      </span>
-                      <span class=" " style="border:none;height: 35px;">
-                      	
-                        {{ form_widget(form.date) }}
-                       
-                        <i class="fa fa-calendar" onclick="getcheckin()"></i>
-                      </span>
-                      <span class=" " style="border:none;height: 35px;">
-                         {{ form_widget(form.returnDate) }}
-                        <i class="fa fa-calendar" onclick="getcheckout()"></i>
-                      </span>
-                      <span class="city guests" id="guests-box">
-                      <input type="text" id="guests" name="guests" value="{{ searchHotel.numAdult+searchHotel.numChildren }} Guests, {{ searchHotel.numRooms }} Room" readonly style="height:37px;border-radius:5px;padding-left: 5px;width:95%;background-color:#fff;color:#000;border-color:#e1e1e1;"/>
-                      <div id="popover-content" style="display: none">
-                      
-                      <!--  	<h5>Room 1</h5>-->
-                      	<a class="close btnguestclosecase guestclose" id="guestclose">&times;</a>
-                      	
-                      	<div class="guests-room" id="guests-room">
-                      	{% for key,room in rooms %}
-	                      	<h5>Room {{ loop.index }}</h5>  
-                      	<div class="row">
-                      		<div class="col-lg-8">
-                      			<i class="adults-count">{{ room.numAdult }}</i> Adults <i class="guests-text">(0-12 years)</i>
-                      		</div>
-                      		<div class="col-lg-4">
-                      			<a class="adults input-group-addon" id="decrement" value="1" href="{{ key }}">-</a>
-                      			<a class="adults input-group-addon" id="increment" href="{{ key }}">+</a>
-                      		</div>                     	
-                      	</div>
-                      	<hr>
-                      	<div class="row">
-                      		<div class="col-lg-8">
-                      			<i class="children-count">{{ room.numChildren }}</i> Children <i class="guests-text">(3-12 years)</i>
-                      		</div>
-                      		<div class="col-lg-4">
-                      			<a class="children input-group-addon" id="decrement" value="0" href="{{ key }}">-</a>
-                      			<a class="children input-group-addon" id="increment" href="{{ key }}">+</a>
-                      		</div>                     	
-                      	</div> 
-                      	<hr> 
-                      	{% endfor %}
-                      	</div>
-                      	<a href="#" id="add-room" value="{{ searchHotel.numRooms }}">Add Room</a>                                    	                      	
-                      </div>
-                    
-                      
-                      {#}
-                        <select name="guests"  data-toggle="popover" title="Popover Header" data-content="Some content inside the popover">
-                        	<option>2 Guests, 1 Room </option>
-                        
-                        </select>
-                        
-                        {#}
-                       
-                      </span>
-                      {#}
-                      <span class="adults group-box">
-                       	<div class="input-group">
-                               <a class="adults input-group-addon" id="decrement" value="1" href="#">-</a> 
-                                                    {{ form_widget(form.numAdult) }}
-                               <a class="adults input-group-addon" id="increment" href="#">+</a>
-                         </div>
-                      </span>
-                      <span class="children group-box">
-                      		<div class="input-group">
-                               <a class="children input-group-addon" id="decrement" value="1" href="#">-</a> 
-                                                    {{ form_widget(form.numChildren) }}
-                               <a class="children input-group-addon" id="increment" href="#">+</a>
-                         	</div>
-                      </span>
-                      {#}
-                      <span class="submit-btn">
-                      	 {{ form_widget(form.numAdult) }}
-                      	  {{ form_widget(form.numChildren) }}
-                      	   {{ form_widget(form.numRooms) }}
-                        <button class="btn btn-transparent" style="color:#fff;height: 35px;width:100%;background-color:#EE2E24;">Search</button>                       
-                      </span>
-                     {{ form_end(form) }}
-                     </div>
-                                	
-                     </div>
-                     </div>               
+                                  <div class="col-lg-12 col-sm-12 form-group has-error">
+			    <div class="col-lg-1 col-sm-12 form-group has-error" style="width:60px;">
+			    </div>
+                                    {{ form_start(form) }}
+                                     <span class="city select-box ">
+                                        {{ form_widget(form.goingTo) }}
+                                      </span>
+                                      <span class=" " style="border:none;height: 35px;">
+                                      	
+                                        {{ form_widget(form.date) }}
+                                       
+                                        <i class="fa fa-calendar" onclick="getcheckin()"></i>
+                                      </span>
+                                      <span class=" " style="border:none;height: 35px;">
+                                         {{ form_widget(form.returnDate) }}
+                                        <i class="fa fa-calendar" onclick="getcheckout()"></i>
+                                      </span>
+                                      <span class="city guests" id="guests-box">
+                                      <input type="text" id="guests" name="guests" value="{{ searchHotel.numAdult+searchHotel.numChildren }} Guests, {{ searchHotel.numRooms }} Room" readonly style="height:37px;border-radius:5px;padding-left: 5px;width:95%;background-color:#fff;color:#000;border-color:#e1e1e1;"/>
+                                      <div id="popover-content" style="display: none">
+                                      
+                                      <!--  	<h5>Room 1</h5>-->
+                                      	<a class="close btnguestclosecase guestclose" id="guestclose">&times;</a>
+                                      	
+                                      	<div class="guests-room" id="guests-room">
+                                      	{% for key,room in rooms %}
+                	                      	<h5>Room {{ loop.index }}</h5>  
+                                      	<div class="row">
+                                      		<div class="col-lg-8">
+                                      			<i class="adults-count">{{ room.numAdult }}</i> Adults <i class="guests-text">(0-12 years)</i>
+                                      		</div>
+                                      		<div class="col-lg-4">
+                                      			<a class="adults input-group-addon" id="decrement" value="1" href="{{ key }}">-</a>
+                                      			<a class="adults input-group-addon" id="increment" href="{{ key }}">+</a>
+                                      		</div>                     	
+                                      	</div>
+                                      	<hr>
+                                      	<div class="row">
+                                      		<div class="col-lg-8">
+                                      			<i class="children-count">{{ room.numChildren }}</i> Children <i class="guests-text">(3-12 years)</i>
+                                      		</div>
+                                      		<div class="col-lg-4">
+                                      			<a class="children input-group-addon" id="decrement" value="0" href="{{ key }}">-</a>
+                                      			<a class="children input-group-addon" id="increment" href="{{ key }}">+</a>
+                                      		</div>                     	
+                                      	</div> 
+                                      	<hr> 
+                                      	{% endfor %}
+                                      	</div>
+                                      	<a href="#" id="add-room" value="{{ searchHotel.numRooms }}">Add Room</a>                                    	                      	
+                                      </div>
+                                      </span>
                                     
-                     </div>
+                                      <span class="submit-btn">
+                                      	 {{ form_widget(form.numAdult) }}
+                                      	  {{ form_widget(form.numChildren) }}
+                                      	   {{ form_widget(form.numRooms) }}
+                                        <button class="btn btn-transparent" style="color:#fff;height: 35px;width:100%;background-color:#EE2E24;">Search</button>                       
+                                      </span>
+                                     {{ form_end(form) }}
+                                     </div>
+                                        </div>        	
+                                     </div>
+                                     </div>               
+                                                    
+                                     </div>
                             </div><!-- end tab-pane -->
 
     </div></div></section>
-                    
+    <section>
+     <div class="container" >
+        <div class="row">
+        	<div class="col-md-3">
+        	</div>
+        	<div class="col-md-9">
+        		<h5 class="title pull-left" style="text-align:center;font-family:calibri;background-color: #fff;width:72%;margin-left:15px;color:#000;padding: 7px;">Available Hotels for  {{ adults }}&nbsp;Adults,&nbsp;{{ childs }}&nbsp;Childs</h5>
+        	</div>
+        </div>
+        </div>
+    </section>
+                     
   <section id="listing" style="font-family:calibri;">
-
- 
-    <div class="container">
+    <div class="container" >
       <div class="row">
-        <div class="col-md-3  border-box sidebar-filter" style="background-color:#fff;">
-          <div class="fleets-filters toggle-container">
+      
+        <nav class="col-md-3  border-box sidebar-filter " style="background-color:#fff;">
+        	<ul class="nav nav-pills nav-stacked" data-spy="affix" data-offset-top="205">
+          
             <h5 class="toggle-title" >Filters Location</h5>
             <aside class="toggle-content" id="filter-search">
              {{ form_start(filterForm) }}
@@ -409,59 +398,16 @@ $(document).ready(function() {
                   {% endfor %} 
                  
                 </ul>
-                
-               
-               {#}
-                 <hr class="filter-divider">
-                <h5 class="title">Category</h5>
-                <ul class="custom-list additional-filter-list clearfix">
-                
-                 {% for key, item in filterForm.categories.children %}			
-                  <li>
-                    <span class="checkbox-input">
-                     
-                      {{ form_widget(item) }}
-                      {{ form_label(item) }}
-                    </span>
-                  </li>
-                  {% endfor %} 
-                 
-                </ul>
-                
-                
-             
-                <hr class="filter-divider">
-                <h5 class="title">Property Type</h5>
-                <ul class="custom-list additional-filter-list clearfix">
-                
-                 {% for key, item in filterForm.properties.children %}			
-                  <li>
-                    <span class="checkbox-input">
-                     
-                      {{ form_widget(item) }}
-                      {{ form_label(item) }}
-                    </span>
-                  </li>
-                  {% endfor %} 
-                 
-                </ul>
-                {#}
-                
-                
               </div>
-
             </aside>
-          </div>
-
-        </div>
-        <h5 class="title pull-left" style="background-color: #fff;width:72%;margin-left:15px;color:#000;padding: 7px;">Available Hotels for  {{ adults }}&nbsp;Adults,&nbsp;{{ childs }}&nbsp;Childs</h5>
+            </ul>
        
-        <div class="listing-content col-md-9 " >
+        </nav>
+       
+       
+        <div class="listing-content col-md-9 ">
+       
          
-          <div class="listing-pagination">
-           
-
-          </div>
           {% set i=0 %}
           {% for hotel in result %}
           <div class="listing-room-list" style="border: 1px solid #e1e1e1;">
@@ -637,9 +583,11 @@ $(document).ready(function() {
           
 
           
+       
         </div>
       </div>
     </div>
   </section>
+
 
 {% endblock %}

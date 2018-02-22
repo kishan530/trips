@@ -128,7 +128,30 @@
 										</div>
 									</div>
                                     
-                            
+                            <div class="col-sm-12 booking-price-details-border booking-details box clearfix">
+									<h5 class="box-title" style="background-color: #e1e1e1;padding:5px 0px 5px 10px;margin:0px -15px 0px -15px;">Personal Details</h5>
+                                       
+                                        <div class="box-content row">
+                                        
+											<div class="col-sm-12 text-center">
+    											<div class="col-sm-4 text-center">
+    											<h5 class="check">Name</h5>
+            											{% set customer=app.session.get('customer') %}
+            											<h6>{{ customer.name }}</h6>
+    											</div>
+    											
+    											<div class="col-sm-4 text-center">
+        											<h5  class="check">Email</h5>
+        											<h6>{{ customer.email }}</h6>
+    											</div>
+    											<div class="col-sm-4 text-center">
+    													<h5  class="check">Mobile No</h5>	
+    													<h6>{{ customer.mobile }}</h6>
+    											</div>
+    											</div>
+										    
+										</div>
+									</div>
                                   </div>  
                                     
               

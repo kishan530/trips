@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Room
 {
 /**
-
+    
 	 * @var integer
 
 	 */
@@ -31,6 +31,13 @@ class Room
 	 */
 
 	private $numChildren;
+	/**
+	
+	* @var integer
+	
+	*/
+	
+	private $id;
 	
 	/**
 
@@ -99,7 +106,39 @@ class Room
 		return $this;
 
 	}
-
+	/**
+	
+	*
+	
+	* @return the integer
+	
+	*/
+	
+	public function getId() {
+	    
+	    return $this->id;
+	    
+	}
+	
+	
+	
+	/**
+	
+	*
+	
+	* @param
+	
+	*        	$id
+	
+	*/
+	
+	public function setId($id) {
+	    
+	    $this->id = $id;
+	    
+	    return $this;
+	    
+	}
 
 }
 

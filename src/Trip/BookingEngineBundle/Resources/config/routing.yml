@@ -175,3 +175,22 @@ trip_booking_engine_hotel_book_submit:
 trip_hotel_booking_engine_success:
     path:     /hotel/success
     defaults: { _controller: TripBookingEngineBundle:Booking:hotelPaymentSuccess }   
+    
+trip_hotel_add_coupon_code:
+    path:     /add-coupon-code
+    defaults: { _controller: TripBookingEngineBundle:Coupon:addCoupon }
+trip_hotel_list_coupon_code:
+    path:     /coupon-code-list
+    defaults: { _controller: TripBookingEngineBundle:Coupon:couponList }
+trip_hotel_edit_coupon_code:
+    path:     /{id}/coupon-code-edit
+    defaults: { _controller: TripBookingEngineBundle:Coupon:couponEdit }
+trip_hotel_delete_coupon_code:
+    path:     /{id}/coupon-code-delete
+    defaults: { _controller: TripBookingEngineBundle:Coupon:couponDelete }
+trip_booking_engine_apply_coupon:
+    path:     /apply-coupon
+    defaults: { _controller: TripBookingEngineBundle:Booking:applyCoupon }
+trip_booking_engine_admin_apply_coupon:
+    path:     /admin-apply
+    defaults: { _controller: RoomBookingEngineBundle:Booking:adminapplyCoupon }

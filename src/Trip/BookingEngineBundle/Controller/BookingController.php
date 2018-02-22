@@ -159,9 +159,17 @@ class BookingController extends Controller
         $adults = (int) $request->get('adults');
         $child = (int) $request->get('child');
        // var_dump($child);exit();
+       
         $room = new Room;
+        $roomId = $room->getId();
+        if($roomId == null){
+            $roomId =1;
+        }
+        $roomId= $roomId+1;
+        //var_dump($roomId);exit();
         $room->setNumAdult($adults);
         $room->setNumChildren($child);
+        $room->setId($child);
         $rooms->add($room);
         //return new Response('true');
         return $this->render('TripBookingEngineBundle:Default:add-more.html.twig', array(
@@ -220,7 +228,33 @@ class BookingController extends Controller
         }
         
     }
-    
+    /**
+     *
+     */
+    public function removeRoomAction(Request $request){
+        //
+        $session = $request->getSession();
+        $rooms = $session->get('rooms');
+        $adults = (int) $request->get('adults');
+        $child = (int) $request->get('child');
+        // var_dump($child);exit();
+        
+        $room = new Room;
+        $roomId = $room->getId();
+        if($roomId == null){
+            $roomId =1;
+        }
+        $roomId= $roomId+1;
+        //var_dump($roomId);exit();
+        $room->setNumAdult($adults);
+        $room->setNumChildren($child);
+        $room->setId($child);
+        $rooms->add($room);
+        //return new Response('true');
+        return $this->render('TripBookingEngineBundle:Default:add-more.html.twig', array(
+            'rooms'=>$rooms
+        ));
+    }
     /**
      *
      * @param Search $entity
@@ -676,32 +710,174 @@ class BookingController extends Controller
         
     }
     
-    public function applyCouponAction(Request $request)
+    public function applyCouponAction()
+    
     {
-        $session = $request->getSession();
-        $searchFilter = $session->get('selectedData');
-        $selectedService = $session->get('selected');
-        $couponCode = $request->get('coupon');
+        $request = $this->container->get ( 'request' );
+        $session = $request->getSession ();
+        $booking = $session->get('booking');
+        //var_dump($booking);
+        $totalprice = $session->get('totalprice');
+        //$amount = $coupon->getAmount();
+       // $price = $totalprice- $amount;
+        //$session->set('couponAmount',$amount);
+        //$session->set('priceAftercoupon',$amount);
         
-        $tripType =  $searchFilter->getTripType();
         
-        if($couponCode=='FIRSTRIDE'){
-            if($tripType=='roundtrip'){
-                $price = $selectedService['returnPrice'];
-            }else{
-                
-                if($tripType=='package'){
-                    $price = $selectedService->getPrice()->first()->getPrice();
-                }else{
-                    $price = $selectedService['price'];
-                }
+        $newcoupon = $request->get ( "coupon" );
+        //$newcoupon='FREE100';
+        $searchcoupon = array();
+        //$searchcoupon = $this->getDoctrine()
+        //->getRepository('RoomHotelBundle:CouponCode')
+        //->findBy( array('couponCode' => $newcoupon));
+        
+        date_default_timezone_set('Asia/Kolkata');
+        
+        $today = new \DateTime();
+        $em = $this->getDoctrine ()->getManager();
+        $qb = $em->getRepository ('TripBookingEngineBundle:CouponCode')->createQueryBuilder("c");
+        $qb
+        ->Where(':today between c.startDate and c.expireDate')
+        ->andWhere('c.couponCode = :couponCode')
+        ->setParameter('today', $today )
+        ->setParameter('couponCode', $newcoupon) ;
+        $searchcoupon = $qb->getQuery()->getResult();
+        
+        
+        $response = array();
+        $bookingDetails = array();
+        $response['success'] = 'false';
+        $response['message'] = '';
+        if(count($searchcoupon)>0)
+        {
+            
+            $response['success'] = 'true';
+            foreach ($searchcoupon as $coupan)
+            {
+                $discount=$coupan->getAmount();
             }
-            $price = $price-50;
-            return new response("$price");
-        }else{
-            return new response('false');
+            $oldDiscount = $booking->getDiscount();
+            //var_dump( $oldDiscount);
+            //var_dump( $discount);
+            //var_dump( $booking->getTotalPrice());
+            $newtotalprice = $booking->getTotalPrice()+$oldDiscount-$discount;
+            //var_dump($newtotalprice);
+            $serviceTax = 0;
+            $taxPercentage = 0;
+            
+            
+            if($newtotalprice>999 && $newtotalprice<2499){
+                $taxPercentage = 12;
+            }elseif($newtotalprice>2499 && $newtotalprice<7499){
+                $taxPercentage = 18;
+            }elseif($newtotalprice>7499){
+                $taxPercentage = 24;
+            }
+            
+            //$serviceTax = round(($price*$numDay*$taxPercentage/100),2);
+            $serviceTax = round(($newtotalprice*$taxPercentage/100),2);
+            
+            $totalTax = $serviceTax;
+            //var_dump($totalTax);exit();
+            //$finalPrice = $price+$totalTax;
+            $finalPrice = $newtotalprice+$totalTax;
+            $booking->setTotalPrice($finalPrice);
+            $booking->setDiscount($discount);
+            $booking->setCouponApplyed(1);
+            $booking->setCouponCode($newcoupon);
+            $booking->setServiceTax($totalTax);
+            $bookingDetails['totalPrice'] =  $newtotalprice;
+            $bookingDetails['finalPrice'] =   $finalPrice;
+            $bookingDetails['discount'] = $discount;
+            $bookingDetails['serviceTax'] = $totalTax;
+            $session->set('finalprice',$finalPrice);
         }
+        else
+        {
+            $response['message'] = 'coupon code '.$newcoupon.' doesnt exist ';
+            
+        }
+        
+        
+        $response['bookingDetails'] = $bookingDetails;
+        $session->set('bookingObj',$bookingDetails);
+        
+        return new Response (json_encode($response));
+        
+        
     }
+    
+    
+    
+    public function adminapplyCouponAction()
+    
+    {
+        $request = $this->container->get ( 'request' );
+        $session = $request->getSession ();
+        $booking = $session->get('booking');
+        
+        
+        $newcoupon = $request->get ( "admincoupon" );
+        //$newcoupon='FREE100';
+        $searchcoupon = array();
+        //$searchcoupon = $this->getDoctrine()
+        //->getRepository('RoomHotelBundle:CouponCode')
+        //->findBy( array('couponCode' => $newcoupon));
+        
+        date_default_timezone_set('Asia/Kolkata');
+        
+        $today = new \DateTime();
+        $em = $this->getDoctrine ()->getManager();
+        /*$qb = $em->getRepository ('RoomHotelBundle:CouponCode')->createQueryBuilder("c");
+         $qb
+         ->Where(':today between c.startDate and c.expireDate')
+         ->andWhere('c.couponCode = :couponCode')
+         ->setParameter('today', $today )
+         ->setParameter('couponCode', $newcoupon) ;
+         $searchcoupon = $qb->getQuery()->getResult(); */
+        
+        
+        $response = array();
+        $bookingDetails = array();
+        $response['success'] = 'false';
+        $response['message'] = '';
+        //if(count($searchcoupon)>0)
+        //{
+        
+        $response['success'] = 'true';
+        //foreach ($searchcoupon as $coupan)
+        //{
+        //$discount=$coupan->getAmount();
+        $discount=$newcoupon;
+        //}
+        $oldDiscount = $booking->getDiscount();
+        
+        
+        $finalPrice = $booking->getFinalPrice()+$oldDiscount-$discount;
+        
+        $booking->setFinalPrice($finalPrice);
+        $booking->setDiscount($discount);
+        $booking->setCouponApplyed(1);
+        $booking->setAdminCoupon($newcoupon);
+        $bookingDetails['finalPrice'] = $finalPrice;
+        $bookingDetails['discount'] = $discount;
+        
+        //}
+        //else
+        //{
+        //$response['message'] = 'coupon code '.$newcoupon.' doesnt exist ';
+        
+        //}
+        
+        
+        $response['bookingDetails'] = $bookingDetails;
+        $session->set('bookingObj',$bookingDetails);
+        
+        return new Response (json_encode($response));
+        
+        
+    }
+    
     
     /**
      *

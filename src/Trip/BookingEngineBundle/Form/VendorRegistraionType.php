@@ -95,6 +95,10 @@ class VendorRegistraionType extends AbstractType
         		'required' => true,
         		'data_class' => null,
         		'label'=>'Pancard No',
+                'attr'   =>  array(
+                    'title' => 'Enter Valid Pancard Number',
+                    'pattern' => '[A-Z0-9]{10}',
+                ),
         		))
 			->add('pancardid','file',array(
         		'required' => false,
@@ -107,6 +111,10 @@ class VendorRegistraionType extends AbstractType
         		'required' => true,
         		'data_class' => null,
         		'label'=>'GST NO',
+			    'attr'   =>  array(
+    			    'title' => 'Enter Valid GST Number',
+    			    'pattern' => '[A-Z][0-9]{15}',
+			    ),
         		))
 			->add('idproof','file',array(
         		'required' => false,
@@ -125,7 +133,7 @@ class VendorRegistraionType extends AbstractType
         		'type'         => new VendorNewDriverType($this->catalogService,$this->security),
         		'allow_add'    => true,
                  'prototype'=>true,
-        		'required'    => false,
+        		'required'    => true,
         ))
          
 			

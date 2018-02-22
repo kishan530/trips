@@ -1,7 +1,9 @@
 	{% for key,room in rooms %}
+	
                       	<h5>Room {{ loop.index }}</h5>
-                      	
+                      	 <a class="close btnguestclosecase guestclose" id="guestclose" style="margin-top:-20px;">&times;</a>
                       	<div class="row">
+                      	
                       		<div class="col-lg-8">
                       			<i class="adults-count">{{ room.numAdult }}</i> Adults <i class="guests-text">(0-12 years)</i>
                       		</div>
@@ -21,4 +23,5 @@
                       		</div>                     	
                       	</div> 
                       	<hr> 
+                      	
                       	{% endfor %}
