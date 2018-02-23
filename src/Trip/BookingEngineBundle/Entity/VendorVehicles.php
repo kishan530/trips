@@ -76,6 +76,183 @@ class VendorVehicles
 	  *
 	  */
 	 private $insertdate;
+	 /**
+	  * @var string
+	  *
+	  * @ORM\Column(name="vehicle_number", type="string")
+	  */
+	 private $vehicleNumber;
+	 /**
+	  * @var string
+	  *
+	  * @ORM\Column(name="vehicle_color", type="string")
+	  */
+	 private $vehicleColor;
+	 /**
+	  * @var integer
+	  *
+	  * @ORM\Column(name="vehicle_capacity", type="integer")
+	  */
+	 private $vehicleCapacity;
+	 /**
+	  * @var string
+	  *
+	  * @ORM\Column(name="fuel_type", type="string")
+	  */
+	 private $fuelType;
+	 /**
+	  * @var integer
+	  *
+	  * @ORM\Column(name="manfacture_year", type="integer")
+	  */
+	 private $vehicleManfactureYear;
+	 
+	 /**
+	  * @var string
+	  *
+	  * @ORM\Column(name="manfacture_company", type="string")
+	  */
+	 private $vehicleManfactureCompany;
+	 /**
+	  * @var string
+	  *
+	  * @ORM\Column(name="chassis_number", type="string")
+	  */
+	 private $vehicleChassisNumber;
+	 /**
+	  * @var string
+	  *
+	  * @ORM\Column(name="engine_number", type="string")
+	  */
+	 private $vehicleEngineNumber;
+    /**
+     * @return string
+     */
+    public function getVehicleNumber()
+    {
+        return $this->vehicleNumber;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVehicleColor()
+    {
+        return $this->vehicleColor;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getVehicleCapacity()
+    {
+        return $this->vehicleCapacity;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFuelType()
+    {
+        return $this->fuelType;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getVehicleManfactureYear()
+    {
+        return $this->vehicleManfactureYear;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVehicleManfactureCompany()
+    {
+        return $this->vehicleManfactureCompany;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVehicleChassisNumber()
+    {
+        return $this->vehicleChassisNumber;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVehicleEngineNumber()
+    {
+        return $this->vehicleEngineNumber;
+    }
+
+    /**
+     * @param string $vehicleNumber
+     */
+    public function setVehicleNumber($vehicleNumber)
+    {
+        $this->vehicleNumber = $vehicleNumber;
+    }
+
+    /**
+     * @param string $vehicleColor
+     */
+    public function setVehicleColor($vehicleColor)
+    {
+        $this->vehicleColor = $vehicleColor;
+    }
+
+    /**
+     * @param integer $vehicleCapacity
+     */
+    public function setVehicleCapacity($vehicleCapacity)
+    {
+        $this->vehicleCapacity = $vehicleCapacity;
+    }
+
+    /**
+     * @param string $fuelType
+     */
+    public function setFuelType($fuelType)
+    {
+        $this->fuelType = $fuelType;
+    }
+
+    /**
+     * @param integer $vehicleManfactureYear
+     */
+    public function setVehicleManfactureYear($vehicleManfactureYear)
+    {
+        $this->vehicleManfactureYear = $vehicleManfactureYear;
+    }
+
+    /**
+     * @param string $vehicleManfactureCompany
+     */
+    public function setVehicleManfactureCompany($vehicleManfactureCompany)
+    {
+        $this->vehicleManfactureCompany = $vehicleManfactureCompany;
+    }
+
+    /**
+     * @param string $vehicleChassisNumber
+     */
+    public function setVehicleChassisNumber($vehicleChassisNumber)
+    {
+        $this->vehicleChassisNumber = $vehicleChassisNumber;
+    }
+
+    /**
+     * @param string $vehicleEngineNumber
+     */
+    public function setVehicleEngineNumber($vehicleEngineNumber)
+    {
+        $this->vehicleEngineNumber = $vehicleEngineNumber;
+    }
+
     /**
      * Get id
      *

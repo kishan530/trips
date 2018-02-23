@@ -321,14 +321,93 @@ function addRoom() {
 {% endblock %}
 
 {% block body %}
+ <section class="section clearfix" style="font-family:calibri;">
+        <div class="container" style="border:1px solid #eee;">
+            <div class="row">
+                <div id="fullwidth" class="col-sm-12" style="margin-bottom: 0px;">
+                  <div role="tabpanel" class="tab-pane active" id="tab_02" >
+                        <h3 style="text-transform: uppercase;text-align: center;font-family: calibri;color:#EE2E24;">Modify Search</h3>
+                            <div id="search-form">
+                                 {{ form_start(form) }}
+                                 {{ form_errors(form, { 'global_errors': true }) }}
+                                <div class="row" style="margin-left:0px;">  
+                                 <div id="search-form">
+                                  <div class="col-lg-12 col-sm-12 form-group has-error">
+			    <div class="col-lg-1 col-sm-12 form-group has-error" style="width:60px;">
+			    </div>
+                                    {{ form_start(form) }}
+                                     <span class="city select-box ">
+                                        {{ form_widget(form.goingTo) }}
+                                      </span>
+                                      <span class=" " style="border:none;height: 35px;">
+                                      	
+                                        {{ form_widget(form.date) }}
+                                       
+                                        <i class="fa fa-calendar" onclick="getcheckin()"></i>
+                                      </span>
+                                      <span class=" " style="border:none;height: 35px;">
+                                         {{ form_widget(form.returnDate) }}
+                                        <i class="fa fa-calendar" onclick="getcheckout()"></i>
+                                      </span>
+                                      <span class="city guests" id="guests-box">
+                                      <input type="text" id="guests" name="guests" value="{{ searchHotel.numAdult+searchHotel.numChildren }} Guests, {{ searchHotel.numRooms }} Room" readonly style="height:37px;border-radius:5px;padding-left: 5px;width:95%;background-color:#fff;color:#000;border-color:#e1e1e1;"/>
+                                      <div id="popover-content" style="display: none">
+                                      
+                                      <!--  	<h5>Room 1</h5>-->
+                                      	<a class="close btnguestclosecase guestclose" id="guestclose">&times;</a>
+                                      	
+                                      	<div class="guests-room" id="guests-room">
+                                      	{% for key,room in rooms %}
+                	                      	<h5>Room {{ loop.index }}</h5>  
+                                      	<div class="row">
+                                      		<div class="col-lg-8">
+                                      			<i class="adults-count">{{ room.numAdult }}</i> Adults <i class="guests-text">(0-12 years)</i>
+                                      		</div>
+                                      		<div class="col-lg-4">
+                                      			<a class="adults input-group-addon" id="decrement" value="1" href="{{ key }}">-</a>
+                                      			<a class="adults input-group-addon" id="increment" href="{{ key }}">+</a>
+                                      		</div>                     	
+                                      	</div>
+                                      	<hr>
+                                      	<div class="row">
+                                      		<div class="col-lg-8">
+                                      			<i class="children-count">{{ room.numChildren }}</i> Children <i class="guests-text">(3-12 years)</i>
+                                      		</div>
+                                      		<div class="col-lg-4">
+                                      			<a class="children input-group-addon" id="decrement" value="0" href="{{ key }}">-</a>
+                                      			<a class="children input-group-addon" id="increment" href="{{ key }}">+</a>
+                                      		</div>                     	
+                                      	</div> 
+                                      	<hr> 
+                                      	{% endfor %}
+                                      	</div>
+                                      	<a href="#" id="add-room" value="{{ searchHotel.numRooms }}">Add Room</a>                                    	                      	
+                                      </div>
+                                      </span>
+                                    
+                                      <span class="submit-btn">
+                                      	 {{ form_widget(form.numAdult) }}
+                                      	  {{ form_widget(form.numChildren) }}
+                                      	   {{ form_widget(form.numRooms) }}
+                                        <button class="btn btn-transparent" style="color:#fff;height: 35px;width:100%;background-color:#EE2E24;">Search</button>                       
+                                      </span>
+                                     {{ form_end(form) }}
+                                     </div>
+                                        </div>        	
+                                     </div>
+                                     </div>               
+                                                    
+                                     </div>
+                            </div><!-- end tab-pane -->
 
+    </div></div></section>
  <section class="section clearfix" style="background-color:#fff;">
     <div class="container">
      <div class="row">
         <div class="col-md-12">
 			
 					<div class="col-md-9">
-						<h3 class="hotel-title" style="font-weight:600;">{{ hotel.name }}</h3>           
+						<h3 class="hotel-title" style="font-weight:600;color:#EE2E24;">{{ hotel.name }}</h3>           
 						{% set address = hotel.address %}
 						<p class="hotel-address"> {{ address.location }}, {{ address.city }} </p>
 						  		    
@@ -341,72 +420,31 @@ function addRoom() {
 	{% endfor %}
 </ul>
 					</div>
-				   <div class="col-md-3">
+				   <div class="col-md-3" style="font-family:calibri;">
 				   
 						 {#}<h5 class="hotel-price"> <i class="fa fa-inr"></i> {{ hotel.price }}</h5>{#}
-						<a class="awe-btn awe-btn btn btn-primary btn-normal btn-sm" href="#chooseroom"> Choose Room </a></br></br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-transparent" style="color:#fff;height: 35px;width:60%;background-color:#EE2E24;" href="#chooseroom"> Choose Room </a></br></br>
 						
-						{{ form_start(form) }}
-                     <span class="city select-box ">
-                    </br>
-                        {{ form_widget(form.goingTo,{'attr': {'style':'background-color:#fff;margin-bottom: 10px;border-radius:5px;'}}) }}
-                      </span>
-                      <span class=" ">
-                      	
-                        {{ form_widget(form.date) }}
-                       
-                      </span>
-                      <span class=" ">
-                         {{ form_widget(form.returnDate) }}
-                       
-                      </span>
-                                        <span class="city guests" id="guests-box">
-                      <input type="text" id="guests" name="guests" value="{{ searchHotel.numAdult+searchHotel.numChildren }} Guests, {{ searchHotel.numRooms }} Room" readonly style="height:37px;border-radius:5px;width:100%;margin-bottom:10px;border: 1px solid #e1e1e1;padding-left: 5px;" onchange = "myFunction()"/>
-                      <div id="popover-content" style="display: none">
-                      
-                      <!--  	<h5>Room 1</h5>-->
-                      	<a class="close btnguestclosecase guestclose" id="guestclose">&times;</a>
-                      	
-                      	<div class="guests-room" id="guests-room">
-                      	{% for key,room in rooms %}
-	                      	<h5>Room {{ loop.index }}</h5>  
-                      	<div class="row">
-                      		<div class="col-lg-8">
-                      			<i class="adults-count">{{ room.numAdult }}</i> Adults <i class="guests-text">(0-12 years)</i>
-                      		</div>
-                      		<div class="col-lg-4">
-                      			<a class="adults input-group-addon" id="decrement" value="1" href="{{ key }}">-</a>
-                      			<a class="adults input-group-addon" id="increment" href="{{ key }}">+</a>
-                      		</div>                     	
-                      	</div>
-                      	<hr>
-                      	<div class="row">
-                      		<div class="col-lg-8">
-                      			<i class="children-count">{{ room.numChildren }}</i> Children <i class="guests-text">(3-12 years)</i>
-                      		</div>
-                      		<div class="col-lg-4">
-                      			<a class="children input-group-addon" id="decrement" value="0" href="{{ key }}">-</a>
-                      			<a class="children input-group-addon" id="increment" href="{{ key }}">+</a>
-                      		</div>                     	
-                      	</div> 
-                      	<hr> 
-                      	{% endfor %}
-                      	</div>
-                      	<a href="#" id="add-room" value="{{ searchHotel.numRooms }}">Add Room</a>                                    	                      	
-                      </div>
-                    
-                      
-                    
-                       
-                      </span>
-                       <span class="submit-btn">
-                      	 {{ form_widget(form.numAdult) }}
-                      	  {{ form_widget(form.numChildren) }}
-                      	   {{ form_widget(form.numRooms) }}
-                         {#}<button type="submit" class="btn btn-primary btn-block" style="background-color: #17a447;height: 52px;width: 100%;font-size:16px;"><a href="{{ path('trip_booking_engine_hotel_book_room',{'roomId':7,'hotelId':hotel.id}) }}" style="color:#fff;font-size:17px;">&nbsp;Continue To Book</a></button>{#}                      
-                      </span>
-                      <div class="form-group" style="background-color:#f26722;text-align:center;padding:1px 0px 1px;">  {{ form_end(form) }}</div>
+                   <div class="sidebar-widget book-now " style="border:1px solid #eee;height:455px;margin-top:10px;">
+               <h4 class="widget-title" style="text-align:center;font-family:calibri;color:#EE2E24;">Help Me</h4>
+               <hr>
+                <div class="widget-content" style="margin-left:30px;">
+                  <ul class="contact-list custom-list" style="list-style:none;font-size:17px;">
+                  	
+                    <li><i class="fa fa-phone" style="color:#EE2E24;"></i><span>&nbsp;&nbsp;+91-9663133008</span></li>
+                    {#}<li><i class="fa fa-phone"></i><span> </span></li>
+                    <li><i class="fa fa-phone"></i><span>  </span></li>{#}
                    
+                    <li><i class="fa fa-envelope-o" style="color:#EE2E24;"></i><span>&nbsp;&nbsp;info@justtrip.in</span></li>
+                   {#} <li><i class="fa fa-envelope-o"></i><span></span></li>{#}
+                    
+                    
+                    <br>
+                     <li><i class="fa fa-clock-o" style="color:#EE2E24;"></i> &nbsp;<label>Check-In:</label> <span>{{ hotel.checkIn }}</span></li>
+                     <li><i class="fa fa-clock-o" style="color:#EE2E24;"></i> &nbsp;<label>Check-Out:</label> <span>{{ hotel.checkOut }}</span></li>
+                  </ul>
+                </div>
+              </div>
                                         {#}<span class="city guests" id="guests-box">
                       <input type="text" id="guests" value="{{ searchHotel.numAdult+searchHotel.numChildren }} Guests, {{ searchHotel.numRooms }} Room" readonly style="height:37px;border-radius:5px;"/>
                       <div id="popover-content" style="display: none">
@@ -765,7 +803,7 @@ function addRoom() {
      
               
               <div class="room-about">
-                <h5 class="room-title">Hotel Policies</h5>
+                <h5 class="room-title" style="font-weight:600;">Hotel Policies</h5>
                   <span class="room-title-border"></span>
                 <ul class="list-view">
                 <li>The primary guest must be at least 18 years of age to check into this hotel(s).</li>
@@ -805,26 +843,26 @@ stay.</li>
        
              
               <div class="room-about faq-content">
-                <h5 class="room-title">FAQ's</h5>
+                <h5 class="room-title" style="font-weight:600;">FAQ's</h5>
                   <span class="room-title-border"></span>
-                <h4 class="faq-title">How do I know my reservation was booked?</h4>
+                <h4 style="font-size:18px;" class="faq-title">How do I know my reservation was booked?</h4>
                 <p>You will receive an SMS and email on confirmation of your hotel(s) booking.</p>
-                <h4 class="faq-title">Do I need to confirm my reservation?</h4>
+                <h4 style="font-size:18px;" class="faq-title">Do I need to confirm my reservation?</h4>
                 <p>There is no need to confirm your reservation. If you still feel you would
 like to verify that your reservation was made, you can do so by writing to
 our Customer Support Team or by contacting our customer services team.</p>
-<h4 class="faq-title">How do I cancel/amend a hotel(s) reservation?</h4>
+<h4 style="font-size:18px;" style="font-size:18px;" class="faq-title">How do I cancel/amend a hotel(s) reservation?</h4>
 <p>To cancel a booking log in to My Bookings section or call our call center
 on +91-9663133008(all networks). To amend a booking call our call center
 on +91-9663133008 (all networks).</p>
-<h4 class="faq-title">Is there a cancellation policy for hotel(s) booked on Sterlingsuites.in?</h4>
+<h4 style="font-size:18px;" class="faq-title">Is there a cancellation policy for hotel(s) booked on Sterlingsuites.in?</h4>
 <p>The cancellation policy for hotel(s) bookings varies according to hotel(s)
 and room type. For more information, please check the cancellation policy
 mentioned next to the price for the room type. If you are cancelling after
 the check-in date, there will be no refund. In all cases, you'll be
 charged a standard cancellation fee of Rs. 250 per booking over and above
 the hotel(s)'s own cancellation charges.</p>
-<h4 class="faq-title">How do I pay for the gala dinner?</h4>
+<h4 style="font-size:18px;" class="faq-title">How do I pay for the gala dinner?</h4>
 <p>Gala dinner charges which are applicable for Christmas and New Year dates
 would be extra and payable directly to the hotel(s). Please check with the
 hotel(s) directly for more information on the same.</p>

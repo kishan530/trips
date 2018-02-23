@@ -112,8 +112,8 @@ class BookingController extends Controller
         return $this->getHome('TripSiteManagementBundle:Default:hotels.html.twig',$request);
     }
     
-    public function dealsAction(){
-        return $this->getHome('TripSiteManagementBundle:Default:deals.html.twig');
+    public function dealsAction(Request $request){
+        return $this->getHome('TripSiteManagementBundle:Default:deals.html.twig',$request);
         
         //test
     }
@@ -718,6 +718,7 @@ class BookingController extends Controller
         $booking = $session->get('booking');
         //var_dump($booking);
         $totalprice = $session->get('totalprice');
+        //var_dump( $totalprice);exit();
         //$amount = $coupon->getAmount();
        // $price = $totalprice- $amount;
         //$session->set('couponAmount',$amount);
@@ -759,9 +760,9 @@ class BookingController extends Controller
             $oldDiscount = $booking->getDiscount();
             //var_dump( $oldDiscount);
             //var_dump( $discount);
-            //var_dump( $booking->getTotalPrice());
-            $newtotalprice = $booking->getTotalPrice()+$oldDiscount-$discount;
-            //var_dump($newtotalprice);
+            //var_dump( $totalprice);
+            $newtotalprice = $totalprice+$oldDiscount-$discount;
+            //var_dump($newtotalprice);exit();
             $serviceTax = 0;
             $taxPercentage = 0;
             

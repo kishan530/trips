@@ -403,7 +403,54 @@ $(document).ready(function() {
             </ul>
        
         </nav>
+        <nav class="col-md-3  border-box sidebar-filters" style="background-color:#fff;">
+        	<ul class="nav nav-pills nav-stacked" data-spy="affixresponsive" data-offset-top="205">
+          
+            <h5 class="toggle-title" >Filters Location</h5>
+            <aside class="toggle-content" id="filter-search">
+             {{ form_start(filterForm) }}
+             
+              <div class="general" >
+                
+                <ul class="custom-list additional-filter-list clearfix">
+                {% for key, item in filterForm.location.children %}			
+                  <li style="list-style-type: none;color:#000;">
+                    <span class="checkbox-input">
+                     
+                      {{ form_widget(item) }}
+                      {{ form_label(item) }}
+                    </span>
+                  </li>
+                  {% endfor %}                  
+                </ul>
+                
+                <hr class="filter-divider">
+                <h5 class="title">Price</h5>
+                
+                {{ form_widget(filterForm.price,{
+							'attr':{'data-min':''~searchHotel.min,'data-max':''~searchHotel.max,'data-from':''~searchHotel.minPrice,'data-to':''~searchHotel.maxPrice
+							}}) }}
+								
+               <hr class="filter-divider">
+                <h5 class="title">Property Type</h5>
+                <ul class="custom-list additional-filter-list clearfix">
+                
+                 {% for key, item in filterForm.properties.children %}			
+                  
+                    <span class="checkbox-input">
+                     
+                      {{ form_widget(item) }}
+                      {{ form_label(item) }}
+                    </span>
+                  </br>
+                  {% endfor %} 
+                 
+                </ul>
+              </div>
+            </aside>
+            </ul>
        
+        </nav>
        
         <div class="listing-content col-md-9 ">
        

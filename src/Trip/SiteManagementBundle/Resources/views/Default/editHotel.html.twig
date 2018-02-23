@@ -443,10 +443,10 @@ $("#resultimg").on('click',".delete", function (e) {
 <a href="{{ path('trip_sitemanagementbundle_delete_hotelImage', {'id': image.id})}}" class="delete" value="{{ image.id }}">
 
 <div class="show-image" >
-
-<img src="{{ asset('images/Hotels/'~image.imagePath)}}" class="hotel-box-img fa fa-trash-o delete" />
- {#}<input class="delete" type="button" value="delete" />{#}
 <a href="{{ path('trip_sitemanagementbundle_delete_hotelImage', {'id': image.id})}}" class="close delete " id="guestclose">&times;</a>
+<img src="{{ asset('images/Hotels/'~image.imagePath)}}" class="hotel-box-img fa fa-trash-o delete" width="100%"/>
+ {#}<input class="delete" type="button" value="delete" />{#}
+
 {#}<a href="{{ path('room_hotel_delete_hotelImage', {'id': image.id})}}" class="close" value="{{ image.id }}"></a>{#}
 
 </div>

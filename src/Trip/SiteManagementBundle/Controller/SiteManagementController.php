@@ -1880,10 +1880,10 @@ class SiteManagementController extends Controller
     private function createSearchHotelsForm(SearchHotel $entity,$hotelId,$roomId){
         $bookingService = $this->container->get( 'booking.services' );
         $form = $this->createForm(new SearchHotelType($bookingService), $entity, array(
-            'action' => $this->generateUrl('trip_site_management_view_hotel',array('id'=>$hotelId)),
+            'action' => $this->generateUrl('trip_booking_engine_search_hotel'),
             'method' => 'GET',
         ));
-        $form->add('submit', 'submit', array('label' => 'Submit'));
+       
         
         return $form;
     }

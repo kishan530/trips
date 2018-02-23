@@ -947,7 +947,7 @@ color: #000 ;
  .affix {
       top: 20px;
       z-index: 9999 !important;
-    
+    display:visible;
       border: 1px solid #e1e1e1;
     width: 21%;
     padding-left: 5px;
@@ -956,8 +956,19 @@ color: #000 ;
 @media (max-width: 768px) {
  .affix {
    width: 0%;
+   display:none;
   }
+   nav.col-md-3.border-box.sidebar-filters {
+    display: visible;
 }
+}
+nav.col-md-3.border-box.sidebar-filters {
+    display: none;
+}
+ .affixresponsive {
+      display:none;
+  }
+
 @media only screen and (max-width: 768px) {
     /* For mobile phones: */
    .search-form-boxnew{
