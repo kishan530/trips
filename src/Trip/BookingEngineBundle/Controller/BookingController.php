@@ -93,6 +93,7 @@ class BookingController extends Controller
         if ($security->isGranted ( 'ROLE_ADMIN' )){
             return $this->redirect ( $this->generateUrl ( "trip_site_management_billing_list" ) );
         }
+       
         return $this->getHome('TripSiteManagementBundle:Default:index.html.twig');
     }
     /**
@@ -111,19 +112,41 @@ class BookingController extends Controller
      *
      */
     private function getHome($view){
-        
+        $em = $this->getDoctrine()->getManager();
         $searchFilter = new SearchFilter();
         $form   = $this->createSearchForm($searchFilter);
         $searchHotel = new SearchHotel();
         $hotelForm   = $this->createSearchHotelForm($searchHotel);
         //echo 'hi';
         //exit();
+        $bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
+       // $cities = $em->getRepository('TripSiteManagementBundle:City')->findAll();
+        //$packages = $em->getRepository('TripSiteManagementBundle:PackageTitle')->findAll();
+        //echo var_dump($bikes);
+        //die();
         return $this->render($view, array(
             'form'   => $form->createView(),
             'hotelForm'   => $hotelForm->createView(),
+            'bikes' => $bikes,
+            //'cities'=> $cities,
+            //'packages' => $packages,
         ));
     }
-    
+    public function footerAction(){
+        $em = $this->getDoctrine()->getManager();
+        $bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
+        $cities = $em->getRepository('TripSiteManagementBundle:City')->findAll();
+        $url= 'one';
+        //$packagetitle = $em->getRepository('TripSiteManagementBundle:PackageTitle')->findAll();
+        $onepackages = $em->getRepository('TripSiteManagementBundle:PackageTitle')->findBy(array('type' => $url));
+        return $this->render('TripBookingEngineBundle:Default:footerTabs.html.twig', array(
+            'bikes' => $bikes,
+            'cities'=> $cities,
+            'onepackages' => $onepackages,
+        ));
+        
+        
+    }
     
     /**
      *
@@ -380,21 +403,35 @@ class BookingController extends Controller
     
     public function bookAction(Request $request)
     {
-        $session = $request->getSession();
+      /*  $session = $request->getSession();
         $resultSet = $session->get('resultSet');
         $searchFilter = $session->get('selectedData');
         $searchHotel = $session->get('searchHotel');
         $selectedService = $session->get('selected');
         $locations = $session->get('locations');
-        
-        
+        $type = $request->get('type');
+        //echo var_dump($type);
+        //die();
         
         $guest = $session->get('guest');
-        
+        */
+        $em = $this->getDoctrine()->getManager();
+        $selected = $request->get('selected');
+        $session = $request->getSession();
+        $resultSet = $session->get('resultSet');
+        $selectedService = $resultSet[$selected];
+        $searchFilter = $session->get('selectedData');
+        if($searchFilter->getTripType()=='package')
+            if(!$selectedService->getStartPoint()->first())
+                $selectedService = $em->getRepository('TripSiteManagementBundle:Package')->find($selectedService->getId());
+                $searchFilter = $session->get('selectedData');
+                $searchHotel = $session->get('searchHotel');
+                $session->set('selected',$selectedService);
+                $locations = $session->get('locations');
         
         $customer = new Customer();
-        $customer->setEmail($guest->getEmail());
-        $customer->setMobile($guest->getMobile());
+       // $customer->setEmail($guest->getEmail());
+        //$customer->setMobile($guest->getMobile());
         $form   = $this->createBookingForm($customer);
         if(!is_null($searchHotel)){
             return $this->render('TripBookingEngineBundle:Default:hotelBooking.html.twig', array(
@@ -410,6 +447,7 @@ class BookingController extends Controller
                 'discount'=>0,
                 'filter'=>$searchFilter,
                 'locations' => $locations,
+                //'type' => $type,
                 'step'=>'personal',
             ));
         }
@@ -514,14 +552,14 @@ class BookingController extends Controller
         $selectedService = $session->get('selected');
         $searchHotel = $session->get('searchHotel');
         $locations = $session->get('locations');
-        $guest = $session->get('guest');
+        //$guest = $session->get('guest');
         
         $paymentMode = $request->get('mode');
         //echo var_dump($paymentMode);
-        
+        //die();
         $customer = new Customer();
-        $customer->setEmail($guest->getEmail());
-        $customer->setMobile($guest->getMobile());
+        $customer->setEmail($customer->getEmail());
+        $customer->setMobile($customer->getMobile());
         $form   = $this->createBookingForm($customer);
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -617,14 +655,12 @@ class BookingController extends Controller
             
             $amountToPay = $finalPrice;
             $tax = 0;
-            if($paymentMode){
-                $amountToPay = round($finalPrice*(50/100));
+            if($paymentMode==50){
+                $amountToPayadv = round($finalPrice*(50/100));
                 //$tax = round($amountToPay*(3/100));
                 //$amountToPay = $amountToPay+$tax;
-                //echo $paymentMode;
-                //exit();
             }else{
-                $amountToPay = round($finalPrice*(30/100));
+                $amountToPayadv = round($finalPrice*(30/100));
                 //echo $paymentMode;
                 //exit();
                 //$tax = round($amountToPay*(3/100));
@@ -635,7 +671,7 @@ class BookingController extends Controller
             $swachBharthCess = round($finalPrice*(2.5/100),2);
             $krishiKalyanCess = round($finalPrice*(2.5/100),2);
             $totalTax = $serviceTax+$swachBharthCess+$krishiKalyanCess;
-            $amountToPay = $amountToPay+$totalTax;
+            $amountToPay = $amountToPayadv+$totalTax;
             $finalPrice = $finalPrice+$totalTax;
             $booking->setTax($tax);
             $booking->setServiceTax($serviceTax);
@@ -659,6 +695,9 @@ class BookingController extends Controller
             //var_dump($paymentLink);
             
             // exit();
+            $name = $customer->getName();
+            $mobile = $customer->getMobile();
+            $email = $customer->getEmail();
             return $this->render('TripBookingEngineBundle:Default:payment.html.twig', array(
                 'customer'   => $customer,
                 'booking'   => $booking,
@@ -671,6 +710,11 @@ class BookingController extends Controller
                 'locations' => $locations,
                 'amountToPay' => $amountToPay,
                 'paymentMode' => $paymentMode,
+                'price'=> $price,
+                'amountToPayadv' =>$amountToPayadv,
+                'name' => $name,
+                'email' => $email,
+                'mobile' => $mobile,
             ));
         }
         if(!is_null($searchHotel)){
@@ -1648,7 +1692,7 @@ class BookingController extends Controller
             
             $amountToPay = $finalPrice;
             $tax = 0;
-            if($paymentMode){
+            if($paymentMode==50){
                 $amountToPayadv = round($finalPrice*(50/100));
                 //$tax = round($amountToPay*(3/100));
                 //$amountToPay = $amountToPay+$tax;

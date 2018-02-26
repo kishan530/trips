@@ -48,6 +48,9 @@ class biketimerangeType extends AbstractType
 							'Tirupati' => 'Tirupati',
 							'Bangalore' => 'Bangalore'
 							),
+                'attr'   =>  array(
+                'class'=>'bikepreferDate'
+            ),
             		
                     
             ))
@@ -62,7 +65,7 @@ class biketimerangeType extends AbstractType
         				'data-date-format'=>'yyyy-MM-dd HH:mm:ss',
         				//'data-date-format'=>'dd/mm/yyyy HH:mm:ss',
         				'placeholder'=>'Pickup Date',
-        				//'class'=>'preferDate'
+        				'class'=>'bikepreferDate'
         				//'class'=>'date',
         				//'name' => 'date',
         		),
@@ -89,7 +92,7 @@ class biketimerangeType extends AbstractType
         				'data-date-format'=>'yyyy-MM-dd HH:mm:ss',
         				//'data-date-format'=>'dd/mm/yyyy',
         				'placeholder'=>'Return Date',
-        				//'class'=>'preferDate'
+        				'class'=>'bikepreferDate'
         		),
         		
         ))

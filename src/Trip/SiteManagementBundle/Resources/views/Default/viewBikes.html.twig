@@ -59,6 +59,22 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 		});
 		
 	</script>
+	<script>
+			$(document).ready(function(){
+				$("#datetime3").change(function(){
+					var first=$("#datetime2").val();
+					var second=$("#datetime3").val();
+					if(first===second)
+					{
+						alert("Reture date is inavlid please select returndate greaterthan pickupdate");
+					}
+					else{
+						//alert("this is different string");
+						//return;
+					}
+				});
+			});
+		</script>
 {% endblock %}
 
 {% block breadcrumb %}

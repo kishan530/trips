@@ -1,0 +1,202 @@
+trip_site_management_add_vehicle:
+    path:     /add/vehicle
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:addVehicle }
+trip_site_management_edit_vehicle:
+    path:     /edit/{id}/vehicle
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:editVehicle }
+trip_site_management_add_services:
+    path:     /add/services
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:addServices }
+trip_site_management_add_locations:
+    path:     /add/locations
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:addLocations }
+trip_site_management_add_hotel:
+    path:     /add/hotel
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:addHotel }
+trip_site_management_hotels_list:
+    path:     /hotels-list
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:hotelsList }
+trip_site_management_edit_hotel:
+    path:     /edit/{id}/hotel
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:editHotel }
+trip_site_management_add_package_price:
+    path:     /add/package-price
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:addPackagePrice }
+trip_site_management_add_package:
+    path:     /add/package
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:addPackage }
+trip_site_management_package_list:
+    path:     /package-list
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:packageList }
+trip_site_management_multipackage_list:
+    path:     /multipackage-list
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:multipackageList }
+trip_site_management_edit_package:
+    path:     /edit/{id}/package
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:editPackage }
+trip_site_management_edit_multipackage:
+    path:     /edit/{id}/multipackage
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:editMultiPackage }
+trip_site_management_edit_itinerary:
+    path:     /edit/{id}/itinerary
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:editItinerary }
+trip_site_management_delete_itinerary:
+    path:     /delete/{id}/itinerary
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:deleteItinerary }
+trip_site_management_edit_package_content:
+    path:     /edit/{id}/packag-content
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:editPackageContent }
+trip_site_management_delete_package_content:
+    path:     /delete/{id}/package-content
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:deletePackageContent }
+trip_site_management_add_packagelocations:
+    path:     /add/packagelocations
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:addPackageLocations }    
+    
+trip_site_management_homepage_packages_old:
+    path:     /packages-old
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:packages }
+trip_site_management_homepage_packages:
+    path:     /packages
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:multipackages }
+trip_site_management_homepage_special_packages:
+    path:     /packages/{url}
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:specialPackages }
+trip_site_management_homepage_package_submit:
+    path:     /package/submit
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:packageSubmit }
+trip_site_management_booking_search:
+    path:     /booking-search
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:bookingSearch }
+trip_site_management_booking_update_price:
+    path:     /update-price
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:updatePrice }
+trip_site_management_booking_update_service_price:
+    path:     /update-service-price
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:updateServicePrice }
+trip_site_management_bookings:
+    path:     /bookings
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:bookings }
+trip_site_management_export_bookings:
+    path:     /exportBookings
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:exportBookings }
+trip_site_management_export_billings:
+    path:     /exportBillings
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:exportBillings }
+trip_site_management_my_bookings:
+    path:     /my-bookings
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:myBookings }
+trip_site_management_cancel:
+    path:     /cancel-booking
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:cancel }
+trip_site_management_change_status:
+    path:     /change-status
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:changeStatus }
+trip_site_management_verify_booking:
+    path:     /verify-bookings
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:cancelVerify }
+trip_site_management_cancel_sucess:
+    path:     /cancel-sucess
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:cancelConfirm }
+trip_site_management_users:
+    path:     /users
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:userList }
+trip_site_management_contactList:
+    path:     /contact-list
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:contactList }
+trip_site_management_contact:
+    path:     /contact
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:contact }
+trip_site_management_about:
+    path:     /aboutUs
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:aboutUs }
+trip_site_management_terms:
+    path:     /privacy-policy
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:terms }
+trip_site_management_faq:
+    path:     /faq
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:faq }
+trip_site_management_view_package:
+    path:     /view-package/{url}
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:viewPackage }
+trip_site_management_view_hotel:
+    path:     /view-hotel/{id}
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:viewHotel }
+trip_site_management_billing_details:
+    path:     /billing-details
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:billingDetails }
+trip_site_management_billing_list:
+    path:     /billing-list
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:billingList }
+
+
+trip_site_management_insert_image:
+    path:     /insert-image/
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:insertImage }	
+trip_site_management_view_image:
+    path:     /view-image
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:viewImages }	
+trip_site_management_addPackageImage:
+    path:     /addPackageImage
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:addPackageImage }	
+trip_site_management_delete_image:
+    path:     /delete-image
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:deleteImagePackage }	
+
+trip_site_management_bikes_on_rent:
+    path:     /bikes
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikesonRent }
+trip_site_management_view_bikes:
+    path:     /tirupati/{url}
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:viewBikes }
+trip_site_management_review_viewbikes:
+    path:     /review/{id}/view-bikes
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:reviewViewbikes }
+trip_site_management_price_viewbikes:
+    path:     /price/{id}/view-bikes
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:priceViewbikes }
+trip_site_management_homepage_bikes_submit:
+    path:     /bike/submit
+    defaults: { _controller:TripSiteManagementBundle:SiteManagement:bikesSubmit }
+trip_site_management_homepage_twoday_packages:
+    path:     /twoday-packages
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:twodaypackages }
+trip_site_management_homepage_twospecial_packages:
+    path:     /twoday-packages/{url}
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:twospecialPackages }
+trip_site_management_add_multipackage:
+    path:     /add-multipackage
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:addMultiPackage }
+trip_site_management_add_twoday_packagelocations:
+    path:     /addtwoday/packagelocations
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:addtwodayPackageLocations } 
+trip_site_management_add_packagecat:
+    path:     /package-cat
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:addPackagecat }
+trip_site_management_homepage_catpackage_submit:
+    path:     /catpackage/submit
+    defaults: { _controller:TripSiteManagementBundle:SiteManagement:catpackageSubmit }
+trip_site_management_homepage_packagedetails_submit:
+    path:     /packagedetails/submit
+    defaults: { _controller:TripSiteManagementBundle:SiteManagement:packagedetailsSubmit }
+trip_site_management_homepage_addPackage_details:
+    path:     /addPackagedetails
+    defaults: { _controller:TripSiteManagementBundle:SiteManagement:addPackagedetails }
+trip_site_management_bikes_terms:
+    path:     /privacy-policy-bikes
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikesterms }
+trip_site_management_edit_bikes:
+    path:     /edit/{id}/bikes
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:editBikes }
+trip_site_management_bikes_list:
+    path:     /bikes-list
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikesList }
+trip_site_management_add_bike:
+    path:     /add-bike
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:addBike }
+trip_site_management_delete_packageImage:
+    path:     /{id}/delete-packageimage
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:deletePackageImage }
+trip_site_management_view_twoday_package:
+    path:     /view-twoday-package/{url}
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:viewtwodayPackage }

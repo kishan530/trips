@@ -106,7 +106,7 @@ a,
 .dropdown .btn-white{border:1px solid #dddddd;font-family:"Raleway";background:#ffffff !important;color:#000000 !important;box-shadow:none !important;font-size:15px;font-weight:300;text-transform:none;}
 .dropdown .btn-white .fa{font-size:24px;}
 .dropdown .btn-white{padding-right:35px;}
-.input-group-addon{background:#ffffff !important;border-radius:0 !important;}
+.input-group-addon{background:#ffffff;border-radius:0 !important;}
 .bootstrap-select.btn-group .dropdown-menu li a span.text{color:#ffffff !important;}
 #loader{overflow-x:hidden;overflow-y:hidden;vertical-align:middle;background-color:#fbfbfb;position:fixed;display:table;width:100%;top:0;height:100%;min-height:100%;z-index:99999;}
 .loader-container{position:relative;display:table-cell;vertical-align:middle;z-index:12;text-align:center;}
@@ -181,7 +181,7 @@ ul.package-Destination li{font-size:13px;}
 .helper{#position:absolute;#top:50%;display:table-cell;vertical-align:middle;}
 .helper ul li{color:#000;font-family:'LatoBold', serif;}
 .package-vehicle span{display:block;font-size:12px;}
-.package-vehicle{margin-left:9px;margin-right:9px;padding:0;float: none !important;display: inline-block;}
+.package-vehicle{margin-left:9px;margin-right:9px;padding:0;float: none !important;/*display: inline-block;*/}
 .package-vehicle:first-child{margin-left:0;}
 .package-vehicle:last-child{margin-right:0;}
 
@@ -262,7 +262,6 @@ ul.package-Destination li{font-size:13px;}
 .home-form .nav-tabs > li.active > a:focus div{color:#000000 !important;}
 .home-form .nav-tabs > li > a i{font-size:23px;line-height:28px;padding:2px;}
 .homeform{padding:0px 0 40px;}
-.home-form .tab-content{background:#000000;background:rgb(10, 10, 10);background:rgba(10, 10, 10, 0.7);}
 .home-form h2{font-size:18px;color:#333;padding:10px 16px;margin-bottom:0;font-family:LatoBold,arial;text-transform:capitalize;}
 .home-form h3{font-size:16px;margin:5px 0 10px;font-weight:normal;color:#FFF!important;text-transform:capitalize;font-family:LatoRegular,arial;}
 .home-form h4 span{background-color:#f26722;color:#FFF !important;padding:5px;}
@@ -400,7 +399,7 @@ i{vertical-align:middle;}
 .breadcrumb > li + li::before{content:">";padding:0 2px 0 0;font-size:12px;}
 .breadcrumb{background-color:transparent;border-radius:0;position:absolute;left:15px;top: -25px;font-weight:400;list-style:outside none none;margin:0;padding: 10px;font-size: 13px;}
 .breadcrumb li a{color:#000000 !important;}
-.topbar{background:#ffffff;padding:0;border:0;position:relative;min-height:52px;line-height:50px;display:block;}
+.topbar{background:#ffffff;padding:0;border:0;position:relative;line-height:50px;display:block;}
 .topbar .dropdown-menu{padding:0 !important;margin-top:0;min-width:auto !important;}
 .topbar .dropdown-menu li{padding:10px 30px 5px 5px !important;}
 .topbar-drops i{vertical-align:sub;}
@@ -624,7 +623,7 @@ h1:hover a, h2:hover a, h3:hover a, h4:hover a, h5:hover a,
 .nav .open > a:focus,
 .navbar-nav > li > a.active,
 .navbar-nav > li > a:focus,
-.navbar-nav > li > a:hover{border-color:#f26722;color:#f26722;}
+.navbar-nav > li > a:hover{border-color:#F34F4F;color:#F34F4F;}
 #infoform .form-control,
 .input-group-addon,
 .dropdown .btn-white,

@@ -147,10 +147,10 @@ trip_site_management_bikes_on_rent:
     path:     /bikes
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikesonRent }
 trip_site_management_view_bikes:
-    path:     /view-bike/{url}
+    path:     /tirupati/{url}
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:viewBikes }
 trip_site_management_review_viewbikes:
-    path:     /review/{id}/view-bikes
+    path:     /review-view-bikes
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:reviewViewbikes }
 trip_site_management_price_viewbikes:
     path:     /price/{id}/view-bikes
@@ -194,3 +194,9 @@ trip_site_management_bikes_list:
 trip_site_management_add_bike:
     path:     /add-bike
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:addBike }
+trip_site_management_delete_packageImage:
+    path:     /{id}/delete-packageimage
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:deletePackageImage }
+trip_site_management_view_twoday_package:
+    path:     /view-twoday-package/{url}
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:viewtwodayPackage }

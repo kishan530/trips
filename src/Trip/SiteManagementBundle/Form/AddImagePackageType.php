@@ -18,7 +18,7 @@ class AddImagePackageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-             ->add('imageList', 'collection', array(
+             ->add('imageList1', 'collection', array(
             		// each entry in the array will be an "PackageItinerary" field
             		'type'   => new PackageImageType(),
             		'allow_add'    => true,

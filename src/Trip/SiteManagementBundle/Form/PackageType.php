@@ -60,7 +60,7 @@ class PackageType extends AbstractType
             ))
             ->add('contentList', 'collection', array(
             		// each entry in the array will be an "PackageItinerary" field
-            		'type'   => new PackageContentType(),
+            		//'type'   => new PackageContentType(),
             		'allow_add'    => true,
             		'prototype'=>true,
             		'required'    => false,
@@ -69,7 +69,7 @@ class PackageType extends AbstractType
             		//   'attr'      => array('class' => '')
             		//),
             ))
-            ->add('imageList', 'collection', array(
+            ->add('images', 'collection', array(
             		// each entry in the array will be an "PackageItinerary" field
             		'type'   => new PackageImageType(),
             		'allow_add'    => true,
@@ -80,6 +80,7 @@ class PackageType extends AbstractType
             		//   'attr'      => array('class' => '')
             		//),
             ))
+        
              ->add('submit', 'submit', array('label' => 'submit'))
         ;
     }

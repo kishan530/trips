@@ -37,7 +37,18 @@ class EditBikesType extends AbstractType
 			    'required'    => true,
 			))
 			->add('count')
-           
+			//->add('imgPath')
+			->add('imgpath', 'file',array(
+			    'required' => false,
+			    'data_class' => null,
+			    'label'=>'Image',
+			    
+			    'attr'   =>  array(
+			        'class'   => 'filestyle',
+			        'allow_add'    => true,
+			        'prototype'=>true,
+			    ),
+			))
         ;
     }
     

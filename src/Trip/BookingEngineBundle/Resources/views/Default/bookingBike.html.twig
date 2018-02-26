@@ -144,20 +144,20 @@
                                         	<div class="col-md-6">
                                         		<div class="col-md-12 col-sm-12 col-xs-12">
                                         		<p class="bikes-form-labels">Name*</p>
-                                                {{ form_widget(form.name,{'attr':{'class':'make-margin bikes-form','placeholder':''}}) }}
+                                                {{ form_widget(form.name,{'attr':{'class':'make-margin bikes-form','placeholder':'','pattern':'[a-zA-Z]+','title':'Enter Valid Name'}}) }}
                                                 <div class="bikes-form-border"></div>
                                             </div>
                                             
                                             <div class="col-md-12 col-sm-12 col-xs-12">
                                             <p class="bikes-form-labels">10 Digit Mobile No*</p>
-                                            {{ form_widget(form.mobile,{'attr':{'class':'make-margin bikes-form','placeholder':'','pattern':'^[0-9\-\+\s\(\)]*$'}}) }} 
+                                            {{ form_widget(form.mobile,{'attr':{'class':'make-margin bikes-form','placeholder':'','pattern':'[0-9]{10}','title':'Enter Valid 10 Digit mobile number'}}) }} 
                                             <div class="bikes-form-border"></div>
                                             </div>
                                         	</div>
                                         	<div class="col-md-6">
                                         		<div class="col-md-12 col-sm-12 col-xs-12">
                                            		 <p class="bikes-form-labels">Email*</p>
-                                               {{ form_widget(form.email,{'attr':{'class':'make-margin bikes-form','placeholder':''}}) }}
+                                               {{ form_widget(form.email,{'attr':{'class':'make-margin bikes-form','placeholder':'','pattern':'[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{1,63}$','title':'Enter Valid Email Address'}}) }}
                                                <div class="bikes-form-border"></div>
                                            		 </div>
                                            		 

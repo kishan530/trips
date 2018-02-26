@@ -309,6 +309,54 @@ $("select").change(function() {
                         </div>
                     <a href="#" id="add-another-content">Add another Content</a>                                            
                     
+                    <div id="resultimg">
+
+
+                    {% for image in packageImages %}
+                    <a href="{{ path('trip_site_management_delete_packageImage', {'id': image.id})}}"
+                    class="delete" value="{{ image.id }}">
+                    
+                    <div class="show-image" >
+                    
+                    <img src="{{ asset('images/packages/'~image.url)}}" class="hotel-box-img
+                    fa fa-trash-o delete" />
+                     {#}<input class="delete" type="button" value="delete" />{#}
+                    <a href="{{ path('trip_site_management_delete_packageImage', {'id': image.id})}}"
+                    class="close delete " id="guestclose">&times;</a>
+                    {#}<a href="{{ path('room_hotel_delete_hotelImage', {'id': image.id})}}"
+                    class="close" value="{{ image.id }}"></a>{#}
+                    
+                    </div>
+                    
+                    </a>
+                    {% endfor %}
+                    </div>
+                    <h4>Images</h4>
+                     
+                     {% macro image_prototype(i) %}
+                                     <div class="row form-group ">
+                                    <div class="col-lg-6">
+                                        {{ form_label(i.imageList) }}
+                                    </div> 
+                                                            
+                                    <div class="col-lg-6">
+                                            
+                                        {{ form_widget(i.imageList) }}
+                                    </div> 
+                                                    
+                                </div>
+                     {% endmacro %}
+                             {#}<div id="image-list"
+                                                        data-prototype="{{
+        _self.image_prototype(form.imageList.vars.prototype)|e
+        }}">
+                                    {% for i in form.imageList %}
+                                            {{ _self.image_prototype(i) }}
+                                    {% endfor %}
+                                </div>{#}
+                                <div>
+                 <a href="#" id="add-another-image">Add another Image</a><br>
+                 </div>
                     {{ form_end(form) }}
                     </div>
                 </div>

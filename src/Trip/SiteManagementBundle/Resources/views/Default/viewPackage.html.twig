@@ -100,7 +100,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
     <div class="container package-view">
         <h3 class="package-view-title">{{ package.title }}</h3>
         <div class="row">
-        <div class="col-lg-9">
+        <div class="col-lg-8">
         <ul class="nav nav-pills pactabs">
          <li><a href="#photos">Photos</a></li>
           <li><a href="#overview">Overview</a></li>
@@ -127,154 +127,135 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                 </div>
             </div>
             </div>
-             <div class="col-lg-3">
-             
-             		<div class="clearfix"></div> 
-
-								<div class="package-border package-price-details">
-                                     
-                                       <div class="clearfix"></div>   
-                                            <div class="mini-desti-desc package-desc ">
-												<div class="pull-left">
-														<h6>{{ package.name }}</h6>
-													</div> 
-													<div class="pull-right">
-														<h6>{{ package.code }}</h6>
-													</div> 
-                                                <div class="col-md-12 package-border"> 
-													
-                                                    <div class="col-md-12 container">
-                                                         <!--<div class="helper">
-                                                           <ul class="list-unstyled">-->
-                                                               <span class="package-title"> Pick Up</span>
-<!--                                                             </ul>
-                                                        </div>-->
-                                                     </div>
-                                                      <div class="col-md-12 container ">
-
-                                                      <!-- <div class="helper">
-                                                           <ul class="list-unstyled">-->
-                                                           {% for startPoint in package.startPoint %} 
-                                                                {{ locations[startPoint.name].name }} {% if loop.last is same as(false) %} / {% endif %}
-                                                           {% endfor %}
-                                                          <!-- </ul>
-                                                        </div>-->
-                                                    </div>
-                                                </div>
-                                                    
-                                                
-                                                <div class="col-md-12"> 
-  
-                                                <div class="col-md-12 container">
-                                                         <!--<div class="helper">
-                                                           <ul class="list-unstyled">-->
-                                                     <span class="package-title"> Places to Visit</span>
-                                                            <!-- </ul>
-                                                    </div>-->
-                                                     </div>
-                                                <div class="col-md-12 container package-visit-desc">
-                                                   <!--<div class="helper">
-                                                       <ul class="package-Destination">-->
-                                                    {% if package.endPoint|length>0 %}
-                                                       {% for endPoint in package.endPoint %} 
-                                                            {{ locations[endPoint.name].name }}{% if loop.last is same as(false) %},{% endif %}
-                                                    
-                                                       {% endfor %}
-                                                     {% else %}
-                                                            N/A
-                                                   
-                                                     {% endif %}
-                                                       <!--</ul> 
-                                                    </div>-->
-                                                </div>
-                                                </div>
-                                                       
-                                                   <div class="col-md-12 package-border">
-                                                      
-                                                 <div class="col-md-12 container">
-                                                          <span class="package-title"> Drop</span>
-                                                 </div>
-                                               <div class="col-md-12 container">
-                                                   {% if package.endPoint2|length>0 %}
-                                                    {% for endPoint2 in package.endPoint2  %} 
-                                                    {{ locations[endPoint2.name].name }} {% if loop.last is same as(false) %},{% endif %}
-                                                   
-                                                    {% endfor %}
-                                                   {% else %}
-                                                            N/A
-                                                   
-                                                   {% endif %}
-                                                      
-                                                </div>
-                                                 
-                                                </div>
-                                                      
-                                            </div>
-                                          <div class="col-md-12 package-border">
-                                                {% for index,price in package.price %} 
-                                                    <div class="col-md-2 package-vehicle">
+             <div class="col-lg-4">
+             	<div class="clearfix"></div> 
+					<div class="col-md-12 package-title-two">
+    					<div class="package-box-twoday">
+                       <div class="pull-left">
+                       	<h6 style="color:#adadad">{{ package.name }} - <span class='two-daypackage-title'>{{ package.code }}</span></h6>
+                       </div> 
+                       <table class="table">
+                       		<tbody>
+                       			<tr>
+                       				<th class="package-title text-center"> Pick Up</th>
+                       				<th class="package-title text-center"> Places to Visit</th>
+                       				<th class="package-title text-center"> Drop</th>
+                       			</tr>
+                       			<tr>
+                       				<td class="text-center">
+                       					<p class="locations-desc">
+                       					{% for startPoint in package.startPoint %} 
+                                        {{ locations[startPoint.name].name }} {% if loop.last is same as(false) %} / {% endif %}
+                                        {% endfor %}</p>
+                       				</td>
+                       				<td class="text-center">
+                       					<span class="locations-desc">
+                                    				{% if package.endPoint|length>0 %}
+                                                               {% for endPoint in package.endPoint %} 
+                                                                    {{ locations[endPoint.name].name }}{% if loop.last is same as(false) %},{% endif %}
+                                                            
+                                                               {% endfor %}
+                                                             {% else %}
+                                                                    N/A
+                                                           
+                                                             {% endif %}
+                                    			</span>
+                       				</td>
+                       				<td class="text-center">
+                       					<p class="locations-desc">{% if package.endPoint2|length>0 %}
+                                                            {% for endPoint2 in package.endPoint2  %} 
+                                                            {{ locations[endPoint2.name].name }} {% if loop.last is same as(false) %},{% endif %}
+                                                           
+                                                            {% endfor %}
+                                                           {% else %}
+                                                                    N/A
+                                                           
+                                                           {% endif %}</p>
+                       				
+                       				</td>
+                       			</tr>
+                       			
+                       		</tbody>
+                       </table>
+                       <form action="{{ path('trip_site_management_homepage_package_submit') }}" action="post">
+                       <div class="row text-center">
+                       		<div class="col-md-12">
+                       								<table class="table">
+                       									<tbody>
+                       										<tr>
+                       										{% for index,price in package.price %}
+                       											<td class="package-vehicle">
+                       												<span id="{{ index }}" value="{{ price.price }}" title="{{ package.id }}" class="vehicle{{ package.id }} vehicle-icon text-center {% if loop.index==1 %} active {% endif %}">
                                                         <span class="text-center">{{ price.name }}</span> 
-                                                    <span id="{{ index }}" value="{{ price.price }}" title="{{ package.id }}" class="vehicle{{ package.id }} vehicle-icon text-center {% if loop.index==1 %} active {% endif %}">
-                                                            <i class="fa fa-car"></i>
-                                                        </span>
-                                                        <span class="text-center"><i class="fa fa-inr"></i> {{ price.price }}</span> 
-                                                    </div>
-                                                {% endfor %}
-                                          </div>
-                                           <div class="clearfix"></div> 
-                                            <form action="{{ path('trip_site_management_homepage_package_submit') }}" action="post">
-                                            <div class="col-md-12 text-center package-info">                                   
-
-                                                <div class="row">
-                                                    <div class="col-md-6 package-price-label">
-                                                        <h6>Price:</h6>
-                                                    </div>
-                                                    <div class="col-md-6 price">
-                                                        <i class="fa fa-inr"></i><span id="price{{ package.id }}"> {{ package.price.first.price }} </span>  
-                                                    </div>
-                                                </div>
-                                                <div class="row">
+                                                        
+                                                            {% if index==0 %}
+                                                            	<img src="{{ asset('images/justtrip-hasback-icon.png') }}" alt="" class="img-responsive package-img-degin">
+                                                            {% elseif index==1 %}
+                                                            	<img src="{{ asset('images/justtrip-sedan-icon.png') }}" alt="" class="img-responsive package-img-degin">
+                                                            {% elseif index==2 %}
+                                                            	<img src="{{ asset('images/justtrip-suv-icon.png') }}" alt="" class="img-responsive package-img-degin">
+                                                            {% elseif index==3 %}
+                                                            	<img src="{{ asset('images/justtrip-tempo-icon.png') }}" alt="" class="img-responsive package-img-degin">
+                                                            {% endif %}
+                                                       
+                                                        <span class="text-center"><i class="fa fa-inr"></i> {{ price.price }}</span>
+                                                         </span>
+                       											</td>
+                       											 {% endfor %}
+                       										</tr>
+                       									</tbody>
+                       								</table>
+                                                    
+                                               
+                       		</div>
+                       		<div class="col-md-12">
+                       		<hr class="hr-nomargin">
+                       		<h6 class="package-display-price">Starting From: <span id="price{{ package.id }}" class="price-package-color"><i class="fa fa-inr"></i> {{ package.price.first.price }} </span></h6>
+                       		</div>
+                       		<div class="col-md-12">
+                       			<div class="row">
                                                     <div class="col-md-4 package-info-widget">
 
                                                          <div class="form-group make-margin">
-                                                             <label class="required">Date</label>
-                                                    <input type="text" name="preferDate" placeholder="Prefer Date" class="form-control preferDate" required>                                          
+                                                    <input type="text" name="preferDate" placeholder="Prefer Date" class="form-control preferDate input-package" required>                                          
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4 package-info-widget">
 
                                                          <div class="form-group make-margin">
-                                                        <label class="required">Time</label>
-                                                     <input type="text" name="preferTime" placeholder="Prefer Time" class="form-control preferTime" required>                                            
+                                                     <input type="text" name="preferTime" placeholder="Prefer Time" class="form-control preferTime input-package" required>                                            
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4 package-info-widget">
 
                                                         <div class="form-group make-margin">
-                                                            <label class="required">Adults</label>
                                                          <div class="input-group">
                                                             <a class="adults input-group-addon" id="decrement" value="1" href="#">-</a> 
-                                                <input type="text" name="numAdult" placeholder="Adults" class="form-control numAdult" value="1" required> 
+                                                <input type="text" name="numAdult" placeholder="Adults" class="form-control numAdult input-package" value="" required> 
                                                             <a class="adults input-group-addon" id="increment" href="#">+</a>
                                                         </div>
                                                         </div>
                                                     </div>
                                                 </div>
-
-
-
-                                            </div> 
-                                            <div class="clearfix"></div> 
-                                                <div class="text-center">
+                       		</div>
+                       </div>
+                       <div class="row">
+                       		<div class="col-md-12">
+                       			 <div class="text-center">
                                                  <input type="hidden" name="packageId" value="{{ package.id }}"> 
                                                 <input id="vehicleIndex{{ package.id }}" type="hidden" name="vehicleIndex" value="{{ package.price.keys[0] }}">
                                                 <button type="submit" class="awe-btn awe-btn btn btn-book btn-block"><i class="fa fa-shopping-cart"></i> BOOK NOW</button>
                                                 </div>
-                                                </form>
-                                                
-                                    </div>            
-                                            <div class="clearfix"></div> 
-             	
+                       		</div>
+                       		<div class="col-md-6">
+                                               
+                       		</div>
+                       </div>
+                       </form>
+                       </div>
+                    </div>
+								         
+                <div class="clearfix"></div> 
              </div>
 			<div class="col-lg-12">
 			 <div id="overview">

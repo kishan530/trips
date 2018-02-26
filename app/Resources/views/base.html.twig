@@ -113,17 +113,17 @@ Date();a=s.createElement(o),
                                 </button>
 								{% if is_granted('ROLE_ADMIN') %}
 									<a id="brand" class="clearfix navbar-brand" href="{{ path('trip_site_management_billing_list')}}">
-                                    <img src="{{ asset('images/justtrip-logo.png') }}" alt="Trips"></a>
+                                    <img src="{{ asset('images/Juttrip-new-logoo.png') }}" alt="Trips"></a>
 								{% else %}
                                 <a id="brand" class="clearfix navbar-brand" href="{{ path('trip_site_management_homepage')}}">
-                                    <img src="{{ asset('images/justtrip-logo.png') }}" alt="Trips"></a>
+                                    <img src="{{ asset('images/Juttrip-new-logoo.png') }}" alt="Trips"></a>
 								{% endif %}
                             </div><!-- end navbar-header -->
                             <div id="navbar-collapse" class="navbar-right navbar-collapse collapse clearfix">
                                 <ul class="nav navbar-nav yamm">
 									 {% if is_granted('ROLE_ADMIN') is same as(false) %}
                                     <li class="dropdown">
-                                        <a href="{{ path('trip_site_management_homepage')}}">Cars</a>
+                                        <a href="{{ path('trip_site_management_homepage')}}">Cars On Rent</a>
                                     </li><!-- end yamm-fw -->
                                    <!-- <li><a href="{{ path('trip_site_management_homepage_hotels')}}">Hotels</a></li>-->
                                     
@@ -131,6 +131,7 @@ Date();a=s.createElement(o),
                                         <ul class="dropdown-menu" role="menu">
 											<li><a href="{{ path('trip_site_management_homepage_packages')}}" >One Day Packages</a></li>
 											<li><a href="{{ path('trip_site_management_homepage_twoday_packages')}}" >Two Day Packages</a></li>
+											<li><a href="{{ path('trip_booking_engine_customPackage') }}">Custom Package</a></li>
 											{% if is_granted('ROLE_SUPER_ADMIN') %}
                                             {# <li><a href="{{ path('trip_site_management_add_package') }}">Add Package</a></li>#}
                                              {#<li><a href="{{ path('trip_site_management_add_packagelocations') }}">Add PackageLocation</a></li>#}
@@ -148,7 +149,7 @@ Date();a=s.createElement(o),
                                         </ul>
                                     </li>            
 										<li><a href="{{ path('trip_site_management_bikes_on_rent') }}">Bikes On Rent</a></li>
-                                   <li><a href="{{ path('trip_booking_engine_customPackage') }}">Custom Package</a></li>
+                                   
 								    {% endif %}
 								    {% if is_granted('ROLE_ADMIN') %}
 									
@@ -230,28 +231,69 @@ Date();a=s.createElement(o),
     <footer class="footer clearfix">
         <div class="container">
             <div class="row">
-                <div class="col-md-3 col-sm-6 col-xs-12 text-center">
+                <div class="col-md-3 text-center">
                     <div class="flogo">
-                        <img src="{{ asset('images/justtrip-logo.png') }}" alt="">
+                        <img src="{{ asset('images/Footerlogo.png') }}" alt="">
                     </div><!-- end logo -->
+                        <div class="textwidget">
+                              <p>©2017 Aairah Technologies Pvt. Ltd.</p>
+                        </div><!-- end textwidget -->
                 </div><!-- end col -->
-                <div class="col-md-9 col-sm-9 col-xs-12">
+                <div class="col-md-3">
                     <div class="widget">
                         <div class="widget-title">
-                           <!-- <h3>ABOUT</h3>-->
+                            <h3>Explore</h3>
                         </div><!-- end title -->
                         <div class="textwidget">
-                            <p>Justtrip.in is an aggregator of taxis and hotel accommodation service provider across pilgrim centers over India. We work with various taxi operators and hotels/guest houses and enable them with technology to ensure customers get an easily accessible, safe & reliable taxi service and accommodation.</p>
-                            <p>JustTrip.in is a one-stop-shop for taxi & Accommodation related services. </p>                          
+                             <p><a href="http://blog.justtrip.in">Blog</a></p>
+                             <p><a href="{{ path('trip_site_management_homepage_deals')}}">Offeres</a></p>
                         </div><!-- end textwidget -->
                     </div><!-- end widget -->
                 </div><!-- end col -->
-               
+               	<div class="col-md-3">
+                    <div class="widget">
+                        <div class="widget-title">
+                            <h3>Company</h3>
+                        </div><!-- end title -->
+                        <div class="textwidget">
+                              <p><a href="{{ path('trip_site_management_contact') }}">Contact US</a></p>
+                             <p><a href="{{ path('trip_site_management_about') }}">About US</a></p>
+                             <p><a href="{{ path('trip_site_management_faq') }}">FAQ</a></p>
+                             <p><a href="{{ path('trip_site_management_terms') }}">Privacy Policy</a></p>                     
+                        </div><!-- end textwidget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+               	<div class="col-md-3">
+                    <div class="widget">
+                        <div class="widget-title">
+                            <h3>Follow</h3>
+                        </div><!-- end title -->
+                        <div class="textwidget">
+                              <div class="social-footer text-center">
+                                 <a href="https://www.facebook.com/JustTripIndia" title="Facebook"><i class="icon-facebook"></i></a>
+                                <a href="https://twitter.com/JustTripIndia" title="Twitter"><i class="icon-twitter"></i></a>
+                                 <a href="#" title="youtube"><i class="fa fa-youtube"></i></a>
+                            </div><!-- end social-footer -->                     
+                        </div><!-- end textwidget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
             </div><!-- end row -->
         </div><!-- end container -->
     </footer><!-- end copyrights -->
+<div class="footer-tabs clearfix">
+        <div class="container">
+            <div class="row">
+                    <div class="row">
+                        <div class="col-md-12">
+                            {{ render(controller('TripBookingEngineBundle:Booking:footer')) }}
+                        </div>
+                    </div>
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </div><!-- end copyrights -->
 <div class="payment-sprite clearfix">
         <div class="container">
+        <hr class="hr-nomargin" style="border-color: #666;">
             <div class="row">
                <div class="secure"> <ul class="list-unstyled"> {# <li> <span>Secured Sites<i class="sprite-footer ico-secured-sites"></i></span> </li> #} <li> <span class="footer-seperator">Verisign Secure<i class="sprite-footer ico-verisign-secure"></i></span> </li> </ul> <ul class="list-unstyled"> <li> <span>We accept</span> <i title="Visa-secure" class="sprite-footer ico-visa-secure"></i> </li> <li> <i class="Master-card"></i> </li> <li> <i title="American-Express" class="sprite-footer ico-american-secure"></i> </li> <li> <i title="Diner-club" class="sprite-footer ico-diner-club"></i> </li> <li> <i title="Rupay" class="sprite-footer ico-rupay"></i> </li> {#<li> <i title="EMI-Options" class="sprite-footer ico-emi-secure"></i> </li> #} <li> <i title="Net-Banking" class="sprite-footer ico-net-secure"></i> </li> </ul> </div>
             </div><!-- end row -->
@@ -261,15 +303,15 @@ Date();a=s.createElement(o),
         <div class="container">
             <div class="row">
                 <div class="col-md-6 text-left">
-                    <p>COPYRIGHT @ JUST TRIP. ALL RIGHT RESERVED</p>
+                    <p>Copyright © Justtrip.in All Rights Reserved</p>
                 </div><!-- end col -->
 
                 <div class="col-md-6 text-right">
-                    <div class="social-footer">
+                   {#} <div class="social-footer">
                          <a href="https://www.facebook.com/JustTripIndia" title="Facebook"><i class="icon-facebook"></i></a>
                         <a href="https://twitter.com/JustTripIndia" title="Twitter"><i class="icon-twitter"></i></a>
                          <a href="#" title="youtube"><i class="fa fa-youtube"></i></a>
-                    </div><!-- end social-footer -->
+                    </div><!-- end social-footer -->{#}
                 </div><!-- end col -->
             </div><!-- end row -->
         </div><!-- end container -->

@@ -1,4 +1,4 @@
-{% extends 'page.html.twig' %}
+{% extends 'base.html.twig' %}
 {% block stylesheets %}
 <link href="{{ asset('css/jquery.timepicker.css') }}" rel="stylesheet" media="screen">
 {% endblock %}
@@ -56,42 +56,72 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 		});
 		
 	</script>
-{% endblock %}
-
-{% block breadcrumb %}
-                    <div class="c1 breadcrumb text-left">
-                        <div><span class="glyphicon glyphicon-home" style="padding:5px;"></span><a href="{{ path('trip_site_management_homepage')}}">Home</a><span><span class="glyphicon glyphicon-chevron-right" style="padding:5px;"></span>Bikes</span></div>
-                    </div>
-                    <h3></h3>
+	<script>
+			$(document).ready(function(){
+				$("#datetime3").change(function(){
+					var first=$("#datetime2").val();
+					var second=$("#datetime3").val();
+					if(first===second)
+					{
+						alert("Reture date is inavlid please select returndate greaterthan pickupdate");
+					}
+					else{
+						//alert("this is different string");
+						//return;
+					}
+				});
+			});
+		</script>
 {% endblock %}
 
 {% block body %}
-<section class="section clearfix" style="/*background-color:#f9f9f9;*/padding:30px;background-image:url({{ asset('images/bikes/s6.jpg') }});">
+<section class="section clearfix" style="/*background-color:#f9f9f9;*/background-repeat: no-repeat;padding:30px;background-image:url({{ asset('images/bikeslider.png') }});padding: 73px 0px;background-attachment: fixed;background-size: 1349px 704.712px; background-position: 50% -176.522px;">
 	<div class="bike-book">
+		<h2 class="sub-title-bikesonrent">Want To Hire A Bike On Rent</h2>
         {#}<img src="{{asset('images/bikes/s2.jpg') }}" style="width: 100%;">{#}
         <div class="container bike-price-book1">
        		<div class="row">
-       			<div class="col-md-1">
+       			<div class="col-md-12">
        			</div>
        			
-       			<div class="col-md-10 sub-book1">
-       					<div>
-                             <h2 class="sub-title-bikesonrent">Want To Hire A Bike On Rent</h2>
+       			<div class="col-md-12">
+       			<div class="row sub-book1">
+       			<div class="row">
+       				<div class="col-md-4">
+       					<table class="table">
+       					<tbody>
+       						<tr>
+       							<td style="background: transparent;border:none"><a href="{{ path('trip_site_management_homepage')}}"  class="homebanner-color"><i class="icon-sedan3"></i>   Cars</a></td>
+       							<td style="background: transparent;border:none;padding-top: 0px;border-bottom: 1px solid #F34F4F;"><a href="" class="homebanner-color"><img src="{{ asset('images/bike.png') }}" style="width:27px;height:23px;padding-right: 4px;top: 3px;position: relative;" /> Bikes</a></td>
+       							<td style="background: transparent;border:none"><a href="{{ path('trip_site_management_homepage_packages')}}"><i class="icon-bag"></i>  Packages</a></td>
+       							<td style="background: transparent;border:none"><a href="#tab_04" aria-controls="tab_04" role="tab" data-toggle="tab"><i class="icon-travel25"></i>  Offers</a></td>
+       							
+       						</tr>
+       					</tbody>
+       				</table>
+       				</div>
+       				<div class="col-md-8">
+       				
+       				</div>
+       				</div>
+       					
+       					<div class="row" style="margin-top: 23px;">
+                             
                              {{ form_start(form) }}
                              {{ form_errors(form) }}
                              {{ form_errors(form.date) }}
                              {{ form_errors(form.returndate) }}
 								<div class="col-md-3 bikes-form-font">
-                             	{{ form_label(form.location) }} 
+                             	
                                 {{ form_widget(form.location) }}
                                 </div>
                              	<div class="col-md-3 bikes-form-font">
-                             	{{ form_label(form.date) }} 
+                             	
                                 {{ form_widget(form.date, {'id': 'datetime2'}) }}
                                 </div>
                                 
                                 <div class="col-md-3 bikes-form-font">
-                                {{ form_label(form.returndate) }} 
+                               
                                 {{ form_widget(form.returndate, {'id': 'datetime3'}) }}
                                 </div>
                                 <div class="col-md-3">
@@ -102,59 +132,40 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                              
                              
                          </div>
-                        
-                         {#}<div class="sub-book2">
-                         <h3 class="hours-list">Hours: <span id="demo"></span></h3>
-                             <p id="test"></p>
-                              	<h3 class="hours-list">Rent per Hour: <br><span id="calprice">Rs. {{ bike.statingPrice }} /-</span></h3>
-                             <h3 class="price-book"><span>Pay</span> Starts Rs. {{ bike.statingPrice }} /-</h3>
-                             <button type="submit" class="btn aligncenter view-bike">Book Now</button>
-                         </div>{#}
+                    </div>    
+                         
        			</div>
-       			<div class="col-md-1">
+       			<div class="col-md-12">
+       			
        			</div>
            	</div> 
            </div>  
-         {#} <div class="container bike-price-book2">
-       		<div class="row">
-       			<div class="col-md-2 sub-book3">
-       			 		<ul style="list-style: none;">
-                        {% for bike in bikes %}           
-                        <li style="margin-bottom: 10px;"><a style="color:#000;background-color: rgba(255, 255, 255, 0.8);padding: 6px;" href="{{ path('trip_site_management_view_bikes',{ 'url':bike.locationUrl }) }}">{{ bike.title }}</a></li>
-                         {% endfor %}
-                       </ul>
-       			</div>
-       			<div class="col-md-2">
-       			</div>
-       			<div class="col-md-2">
-       			</div>
-                <div class="col-md-2">
-       			</div>
-       			 <div class="col-md-2">
-       			</div>
-              </div>
-          </div>{#}
+         
           
     </div>
     
 </section>
 <section class="space"></section>
-<section class="section clearfix" style="background-color:#f9f9f9;">
+<section class="section clearfix">
     <div class="container">
         <div class="row">
                         <div class="col-lg-12 col-sm-12 col-xs-12">
+                        <div class="hotel-title">
+                <h3>OUR FLEET</h3>
+                <hr class="left">
+            </div><!-- end hotel-title -->
                             {% for bike in bikes %} 
-                            <div class="col-md-4" >
+                            <div class="col-md-2" >
                             <div>
                             <img src="{{asset('images/bikes/'~bike.imgPath) }}" style="width: 100%;">
                             </div>
                             <div class="bike-background">                                
-                                <h4 style="text-align:center;color:#000"><a style="color: #000;" href="{{ path('trip_site_management_view_bikes',{ 'url':bike.locationUrl }) }}">{{ bike.title }}</a></h4>
+                                <h4 style="text-align:center;color:#000"><a class="view-bikes-title" href="{{ path('trip_site_management_view_bikes',{ 'url':bike.locationUrl }) }}">{{ bike.title }}</a></h4>
                                 <div><h6 style="text-align:center;color:#000">Starts @{{ bike.statingPrice }}</h6></div>
                                  <div class="row">
-                                         <div class="col-md-4" >
+                                         <div class="col-md-12" >
                                          </div>
-                                         <div class="col-md-4" >
+                                         <div class="col-md-12" >
                                          {% if (bike.count <= 0) %}
                                           			<a class="btn btn-book-now view-bike" disabled>
                                                       Sold Out
@@ -166,7 +177,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                             {% endif %}
         								{#<a class="btn aligncenter view-bike"   href="{{ path('trip_site_management_view_bikes',{'url':bike.locationUrl }) }}">Rent Now</a>#}
                                          </div>
-                                         <div class="col-md-4" >
+                                         <div class="col-md-12" >
                                          </div>
                                  </div>
                               

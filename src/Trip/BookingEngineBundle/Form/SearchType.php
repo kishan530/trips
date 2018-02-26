@@ -60,7 +60,7 @@ class SearchType extends AbstractType
                                         'class'=>'chosen-select',
                                         'data-style'=>'btn-white',
                                         'data-live-search'=>'true',
-                                        'data-placeholder'=>'Select Origin'
+                                        'placeholder'=>'Select Origin'
 				            		),
             ))
              ->add('goingTo', 'choice', array(
@@ -73,7 +73,7 @@ class SearchType extends AbstractType
                                         'class'=>'chosen-select',
                                         'data-style'=>'btn-white',
                                         'data-live-search'=>'true',
-                                        'data-placeholder'=>'Select Destination'
+                                        'placeholder'=>'Select Destination'
 				            		),                
             ))
            
@@ -121,9 +121,13 @@ class SearchType extends AbstractType
             ->add('preferTime','text',array(            						
             						'required'    => true,
             						'label' => 'Prefer Time',
+                                    'attr'   =>  array(
+                                        'placeholder'=>'Time'
+                                    ),
                                     //'input'=>'string',
                                    // 'attr' => array('type' => 'text'),
                                 //'widget' => 'single_text',
+                                
             		            
             				)) 
         ;

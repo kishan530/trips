@@ -80,18 +80,18 @@
                             <div class="price-range text-center clearfix row">
                                 <div class="col-md-11">
 									<ul class="nav nav-pills nav-justified setup-panel">
-									<li class="disabled {% if step=='review' %}active{% endif %}"><a href="#review">
+									{#}<li class="disabled {% if step=='review' %}active{% endif %}"><a href="#review">
 										<span class="badge">1</span>
 										<h4 class="list-group-item-heading">Review</h4>
 									   
-									</a></li>
+									</a></li>{#}
 									<li class="disabled {% if step=='personal' %}active{% endif %}"><a href="#personal">
-										<span class="badge">2</span>
+										<span class="badge">1</span>
 										 <h4 class="list-group-item-heading">Personal</h4>
 									</a></li>
                                        
 									<li class="disabled {% if step=='payment' %}active{% endif %}"><a href="#payment">
-										<span class="badge">3</span>
+										<span class="badge">2</span>
 										 <h4 class="list-group-item-heading">Payment</h4>
 									</a></li>
 									</ul>
@@ -101,42 +101,68 @@
 
                             <div class="clearfix"></div>
 								<div class="row">
-                                    <div class="col-sm-9">
+                                    <div class="col-sm-8">
                                     <div class="col-sm-12 booking-price-details-border price-details clearfix">
-									<div class="row">
+										<div class="row">
                                         <div class="hotel-title price-details">
                                             <h5>Review Your Booking</h5>
                                         </div>
                                         </div>
 										{% if filter.package|length>0 and service.type=='one' %}
-                                        <h6><span>{{ service.name }}</span> on {{ filter.date|date('F jS Y') }} {{ filter.preferTime }}</h6>
-											<div class="col-sm-2 text-center">
-                                                
-                                                <h5>Package</h5> <span style="color: #ea2330;font-weight: bold;">{{ service.code }}</span>
-											</div>
-											<div class="col-sm-4 text-center">
-											<h5>Pick Up</h5>
-												    {% for startPoint in service.startPoint %} 
-                                                    {{ locations[startPoint.name].name }} {% if loop.last is same as(false) %} / {% endif %}
-                                                           {% endfor %}
-                                                    
-											</div>
-											<div class="col-sm-4 text-center">
-											<h5>Places to Visit</h5>
-												{% for endPoint in service.endPoint if service.endPoint|length>0 %} 
-                                                            {{ locations[endPoint.name].name }}
-                                                     {% else %}
-                                                    N/A
-                                                 {% endfor %}
-											</div>
-											<div class="col-sm-2 text-center">
-											<h5>Drop</h5>
-											 {% for endPoint2 in service.endPoint2 if service.endPoint2|length>0 %} 
-                                                    {{ locations[endPoint2.name].name }} 
-                                                {% else %}
-                                                    N/A
-                                                {% endfor %}
-											</div>
+										 <div class="col-md-12">
+										 	<div class="col-md-4">
+										 		<h5><span style="color: #ea2330;font-weight: bold;">{{ service.code }}</span></h5>
+										 	</div>
+										 	<div class="col-md-4">
+										 		 <h5>{{ service.name }}</h5>
+										 	</div>
+										 	<div class="col-md-4">
+										 		<h5>{{ filter.date|date('d/m/Y') }} at {{ filter.preferTime }}</h5>
+										 	</div>
+										 </div>
+                                       
+                                        <div class="col-md-12">
+                                        
+                                        		<table class="table">
+                                           		<tbody>
+                                           			<tr>
+                                           				<th></th>
+                                           				<th class="package-title text-center"> Pick Up</th>
+                                           				<th class="package-title text-center"> Places to Visit</th>
+                                           				<th class="package-title text-center"> Drop</th>
+                                           			</tr>
+                                           			<tr>
+                                           				<td><p class="day1">Day1</p></td>
+                                           				<td class="text-center">
+                                           					<p class="locations-desc">
+                                                                {% for startPoint in service.startPoint %} 
+                                                            {{ locations[startPoint.name].name }} {% if loop.last is same as(false) %} / {% endif %}
+                                                                   {% endfor %}</p>
+                                           				</td>
+                                           				<td class="text-center">
+                                           					<span class="locations-desc">
+                                                                    {% for endPoint in service.endPoint if service.endPoint|length>0 %} 
+                                                                    {{ locations[endPoint.name].name }}
+                                                             {% else %}
+                                                            N/A
+                                                         {% endfor %}
+                                                        			</span>
+                                           				</td>
+                                           				<td class="text-center">
+                                           					<p class="locations-desc">{% for endPoint2 in service.endPoint2 if service.endPoint2|length>0 %} 
+                                                            {{ locations[endPoint2.name].name }} 
+                                                        {% else %}
+                                                            N/A
+                                                        {% endfor %}</p>
+                                           				
+                                           				</td>
+                                           			</tr>
+                                           			
+                                           		</tbody>
+                               			</table>
+                                        		
+                                        </div>
+											
 										{% elseif service.imgPath %}
 										<h6>On {{ filter.date|date('F jS Y') }} {{ filter.preferTime }}</h6>
 										<div class="col-sm-3 text-center">
@@ -155,75 +181,88 @@
 									
 										{% else %}
 											
-										<h6><span>{{ service.name }}</span> on {{ filter.date|date('F jS Y') }} {{ filter.preferTime }}</h6>
-											<div class="col-sm-12">
-                                                
-                                                <h5>Package - <span style="color: #ea2330;font-weight: bold;">{{ service.code }}</span></h5>
-											</div>
-											<div class="col-sm-3 text-center">
-											<h5>Days</h5>
-											<hr>
-											Day1
-											<hr>
-											</div>
-											<div class="col-sm-3 text-center">
-											<h5>Pick Up</h5>
-											<hr>
-												    {% for startPoint in service.startPoint %} 
-                                                    {{ locations[startPoint.name].name }} {% if loop.last is same as(false) %} / {% endif %}
-                                                           {% endfor %}
-                                                    <hr>
-											</div>
-											<div class="col-sm-3 text-center">
-											<h5>Places to Visit</h5>
-											<hr>
-												{% for endPoint in service.endPoint if service.endPoint|length>0 %} 
-                                                            {{ locations[endPoint.name].name }}
-                                                     {% else %}
-                                                    N/A
-                                                 {% endfor %}
-                                                 <hr>
-											</div>
-											<div class="col-sm-3 text-center">
-											<h5>Drop</h5>
-											<hr>
-											 {% for endPoint2 in service.endPoint2 if service.endPoint2|length>0 %} 
-                                                    {{ locations[endPoint2.name].name }} 
-                                                {% else %}
-                                                    N/A
-                                                {% endfor %}
-                                                <hr>
-											</div>
-											<div class="col-sm-12">
-											<div class="col-sm-3 text-center">
-											Day2
-											</div>
-											<div class="col-sm-3 text-center">
-												 {% for twostartPoint in service.twostartPoint %} 
-                                                    {{ locations[twostartPoint.name].name }} {% if loop.last is same as(false) %} / {% endif %}
-                                                           {% endfor %}
-											</div>
-												<div class="col-sm-3 text-center">	
-                                                    {% for twoendPoint in service.twoendPoint %} 
-                                                    {{ locations[twoendPoint.name].name }} {% if loop.last is same as(false) %} / {% endif %}
-                                                           {% endfor %}
-												</div>
-												<div class="col-sm-3 text-center">
-												{% for twoendPoint2 in service.twoendPoint2 if service.twoendPoint2|length>0 %} 
-                                                    {{ locations[twoendPoint2.name].name }} 
-                                                {% else %}
-                                                    N/A
-                                                {% endfor %}
-											</div>
-											</div>
+										<div class="col-md-12">
+										 	<div class="col-md-4">
+										 		<h5><span style="color: #ea2330;font-weight: bold;">{{ service.code }}</span></h5>
+										 	</div>
+										 	<div class="col-md-4">
+										 		 <h5>{{ service.name }}</h5>
+										 	</div>
+										 	<div class="col-md-4">
+										 		<h5>{{ filter.date|date('d/m/Y') }} at {{ filter.preferTime }}</h5>
+										 	</div>
+										 </div>
+											<table class="table">
+                                           		<tbody>
+                                           			<tr>
+                                           				<th></th>
+                                           				<th class="package-title text-center"> Pick Up</th>
+                                           				<th class="package-title text-center"> Places to Visit</th>
+                                           				<th class="package-title text-center"> Drop</th>
+                                           			</tr>
+                                           			<tr>
+                                           				<td><p class="day1">Day1</p></td>
+                                           				<td class="text-center">
+                                           					<p class="locations-desc">
+                                                                    {% for startPoint in service.startPoint %} 
+                                                                        {{ locations[startPoint.name].name }} {% if loop.last is same as(false) %} / {% endif %}
+                                                                               {% endfor %}</p>
+                                           				</td>
+                                           				<td class="text-center">
+                                           					<span class="locations-desc">
+                                                                    {% for endPoint in service.endPoint if service.endPoint|length>0 %} 
+                                                                                {{ locations[endPoint.name].name }}
+                                                                         {% else %}
+                                                                        N/A
+                                                                     {% endfor %}
+                                                        			</span>
+                                           				</td>
+                                           				<td class="text-center">
+                                           					<p class="locations-desc">
+                                           					{% for endPoint2 in service.endPoint2 if service.endPoint2|length>0 %} 
+                                                                        {{ locations[endPoint2.name].name }} 
+                                                                    {% else %}
+                                                                        N/A
+                                                                    {% endfor %}
+                                           					
+                                           					</p>
+                                           				
+                                           				</td>
+                                           			</tr>
+                                           			<tr>
+                                           				<td><p class="day1">Day2</p></td>
+                                           				<td class="text-center"> 
+                                           					<p class="locations-desc">
+                                                                     {% for twostartPoint in service.twostartPoint %} 
+                                                                        {{ locations[twostartPoint.name].name }} {% if loop.last is same as(false) %} / {% endif %}
+                                                                               {% endfor %}</p>
+                                           				</td>
+                                           				<td class="text-center"> 
+                                           					<span class="locations-desc">
+                                                                    {% for twoendPoint in service.twoendPoint %} 
+                                                                        {{ locations[twoendPoint.name].name }} {% if loop.last is same as(false) %} / {% endif %}
+                                                                               {% endfor %}
+                                                        			</span>
+                                           				</td>
+                                           				<td class="text-center">
+                                           					<p class="locations-desc">
+                                           						{% for twoendPoint2 in service.twoendPoint2 if service.twoendPoint2|length>0 %} 
+                                                                        {{ locations[twoendPoint2.name].name }} 
+                                                                    {% else %}
+                                                                        N/A
+                                                                    {% endfor %}
+                                           					</p>
+                                           				</td>
+                                           			</tr>
+                                           		</tbody>
+                                           </table>
+											
 										{% endif %}
 										    
 											
 									</div>
                                     
-                                    
-                                
-                                <div class="col-sm-12 booking-price-details-border price-details clearfix">
+                                    <div class="col-sm-12 booking-price-details-border price-details clearfix">
                                          {% block form %}
                                         <div class="row">
                                         <div class="hotel-title price-details">
@@ -234,26 +273,61 @@
                                             {{ form_errors(form, { 'global_errors': true }) }}
                                         
                                         <div class="row booking-price-details">
-                                            <div class="col-md-12 col-sm-12 col-xs-12">
-                                                {{ form_widget(form.name,{'attr':{'class':'make-margin','placeholder':'Name'}}) }}
+                                        	<div class="col-md-6">
+                                        		<div class="col-md-12 col-sm-12 col-xs-12">
+                                        		<p class="bikes-form-labels">Name*</p>
+                                                {{ form_widget(form.name,{'attr':{'class':'make-margin bikes-form','placeholder':'','pattern':'[a-zA-Z]+','title':'Enter Valid Name'}}) }}
+                                                <div class="bikes-form-border"></div>
                                             </div>
+                                            
                                             <div class="col-md-12 col-sm-12 col-xs-12">
-                                               {{ form_widget(form.email,{'attr':{'class':'make-margin','placeholder':'Email'}}) }}
+                                            <p class="bikes-form-labels">10 Digit Mobile No*</p>
+                                            {{ form_widget(form.mobile,{'attr':{'class':'make-margin bikes-form','placeholder':'','pattern':'[0-9]{10}','title':'Enter Valid 10 Digit mobile number'}}) }} 
+                                            <div class="bikes-form-border"></div>
                                             </div>
-                                            <div class="col-md-12 col-sm-12 col-xs-12">
-                                            {{ form_widget(form.mobile,{'attr':{'class':'make-margin','placeholder':'10 Digit Mobile No'}}) }} 
+                                        	</div>
+                                        	<div class="col-md-6">
+                                        		<div class="col-md-12 col-sm-12 col-xs-12">
+                                           		 <p class="bikes-form-labels">Email*</p>
+                                               {{ form_widget(form.email,{'attr':{'class':'make-margin bikes-form','placeholder':'','pattern':'[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{1,63}$','title':'Enter Valid Email Address'}}) }}
+                                               <div class="bikes-form-border"></div>
+                                           		 </div>
+                                           		 
+                                        	</div>
+                                        
+                                            
+                                            
+                                            
+											{#<div class="col-md-4 col-sm-4 col-xs-12">
+                                                <button type="submit" class="btn btn-primary btn-block btn-lg"> BOOK NOW</button>
+                                            </div>#}
+                                            
+                                            {# <input type="text" class="form-control make-margin" placeholder="Country of Passport">  #}
+                                           
+                                        </div>
+                                       
+                                    </div><!-- end col -->
+                                    <div class="col-sm-12 booking-price-details-border price-details clearfix">
+                                         
+                                        <div class="row">
+                                            <div class="hotel-title price-details">
+                                                <h5>Offers</h5>
                                             </div>
-                                             <div class="row">
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <div class="col-md-12 col-sm-12 col-xs-12">
-                                                <div class="input-group">
+                                        </div>
+                                        <div class="row">
+                                        	<div class="col-md-6">
+                                        		<div class="col-md-12 col-sm-12 col-xs-12">
+                                        		
+                                                <div class="input-group" style="margin-bottom: 22px;">
                                                  {{ form_widget(form.haveCoupon) }} {{ form_label(form.haveCoupon) }}
                                                 </div>
-                                            </div>
-                                             <div class="col-md-12 col-sm-12 col-xs-12">
-                                                <div class="input-group" id="couponCode">
-                                                {{ form_widget(form.couponCode,{'attr':{'placeholder':'Enter a Coupon code'}}) }}
+                                            	</div>
+                                            	<div class="col-md-12 col-sm-12 col-xs-12">
+                                                <div class="input-group" id="couponCode" style="border-bottom: 1px solid #e0e0e0;">
+                                                {{ form_widget(form.couponCode,{'attr':{'class':'bikes-form','placeholder':'Enter a Coupon code'}}) }}
+                                                	
                                                     <a class="input-group-addon" id="apply" href="#">Apply</a>
+                                                
                                                 </div>
                                                 <div class="row form-group has-error">
                                                     <ul class="errors help-block">
@@ -261,43 +335,17 @@
                                                     </ul>
                                                 </div>
                                             	</div>
-                                               </div>
-                                            
-                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                  <div class="col-md-8 col-sm-8 col-xs-12" style="font-size: 12px;">
-                                                <input type="checkbox" required="required" name="cb" class="remove_margin">  {% trans %} I agree to the JustTrip {% endtrans%} <a target="_blank" href="{{ path('trip_site_management_terms') }}">{% trans %} Terms of Service{% endtrans%}</a>
-                                            	</div>
-                                                    <div class="col-md-12 col-sm-12 col-xs-12">
-                                                     <button type="submit" class="bike-booknow" value="30" name="mode">Pay 30% Now & Book</button>
-                                                        <p class="dec-50">Or you may opt to</p>
-                                                      	<button type="submit" class="bike-booknow-50" value="50" name="mode">Pay 50% Now & Book</button>
-                                                    
-                                                    </div>
-                                                    {#}<div class="col-md-12 col-sm-12 col-xs-12">
-                                                    {{ form_label(form.paymentMode) }} 
-                                                        {{ form_widget(form.paymentMode) }} 
-                                                    </div>{#}
-                                                </div>
-                                            </div>
-                                            <div class="make-margin"></div>
-                                             
-                                             {#}<div class="col-md-8 col-sm-8 col-xs-12">
-                                                <input type="checkbox" required="required" name="cb" class="remove_margin">  {% trans %} I agree to the JustTrip {% endtrans%} <a target="_blank" href="{{ path('trip_site_management_terms') }}">{% trans %} Terms of Service{% endtrans%}</a>
-                                            </div>{#}
-                                             {#<div class="col-md-4 col-sm-4 col-xs-12">
-                                                <button type="submit" class="btn btn-primary btn-block btn-lg"> BOOK NOW</button>
-                                            </div>#}
-                                            
-                                            {# <input type="text" class="form-control make-margin" placeholder="Country of Passport">  #}
-                                           
+                                            	
+                                           		  
+                                        	</div>
                                         </div>
-                                        {{ form_end(form) }}<!-- end form -->
-                                    {% endblock %}
-                                    </div><!-- end col -->
+                                    </div>
                                     
+                                
+                                
                                   </div>  
                                     
-                                <div class="col-sm-3">
+                                <div class="col-sm-4">
                                 <div class="booking-price-details-border price-details clearfix">
                                 <div class="hotel-title">
                                     <h5>Fare Details</h5>
@@ -335,7 +383,7 @@
                                                     {% endif %}
                                                     <li class="booking-price clearfix">
                                                         <span>Adult X {{ filter.numAdult }}</span>
-                                                        <span> <i class="fa fa-inr"></i> <em > {{ price+discount }} </em></span>
+                                                        <span> <i class="fa fa-inr"></i> <em > {{ price }} </em></span>
                                                         
                                                     </li>                            
                                                     <hr>
@@ -344,16 +392,22 @@
                                                     </li>
                                                     <hr>
                                                     {% block details %}
-                                                    <li class="text-right"><em>You Pay</em>
-                                                        <p><b><i class="fa fa-inr"></i><em id="price"> {{ price }} </em></b></p> 
-                                                    </li>
+                                                    <h5 class="bike-price">Rs. {{ price-discount }}</h5>
+                                                    
                                                     {% endblock %}
                                                     
                                                 </ul>
                                             </div><!-- end col -->
                                              <div class="col-md-12">
-                                            <a class="sm-links" data-toggle="modal" data-target="#terms" href="#terms">View Fare Rules</a>
+                                             <input type="checkbox" required="required" name="cb" class="remove_margin">  {% trans %} I agree to the JustTrip {% endtrans%} <a target="_blank" href="{{ path('trip_site_management_terms') }}">{% trans %} Terms of Service{% endtrans%}</a>
+                                            {#}<a class="sm-links" data-toggle="modal" data-target="#terms" href="#terms">View Fare Rules</a>{#}
+                                             <button type="submit" class="bike-booknow" value="30" name="mode">Pay 30% Now & Book</button>
+                                                        <p class="dec-50">Or you may opt to</p>
+                                                      	<button type="submit" class="bike-booknow-50" value="50" name="mode">Pay 50% Now & Book</button>
                                             </div>
+                                           
+                                            {{ form_end(form) }}<!-- end form -->
+                                    {% endblock %}
                                         </div><!-- end row -->
                                         
                                             

@@ -1,0 +1,377 @@
+{% extends 'page.html.twig' %}
+{% block stylesheets %}
+<link href="{{ asset('css/jquery.timepicker.css') }}" rel="stylesheet" media="screen">
+<link type="text/css" rel="stylesheet" href="{{ asset('css/lightGallery.min.css') }}" /> 
+<link type="text/css" rel="stylesheet" href="{{ asset('css/lightslider.css') }}" /> 
+
+{% endblock %}
+{% block javascripts %} 
+ <script src="{{ asset('js/lightgallery-all.min.js') }}"></script>
+ <script src="{{ asset('js/lightslider.js') }}"></script> 
+<script src="{{ asset('js/jquery.timepicker.min.js') }}"></script>
+
+<script>
+$(document).ready(function() {
+   // $("#view-package-slider").lightSlider(); 
+
+    $('#view-package-slider').lightSlider({
+        gallery:true,
+        item:1,
+        loop:true,
+        slideMargin:0,
+        enableDrag: false,
+        currentPagerPosition:'left',
+        onSliderLoad: function(el) {
+            el.lightGallery({
+                selector: '#view-package-slider .lslide'
+            });
+        }   
+    });  
+  });
+$('.preferTime').timepicker({ 'scrollDefault': 'now' });
+    
+         $('.adults').click(function(e){		
+			e.preventDefault(); //STOP default action 
+			 var id = $(this).attr('id');
+			 var value = parseInt($(this).attr('value'));
+             var numAdult = $(this).siblings("input[name=numAdult]");
+			 var adults =parseInt(numAdult.val());
+			 if (isNaN(adults)) { 
+				 adults= 0
+	            } 
+			 if(id=='decrement'){
+				 adults-=1;
+				 if(adults>=value) numAdult.val(adults); else exit();
+			  }else{
+				adults+=1;
+			    if(adults<=20)  numAdult.val(adults); else exit();
+				}	
+	    });
+    
+         $('.vehicle-icon').click(function(e){		
+			e.preventDefault(); //STOP default action 
+			 var id = $(this).attr('id');
+			 var price = $(this).attr('value');
+             var package = parseInt($(this).attr('title'));
+             $('.vehicle'+package).removeClass('active');
+             $(this).addClass('active');
+             $('#vehicleIndex'+package).val(id);
+             $('#price'+package).html(price);
+
+
+	       });
+</script>
+{% endblock %}
+
+
+ {% block meta %}
+ {% if package %}
+    <meta name="keywords" content="{{ package.metaKeywords }}">
+    <meta name="description" content="{{ package.metaDescription }}">  
+{% endif%}
+{% endblock %}
+    {% block title %} {% if package %} {{ package.metaTitle }} {% endif%}{% endblock %}
+    
+   {% block breadcrumb %}
+   {% if package %}
+                    <div class="c1 breadcrumb text-left">
+                        <div><span class="glyphicon glyphicon-home" style="padding:5px;"></span><a href="#">Home</a><span><span class="glyphicon glyphicon-chevron-right" style="padding:5px;"></span>{{ package.title }}</span></div>
+                    </div>
+                    <h3></h3>
+	{% endif%}
+{% endblock %}
+
+{% block body %}
+
+<section class="section clearfix">
+
+	{% if error %}
+	
+	<div class="container package-view">
+        <div class="row">
+			<div class="col-lg-12">
+				<label> {{ error }} </label>
+			</div>
+		</div>
+	</div>
+	
+	{% else %}
+        
+    <div class="container package-view">
+        <h3 class="package-view-title">{{ package.title }}</h3>
+        <div class="row">
+        <div class="col-lg-7">
+        <ul class="nav nav-pills pactabs">
+         <li><a href="#photos">Photos</a></li>
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#itinerary">Itinerary</a></li>
+          <li><a href="#content">About</a></li>
+         <li><a href="#fareRules">Fare Rules</a></li>
+        </ul>
+  			<div id="photos">
+                <div class="row">
+                    <div class="col-lg-12">
+                    
+                    	
+	        				
+<ul id="view-package-slider">
+	{% for image in package.images %}
+		<li data-thumb="../images/packages/{{ image.url }}" data-src="../images/packages/{{ image.url }}">
+		    <img src="{{ asset('images/packages/'~image.url) }}" />
+		</li>
+	{% endfor %}
+</ul>
+	            		
+                        
+                    </div>
+                </div>
+            </div>
+            </div>
+             <div class="col-lg-5">
+             	<div class="clearfix"></div> 
+					<div class="col-md-12 package-title-two">
+    					<div class="package-box-twoday">
+                       <div class="pull-left">
+                       	<h6 style="color:#adadad">{{ package.name }} - <span class='two-daypackage-title'>{{ package.code }}</span></h6>
+                       </div> 
+                       <table class="table">
+                       		<tbody>
+                       			<tr>
+                       				<th></th>
+                       				<th class="package-title text-center"> Pick Up</th>
+                       				<th class="package-title text-center"> Places to Visit</th>
+                       				<th class="package-title text-center"> Drop</th>
+                       			</tr>
+                       			<tr>
+                       				<td><p class="day1">Day1</p></td>
+                       				<td class="text-center">
+                       					<p class="locations-desc">
+                       					{% for startPoint in package.startPoint %} 
+                                        {{ locations[startPoint.name].name }} {% if loop.last is same as(false) %} / {% endif %}
+                                        {% endfor %}</p>
+                       				</td>
+                       				<td class="text-center">
+                       					<span class="locations-desc">
+                                    				{% if package.endPoint|length>0 %}
+                                                               {% for endPoint in package.endPoint %} 
+                                                                    {{ locations[endPoint.name].name }}{% if loop.last is same as(false) %},{% endif %}
+                                                            
+                                                               {% endfor %}
+                                                             {% else %}
+                                                                    N/A
+                                                           
+                                                             {% endif %}
+                                    			</span>
+                       				</td>
+                       				<td class="text-center">
+                       					<p class="locations-desc">{% if package.endPoint2|length>0 %}
+                                                            {% for endPoint2 in package.endPoint2  %} 
+                                                            {{ locations[endPoint2.name].name }} {% if loop.last is same as(false) %},{% endif %}
+                                                           
+                                                            {% endfor %}
+                                                           {% else %}
+                                                                    N/A
+                                                           
+                                                           {% endif %}</p>
+                       				
+                       				</td>
+                       			</tr>
+                       			<tr>
+                       				<td><p class="day1">Day2</p></td>
+                       				<td class="text-center"> 
+                       					<p class="locations-desc">
+                       					{% for twostartPoint in package.twostartPoint %} 
+                                        {{ locations[twostartPoint.name].name }} {% if loop.last is same as(false) %} / {% endif %}
+                                        {% endfor %}</p>
+                       				</td>
+                       				<td class="text-center"> 
+                       					<span class="locations-desc">
+                                    				{% if package.twoendPoint|length>0 %}
+                                                               {% for twoendPoint in package.twoendPoint %} 
+                                                                    {{ locations[twoendPoint.name].name }}{% if loop.last is same as(false) %},{% endif %}
+                                                            
+                                                               {% endfor %}
+                                                             {% else %}
+                                                                    N/A
+                                                           
+                                                             {% endif %}
+                                    			</span>
+                       				</td>
+                       				<td class="text-center">
+                       					<p class="locations-desc">{% if package.twoendPoint2|length>0 %}
+                                                            {% for twoendPoint2 in package.twoendPoint2  %} 
+                                                            {{ locations[twoendPoint2.name].name }} {% if loop.last is same as(false) %},{% endif %}
+                                                           
+                                                            {% endfor %}
+                                                           {% else %}
+                                                                    N/A
+                                                           
+                                                           {% endif %}</p>
+                       				</td>
+                       			</tr>
+                       		</tbody>
+                       </table>
+                       <form action="{{ path('trip_site_management_homepage_package_submit') }}" action="post">
+                       <div class="row text-center">
+                       		<div class="col-md-12">
+                       			<table class="table">
+                       									<tbody>
+                       										<tr>
+                       										{% for index,price in package.price %}
+                       											<td class="package-vehicle">
+                       												<span id="{{ index }}" value="{{ price.price }}" title="{{ package.id }}" class="vehicle{{ package.id }} vehicle-icon text-center {% if loop.index==1 %} active {% endif %}">
+                                                        <span class="text-center">{{ price.name }}</span> 
+                                                            {% if index==0 %}
+                                                            	<img src="{{ asset('images/justtrip-hasback-icon.png') }}" alt="" class="img-responsive package-img-degin">
+                                                            {% elseif index==1 %}
+                                                            	<img src="{{ asset('images/justtrip-sedan-icon.png') }}" alt="" class="img-responsive package-img-degin">
+                                                            {% elseif index==2 %}
+                                                            	<img src="{{ asset('images/justtrip-suv-icon.png') }}" alt="" class="img-responsive package-img-degin">
+                                                            {% elseif index==3 %}
+                                                            	<img src="{{ asset('images/justtrip-tempo-icon.png') }}" alt="" class="img-responsive package-img-degin">
+                                                            {% endif %}
+                                                       
+                                                        <span class="text-center"><i class="fa fa-inr"></i> {{ price.price }}</span> 
+                                                         </span>
+                       											</td>
+                       											 {% endfor %}
+                       										</tr>
+                       									</tbody>
+                       								</table>
+                       		</div>
+                       		<div class="col-md-12">
+                       		<hr class="hr-nomargin">
+                       		<h6 class="package-display-price">Starting From: <span id="price{{ package.id }}" class="price-package-color"><i class="fa fa-inr"></i> {{ package.price.first.price }} </span></h6>
+                       		</div>
+                       		<div class="col-md-12">
+                       			<div class="row">
+                                                    <div class="col-md-4 package-info-widget">
+
+                                                         <div class="form-group make-margin">
+                                                    <input type="text" name="preferDate" placeholder="Prefer Date" class="form-control preferDate input-package" required>                                          
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 package-info-widget">
+
+                                                         <div class="form-group make-margin">
+                                                     <input type="text" name="preferTime" placeholder="Prefer Time" class="form-control preferTime input-package" required>                                            
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 package-info-widget">
+
+                                                        <div class="form-group make-margin">
+                                                         <div class="input-group">
+                                                            <a class="adults input-group-addon" id="decrement" value="1" href="#">-</a> 
+                                                <input type="text" name="numAdult" placeholder="Adults" class="form-control numAdult input-package" value="" required> 
+                                                            <a class="adults input-group-addon" id="increment" href="#">+</a>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                       		</div>
+                       </div>
+                       <div class="row">
+                       		<div class="col-md-12">
+                       			<div class="text-center">
+                                                 <input type="hidden" name="packageId" value="{{ package.id }}"> 
+                                                <input id="vehicleIndex{{ package.id }}" type="hidden" name="vehicleIndex" value="{{ package.price.keys[0] }}">
+                                                <button type="submit" class="awe-btn awe-btn btn btn-book btn-block"><i class="fa fa-shopping-cart"></i> BOOK NOW</button>
+                                                </div>
+                       		</div>
+                       		<div class="col-md-6">
+                                                
+                       		</div>
+                       </div>
+                       </form>
+                       </div>
+                    </div>
+								         
+                <div class="clearfix"></div> 
+             </div>
+			<div class="col-lg-12">
+			 <div id="overview">
+                <div class="row">
+                    <div class="col-lg-12 text-justify">
+                        <h4 class="package-custome-title">Overview</h4>
+						<hr>
+                        <p>{{ package.overview|raw }}</p>
+						<hr>
+						{% if location %}
+							 {#<div id="about">
+								<div class="row">
+									<div class="col-lg-12">
+										<h4 class="package-custome-title">About {{ location.name }}</h4>
+										<p>{{ location.description }}</p>
+									</div>
+								</div>
+							</div>#}
+						{% endif %}
+                    </div>
+                </div>
+            </div>
+			<div id="itinerary">
+			<h4 class="package-custome-title">Package Itinerary</h4>
+                <div class="row">
+                    <div class="col-lg-12 text-justify">
+								<div class="row">
+									
+										<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">
+										  <div class="list-group">
+											<a href="#" class="list-group-item active text-center">DAY1</a>
+										  </div>
+										</div>
+										<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 bhoechie-tab">
+											<!-- flight section -->
+											<div class="bhoechie-tab-content active">
+												
+												  {% for i in package.itinerary %}
+													<h5 class="subtitle">{{ i.title }}</h5>
+													<p>{{ i.description|raw }}</p>
+													{% endfor %}
+												
+											</div>
+										</div>
+							  </div>
+                    </div>
+                </div>
+            </div>
+			<hr>
+            <div id="content">
+				
+                <div class="row">
+                    <div id="about" class="col-lg-12 text-justify">
+                    	{% for i in package.content %}
+							<h5 class="package-custome-title">{{ i.title }}</h5>
+							<p>{{ i.description|raw }}</p>
+							{% endfor %}
+                    </div>
+                </div>
+             </div>
+            <hr>        
+			 <div id="fareRules">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h4 class="package-custome-title">Fare Rules</h4>
+                        	<ul class="list-view">
+                        		<li> Toll , Parking, Food allowances and  State Permit extra</li>
+		                        <li>In ghat road A/C will not function.</li>
+		                         <li>Once the Journey is started, Tickets are not refundable and unchangeable.</li>
+								 <li> Price mentioned is applicable for drop/return on the same day.</li>
+		                         <li>  For Tirumala drop cab will wait 30 Minutes at CRO Office after that
+		Extra hour will be charged Rs:100/- for all 4 seater  cars , Rs:150/-for
+		all 7 seater cars , Rs:-200/-for all 12 seater.</li>
+		                         <li>Cancellation charges of Rs.100 applicable if canceled within 24 Hours of pickup time.</li>
+                        	</ul>
+                        
+                    </div>
+                </div>
+            </div>
+			<hr>
+			</div>
+          </div>
+            
+    </div>
+        {% endif %}
+        
+</section>
+{% endblock %}
