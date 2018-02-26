@@ -8,7 +8,14 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class EditHotelType extends AbstractType
 {
+    private $bookingService;
+    private $catalouge;
     
+    public function __construct($bookingService)
+    {
+        $this->bookingService= $bookingService;
+        $this->catalouge = $bookingService->getCatalog();
+    }
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -35,8 +42,56 @@ class EditHotelType extends AbstractType
                                         'data-style'=>'btn-white',
 				            		),
             ))
+            ->add('checkIn', null, array(
+                'required'    => true,
+                'label' => 'CheckIn', ))
+                
+                ->add('checkOut', null, array(
+                    'required'    => true,
+                    'label' => 'CheckOut', ))
+                    
+                    ->add('address',new HotelAddressType($this->catalouge))
+                    ->add('soldout')
+                    ->add('date','text',array(
+                        
+                        'required'    => false,
+                        'label'     => ' block Start Date',
+                        'attr' => array('data-date-format' => 'dd/mm/yyyy')
+                        
+                    ))
+                    
+                    ->add('blockEndDate','date',array(
+                        'widget'=> 'single_text',
+                        'format'=>'M/d/y',
+                        'required'    => false,
+                        'label'     => ' block End Date',
+                        'attr' => array('data-date-format' => 'dd/mm/yyyy')
+                        
+                    ))
            
-			
+                    ->add('imageList', 'collection', array(
+                        // each entry in the array will be an "PackageItinerary" field
+                        'type'   => new HotelImageType(),
+                        'allow_add'    => true,
+                        'prototype'=>true,
+                        'required'    => false,
+                        // these options are passed to each "PackageItinerary" type
+                        //'entry_options'  => array(
+                        //   'attr'      => array('class' => '')
+                        //),
+                    ))
+                    
+                    ->add('roomList', 'collection', array(
+                        // each entry in the array will be an "PackageItinerary" field
+                        'type'   => new HotelRoomType(),
+                        'allow_add'    => true,
+                        'prototype'=>true,
+                        //'required'    => false,
+                        // these options are passed to each "PackageItinerary" type
+                        //'entry_options'  => array(
+                        //   'attr'      => array('class' => '')
+                        //),
+                    ))
 			
            
         ;

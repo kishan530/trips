@@ -29,8 +29,7 @@ use Trip\SiteManagementBundle\Form\ServicesType;
 use Trip\SiteManagementBundle\Form\VehicleType;
 use Trip\SiteManagementBundle\Form\PriceType;
 use Trip\BookingEngineBundle\DTO\SearchFilter;
-use Trip\BookingEngineBundle\Form\SearchHotelType;
-use Trip\BookingEngineBundle\DTO\SearchHotel;
+
 use Trip\BookingEngineBundle\Entity\Services;
 use Trip\BookingEngineBundle\Entity\Vehicle;
 use Trip\SiteManagementBundle\Entity\Hotel;
@@ -64,10 +63,21 @@ use Trip\BookingEngineBundle\Entity\Booking;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Collections\ArrayCollection;
+
 use Trip\SiteManagementBundle\DTO\Billing as NewBilling;
 use Trip\SiteManagementBundle\Form\InsertImageType;
 use Trip\SiteManagementBundle\Entity\InsertImage;
-
+use Trip\SiteManagementBundle\Form\CustomerType;
+use Trip\SiteManagementBundle\Entity\Customer;
+use Trip\SiteManagementBundle\DTO\HotelDto;
+use Trip\SiteManagementBundle\DTO\HotelRoomDto;
+use Trip\SiteManagementBundle\Entity\HotelRoom;
+use Trip\SiteManagementBundle\Entity\HotelAddress;
+use Trip\SiteManagementBundle\Form\HotelDetailType;
+use Trip\BookingEngineBundle\DTO\SearchHotel;
+use Trip\BookingEngineBundle\Form\SearchHotelType; 
+use Trip\BookingEngineBundle\DTO\SearchHotelAgain;
+use Trip\BookingEngineBundle\Form\SearchHotelAgainType;
 class SiteManagementController extends Controller
 {
     
@@ -752,7 +762,7 @@ class SiteManagementController extends Controller
      * @param Search $entity
      * @return unknown
      */
-    private function createHotelForm($entity){
+   /*  private function createHotelForm($entity){
     	$bookingService = $this->container->get( 'booking.services' );
     	$form = $this->createForm(new HotelType($bookingService), $entity, array(
     			'action' => $this->generateUrl('trip_site_management_add_hotel'),
@@ -760,7 +770,7 @@ class SiteManagementController extends Controller
     	));
     	
     	return $form;
-    }
+    } */
     private function createAddPackageForm(Package $package){
         $bookingService = $this->container->get( 'booking.services' );
         $form = $this->createForm(new PackageType(), $package, array(
@@ -983,7 +993,209 @@ class SiteManagementController extends Controller
      /**
      *
      */
-    public function addHotelAction(Request $request){
+    public function addHotelAction(Request $request)
+    {
+        $security = $this->container->get ( 'security.context' );
+        
+        $user = $security->getToken ()->getUser ();
+        
+        if (! $security->isGranted ( 'ROLE_SUPER_ADMIN' )) {
+            
+            return $this->redirect ( $this->generateUrl ('trip_security_sign_up') );
+            
+        }
+        
+        $em = $this->getDoctrine()->getManager();
+        $hotelDetail = new HotelDto();
+        $hotelImage = new HotelImage();
+        $hotelImageList = $hotelDetail->getImageList();
+        $hotelImageList->add($hotelImage);
+        
+        //newlyadded 3lines
+        $hotelRoom  =new HotelRoomDto();
+        $hotelRoomList = $hotelDetail->getRoomList();
+        $hotelRoomList->add($hotelRoom);
+        
+        
+       // $catalogueService = $this->container->get( 'catalogue.service' );
+        $form = $this->createForm(new HotelDetailType(),$hotelDetail);
+        $form->add('submit','submit', array('label' => 'Add Hotel'));
+        $form ->handleRequest($request);
+        
+        if($form->isValid()) {
+            
+            $hotelObj = new Hotel();
+            
+            $hotelAddressObj = new HotelAddress();
+            
+           // $catalogueService = $this->container->get( 'catalogue.service' );
+           // $cities = $catalogueService->getCities();
+           // $cities = $catalogueService->getById($cities);
+            
+           // $selectedCity = $cities[$hotelDetail->getCity()];
+            
+            $hotelObj->setName($hotelDetail->getName());
+            $hotelObj->setOverview($hotelDetail->getOverview());
+            $hotelObj->setPropertyType($hotelDetail->getPropertyType());
+            $hotelObj->setCategory($hotelDetail->getCategory());
+            $hotelObj->setCheckIn($hotelDetail->getCheckIn());
+            $hotelObj->setCheckOut($hotelDetail->getCheckOut());
+            $hotelObj->setPrice($hotelDetail->getPrice());
+            $hotelObj->setCity($hotelDetail->getCity());
+            $hotelObj->setNumRooms($hotelDetail->getNumRooms());
+            $hotelObj->setSoldOut($hotelDetail->getSoldOut());
+            $hotelObj->setPriority($hotelDetail->getPriority());
+           // $hotelObj->setCityId($selectedCity->getId());
+            $hotelObj->setActive($hotelDetail->getActive());
+            if($hotelDetail->getCity()=='Tirupati'){
+                $hotelObj->setCityId(1);
+            }elseif ($hotelDetail->getCity()=='Bangalore'){
+                $hotelObj->setCityId(2);
+            }else{
+                $hotelObj->setCityId(3);
+            }
+            
+            
+            $hotelObj->setFooterDisplay($hotelDetail->getFooterDisplay());
+            $hotelObj->setUrl($hotelDetail->getUrl());
+            $hotelObj->setMetaTitle($hotelDetail->getMetaTitle());
+            $hotelObj->setMetaKeywords($hotelDetail->getMetaKeywords());
+            $hotelObj->setMetaDescription($hotelDetail->getMetaDescription());
+            
+            $hotelObj->setHotelblockStartDate($hotelDetail->getHotelblockStartDate());
+            $hotelObj->setHotelblockEndDate($hotelDetail->getHotelblockEndDate());
+            
+            date_default_timezone_set('Asia/Kolkata');
+            $date = new \DateTime();
+            $adminname = $user->getEmail();
+            //$timestamp = strtotime($date);
+            //$new_date = date('Y-m-d',$date );
+            
+            $hotelObj->setAuditInfocreatedAt($date);
+            $hotelObj->setAuditInfocreatedBy($adminname);
+            $hotelObj->setAuditInfoupdatedBy($adminname);
+            $hotelObj->setAuditInfoupdatedAt($date);
+            //echo var_dump($hotelObj);
+            //exit();
+            
+            $hotelAddressObj->setAddressLine1($hotelDetail->getAddressLine1());
+            $hotelAddressObj->setAddressLine2($hotelDetail->getAddressLine2());
+            $hotelAddressObj->setLocation($hotelDetail->getLocation());
+            $hotelAddressObj->setPincode($hotelDetail->getPincode());
+            $hotelAddressObj->setCity($hotelDetail->getCity());
+            //$hotelAddressObj->setCityId($selectedCity->getId());
+            
+            
+            $hotelObj->setAddress($hotelAddressObj);
+            $hotelAddressObj->setHotel($hotelObj);
+            //$hotelObj->setImages($hotelDetail->getImages());
+            //$hotelObj->setAmenities($hotelDetail->getAmenities());
+            
+            
+            
+            $hotelImageList = $hotelDetail->getImageList();
+            $hotelImages =$hotelObj->getImages();
+            foreach($hotelImageList as $hotelImage){
+                $uploadedfile = $hotelImage->getImagePath ();
+                if (!is_null($uploadedfile)) {
+                    $file_name = $uploadedfile->getClientOriginalName ();
+                    $dir = 'images/Hotels/';
+                    $uploadedfile->move ( $dir, $file_name );
+                    $hotelImage->setImagePath ($file_name );
+                    $hotelImage->setActive (1);
+                    $hotelImage->setHotel($hotelObj);
+                    $hotelImages->add($hotelImage);
+                    
+                }
+                
+                
+            }
+            
+            
+            
+            $hotelRoomList = $hotelDetail->getRoomList();
+            $hotelRooms =$hotelObj->getHotelRooms();
+            foreach($hotelRoomList as $hotelRoom){
+                $roomType = $hotelRoom->getRoomType();
+                $capacity = $hotelRoom->getCapacity();
+                $price = $hotelRoom->getPrice();
+                $imagePath = $hotelRoom->getImagePath();
+                $maxAdult = $hotelRoom->getMaxAdult();
+                $maxChild = $hotelRoom->getMaxChild();
+                $description = $hotelRoom->getDescription();
+                $soldout = $hotelRoom->getSoldOut();
+                
+                $name = $hotelRoom->getName();
+                
+                
+                
+                $hotelRoomObj  =new HotelRoom();
+                $hotelRoomObj->setRoomType ($roomType );
+                $hotelRoomObj->setCapacity ($capacity );
+                $hotelRoomObj->setPrice ($price );
+                $hotelRoomObj->setMaxAdult ($maxAdult );
+                $hotelRoomObj->setMaxChild ($maxChild );
+                $hotelRoomObj->setDescription ($description );
+                $hotelRoomObj->setSoldOut ($soldout );
+                
+                
+                //$hotelRoomObj->setBlockEndDate(new \DateTime());
+                
+                $hotelRoomObj->setBlockStartDate($hotelRoom->getBlockStartDate());
+                $hotelRoomObj->setBlockEndDate($hotelRoom->getBlockEndDate());
+                $hotelRoomObj->setSequence($hotelRoom->getSequence());
+                
+                
+                $hotelRoomObj->setPromotionStartDate($hotelRoom->getPromotionStartDate());
+                $hotelRoomObj->setPromotionEndDate($hotelRoom->getPromotionEndDate());
+                $hotelRoomObj->setPromotionPrice($hotelRoom->getPromotionPrice());
+                
+                
+                
+                $hotelRoomObj->setName($name );
+                
+                
+                $uploadedfile = $hotelRoom->getImagePath ();
+                if (!is_null($uploadedfile)) {
+                    $file_name = $uploadedfile->getClientOriginalName ();
+                    $dir = 'images/Hotels/';
+                    $uploadedfile->move ( $dir, $file_name );
+                    $hotelRoomObj->setImagePath ($file_name );
+                    //$hotelRoom->setActive (1);
+                    $hotelRoomObj->setHotel($hotelObj);
+                    
+                }
+                
+                
+                
+                $hotelRooms->add($hotelRoomObj);
+                
+                
+            }
+            
+            //echo var_dump($hotelObj);
+            //exit();
+            
+            $em->persist($hotelObj);
+            
+            $em->flush();
+            /*
+             $this->addFlash(
+             'Notice',
+             'Hotel Detail Added'
+             ); */
+            
+            return $this->redirect ( $this->generateUrl ( "trip_sitemanagementbundle_add_hotel" ) );
+        }
+        
+        return $this->render('TripSiteManagementBundle:Default:addHotel.html.twig',array(
+            
+            'hotel'=> $hotelDetail,
+            'form' => $form->createView(),
+        ));
+        
+    }
+    /* public function addHotelAction(Request $request){
         $em = $this->getDoctrine()->getManager();
     	$hotel = new Hotel();
     	$form   = $this->createHotelForm($hotel);
@@ -1007,7 +1219,7 @@ class SiteManagementController extends Controller
                 'hotels' => $hotels,
     			'form'   => $form->createView(),
     	));
-    }
+    } */
     public function addPackageAction(Request $request){
         $em = $this->getDoctrine()->getManager();
         
@@ -1312,15 +1524,316 @@ class SiteManagementController extends Controller
     			'hotelsList' => $hotelsList,
     	));
     }
-	public function editHotelAction(Request $request,$id){
+    public function editHotelAction(Request $request,$id)
+    {
+        $security = $this->container->get ( 'security.context' );
+        
+        $user = $security->getToken ()->getUser ();
+        
+        if (! $security->isGranted ( 'ROLE_SUPER_ADMIN' )) {
+            
+            return $this->redirect ( $this->generateUrl ('trip_security_sign_up') );
+            
+        }
+        $em = $this->getDoctrine()->getManager();
+        $hotelObj = $em->getRepository('TripSiteManagementBundle:Hotel')->find($id);
+        $hotelDetail = new HotelDto();
+        $hotelImage = new HotelImage();
+        
+        $hotelRooms =$hotelObj->getHotelRooms();
+        $oldHotelRooms = array();
+        foreach($hotelRooms as $hotelRoomObj){
+            $hotelRoom  =new HotelRoomDto();
+            $hotelRoom->setId ($hotelRoomObj->getId() );
+            $hotelRoom->setRoomType ($hotelRoomObj->getRoomType() );
+            $hotelRoom->setCapacity ($hotelRoomObj->getCapacity() );
+            $hotelRoom->setPrice ($hotelRoomObj->getPrice() );
+            $hotelRoom->setMaxAdult ($hotelRoomObj->getMaxAdult() );
+            $hotelRoom->setMaxChild ($hotelRoomObj->getMaxChild() );
+            $hotelRoom->setDescription ($hotelRoomObj->getDescription() );
+            //$hotelRoom->setImagePath ($hotelRoomObj->getImagePath() );
+            
+            $hotelRoom->setSoldOut ($hotelRoomObj->getSoldOut() );
+            
+            $hotelRoom->setBlockStartDate ($hotelRoomObj->getBlockStartDate() );
+            $hotelRoom->setBlockEndDate ($hotelRoomObj->getBlockEndDate());
+            
+            
+            $hotelRoom->setSequence ($hotelRoomObj->getSequence());
+            
+            
+            $hotelRoom->setPromotionStartDate ($hotelRoomObj->getPromotionStartDate() );
+            $hotelRoom->setPromotionEndDate ($hotelRoomObj->getPromotionEndDate() );
+            $hotelRoom->setPromotionPrice ($hotelRoomObj->getPromotionPrice() );
+            
+            $hotelRoom->setName ($hotelRoomObj->getName() );
+            $hotelRoomList = $hotelDetail->getRoomList();
+            $hotelRoomList->add($hotelRoom);
+            
+            $oldHotelRooms[$hotelRoomObj->getId()] = $hotelRoomObj;
+        }
+        
+        $hotelImageList = $hotelDetail->getImageList();
+        $hotelImageList->add($hotelImage);
+        
+       // $catalogueService = $this->container->get( 'catalogue.service' );
+        
+        
+        $hotelDetail->setName($hotelObj->getName());
+        $hotelDetail->setOverview($hotelObj->getOverview());
+        $hotelDetail->setPropertyType($hotelObj->getPropertyType());
+        $hotelDetail->setCategory($hotelObj->getCategory());
+        $hotelDetail->setCheckIn($hotelObj->getCheckIn());
+        $hotelDetail->setCheckOut($hotelObj->getCheckOut());
+        $hotelDetail->setPrice($hotelObj->getPrice());
+        $hotelDetail->setCity($hotelObj->getCity());
+        $hotelDetail->setNumRooms($hotelObj->getNumRooms());
+        $hotelDetail->setSoldOut($hotelObj->getSoldOut());
+        
+        $hotelDetail->setPriority($hotelObj->getPriority());
+        //$HotelObj->setCityId($hotelObj->getCityId());
+        $hotelDetail->setActive($hotelObj->getActive());
+        
+        $hotelDetail->setFooterDisplay($hotelObj->getFooterDisplay());
+        $hotelDetail->setUrl($hotelObj->getUrl());
+        $hotelDetail->setMetaTitle($hotelObj->getMetaTitle());
+        $hotelDetail->setMetaKeywords($hotelObj->getMetaKeywords());
+        $hotelDetail->setMetaDescription($hotelObj->getMetaDescription());
+        
+        $hotelDetail->setHotelblockStartDate($hotelObj->getHotelblockStartDate());
+        $hotelDetail->setHotelblockEndDate($hotelObj->getHotelblockEndDate());
+        
+        
+        
+        
+        
+        
+        $hotelAddressObj = $hotelObj->getAddress();
+        
+        $hotelDetail->setAddressLine1($hotelAddressObj->getAddressLine1());
+        $hotelDetail->setAddressLine2($hotelAddressObj->getAddressLine2());
+        $hotelDetail->setLocation($hotelAddressObj->getLocation());
+        $hotelDetail->setPincode($hotelAddressObj->getPincode());
+        
+        
+        $form = $this->createForm(new HotelDetailType(),$hotelDetail);
+        $form->add('submit','submit', array('label' => 'Update'));
+        $form ->handleRequest($request);
+        
+        
+        
+        if($form->isValid()) {
+            
+            
+           // $cities = $catalogueService->getCities();
+            //$cities = $catalogueService->getById($cities);
+            
+           // $selectedCity = $cities[$hotelDetail->getCity()];
+            
+            $hotelObj->setName($hotelDetail->getName());
+            $hotelObj->setOverview($hotelDetail->getOverview());
+            $hotelObj->setPropertyType($hotelDetail->getPropertyType());
+            $hotelObj->setCategory($hotelDetail->getCategory());
+            $hotelObj->setCheckIn($hotelDetail->getCheckIn());
+            $hotelObj->setCheckOut($hotelDetail->getCheckOut());
+            $hotelObj->setPrice($hotelDetail->getPrice());
+            $hotelObj->setCity($hotelDetail->getCity());
+            $hotelObj->setNumRooms($hotelDetail->getNumRooms());
+            $hotelObj->setSoldOut($hotelDetail->getSoldOut());
+            
+            $hotelObj->setPriority($hotelDetail->getPriority());
+            //$hotelObj->setCityId($selectedCity->getId());
+            $hotelObj->setActive($hotelDetail->getActive());
+            
+            
+            $hotelObj->setFooterDisplay($hotelDetail->getFooterDisplay());
+            $hotelObj->setUrl($hotelDetail->getUrl());
+            $hotelObj->setMetaTitle($hotelDetail->getMetaTitle());
+            $hotelObj->setMetaKeywords($hotelDetail->getMetaKeywords());
+            $hotelObj->setMetaDescription($hotelDetail->getMetaDescription());
+            
+            $hotelObj->setHotelblockStartDate($hotelDetail->getHotelblockStartDate());
+            $hotelObj->setHotelblockEndDate($hotelDetail->getHotelblockEndDate());
+            
+            date_default_timezone_set('Asia/Kolkata');
+            $date = new \DateTime();
+            $hotelObj->setAuditInfoupdatedBy($user->getEmail());
+            $hotelObj->setAuditInfoupdatedAt($date);
+            //$hotelObj->>setAuditInfocreatedBy($user->getEmail());
+            //$hotelObj->setAuditInfocreatedAt($date);
+            
+            $hotelAddressObj->setAddressLine1($hotelDetail->getAddressLine1());
+            $hotelAddressObj->setAddressLine2($hotelDetail->getAddressLine2());
+            $hotelAddressObj->setLocation($hotelDetail->getLocation());
+            $hotelAddressObj->setPincode($hotelDetail->getPincode());
+            $hotelAddressObj->setCity($hotelDetail->getCity());
+           // $hotelAddressObj->setCityId($selectedCity->getId());
+            
+            
+            $hotelObj->setAddress($hotelAddressObj);
+            $hotelAddressObj->setHotel($hotelObj);
+            //$hotelObj->setImages($hotelDetail->getImages());
+            //$hotelObj->setAmenities($hotelDetail->getAmenities());
+            
+            
+            
+            $hotelImageList = $hotelDetail->getImageList();
+            $hotelImages = new ArrayCollection();
+            
+            foreach($hotelImageList as $hotelImage){
+                $uploadedfile = $hotelImage->getImagePath ();
+                if (!is_null($uploadedfile)) {
+                    $file_name = $uploadedfile->getClientOriginalName ();
+                    $dir = 'images/Hotels/';
+                    $uploadedfile->move ( $dir, $file_name );
+                    $hotelImage->setImagePath ($file_name );
+                    $hotelImage->setActive (1);
+                    $hotelImage->setHotel($hotelObj);
+                    $hotelImages->add($hotelImage);
+                    
+                }
+                
+            }
+            
+            $hotelRoomList = $hotelDetail->getRoomList();
+            $hotelRooms =$hotelObj->getHotelRooms();
+            foreach($hotelRoomList as $hotelRoom){
+                $isdeleted = $hotelRoom->getIsDeleted();
+                if($isdeleted==1){
+                    $roomType = $hotelRoom->getRoomType();
+                    $capacity = $hotelRoom->getCapacity();
+                    $price = $hotelRoom->getPrice();
+                    $imagePath = $hotelRoom->getImagePath();
+                    $maxAdult = $hotelRoom->getMaxAdult();
+                    $maxChild = $hotelRoom->getMaxChild();
+                    $description = $hotelRoom->getDescription();
+                    $soldout = $hotelRoom->getSoldOut();
+                    
+                    $blockStartDate = $hotelRoom->getBlockStartDate();
+                    $blockEndDate = $hotelRoom->getBlockEndDate();
+                    $sequence = $hotelRoom->getSequence();
+                    
+                    $promotionStartDate = $hotelRoom->getPromotionStartDate();
+                    $promotionEndDate = $hotelRoom->getPromotionEndDate();
+                    $promotionPrice = $hotelRoom->getPromotionPrice();
+                    
+                    
+                    
+                    
+                    $name = $hotelRoom->getName();
+                    
+                    //echo var_dump($hotelRoom->getId());
+                    $hotelRoomObj  =new HotelRoom();
+                    if(!is_null($hotelRoom->getId()))
+                        $hotelRoomObj = $oldHotelRooms[$hotelRoom->getId()];
+                        $hotelRoomObj->setRoomType ($roomType );
+                        $hotelRoomObj->setCapacity ($capacity );
+                        $hotelRoomObj->setPrice ($price );
+                        $hotelRoomObj->setMaxAdult ($maxAdult );
+                        $hotelRoomObj->setMaxChild ($maxChild );
+                        $hotelRoomObj->setDescription ($description );
+                        $hotelRoomObj->setSoldOut ($soldout );
+                        $hotelRoomObj->setBlockStartDate ($blockStartDate );
+                        $hotelRoomObj->setBlockEndDate ($blockEndDate );
+                        $hotelRoomObj->setSequence ($sequence );
+                        $hotelRoomObj->setPromotionStartDate ($promotionStartDate );
+                        $hotelRoomObj->setPromotionEndDate ($promotionEndDate );
+                        $hotelRoomObj->setPromotionPrice ($promotionPrice );
+                        
+                        $hotelRoomObj->setName ($name);
+                        //echo var_dump($hotelRoomObj);
+                        $uploadedfile = $hotelRoom->getImagePath ();
+                        if (!is_null($uploadedfile)) {
+                            $file_name = $uploadedfile->getClientOriginalName ();
+                            $dir = 'images/Hotels/';
+                            $uploadedfile->move ( $dir, $file_name );
+                            $hotelRoomObj->setImagePath ($file_name );
+                            //$hotelRoom->setActive (1);
+                            $hotelRoomObj->setHotel($hotelObj);
+                            
+                        }
+                        $hotelRooms->add($hotelRoomObj);
+                        
+                }
+                
+            }
+            
+            //
+            
+            
+            $hotelObj->setImages($hotelImages);
+            
+            
+            $em->merge($hotelObj);
+            
+            $em->flush();
+            /*
+             $this->addFlash(
+             'Notice',
+             'Hotel Detail Added'
+             ); */
+            
+            return $this->redirect ( $this->generateUrl ( "trip_site_management_hotels_list" ) );
+        }
+        
+        return $this->render('TripSiteManagementBundle:Default:edithotel.html.twig',array(
+            
+            'hotel' => $hotelObj,
+            'form' => $form->createView(),
+        ));
+        
+    }
+    public function deleteHotelAction($id)
+    {
+        $hotel = $this->getDoctrine()
+        ->getRepository('TripSiteManagementBundle:Hotel')
+        ->find($id);
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($hotel);
+        $em->flush();
+        return new Response('true');
+        //return $this->redirect($this->generateUrl('room_hotel_search_hotel'));
+    }
+    
+    public function deleteHotelRoomAction($id)
+    {
+        $hotelRoom = $this->getDoctrine()
+        ->getRepository('TripSiteManagementBundle:HotelRoom')
+        ->find($id);
+        
+        $em = $this->getDoctrine()->getManager();
+        //$hotelRoom->$repository->findOneBy(array('id' => 'id'));
+        $em->remove($hotelRoom);
+        $em->flush();
+        return new Response('true');
+        //	return $this->redirect($this->generateUrl('room_hotel_search_hotel'));
+    }
+    
+    
+    public function deleteHotelImageAction($id)
+    {
+        $hotelRoom = $this->getDoctrine()
+        ->getRepository('TripSiteManagementBundle:HotelImage')
+        ->find($id);
+        
+        $em = $this->getDoctrine()->getManager();
+        //$hotelRoom->$repository->findOneBy(array('id' => 'id'));
+        $em->remove($hotelRoom);
+        $em->flush();
+        return new Response('true');
+        //return $this->redirect($this->generateUrl('room_hotel_search_hotel'));
+    }
+    
+	/* public function editHotelAction(Request $request,$id){
     	$em = $this->getDoctrine()->getManager();
     	//$package = new Package();
-    	$package =$em->getRepository('TripSiteManagementBundle:Hotel')->find($id);
+    	$hotel =$em->getRepository('TripSiteManagementBundle:Hotel')->find($id);
     	 
-    	$form   = $this->createEditHotelForm($package,$id);
+    	$form   = $this->createEditHotelForm($hotel,$id);
     	$form->handleRequest($request);
     	if ($form->isValid()) {
-    		$package = $em->merge($package);
+    	    $hotel = $em->merge($hotel);
     		$em->flush();
     
     		return $this->redirect($this->generateUrl('trip_site_management_hotels_list'));
@@ -1328,13 +1841,13 @@ class SiteManagementController extends Controller
     	}
     
     	return $this->render('TripSiteManagementBundle:Default:editHotel.html.twig',array(
-    			'package' => $package,
+    	    'hotel' => $hotel,
     			'form'   => $form->createView(),
     	));
-    }
+    } */
 	private function createEditHotelForm($package,$id){
-    	//$bookingService = $this->container->get( 'booking.services' );
-    	$form = $this->createForm(new EditHotelType(), $package, array(
+    	$bookingService = $this->container->get( 'booking.services' );
+    	$form = $this->createForm(new EditHotelType($bookingService), $package, array(
     			'action' => $this->generateUrl('trip_site_management_edit_hotel',array('id'=>$id)),
     			'method' => 'POST',
     	));
@@ -1391,15 +1904,160 @@ class SiteManagementController extends Controller
     
     	return $form;
     }
+    /**
+     *
+     * @param SearchHotel $entity
+     * @return unknown
+     */
+    private function createSearchHotelsForm(SearchHotel $entity,$hotelId,$roomId){
+        $bookingService = $this->container->get( 'booking.services' );
+        $form = $this->createForm(new SearchHotelType($bookingService), $entity, array(
+            'action' => $this->generateUrl('trip_booking_engine_search_hotel'),
+            'method' => 'GET',
+        ));
+       
+        
+        return $form;
+    }
 	public function viewHotelAction(Request $request,$id)
     {
-    	//$search = new Search();
-    	//$form   = $this->createSearchForm($search);
+	    
+        $em = $this->getDoctrine()->getManager();
+        $hotel = $em->getRepository('TripSiteManagementBundle:Hotel')->find($id);
+       $hotelId = $hotel->getId();
+       $hotelPrice = $hotel->getPrice();
+        $hotelRoom = $em->getRepository('TripSiteManagementBundle:HotelRoom')->findBy(array('hotel' => $id));
+        foreach ($hotelRoom as $room){
+           $roomPrice =  $room->getPrice();
+           if($roomPrice == $hotelPrice){
+               $roomId = $room->getId();
+           }
+        }
+       //$roomId = 7;
+        //var_dump($roomId);die;
+        $session = $request->getSession();
+        $rooms = $session->get('rooms');
+        //var_dump($rooms);die;
+        $hotels = array();
+        $searchHotel = $session->get('searchHotel');
+       // $searchHotel = new SearchHotel();
+        $form   = $this->createSearchHotelsForm($searchHotel,$hotelId,$roomId);
+        $form->handleRequest($request);
+        //var_dump($searchHotel);exit();
+        
+         
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $session = $request->getSession();
+            $goingTo = $searchHotel->getGoingTo();
+            //echo var_dump($goingTo);
+            //exit();
+            $date = $searchHotel->getDate();
+            $returnDate = $searchHotel->getReturnDate();
+            
+            $dateNew = date_create($date);
+            $returnDateNew = date_create($returnDate);
+            
+            $numDay = 1;
+           
+            $today = new \DateTime();
+            
+            $numRoom = $searchHotel->getNumRooms();
+            $qb = $em->getRepository ( 'TripBookingEngineBundle:HotelBooking' )->createQueryBuilder("HotelBooking");
+            $qb ->select('HotelBooking.hotelId','count(HotelBooking.hotelId) as bookedroom')
+            ->andWhere('(:date BETWEEN HotelBooking.chekIn AND HotelBooking.chekOut OR :returnDate BETWEEN HotelBooking.chekIn AND HotelBooking.chekOut)' ) ->setParameter('date', $date ) ->setParameter('returnDate', $returnDate)
+            ->groupBy('HotelBooking.hotelId');
+            $Booking_hotel = $qb->getQuery()->getResult();
+            $roomCountByHotel = array();
+            
+            foreach ( $Booking_hotel as $bookedHotel ) {
+                
+                $roomCountByHotel[$bookedHotel['hotelId']]=$bookedHotel['bookedroom'];
+                
+            }
+            //$dql3 = "SELECT h FROM TripSiteManagementBundle:Hotel h WHERE h.active=1 and h.cityId=$goingTo";
+            $city = $em->getRepository('TripSiteManagementBundle:HotelCities')->findOneBy(array( 'id' => $goingTo));
+            
+            $catalogueService = $this->container->get( 'booking.services' );
+            $hotels = $catalogueService->getHotelsByCity($searchHotel->getGoingTo());
+            
+            
+            $amenities = $catalogueService->getAmenities();
+            $filters = $catalogueService->getFilters($hotels,$amenities);
+          
+            $today = new \DateTime();
+            $viewMore=0;
+            $date1 = $searchHotel->getDate();
+            $date2 = $searchHotel->getReturnDate();
+            if($date1)
+            
+            {
+                list ( $d, $m, $y ) = explode ( '/', $date1 );
+                $date1 = new \Datetime($y.'-'.$m.'-'.$d);
+                
+            }
+            if($date2)
+            
+            {
+                list ( $d, $m, $y ) = explode ( '/', $date2 );
+                $date2 = new \Datetime($y.'-'.$m.'-'.$d);
+                
+            }
+            if($date1 == $date2){
+                $date2->modify('+1 day');
+                //var_dump($date2);
+                //exit();
+            }
+            $dteDiff  = $date1->diff($date2);
+            $numDay = $dteDiff->format("%d");
+            $session->set('numDay',$numDay);
+            $session->set('searchHotel',$searchHotel);
+            return $this->redirect($this->generateUrl('trip_booking_engine_hotel_book_room',array('roomId'=>$roomId,'hotelId'=>$hotelId)));
+        }
     	$em = $this->getDoctrine()->getManager();
-    	$hotel = $em->getRepository('TripSiteManagementBundle:Hotel')->find($id);
+    	//$hotel = $em->getRepository('TripSiteManagementBundle:Hotel')->find($id);
+    	//var_dump($searchHotel);
+    	//exit();
+    	$hotel->getName();
+    	$session = $request->getSession();
+    	$session->set('hotelName',$hotel->getName());
+    	$session->set('searchHotel',$searchHotel);
+    	//var_dump($searchHotel);exit();
+    	//$hotelRoom = $em->getRepository('TripSiteManagementBundle:HotelRoom')->findBy(array('hotel' => $id));
+    	
+    	$today = new \DateTime();
+    	$viewMore=0;
+    	$date1 = $searchHotel->getDate();
+    	$date2 = $searchHotel->getReturnDate();
+    	if($date1)
+    	
+    	{
+    	    list ( $d, $m, $y ) = explode ( '/', $date1 );
+    	    $date1 = new \Datetime($y.'-'.$m.'-'.$d);
+    	    
+    	}
+    	if($date2)
+    	
+    	{
+    	    list ( $d, $m, $y ) = explode ( '/', $date2 );
+    	    $date2 = new \Datetime($y.'-'.$m.'-'.$d);
+    	    
+    	}
+    	$dteDiff  = $date1->diff($date2); 
+    	//$numDays = $dteDiff->format("%d")
+    	//var_dump();exit();
+    	//$paymentLink = $this->getVendorPaymentLink($request,$hotel,$vendorId);
     	return $this->render('TripSiteManagementBundle:Default:viewHotel.html.twig', array(
     			//'form'   => $form->createView(),
-    			'hotel'=> $hotel
+    	'hotel'=> $hotel,
+    	    'hotelRoom' => $hotelRoom,
+    	    'today' =>$today,
+    	    'form'   => $form->createView(),
+    	    'searchHotel'=>$searchHotel,
+    	    'numDays'=>$dteDiff->format("%d"),
+    	    'numDay' => $session->get('numDay'),
+    	    'rooms'=>$rooms,
+    	    
     	));
     }
     public function billingDetailsAction(Request $request){
@@ -2403,5 +3061,39 @@ class SiteManagementController extends Controller
         		'locations'=>$locations
                 
     	));
+    }
+  
+    public function confirmRoomAction(Request $request)
+    {
+        
+        return $this->render('TripSiteManagementBundle:Default:bookRoom.html.twig');
+    }
+    /**
+     *
+     * @param SearchHotel $entity
+     * @return unknown
+     */
+    private function createSearchHotelForm(SearchHotel $entity){
+        $bookingService = $this->container->get( 'booking.services' );
+        $form = $this->createForm(new SearchHotelType($bookingService), $entity, array(
+            'action' => $this->generateUrl('trip_booking_engine_search_hotel'),
+            'method' => 'GET',
+        ));
+        
+        return $form;
+    }
+    /**
+     *
+     * @param SearchHotelAgain $entity
+     * @return unknown
+     */
+    private function createSearchHotelAgainForm(SearchHotelAgain $entity,$id){
+        //$bookingService = $this->container->get( 'booking.services' );
+        $form = $this->createForm(new SearchHotelAgainType(), $entity, array(
+            'action' => $this->generateUrl('trip_site_management_view_hotel',array('id' => $id)),
+            'method' => 'GET',
+        ));
+        
+        return $form;
     }
 }

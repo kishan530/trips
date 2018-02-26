@@ -78,7 +78,81 @@ class VendorNewVehicleType extends AbstractType
         				'class'   => 'filestyle',
         		),
         ))
+        ->add('vehicleNumber', 'text',array(
+            'required' => false,
+            'data_class' => null,
+            'label'=>'Vehicle Number',
+            'attr'   =>  array(
+                'title' => 'Enter Valid Vehicle Number',
+                'pattern' => '[A-Z0-9]{10}',
+            ),
+        ))
+        ->add('vehicleColor', 'text',array(
+            'required' => false,
+            'data_class' => null,
+            'label'=>'Vehicle Color',
+           
+        ))
+        ->add('vehicleCapacity', 'choice', array(
+            'expanded' => false,
+            'multiple' => false,
+            'label' => 'Vehicle Capacity',
+            'choices'  => array(
+                '4' => '4',
+                '4+1' => '4+1',
+                '7' => '7',
+                '7+1' => '7+1',
+                '12' => '12',
+                
+            ),
+        ))
+        ->add('fuelType', 'choice', array(
+            'expanded' => false,
+            'multiple' => false,
+            'label' => 'Fuel Type',
+            'choices'  => array(
+                'Petrol' => 'Petrol',
+                'Diesel' => 'Diesel',
+            ),
+        ))
+        ->add('vehicleManfactureYear', 'text',array(
+            'required' => false,
+            'data_class' => null,
+            'label'=>'Vehicle Manfacture Year',
             
+        ))
+        ->add('vehicleManfactureCompany', 'choice',array(
+            'expanded' => false,
+            'multiple' => false,
+            'label' => 'Vehicle Manfacture Company',
+            'choices'  => array(
+                'Maruti' => 'Maruti',
+                'Hyundai' => 'Hyundai',
+                'Tata Motors' => 'Tata Motors',
+                'Mahindra and Mahindra' => 'Mahindra and Mahindra',
+                'Toyota' => 'Toyota',
+                'Honda' => 'Honda',
+                'Chevrolet' => 'Chevrolet',
+                'Ford' => 'Ford',
+                'Nissan' => 'Nissan',
+                'Skoda' => 'Skoda',
+                'Renault' => 'Renault',
+                'FORCE MOTORS' => 'FORCE MOTORS',
+            ),
+            
+        ))
+        ->add('vehicleChassisNumber', 'text',array(
+            'required' => false,
+            'data_class' => null,
+            'label'=>'Vehicle Chassis Number',
+            
+        ))
+        ->add('vehicleEngineNumber', 'text',array(
+            'required' => false,
+            'data_class' => null,
+            'label'=>'Vehicle Engine Number',
+            
+        ))
               ;
                    
     }

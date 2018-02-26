@@ -204,9 +204,12 @@ $("#trip_search_multiple_1_leavingFrom").change(function() {
                         
                         <!-- Nav tabs -->
                         {% block navTabs %}
-                        <ul class="nav nav-tabs homebanner" role="tablist">
-                            <li class="active"><a href="#tab_01" aria-controls="tab_01" role="tab" data-toggle="tab" class="homebanner-color"><i class="icon-sedan3"></i>   Cars</a></li>
-							<li><a href="{{ path('trip_site_management_bikes_on_rent')}}" class="homebanner-color"><img src="{{ asset('images/bike.png') }}" style="width:27px;height:23px;padding-right: 4px;top: 3px;position: relative;" /> Bikes</a></li>
+
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active"><a href="#tab_01" aria-controls="tab_01" role="tab" data-toggle="tab"><i class="icon-sedan3"></i>   Cars</a></li>
+							<li><a href="{{ path('trip_site_management_bikes_on_rent')}}"><img src="{{ asset('images/bike.png') }}" style="width:27px;height:23px;padding-right: 4px;top: 0px;position: relative;margin-bottom:-5px;" /><span>Bikes</span></a></li>
+ 							<li><a href="{{ path('trip_site_management_homepage_hotels')}}"> <span><i class="icon-hotel68"></i> Hotels</span></a></li>
+
                             <!--<li><a href="#tab_02" aria-controls="tab_02" role="tab" data-toggle="tab"><i class="icon-hotel68"></i>  Hotels</a></li>-->
                             <li><a href="{{ path('trip_site_management_homepage_packages')}}"><i class="icon-bag"></i>  Packages</a></li>
                             

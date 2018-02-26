@@ -1,0 +1,12 @@
+a7b6b0,::1,GET,http://localhost/trips/web/app_dev.php/,1519628115,a064b8
+a064b8,::1,GET,http://localhost/trips/web/app_dev.php/,1519628115,
+b97fcb,127.0.0.1,GET,http://localhost/trips/web/app_dev.php/_fragment?_path=_format%3Dhtml%26_locale%3Den%26_controller%3DTripBookingEngineBundle%253ABooking%253Afooter,1519628159,25c90e
+25c90e,::1,GET,http://localhost/trips/web/app_dev.php/,1519628159,
+d4707d,127.0.0.1,GET,http://localhost/trips/web/app_dev.php/_fragment?_path=_format%3Dhtml%26_locale%3Den%26_controller%3DTripBookingEngineBundle%253ABooking%253Afooter,1519628170,d404c0
+d404c0,::1,GET,http://localhost/trips/web/app_dev.php/hotels,1519628170,
+6bb01c,127.0.0.1,GET,http://localhost/trips/web/app_dev.php/_fragment?_path=_format%3Dhtml%26_locale%3Den%26_controller%3DTripBookingEngineBundle%253ABooking%253Afooter,1519628193,df19dd
+df19dd,::1,GET,http://localhost/trips/web/app_dev.php/searchHotel?trip_hotel_search%5Bdate%5D=27%2F02%2F2018&trip_hotel_search%5BgoingTo%5D=1&trip_hotel_search%5BnumAdult%5D=1&trip_hotel_search%5BnumChildren%5D=0&trip_hotel_search%5BnumRooms%5D=1&trip_hotel_search%5BreturnDate%5D=28%2F02%2F2018,1519628193,
+18113f,127.0.0.1,GET,http://localhost/trips/web/app_dev.php/_fragment?_path=_format%3Dhtml%26_locale%3Den%26_controller%3DTripBookingEngineBundle%253ABooking%253Afooter,1519628225,dff5cb
+dff5cb,::1,GET,http://localhost/trips/web/app_dev.php/,1519628225,
+a063a9,127.0.0.1,GET,http://localhost/trips/web/app_dev.php/_fragment?_path=_format%3Dhtml%26_locale%3Den%26_controller%3DTripBookingEngineBundle%253ABooking%253Afooter,1519628246,2a0616
+2a0616,::1,GET,http://localhost/trips/web/app_dev.php/hotels,1519628246,

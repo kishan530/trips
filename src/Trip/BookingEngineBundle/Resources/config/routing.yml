@@ -151,4 +151,46 @@ trip_booking_engine_vendor_list:
 trip_booking_engine_vendor_list_view_more:
     path:     /vendor-list-view -more
     defaults: { _controller: TripBookingEngineBundle:Booking:vendorListViewMore} 
-       
+trip_booking_engine_hotel_book_room:
+    path:     /hotel-book-room
+    defaults: { _controller: TripBookingEngineBundle:Booking:hotelBookRoom}  
+trip_booking_engine_hotel_filter:
+    path:     /hotel-filter
+    defaults: { _controller: TripBookingEngineBundle:Booking:hotelFilter}     
+trip_booking_engine_add_room:
+    path:     /add-room
+    defaults: { _controller: TripBookingEngineBundle:Booking:addRoom }
+trip_booking_engine_add_adults:
+    path:     /add-adults
+    defaults: { _controller: TripBookingEngineBundle:Booking:addAdults }
+trip_booking_engine_add_childs:
+    path:     /add-child
+    defaults: { _controller: TripBookingEngineBundle:Booking:addChilds }
+trip_booking_engine_update_room:
+    path:     /update-room
+    defaults: { _controller: TripBookingEngineBundle:Booking:updateRomms }   
+trip_booking_engine_hotel_book_submit:
+    path:     /book/hotel/submit
+    defaults: { _controller: TripBookingEngineBundle:Booking:bookHotelSubmit }
+trip_hotel_booking_engine_success:
+    path:     /hotel/success
+    defaults: { _controller: TripBookingEngineBundle:Booking:hotelPaymentSuccess }   
+    
+trip_hotel_add_coupon_code:
+    path:     /add-coupon-code
+    defaults: { _controller: TripBookingEngineBundle:Coupon:addCoupon }
+trip_hotel_list_coupon_code:
+    path:     /coupon-code-list
+    defaults: { _controller: TripBookingEngineBundle:Coupon:couponList }
+trip_hotel_edit_coupon_code:
+    path:     /{id}/coupon-code-edit
+    defaults: { _controller: TripBookingEngineBundle:Coupon:couponEdit }
+trip_hotel_delete_coupon_code:
+    path:     /{id}/coupon-code-delete
+    defaults: { _controller: TripBookingEngineBundle:Coupon:couponDelete }
+trip_booking_engine_apply_coupon:
+    path:     /apply-coupon
+    defaults: { _controller: TripBookingEngineBundle:Booking:applyCoupon }
+trip_booking_engine_admin_apply_coupon:
+    path:     /admin-apply
+    defaults: { _controller: RoomBookingEngineBundle:Booking:adminapplyCoupon }

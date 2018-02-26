@@ -17,6 +17,7 @@
 						<th scope="col">Vehicle Regis Cer</th>
 						<th scope="col">Vehicle Insurance</th>
 						<th scope="col">Vehicle Population</th>
+						<th scope="col">Vehicle Number</th>
 						{#}<th scope="col">Edit</th>{#}
 						<th scope="col">Delete</th>
 					</tr>
@@ -32,6 +33,7 @@
 						<td><img src="{{ asset('images/packages/'~vehicle.vehicleRegisCer ) }}" alt="vehicle" style="width:50%;" /></td>
 						<td><img src="{{ asset('images/packages/'~vehicle.vehicleInsurance ) }}" alt="vehicle" style="width:50%;" /></td>
 						<td><img src="{{ asset('images/packages/'~vehicle.vehiclePopulation ) }}" alt="vehicle" style="width:50%;" /></td>
+						<td>{{ vehicle.vehicleNumber }}</td>
 						{#}<td><center><a href="{{ path('trip_booking_engine_vendor_edit_vehicle',{'id':vehicle.id}) }}">
           					<span class="glyphicon glyphicon-pencil"></span></a>
           				</center></td>{#}
