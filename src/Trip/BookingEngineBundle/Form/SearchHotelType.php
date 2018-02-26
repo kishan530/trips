@@ -31,7 +31,7 @@ class SearchHotelType extends AbstractType
 	 */
 	private function getLocations()
 	{
-	    $locations = $this->bookingService->getHotelCities();
+		$locations = $this->catalog->getLocations();
 		$tempLocations = array();
 		foreach ($locations as $location){
             if($location->getActive()){
@@ -48,85 +48,39 @@ class SearchHotelType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        ->add('goingTo', 'choice', array(
-            'expanded' => FALSE,
-            'multiple' => FALSE,
-            'empty_value'   => 'Select City',
-            'choices' => $this->getLocations(),
-            'required'    => TRUE,
-            'attr'   =>  array(
-               
-                'style' => 'border-radius: 5px;margin-bottom:-15px;border-color:#eee;'
-            ),
-            
-        ))
-          /*    ->add('goingTo', 'choice', array(
+             ->add('goingTo', 'choice', array(
             		'expanded' => false,
-                    //'label' => 'Location',
             		'multiple' => false,
-                 'empty_value'   => 'Select City',
             		'choices' => $this->getLocations(),
-                    
             		'required'    => false,
-                    //'data'=>2,
-            		
+                    'data'=>1,
+            		'empty_value'   => 'Select Destination',
                     'attr'   =>  array(
                                         'class'=>'chosen-select',
                                         'data-style'=>'btn-white',
                                         'data-live-search'=>'true',
                                         'data-placeholder'=>'Select Origin'
 				            		),                
-            )) */
+            ))
            
             ->add('date','text',array(
             						'required'    => true,
             						'label' => 'Check In',
 				            		'attr'   =>  array(
 				            				'data-date-format'=>'dd/mm/yyyy',
-                                            'placeholder'=>'Check In',
-				            		    'style' => 'border-radius: 5px;height:37px;margin-bottom:10px;background-color:#fff;color:#000;border-color: #dddddd;',
-				            		    //'onchange' => 'myFunction()'
+                                            'placeholder'=>'Check In'
 				            		),
             		
             				))
             ->add('returnDate','text',array(            						
             						'required'    => true,
-            						'label' => 'Check Out',
+            						'label' => 'Check out',
             						'attr'   =>  array(
             								'data-date-format'=>'dd/mm/yyyy',
-                                            'placeholder'=>'Check out',
-            						    'style' => 'border-radius: 5px;height:37px;margin-bottom:10px;background-color:#fff;color:#000;border-color: #dddddd;',
-            						    //'onchange' => 'myFunction()'
+                                            'placeholder'=>'Check out'
             						),
             		            
             				))
-            				->add('numAdult','hidden',array(
-            				    'required'    => true,
-            				    'label' => 'No of Adult',
-            				     'data'=>'1',
-            				    'attr'   =>  array(
-            				        'placeholder'=>'Number of Adult'
-            				    ),
-            				    
-            				))
-            				->add('numRooms','hidden',array(
-            				    'required'    => true,
-            				    'label' => 'No of Adult',
-            				    'data'=>'1',
-            				    'attr'   =>  array(
-            				        'placeholder'=>'Number of Adult'
-            				    ),
-            				    
-            				))
-            				->add('numChildren','hidden',array(
-            				    'required'    => true,
-            				    'label' => 'No of Children',
-            				    'data'=>'0',
-            				    'attr'   =>  array(
-            				        'placeholder'=>'Number of Children'
-            				    ),
-            				    
-            				))       
         ;
         
                           
@@ -141,7 +95,7 @@ class SearchHotelType extends AbstractType
         		'data_class' => 'Trip\BookingEngineBundle\DTO\SearchHotel',
         		'csrf_protection'   => false,
         		'allow_extra_fields' => true,
-                'attr' => array('class' => 'bookform','id'=>'search')
+                'attr' => array('class' => 'bookform','id'=>'searchHotel')
         ));
     }
 

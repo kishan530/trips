@@ -21,12 +21,9 @@ $("select").change(function() {
 						<th>Sl.No</th>
 						<th>Hotel Name</th>
 						<th>City</th>
-						<th>Check In</th>
-                        <th>Check Out</th>
-						<th>Number Of Rooms</th>
+						<th>Number Of Rooms Available</th>
 						<th>Active Status</th>
-						 <th>Sold Out </th>
-						<th>/</th>
+						
 						<th>/</th>
 					</tr>
                      {% for hotel in hotelsList %}
@@ -38,26 +35,14 @@ $("select").change(function() {
 							 <td>
                                 {{ hotel.city }}
                             </td>
-                             <td>
-                                {{ hotel.checkIn }}
-                            </td>
-                             <td>
-                                {{ hotel.checkOut }}
-                            </td>
 							<td>
 							{{ hotel.numrooms }}
 							</td>
 							 <td>
                                 {{ hotel.active }}
                             </td>
-                            <td>
-                                {{ hotel.soldout }}
-                            </td>
 							<td>
 								<a href="{{ path('trip_site_management_edit_hotel',{ 'id': hotel.id }) }}"><i class="fa fa-pencil-square-o"></i></a>
-							</td>
-							<td>
-								<a href="{{ path('trip_sitemanagementbundle_delete_hotel',{ 'id': hotel.id }) }}"><i class="glyphicon glyphicon-remove"></i></a>
 							</td>
                         </tr>
                     {% endfor %}

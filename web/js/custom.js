@@ -115,18 +115,11 @@
     }), e("#trip_hotel_search_date").datepicker({
         dateFormat: "dd/mm/yy",
         numberOfMonths: 2,
-        minDate: 0,
-        onSelect: function(t) {
-            var a = $("#trip_hotel_search_date").datepicker("getDate");
-            a.setDate(a.getDate() + 1), $("#trip_hotel_search_returnDate").datepicker("option", "minDate", a), e("#roundtrip").is(":checked") && e("#trip_hotel_search_returnDate").focus()
-        }
+        minDate: 0
     }), e("#trip_hotel_search_returnDate").datepicker({
         dateFormat: "dd/mm/yy",
         numberOfMonths: 2,
-        minDate: 0,
-        onSelect: function(t, a) {
-            e("#roundtrip").is(":checked") || e("#dailyRent").is(":checked") || e("#roundtrip").trigger("click")
-        }
+        minDate: 0
     }), e("#trip_search_multiple_0_date").datepicker({
         dateFormat: "dd/mm/yy",
         numberOfMonths: 2,

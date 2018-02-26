@@ -8,9 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Trip\BookingEngineBundle\Form\SearchType;
 use Trip\BookingEngineBundle\DTO\SearchFilter;
 use Trip\BookingEngineBundle\Form\SearchHotelType;
-use Trip\BookingEngineBundle\Form\SearchHotelAgainType;
 use Trip\BookingEngineBundle\DTO\SearchHotel;
-use Trip\BookingEngineBundle\DTO\SearchHotelAgain;
 use Trip\BookingEngineBundle\Entity\Customer;
 use Trip\BookingEngineBundle\DTO\Customer as CustomerDto;
 use Trip\BookingEngineBundle\DTO\NewPackage;
@@ -52,13 +50,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Trip\BookingEngineBundle\Form\VendorNewVehicleType;
 use Trip\BookingEngineBundle\Form\VendorNewDriverType;
 use Trip\BookingEngineBundle\Entity\VendorVehicleFee;
-use Trip\BookingEngineBundle\Entity\HotelCustomer;
-use Trip\BookingEngineBundle\Form\HotelCustomerType;
-use Trip\BookingEngineBundle\Entity\HotelRoomBooking;
-use Trip\BookingEngineBundle\Form\HotelBookingType;
-use Trip\BookingEngineBundle\Form\HotelFilterType;
-use Trip\BookingEngineBundle\DTO\Room;
-
 class BookingController extends Controller
 {
     
@@ -91,38 +82,57 @@ class BookingController extends Controller
         
         return $form;
     }
-   
     
     /**
      *
      */
-    public function indexAction(Request $request){
+    public function indexAction(){
         //$mailService = $this->container->get( 'mail.services' );
         //$mailService->mail('kishan.kish530@gmail.com','Just Trip:Booking Confirmation','this is test');
         $security = $this->container->get ( 'security.context' );
         if ($security->isGranted ( 'ROLE_ADMIN' )){
             return $this->redirect ( $this->generateUrl ( "trip_site_management_billing_list" ) );
         }
-
-        return $this->getHome('TripSiteManagementBundle:Default:index.html.twig',$request);
-
+       
+        return $this->getHome('TripSiteManagementBundle:Default:index.html.twig');
     }
     /**
      *
      */
-    public function hotelsAction(Request $request){
-        return $this->getHome('TripSiteManagementBundle:Default:hotels.html.twig',$request);
+    public function hotelsAction(){
+        return $this->getHome('TripSiteManagementBundle:Default:hotels.html.twig');
     }
     
-    public function dealsAction(Request $request){
-        return $this->getHome('TripSiteManagementBundle:Default:deals.html.twig',$request);
+    public function dealsAction(){
+        return $this->getHome('TripSiteManagementBundle:Default:deals.html.twig');
         
         //test
     }
     /**
      *
      */
-public function footerAction(){
+    private function getHome($view){
+        $em = $this->getDoctrine()->getManager();
+        $searchFilter = new SearchFilter();
+        $form   = $this->createSearchForm($searchFilter);
+        $searchHotel = new SearchHotel();
+        $hotelForm   = $this->createSearchHotelForm($searchHotel);
+        //echo 'hi';
+        //exit();
+        $bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
+       // $cities = $em->getRepository('TripSiteManagementBundle:City')->findAll();
+        //$packages = $em->getRepository('TripSiteManagementBundle:PackageTitle')->findAll();
+        //echo var_dump($bikes);
+        //die();
+        return $this->render($view, array(
+            'form'   => $form->createView(),
+            'hotelForm'   => $hotelForm->createView(),
+            'bikes' => $bikes,
+            //'cities'=> $cities,
+            //'packages' => $packages,
+        ));
+    }
+    public function footerAction(){
         $em = $this->getDoctrine()->getManager();
         $bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
         $cities = $em->getRepository('TripSiteManagementBundle:City')->findAll();
@@ -134,146 +144,10 @@ public function footerAction(){
             'cities'=> $cities,
             'onepackages' => $onepackages,
         ));
-}
-    private function getHome($view ,$request){
-        $em = $this->getDoctrine()->getManager();
-        $searchFilter = new SearchFilter();
-        $form   = $this->createSearchForm($searchFilter);
-        $searchHotel = new SearchHotel();
-        $hotelForm   = $this->createSearchHotelForm($searchHotel);
-        //echo 'hi';
-        //exit();
-        //$search = new SearchHotel();
-        $searchHotel->setNumAdult(1);
-        $searchHotel->setNumRooms(1);
-        $rooms = new ArrayCollection();
-        $room = new Room;
-        $room->setNumAdult(1);
-        $room->setNumChildren(0);
-        $rooms->add($room);
-        $session = $request->getSession();
-        //$rooms = $session->get('rooms');
-        //echo var_dump($rooms);
-        //exit();
-        $session->set('rooms',$rooms);  
-        $bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
-       // var_dump($searchHotel);exit();
-        return $this->render($view, array(
-            'form'   => $form->createView(),
-            'hotelForm'   => $hotelForm->createView(),
-            'search' =>$searchHotel,
-            'rooms' =>$rooms,
-            'bikes' => $bikes,
-        ));
-    }
-          
-    /**
-     *
-     */
-    public function addRoomAction(Request $request){
-       // 
-        $session = $request->getSession();
-        $rooms = $session->get('rooms');
-        $adults = (int) $request->get('adults');
-        $child = (int) $request->get('child');
-       // var_dump($child);exit();
-       
-        $room = new Room;
-        $roomId = $room->getId();
-        if($roomId == null){
-            $roomId =1;
-        }
-        $roomId= $roomId+1;
-        //var_dump($roomId);exit();
-        $room->setNumAdult($adults);
-        $room->setNumChildren($child);
-        $room->setId($child);
-        $rooms->add($room);
-        //return new Response('true');
-        return $this->render('TripBookingEngineBundle:Default:add-more.html.twig', array(
-            'rooms'=>$rooms
-        ));
-    }
-    
-    public function updateRommsAction(Request $request){
-        $session = $request->getSession();
-        $rooms = $session->get('rooms');
-        $adults = (int) $request->get('adults');
-        $child = (int) $request->get('child');
-        //var_dump($child);die;
-        //$room = new Room;
-        //$room->setNumAdult($adults);
-        //$room->setNumChildren($child);
-        //$rooms->add($room);
-        //return new Response('true');
-        return $this->render('TripBookingEngineBundle:Default:add-more.html.twig', array(
-            'rooms'=>$rooms
-        ));
-    }
-    
-    public function addAdultsAction(Request $request){
-        //var_dump($request);
         
-        $session = $request->getSession();
-        $rooms = $session->get('rooms');
-        $adults = (int) $request->get('adults');
-        $key = (int) $request->get('key');
-        $room = $rooms->get($key);
-        if($room){
-            $room->setNumAdult($adults);
-            return new Response('true');
-        }else{
-            
-            return new Response('false');
-        }
-
         
     }
     
-    public function addChildsAction(Request $request){
-        //var_dump($request);
-        
-        $session = $request->getSession();
-        $rooms = $session->get('rooms');
-        $child = (int) $request->get('child');
-        $key = (int) $request->get('key');
-        $room = $rooms->get($key);
-        if($room){
-            $room->setNumChildren($child);
-            return new Response('true');
-        }else{
-            
-            return new Response('false');
-        }
-        
-    }
-    /**
-     *
-     */
-    public function removeRoomAction(Request $request){
-        //
-        $session = $request->getSession();
-        $rooms = $session->get('rooms');
-        $adults = (int) $request->get('adults');
-        $child = (int) $request->get('child');
-        // var_dump($child);exit();
-        
-        $room = new Room;
-        $roomId = $room->getId();
-        if($roomId == null){
-            $roomId =1;
-        }
-        $roomId= $roomId+1;
-        //var_dump($roomId);exit();
-        $room->setNumAdult($adults);
-        $room->setNumChildren($child);
-        $room->setId($child);
-        $rooms->add($room);
-        //return new Response('true');
-        return $this->render('TripBookingEngineBundle:Default:add-more.html.twig', array(
-            'rooms'=>$rooms
-        ));
-    }
     /**
      *
      * @param Search $entity
@@ -503,194 +377,30 @@ public function footerAction(){
     }
     public function searchHotelAction(Request $request)
     {
-        $session = $request->getSession();
-        $rooms = $session->get('rooms');
-        //var_dump($rooms);die;
-        $hotels = array();
         $searchHotel = new SearchHotel();
-        
         $form   = $this->createSearchHotelForm($searchHotel);
         $form->handleRequest($request);
-       // var_dump($searchHotel);
-        //exit();
-       
+        if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $session = $request->getSession();
             $goingTo = $searchHotel->getGoingTo();
-            //echo var_dump($goingTo);
-            //exit();
             $date = $searchHotel->getDate();
             $returnDate = $searchHotel->getReturnDate();
-           // $session->set('searchHotel',$searchHotel);
-            
-               // $numDay = 1;
-                //echo var_dump($numDay);
-                //exit();
-            //}
-            //else{
-           //     $numDay = (int)$numDays->format('%a');
-           // }
-            $today = new \DateTime();
-           
-            $numRoom = $searchHotel->getNumRooms();
-            $qb = $em->getRepository ( 'TripBookingEngineBundle:HotelBooking' )->createQueryBuilder("HotelBooking");
-            $qb ->select('HotelBooking.hotelId','count(HotelBooking.hotelId) as bookedroom')
-            ->andWhere('(:date BETWEEN HotelBooking.chekIn AND HotelBooking.chekOut OR :returnDate BETWEEN HotelBooking.chekIn AND HotelBooking.chekOut)' ) ->setParameter('date', $date ) ->setParameter('returnDate', $returnDate)
-            ->groupBy('HotelBooking.hotelId');
-            $Booking_hotel = $qb->getQuery()->getResult();
-            $roomCountByHotel = array();
-            
-            foreach ( $Booking_hotel as $bookedHotel ) {
-                
-                $roomCountByHotel[$bookedHotel['hotelId']]=$bookedHotel['bookedroom'];
-                
-            }
-            //$dql3 = "SELECT h FROM TripSiteManagementBundle:Hotel h WHERE h.active=1 and h.cityId=$goingTo";
-            $city = $em->getRepository('TripSiteManagementBundle:HotelCities')->findOneBy(array( 'id' => $goingTo));
-            //$hotelsList = $em->getRepository('TripSiteManagementBundle:Hotel')->findBy(array( 'city' =>  $city->getName()));
-            //$query = $em->createQuery($dql3);
-            //$result = $query->getResult();
-           /*  foreach ($result as $value){
-                var_dump($value->getImages());
-            } */
-            //var_dump($result);
-           // exit();
-            $session->set('selectedData',$searchHotel);
-            //$session->set('resultSet',$result);
-            //$session->set('hotelsList',$hotelsList);
             $session->set('searchHotel',$searchHotel);
-            $catalogueService = $this->container->get( 'booking.services' );
-            $hotels = $catalogueService->getHotelsByCity($searchHotel->getGoingTo());
-            
-            //var_dump($hotels);exit();
-            $amenities = $catalogueService->getAmenities();
-            $filters = $catalogueService->getFilters($hotels,$amenities);
-           // var_dump($filters);exit();
-            //
-            $searchHotel->setMinPrice($filters['price']['minPrice']);
-            $searchHotel->setMaxPrice($filters['price']['maxPrice']);
-            $searchHotel->setMin($filters['price']['minPrice']);
-            $searchHotel->setMax($filters['price']['maxPrice']);
-            $filterForm   = $this->createFilterForm($searchHotel,$filters);
-            //
-           // $session->set('search',$search);
-           
-            $hotels = $catalogueService->getavailablerooms($hotels,$roomCountByHotel);
-            $session->set('numRoom',$numRoom);
-            $session->set('hotels',$hotels);
-            $session->set('filters',$filters);
-            
-            $numGuests = $searchHotel->getNumAdult();
-            $date1 = $searchHotel->getDate();
-            $date2 = $searchHotel->getReturnDate();
-            
-            if($date1)
-            
-            {
-                list ( $d, $m, $y ) = explode ( '/', $date1 );
-                $date1 = new \Datetime($y.'-'.$m.'-'.$d);
-                
-            }
-            if($date2)
-            
-            {
-                list ( $d, $m, $y ) = explode ( '/', $date2 );
-                $date2 = new \Datetime($y.'-'.$m.'-'.$d);
-                
-            }
-            if($date1 == $date2){
-                $date2->modify('+1 day');
-                //var_dump($date2);
-                //exit();
-            }
-            $dteDiff  = $date1->diff($date2);
-           // var_dump($dteDiff->format("%d"));
-            //exit();
-            $session->set('numDay',$dteDiff->format("%d"));
-            //$totalPrice=searchHotel->getNumRooms * hotel.price * numDay
+            $dql3 = "SELECT h FROM TripSiteManagementBundle:Hotel h WHERE h.active=1 and h.cityId=$goingTo";
+            $query = $em->createQuery($dql3);
+            $result = $query->getResult();
+            $session->set('selectedData',$searchHotel);
+            $session->set('resultSet',$result);
             return $this->render('TripBookingEngineBundle:Default:searchHotel.html.twig', array(
                 'form'   => $form->createView(),
-                'filterForm'   => $filterForm->createView(),
-                'result'=>$hotels,
-                'today'=>$today,
-                'searchHotel'=>$searchHotel,
-                'city' =>$city,
-                'numRoom'=>$numRoom,
-                'numDay' => $dteDiff->format("%d"),
-                'adults' => $searchHotel->getNumAdult(),
-                'childs' => $searchHotel->getNumChildren(),
-                'rooms'=>$rooms
-               // 'price' => $numRoom*$dteDiff->format("%d")*$numGuests,
+                'result'=>$result,
             ));
             
-        
-        
-    } /**
-    *
-    * @param Request $request
-    */
-    public function hotelFilterAction(Request $request)
-    {
-        $session = $request->getSession();
-       // $session = $request->getSession();
-        $rooms = $session->get('rooms');
-        $hotels = array();
-        $search = $session->get('searchHotel');
-        $form   = $this->createSearchHotelForm($search);
-        
-        //var_dump($search->getLocation());
-        //exit();
-        $hotels = $session->get('hotels');
-        $filters = $session->get('filters');
-        //var_dump($filters);
-        //exit();
-        $numRoom = $session->get('numRoom');
-        
-        $filterForm   = $this->createFilterForm($search,$filters);
-        $filterForm->handleRequest($request);
-        
-        $price = $search->getPrice();
-        $minMaxPrice = explode ( ";", $price );
-        $minPrice = ( float ) $minMaxPrice [0];
-        $maxPrice = ( float ) $minMaxPrice [1];
-        $search->setMinPrice($minPrice);
-        $search->setMaxPrice($maxPrice);
-        
-        $today = new \DateTime();
-        
-        $catalogueService = $this->container->get( 'booking.services' );
-        $hotels = $catalogueService->filterHotels($search,$hotels,$minPrice,$maxPrice);
-        //var_dump(searchHotel);
-        $session->set('searchHotel',$search);
-       //exit();
-        return $this->render('TripBookingEngineBundle:Default:searchHotel.html.twig', array(
-            'form'   => $form->createView(),
-            'filterForm'   => $filterForm->createView(),
-            'result'=>$hotels,
-            'searchHotel'=>$search,
-            'today'=>$today,
-            'numRoom'=>$numRoom,
-            'numDay' => $session->get('numDay'),
-            'adults' => $search->getNumAdult(),
-            'childs' => $search->getNumChildren(),
-            'rooms'=>$rooms
-        ));
+        }
         
     }
     
-    /**
-     *
-     * @param Search $entity
-     * @return unknown
-     */
-    private function createFilterForm(SearchHotel $dto,$filters){
-        $form = $this->createForm(new HotelFilterType($filters), $dto, array(
-            'action' => $this->generateUrl('trip_booking_engine_hotel_filter'),
-            'method' => 'GET',
-        ));
-        
-        return $form;
-    }
     public function bookAction(Request $request)
     {
       /*  $session = $request->getSession();
@@ -744,175 +454,32 @@ public function footerAction(){
         
     }
     
-    public function applyCouponAction()
-    
+    public function applyCouponAction(Request $request)
     {
-        $request = $this->container->get ( 'request' );
-        $session = $request->getSession ();
-        $booking = $session->get('booking');
-        //var_dump($booking);
-        $totalprice = $session->get('totalprice');
-        //var_dump( $totalprice);exit();
-        //$amount = $coupon->getAmount();
-       // $price = $totalprice- $amount;
-        //$session->set('couponAmount',$amount);
-        //$session->set('priceAftercoupon',$amount);
+        $session = $request->getSession();
+        $searchFilter = $session->get('selectedData');
+        $selectedService = $session->get('selected');
+        $couponCode = $request->get('coupon');
         
+        $tripType =  $searchFilter->getTripType();
         
-        $newcoupon = $request->get ( "coupon" );
-        //$newcoupon='FREE100';
-        $searchcoupon = array();
-        //$searchcoupon = $this->getDoctrine()
-        //->getRepository('RoomHotelBundle:CouponCode')
-        //->findBy( array('couponCode' => $newcoupon));
-        
-        date_default_timezone_set('Asia/Kolkata');
-        
-        $today = new \DateTime();
-        $em = $this->getDoctrine ()->getManager();
-        $qb = $em->getRepository ('TripBookingEngineBundle:CouponCode')->createQueryBuilder("c");
-        $qb
-        ->Where(':today between c.startDate and c.expireDate')
-        ->andWhere('c.couponCode = :couponCode')
-        ->setParameter('today', $today )
-        ->setParameter('couponCode', $newcoupon) ;
-        $searchcoupon = $qb->getQuery()->getResult();
-        
-        
-        $response = array();
-        $bookingDetails = array();
-        $response['success'] = 'false';
-        $response['message'] = '';
-        if(count($searchcoupon)>0)
-        {
-            
-            $response['success'] = 'true';
-            foreach ($searchcoupon as $coupan)
-            {
-                $discount=$coupan->getAmount();
+        if($couponCode=='FIRSTRIDE'){
+            if($tripType=='roundtrip'){
+                $price = $selectedService['returnPrice'];
+            }else{
+                
+                if($tripType=='package'){
+                    $price = $selectedService->getPrice()->first()->getPrice();
+                }else{
+                    $price = $selectedService['price'];
+                }
             }
-            $oldDiscount = $booking->getDiscount();
-            //var_dump( $oldDiscount);
-            //var_dump( $discount);
-            //var_dump( $totalprice);
-            $newtotalprice = $totalprice+$oldDiscount-$discount;
-            //var_dump($newtotalprice);exit();
-            $serviceTax = 0;
-            $taxPercentage = 0;
-            
-            
-            if($newtotalprice>999 && $newtotalprice<2499){
-                $taxPercentage = 12;
-            }elseif($newtotalprice>2499 && $newtotalprice<7499){
-                $taxPercentage = 18;
-            }elseif($newtotalprice>7499){
-                $taxPercentage = 24;
-            }
-            
-            //$serviceTax = round(($price*$numDay*$taxPercentage/100),2);
-            $serviceTax = round(($newtotalprice*$taxPercentage/100),2);
-            
-            $totalTax = $serviceTax;
-            //var_dump($totalTax);exit();
-            //$finalPrice = $price+$totalTax;
-            $finalPrice = $newtotalprice+$totalTax;
-            $booking->setTotalPrice($finalPrice);
-            $booking->setDiscount($discount);
-            $booking->setCouponApplyed(1);
-            $booking->setCouponCode($newcoupon);
-            $booking->setServiceTax($totalTax);
-            $bookingDetails['totalPrice'] =  $newtotalprice;
-            $bookingDetails['finalPrice'] =   $finalPrice;
-            $bookingDetails['discount'] = $discount;
-            $bookingDetails['serviceTax'] = $totalTax;
-            $session->set('finalprice',$finalPrice);
+            $price = $price-50;
+            return new response("$price");
+        }else{
+            return new response('false');
         }
-        else
-        {
-            $response['message'] = 'coupon code '.$newcoupon.' doesnt exist ';
-            
-        }
-        
-        
-        $response['bookingDetails'] = $bookingDetails;
-        $session->set('bookingObj',$bookingDetails);
-        
-        return new Response (json_encode($response));
-        
-        
     }
-    
-    
-    
-    public function adminapplyCouponAction()
-    
-    {
-        $request = $this->container->get ( 'request' );
-        $session = $request->getSession ();
-        $booking = $session->get('booking');
-        
-        
-        $newcoupon = $request->get ( "admincoupon" );
-        //$newcoupon='FREE100';
-        $searchcoupon = array();
-        //$searchcoupon = $this->getDoctrine()
-        //->getRepository('RoomHotelBundle:CouponCode')
-        //->findBy( array('couponCode' => $newcoupon));
-        
-        date_default_timezone_set('Asia/Kolkata');
-        
-        $today = new \DateTime();
-        $em = $this->getDoctrine ()->getManager();
-        /*$qb = $em->getRepository ('RoomHotelBundle:CouponCode')->createQueryBuilder("c");
-         $qb
-         ->Where(':today between c.startDate and c.expireDate')
-         ->andWhere('c.couponCode = :couponCode')
-         ->setParameter('today', $today )
-         ->setParameter('couponCode', $newcoupon) ;
-         $searchcoupon = $qb->getQuery()->getResult(); */
-        
-        
-        $response = array();
-        $bookingDetails = array();
-        $response['success'] = 'false';
-        $response['message'] = '';
-        //if(count($searchcoupon)>0)
-        //{
-        
-        $response['success'] = 'true';
-        //foreach ($searchcoupon as $coupan)
-        //{
-        //$discount=$coupan->getAmount();
-        $discount=$newcoupon;
-        //}
-        $oldDiscount = $booking->getDiscount();
-        
-        
-        $finalPrice = $booking->getFinalPrice()+$oldDiscount-$discount;
-        
-        $booking->setFinalPrice($finalPrice);
-        $booking->setDiscount($discount);
-        $booking->setCouponApplyed(1);
-        $booking->setAdminCoupon($newcoupon);
-        $bookingDetails['finalPrice'] = $finalPrice;
-        $bookingDetails['discount'] = $discount;
-        
-        //}
-        //else
-        //{
-        //$response['message'] = 'coupon code '.$newcoupon.' doesnt exist ';
-        
-        //}
-        
-        
-        $response['bookingDetails'] = $bookingDetails;
-        $session->set('bookingObj',$bookingDetails);
-        
-        return new Response (json_encode($response));
-        
-        
-    }
-    
     
     /**
      *
@@ -991,16 +558,10 @@ public function footerAction(){
         //echo var_dump($paymentMode);
         //die();
         $customer = new Customer();
-
         $customer->setEmail($customer->getEmail());
         $customer->setMobile($customer->getMobile());
-
-        //$customer->setEmail($guest->getEmail());
-       // $customer->setMobile($guest->getMobile());
-
         $form   = $this->createBookingForm($customer);
         $form->handleRequest($request);
-        //var_dump($customer);exit();
         if ($form->isValid()) {
             $couponApplyed = $customer->getHaveCoupon();
             $couponCode = $customer->getCouponCode();
@@ -1009,7 +570,7 @@ public function footerAction(){
             $em->persist($customer);
             $em->flush();
             $session->set('customer',$customer);
-           /*  if($searchFilter->getTripType()=='roundtrip'){
+            if($searchFilter->getTripType()=='roundtrip'){
                 $price = $selectedService['returnPrice'];
             }else{
                 if($searchFilter->getTripType()=='package'){
@@ -1017,8 +578,7 @@ public function footerAction(){
                 }else{
                     $price = $selectedService['price'];
                 }
-            } */
-            $price = $selectedService['price'];
+            }
             $finalPrice = $price;
             if($couponCode=='FIRSTRIDE'){
                 $finalPrice = $price-50;
@@ -1348,40 +908,6 @@ public function footerAction(){
         
         
         $redirectUrl = $this->generateUrl ( 'trip_booking_engine_success' );
-        $bookingId = $booking->getBookingId();
-        
-        //echo var_dump($redirectUrl);
-        //exit();
-        
-        
-        $data = $this->getData($request,$amountToPay,$bookingId,$customer,$redirectUrl);
-        //echo var_dump($data);
-        //exit();
-        
-        $info = $this->curlCall($data);
-        
-        
-        
-        
-        return  $data;
-        
-        
-        
-        $info['redirect_url']='https://test.payu.in/_payment';
-        
-        return $this->redirect($info['redirect_url']);
-        
-        //return $info['redirect_url'];
-    }
-    public function getHotelPaymentLink($request,$amountToPay,$customer,$booking){
-        
-        $session = $request->getSession ();
-        
-        $bookingOld = $session->get('booking');
-        
-        
-        
-        $redirectUrl = $this->generateUrl ( 'trip_hotel_booking_engine_success' );
         $bookingId = $booking->getBookingId();
         
         //echo var_dump($redirectUrl);
@@ -2567,15 +2093,7 @@ public function footerAction(){
             $session->set('vendorPwd',$vendorPwd);
             
             $mail = "Dear $name. <br> Click on the following link to rigister with justtrip <br>";
-            $mailUrl=  $this->generateUrl('trip_booking_engine_vendor_registraion_form',array(
-                'name'   => $name,
-                'email'   => $email,
-                'mobileno'   => $mobileno,
-            ));
-            $host = $request->getHost ();
-            $sUrl = 'http://' . $host . $mailUrl;
-            $mail .= "<a href=$sUrl style='text-decoration:none;'>Confirm Now</a>";
-            //$mail .= "<a href='http://localhost/trips/web/app_dev.php/vendor-registraion-form?name=$name&email=$email&mobileno=$mobileno' style='text-decoration:none;'>Confirm Now</a>";
+            $mail .= "<a href='http://localhost/trips/web/app_dev.php/vendor-registraion-form?name=$name&email=$email&mobileno=$mobileno' style='text-decoration:none;'>Confirm Now</a>";
             //$mail .= $name;
             $mailService = $this->container->get( 'mail.services' );
             $mailService->mail($email,'Just Trip:Vendor Registration',$mail);
@@ -2632,15 +2150,8 @@ public function footerAction(){
         if($vendor == null){
             
             $mail = " <p>Dear $name .<br> Click on the following link to create a  password for your justtrip.in account<br></p>";
-            $mailUrl=  $this->generateUrl('trip_booking_engine_test_vendor_password',array(
-                'name'   => $name,
-                'email'   => $email,
-                'mobileno'   => $mobileno,
-            ));
-            $host = $request->getHost ();
-            $sUrl = 'http://' . $host . $mailUrl;
-            
-            $mail .= "<a href=$sUrl style='text-decoration:none;'>Confirm Now</a>";
+            //$mail .= "<a href='http://localhost/trips/web/app_dev.php/test-vendor-password?" . http_build_query(array('data' => $data)) ."' style='text-decoration:none;'>Confirm Now</a>";
+            $mail .= "<a href='http://localhost/trips/web/app_dev.php/test-vendor-password?name=$name&email=$email&mobileno=$mobileno' style='text-decoration:none;'>Confirm Now</a>";
             //$mail .= $name;
             $mailService = $this->container->get( 'mail.services' );
             $mailService->mail($email,'Just Trip:Vendor Confirmation',$mail);
@@ -3343,373 +2854,5 @@ public function footerAction(){
         ));
         
     }
-    
-    /**
-     *
-     * @param Search $entity
-     * @return unknown
-     */
-    private function createHotelBookingForm(HotelCustomer $entity){
-        $form = $this->createForm(new HotelCustomerType(), $entity, array(
-            'action' => $this->generateUrl('trip_booking_engine_hotel_book_submit'),
-            'method' => 'POST',
-        ));
-        
-        return $form;
-    }
-    public function getSelectedRoom($hotel,$roomId){
-        $rooms = $hotel->getHotelRooms();
-        $selectedRoom = null;
-        foreach($rooms as $room){
-            if($room->getId()==$roomId)
-                $selectedRoom = $room;
-        }
-        //var_dump($selectedRoom);
-        //exit();
-        return $selectedRoom;
-    }
-   
-    /**
-     *
-     * @param Request $request
-     */
-    public function hotelBookRoomAction(Request $request)
-    {
-        $id = $request->get('roomId');
-        $room = $request->get('hotelId');
-        $session = $request->getSession();
-        $session->set('roomId',$id);
-        $session->set('hotelId',$room);
-      
-        $searchHotel = $session->get('searchHotel');
-       // var_dump($searchHotel);exit();
-        $numDay = $session->get('numDay');
-        $numRoom = $session->get('numRoom');
-        if($numDay==null && $numRoom==null){
-            $numDay=1;
-            $numRoom = 1;
-        }
-        
-      
-        
-        $search = $session->get('search');
-        //var_dump($search);
-        //exit();
-        
-        $customer = new HotelCustomer();
-        $form   = $this->createHotelBookingForm($customer);
-        $em = $this->getDoctrine()->getManager();
-        $hotel = $em->getRepository('TripSiteManagementBundle:Hotel')->find($room);
-        $hotelRoom = $em->getRepository('TripSiteManagementBundle:HotelRoom')->findOneBy(array( 'id' => $id));
-       
-        $booking = new HotelRoomBooking();
-        $price = $hotelRoom->getPrice();
-        $hotelname = $hotel->getName();
-        //var_dump($hotelname);exit();
-        
-        $session->set('hotelname',$hotelname);
-        $promotionStartDate = $hotelRoom->getPromotionStartDate();
-        $promotionEndDate = $hotelRoom->getPromotionEndDate();
-        $rooomPromoprice = $hotelRoom->getPromotionPrice();
-        $roomType = $hotelRoom->getRoomType();
-        $today = new \DateTime();
-        //$today = $today->format('d/m/Y');
-        if(($promotionStartDate<=$today) && ($today<=$promotionEndDate) )
-        {
-            
-            $newtotalprice = $rooomPromoprice*$numDay*$numRoom;
-        }
-        else
-        {
-            $newtotalprice = $price*$numDay*$numRoom;
-        }
-        
-      
-        
-        
-        $serviceTax = 0;
-        $taxPercentage = 0;
-        
-        
-        if($newtotalprice>999 && $newtotalprice<2499){
-            $taxPercentage = 12;
-        }elseif($newtotalprice>2499 && $newtotalprice<7499){
-            $taxPercentage = 18;
-        }elseif($newtotalprice>7499){
-            $taxPercentage = 24;
-        }
-        
-        //$serviceTax = round(($price*$numDay*$taxPercentage/100),2);
-        $serviceTax = round(($newtotalprice*$taxPercentage/100),2);
-        
-        $totalTax = $serviceTax;
-        //$finalPrice = $price+$totalTax;
-        $finalPrice = $newtotalprice+$totalTax;
-        //me	$booking->setTotalPrice($price);
-        
-        $booking->setTotalPrice($newtotalprice);
-        $booking->setServiceTax($serviceTax);
-        $booking->setDiscount(0);
-        $booking->setCouponApplyed(0);
-        $booking->setFinalPrice($finalPrice);
-        
-        //echo var_dump($booking);
-        //exit();
-        
-        $session->set('taxPercentage',$taxPercentage);
-        $session->set('booking',$booking);
-        
-        
-        
-        
-      
-        $customer = new HotelCustomer();
-        $form   = $this->createHotelBookingForm($customer);
-        $em = $this->getDoctrine()->getManager();
-        $hotel = $em->getRepository('TripSiteManagementBundle:Hotel')->find($room);
-     
-        
-    
-       // var_dump($hotel);
-       // exit();
-        
-        
-        $session->set('selected',$hotel);
-        
-        $session->set('selectedRoom',$hotelRoom);
-        $booking = $session->get('booking');
-        
-        
-        //echo var_dump($session);
-        //exit();
-        
-        $price = $hotelRoom->getPrice();
-        $promotionStartDate = $hotelRoom->getPromotionStartDate();
-        $promotionEndDate = $hotelRoom->getPromotionEndDate();
-        $rooomPromoprice = $hotelRoom->getPromotionPrice();
-        $roomType = $hotelRoom->getRoomType();
-        $session->set('roomType',$roomType);
-        $today  = new \DateTime();
-        return $this->render('TripBookingEngineBundle:Default:bookRoom.html.twig', array(
-            'form'   => $form->createView(),
-            'customer'=> $customer,
-            'hotel'=> $hotel,
-            'searchHotel'=> $searchHotel,
-            'room' =>$room,
-            'booking'=> $booking,
-            'search'=>$search,
-            'step'=> 'review',
-            'numDay'=>$numDay,
-            'numRoom'=>$numRoom,
-            'today'=>$today,
-            'roomprice'=>$price,
-            'rooomPromoprice'=>$rooomPromoprice,
-            'promotionStartDate'=>$promotionStartDate,
-            'promotionEndDate'=>$promotionEndDate,
-            'taxPercentage'=>$taxPercentage,
-            'roomType'=>$roomType,
-            'session'=>$session,
-            'hotelRoom'=>$hotelRoom
-        ));
-    }
-    public function bookHotelSubmitAction(Request $request)
-    {
-        
-        
-        $session = $request->getSession();
-        $resultSet = $session->get('resultSet');
-        $searchFilter = $session->get('selectedData');
-        $selectedService = $session->get('selected');
-        $searchHotel = $session->get('searchHotel');
-        $locations = $session->get('locations');
-        $guest = $session->get('guest');
-        
-        
-        $customer = new HotelCustomer();
-        //$customer->setEmail($guest->getEmail());
-        // $customer->setMobile($guest->getMobile());
-        $form   = $this->createHotelBookingForm($customer);
-        $form->handleRequest($request);
-        //var_dump($customer);exit();
-        if ($form->isValid()) {
-            $couponApplyed = $customer->getHaveCoupon();
-            $couponCode = $customer->getCouponCode();
-            $paymentMode = $customer->getPaymentMode();
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($customer);
-            $em->flush();
-            $session->set('customer',$customer);
-           
-            $finalPrice = $session->get('finalprice');
-           
-            $booking = new HotelBooking();
-            $booking->setCustomerId($customer->getId());
-            $booking->setBookingId($this->getBookingId());
-            $booking->setTotalPrice($session->get('totalprice'));
-            $booking->setFinalPrice($finalPrice);
-            $booking->setStatus('pending');
-            $booking->setJobStatus('Open');
-            $booking->setBookedOn(new \DateTime());
-            $booking->setNumDays($session->get('numDay'));
-            $booking->setNumRooms($searchHotel->getNumRooms());
-            $booking->setNumAdult($searchHotel->getNumAdult());
-            $booking->setChekIn($searchHotel->getDate());
-            $booking->setChekOut($searchHotel->getReturnDate());
-            $booking->setLocation($searchHotel->getGoingTo());
-            $booking->setHotelId($session->get('hotelId'));
-            $booking->setRoomId($session->get('roomId'));
-            $booking->setHotelName($session->get('hotelname'));
-            //$booking->setPreferTime($searchHotel->getPreferTime());
-            $discount = 0;
-            if($couponApplyed){
-                $booking->setCouponApplyed(1);
-                $booking->setCouponCode($couponCode);
-                $booking->setDiscount(50);
-                $discount = 50;
-            }else{
-                $booking->setCouponApplyed(0);
-                $booking->setDiscount($discount);
-            }
-            
-           
-            }
-            $booking->setPaymentMode($paymentMode);
-            
-            $amountToPay = $finalPrice;
-            $tax = 0;
-            if($paymentMode=='advance'){
-                $amountToPay = round($finalPrice*(50/100));
-               
-            }else{
-                $amountToPay = round($finalPrice*(30/100));
-            
-            }
-            $serviceTax = round($finalPrice*(5.6/100),2);
-          
-            $booking->setServiceTax($session->get('taxprice'));
-           
-            $booking->setFinalPrice($finalPrice);
-            $em->persist($booking);
-            $em->flush();
-            $session->set('bookingObj',$booking);
-            $session->set('amountToPay',$finalPrice);
-           // var_dump($finalPrice);exit();
-            $paymentLink = $this->getHotelPaymentLink($request,$finalPrice,$customer,$booking);
-           
-           
-            $payuLink = $this->generateUrl ( 'trip_booking_engine_payment_payu' );
-         
-            return $this->render('TripBookingEngineBundle:Default:hotelPayment.html.twig', array(
-                'customer'   => $customer,
-                'booking'   => $booking,
-                'step'=>'payment',
-                'service'=>$selectedService,
-                'filter'=>$searchFilter,
-                'discount'=>$discount,
-                'paymentLink'   => $paymentLink,
-                'payuLink' => $payuLink,
-                'locations' => $locations,
-            ));
-        }
-       
-        public function hotelPaymentSuccessAction(Request $request)
-        {
-            
-            
-            $session = $request->getSession();
-          
-            $paymentId = $request->get('payment_id');
-            $status = $request->get('status');
-            $resultSet = $session->get('resultSet');
-            $searchFilter = $session->get('selectedData');
-            $selectedService = $session->get('selected');
-            $searchHotel = $session->get('searchHotel');
-            $address = $session->get('address');
-            $addressLine1 = $address->getAddressLine1();
-            $addressLine2 = $address->getAddressLine2();
-            $addressLocation = $address->getLocation();
-            $addressCity = $address->getCity();
-            $checkIn = $searchHotel->getDate();
-            $checkOut = $searchHotel->getReturnDate();
-            $location = $searchHotel->getGoingTo();
-            if($location ==1){
-                $goingTo="Tirupati";
-            }
-            else {
-                $goingTo="Bangalore";
-            }
-            $numAdult = $searchHotel->getNumAdult();
-            $numChildren = $searchHotel->getNumChildren();
-            $numRooms = $searchHotel->getNumRooms();
-            $customer = $session->get('customer');
-            $hotelname = $session->get('hotelname');
-            $booking = $session->get('bookingObj');
-            $amountToPay = $session->get('finalprice');
-            $roomType = $session->get('roomType');
-            $em = $this->getDoctrine()->getManager();
-            if($status=='success'){
-                $booking->setStatus('booked');
-                $paymentMode = $booking->getPaymentMode();
-                $finalPrice = $booking->getFinalPrice();
-                
-                $booking->setAmountPaid($amountToPay);
-                $booking->setPaymentId($paymentId);
-                $em->merge($booking);
-                $em->flush();
-                $email =  $customer->getEmail();
-                $name = $customer->getName();
-                $mobile = $customer->getMobile();
-                $bookingId = $booking->getBookingId();
-                $mail = "Dear $name <br> Your Booking has been Successfully completed.Your Booking Id is $bookingId";
-                $adminMail = "Dear Admin,  <br>$name has Done Booking Successfully and Booking Id is $bookingId";
-                $mail .= "<div class=row>
-<p>*Here are your booking details :*</p>
-                              
-<p>Location&nbsp; : &nbsp;$goingTo</p>
-                                        <p>Hotel Name&nbsp;:&nbsp;$hotelname</p>
-                                        <p>Check-In&nbsp;:&nbsp;$checkIn</p>
-                                        <p>Check-Out&nbsp;:&nbsp;$checkOut</p>
-                                        <p>Room-Type&nbsp;:&nbsp;$roomType</p>
-                                        <p>Guests &nbsp;:&nbsp;$numAdult &nbsp;Adults&nbsp;$numChildren&nbsp;Childs</p>
-                                        <p>Rooms &nbsp;:&nbsp; $numRooms</p>
-                                        <p>Total Price &nbsp;:&nbsp; $amountToPay</p>
-                                         <p>Address &nbsp;:&nbsp; $addressLine1,&nbsp;$addressLine2,&nbsp;$addressLocation,&nbsp;$addressCity </p>
-  
-
-                            </div>";
-				$adminMail .= "<div class=container>
-                               
-                                        <p>Location&nbsp; : &nbsp;$goingTo</p>
-                                        <p>Hotel Name&nbsp;:&nbsp;$hotelname</p>
-                                        <p>Check-In&nbsp;:&nbsp;$checkIn</p>
-                                        <p>Check-Out&nbsp;:&nbsp;$checkOut</p>
-                                        <p>Room-Type&nbsp;:&nbsp;$roomType</p>
-                                        <p>Guests &nbsp;:&nbsp;$numAdult &nbsp;Adults&nbsp;$numChildren&nbsp;Childs</p>
-                                        <p>Rooms &nbsp;:&nbsp; $numRooms</p>
-                                        <p>Total Price &nbsp;:&nbsp; $amountToPay</p>
-                                         <p>Address &nbsp;:&nbsp; $addressLine1,&nbsp;$addressLine2,&nbsp;$addressLocation,&nbsp;$addressCity </p>
-                               
-                            </div>";
-                
-                $mailService = $this->container->get( 'mail.services' );
-                $mailService->mail($email,'Just Trip:Hotel Booking Confirmation',$mail);
-                $mailService->mail('Payment@justtrip.in','Just Trip:Booking Confirmation',$adminMail);
-                $mailService->mail('info@justtrip.in','Just Trip:Hotel Booking Confirmation',$adminMail);
-            }else{
-                $booking->setStatus('fail');
-                $em->merge($booking);
-                $em->flush();
-            }
-            
-            
-            return $this->render('TripBookingEngineBundle:Default:hotelSuccess.html.twig', array(
-                'customer'   => $customer,
-                'service'=>$selectedService,
-                'filter'=>$searchFilter,
-                'status'=>$status,
-            ));
-            
-        }
-    
     //**************End************//
 }

@@ -5,10 +5,18 @@ namespace Trip\SiteManagementBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Trip\SiteManagementBundle\Form\HotelAddressType;
 
-class EditHotelType extends AbstractType
+class HotelType extends AbstractType
 {
-    
+    private $bookingService;
+	private $catalouge;
+	
+	public function __construct($bookingService)
+	{
+		$this->bookingService= $bookingService;
+		$this->catalouge = $bookingService->getCatalog();
+	}
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -17,7 +25,6 @@ class EditHotelType extends AbstractType
     {
         $builder
             ->add('name')
-			->add('city')
             ->add('price')
             ->add('imagePath',null, array('label' => 'Image','required'    => false))
             ->add('numRooms')
@@ -35,10 +42,8 @@ class EditHotelType extends AbstractType
                                         'data-style'=>'btn-white',
 				            		),
             ))
-           
-			
-			
-           
+            ->add('address',new HotelAddressType($this->catalouge))
+             ->add('submit', 'submit', array('label' => 'submit'))
         ;
     }
     
@@ -47,9 +52,9 @@ class EditHotelType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-      $resolver->setDefaults(array(
-           'data_class' => 'Trip\SiteManagementBundle\Entity\Hotel'
-       ));
+        $resolver->setDefaults(array(
+            'data_class' => 'Trip\SiteManagementBundle\Entity\Hotel'
+        ));
     }
 
     /**
@@ -57,6 +62,6 @@ class EditHotelType extends AbstractType
      */
     public function getName()
     {
-        return 'trip_sitemanagementbundle_edit_hotel';
+        return 'trip_sitemanagementbundle_hotel';
     }
 }

@@ -1,640 +1,128 @@
-{% extends 'TripSiteManagementBundle:Default:index.html.twig' %}
+{% extends 'page.html.twig' %}
+{% block javascripts %}
+<script>
+$("select").change(function() {
+			$("#search").submit();						
+		});
+    $("input").change(function() {
+			$("#search").submit();						
+		});
+		 $("input").blur(function() {
+			$("#search").submit();						
+		});
+</script>
+{% endblock %}
 {% block stylesheets %}
- <link rel="stylesheet" href="{{ asset('css/ion.rangeSlider.css') }}" />
-  <link rel="stylesheet" href="{{ asset('css/ion.rangeSlider.skinFlat.css') }}" />
- 
     <!-- Default Styles -->
     <link href="{{ asset('css/search-style.css') }}" rel="stylesheet">
  <link href="{{ asset('css/awe-booking-font.css') }}" rel="stylesheet">
-
- {% endblock %}
-{% block javascripts %}
-<script src="{{ asset('js/ionrangeslider.min.js') }}"></script>
-<script src="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/stickyfill/2.0.3/stickyfill.js') }}"></script>
-<script src="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/stickyfill/2.0.3/stickyfill.min.js') }}"></script>
-<script type="text/javascript">
-var elements = document.getElementById('wrapper');
-Stickyfill.add(elements);
-$("#filter-search").on('change', ':checkbox', function (e) {
-	   $("form[name='hotel_search_filter']").submit();
-	});
-	
-$("#hotel_search_filter_price").ionRangeSlider({
-    type: 'double',
-    prefix: "<i class='fa fa-inr'></i> ",
-    onChange: function (data) {
-    	$("form[name='hotel_search_filter']").submit();
-    },
-    prettify: false,
-    hasGrid: true
-});
-</script>
-<script>
-var room = $('#guests-room').html();
-$("#guests-box").on('click','#add-room',function(e){
-	e.preventDefault();    	
-    	//alert(room);
-    	var roomCount = parseInt($(this).attr('value'));
-    	var adultCount = parseInt($('#trip_hotel_search_numAdult').val());
-
-    	if(roomCount==4){
-        	alert("You reached maximum rooms allowed per booking");
-        	exit();
-    	}
-    	
-    	roomCount+=1;    	
-    	$(this).attr('value',roomCount);
-    	//$('#guests-room').append("<h5>Room "+roomCount+"</h5>");
-    	//$('#guests-room').append(room);
-    	$('#trip_hotel_search_numRooms').val(roomCount);
-    	$('#trip_hotel_search_numAdult').val(adultCount+1);
-    	  	 $.ajax({
-    		      url: "{{ path('trip_booking_engine_add_room') }}",
-    		      type: "GET",
-    		       data: { "adults" : '1',"child" : '0'},
-    		   	       
-    		      success: function(data) {	
-    			     $('#guests-room').html(data);
-    				     
-    		      },
-    	
-    		      error: function(XMLHttpRequest, textStatus, errorThrown)
-    		      {
-    		        alert('Error: ' +  errorThrown);
-    		      }
-    		   });
-    	 var totalAdultCount = parseInt($('#trip_hotel_search_numAdult').val());
-    	 var totalChildCount = parseInt($('#trip_hotel_search_numChildren').val());
-    	var guests = totalAdultCount + totalChildCount;
-    	var guestsText = guests+' Guests, '+roomCount+' Rooms';
-    	$('#guests').val(guestsText);
-});
-$("#guests-box").on('click','.adults',function(e){	
-	e.preventDefault(); //STOP default action 
-	 var id = $(this).attr('id');
-	 var key = $(this).attr('href');
-	 var value = parseInt($(this).attr('value'));
-	// var value = 3;
-	 var totalAdultCount = parseInt($('#trip_hotel_search_numAdult').val());
-	 var totalChildCount = parseInt($('#trip_hotel_search_numChildren').val());
-	 //alert(totalChildCount);
-	 var roomCount = parseInt($('#trip_hotel_search_numRooms').val());
-	 var adultsCount = $(this).closest('.row').find('.adults-count');
-	 var adults =parseInt( $(adultsCount).html());
-	 if (isNaN(adults)) { 
-		 adults= 0
-        } 
-	// alert(adults);
-	 if(id=='decrement'){
-		 adults-=1;
-		 totalAdultCount-=1;
-		 if(adults>=value) $(adultsCount).html(adults); else exit();
-	  }else{
-		adults+=1;
-		totalAdultCount+=1;
-	    if(adults<=2)  $(adultsCount).html(adults); else exit();
-		}
-	 $.ajax({
-		 	      url: "{{ path('trip_booking_engine_add_adults') }}",
-		 	      type: "GET",
-		 	       data: { "adults" : adults,"key" : key},
-		 	   	       
-		 	      success: function(data) {	
-		 		    //$('#guests-room').html(data);
-		 		     
-		 	      },
-		 
-		 	      error: function(XMLHttpRequest, textStatus, errorThrown)
-		 	      {
-		 	        alert('Error: ' +  errorThrown);
-		 	      }
-		 	   });	
-	 $('#trip_hotel_search_numAdult').val(totalAdultCount);
-	 var guests = totalAdultCount + totalChildCount;
- 	var guestsText = guests+' Guests, '+roomCount+' Rooms';
- 	$('#guests').val(guestsText);	
-});
-$("#guests-box").on('click','.children',function(e){	
-	e.preventDefault(); //STOP default action 
-	 var id = $(this).attr('id');
-	 var key = $(this).attr('href');
-	 var value = parseInt($(this).attr('value'));
-	 var totalAdultCount = parseInt($('#trip_hotel_search_numAdult').val());
-	 var totalChildCount = parseInt($('#trip_hotel_search_numChildren').val());
-	 var childrenCount = $(this).closest('.row').find('.children-count');
-	 var roomCount = parseInt($('#trip_hotel_search_numRooms').val());
-	 var children =parseInt( $(childrenCount).html());
-	 if (isNaN(children)) { 
-		 children= 0
-        } 
-	 if(id=='decrement'){
-		 children-=1;
-		 totalChildCount-=1;
-		 if(children>=value) $(childrenCount).html(children); else exit();
-	  }else{
-		  children+=1;
-		  totalChildCount+=1;
-	    if(children<=2)  $(childrenCount).html(children); else exit();
-		}
-	 $.ajax({
-		      url: "{{ path('trip_booking_engine_add_childs') }}",
-		       type: "GET",
-		        data: { "child" : children,"key" : key},
-		    	       
-		       success: function(data) {	
-		 	    //$('#guests-room').html(data);
-				     
-		       },
-		 
-		      error: function(XMLHttpRequest, textStatus, errorThrown)
-		 	      {
-		         alert('Error: ' +  errorThrown);
-		 	      }
-		 	   });	
-	 $('#trip_hotel_search_numChildren').val(totalChildCount);
-	 var guests = totalAdultCount + totalChildCount;
- 	var guestsText = guests+' Guests, '+roomCount+' Rooms';
- 	$('#guests').val(guestsText);
-});
-
-
-$('#guests').click(function(e){
-	//var room = $('#guests-room').html();
-	//$('#guests-room').next(room);
-	e.preventDefault();
-	$.ajax({
-		      url: "{{ path('trip_booking_engine_update_room') }}",
-		      type: "GET",
-		       data: { "adults" : '1',"child" : '0'},
-			   	       
-		      success: function(data) {	
-				     $('#guests-room').html(data);
-					     
-			      },
-		
-			      error: function(XMLHttpRequest, textStatus, errorThrown)
-			      {
-			        alert('Error: ' +  errorThrown);
-			      }
-				   });	
-    	 $('#guests').popover({
-    		    placement: "bottom",
-    		    trigger: "manual",
-    		    html : true,
-    		    content: $("#popover-content").html()
-    		}).popover("show");
-
-
-        
-    });
-
-
-$("#guests-box").on('click','.guestclose',function(e){ 
-	 e.preventDefault(); //STOP default action 
-	 //alert('hi');
-	 $('#guests').popover('hide');
-	
-	/* var x = document.getElementById("guestsclosediv");
-	
-	 
-	   if (x.style.display === "none") {
-	         x.style.display = "block";
-	     } else {
-	         
-	    	 x.style.display = "none";
-	         
-	     } */
-	}); 
-
-function getcheckin() {
-    document.getElementById("hotel_search_checkIn").focus();
-}
-function getcheckout() {
-    document.getElementById("hotel_search_checkOut").focus();
-}
-
-	
-    </script>
-    <script>
-
-$(document).ready(function() {
-    // Configure/customize these variables.
-    var showChar = 100;  // How many characters are shown by default
-    var ellipsestext = "...";
-    var moretext = "Show more >";
-    var lesstext = "Show less";
-    
-
-    $('.more').each(function() {
-        var content = $(this).html();
- 
-        if(content.length > showChar) {
- 
-            var c = content.substr(0, showChar);
-            var h = content.substr(showChar, content.length - showChar);
- 
-            var html = c + '<span class="moreellipses">' + ellipsestext+ '&nbsp;</span><span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="morelink">' + moretext + '</a></span>';
- 
-            $(this).html(html);
-        }
- 
-    });
- 
-    $(".morelink").click(function(){
-        if($(this).hasClass("less")) {
-            $(this).removeClass("less");
-            $(this).html(moretext);
-        } else {
-            $(this).addClass("less");
-            $(this).html(lesstext);
-        }
-        $(this).parent().prev().toggle();
-        $(this).prev().toggle();
-        return false;
-    });
-});
-
-</script>
 {% endblock %}
-
 {% block body %}
 
-    <section class="section clearfix" style="font-family:calibri;">
+    <section class="section clearfix">
         <div class="container">
             <div class="row">
-                <div id="fullwidth" class="col-sm-12" style="margin-bottom: 0px;">
-                  <div role="tabpanel" class="tab-pane active" id="tab_02" >
-                        <h3 style="text-transform: uppercase;text-align: center;font-family: calibri;color:#EE2E24;">Book Your Hotel Now</h3>
-                            <div id="search-form">
-                                 {{ form_start(form) }}
-                                 {{ form_errors(form, { 'global_errors': true }) }}
-                                <div class="row" style="margin-left:0px;">  
-                                 <div id="search-form">
-                                  <div class="col-lg-12 col-sm-12 form-group has-error">
-			    <div class="col-lg-1 col-sm-12 form-group has-error" style="width:60px;">
-			    </div>
-                                    {{ form_start(form) }}
-                                     <span class="city select-box ">
-                                        {{ form_widget(form.goingTo) }}
-                                      </span>
-                                      <span class=" " style="border:none;height: 35px;">
-                                      	
-                                        {{ form_widget(form.date) }}
-                                       
-                                        <i class="fa fa-calendar" onclick="getcheckin()"></i>
-                                      </span>
-                                      <span class=" " style="border:none;height: 35px;">
-                                         {{ form_widget(form.returnDate) }}
-                                        <i class="fa fa-calendar" onclick="getcheckout()"></i>
-                                      </span>
-                                      <span class="city guests" id="guests-box">
-                                      <input type="text" id="guests" name="guests" value="{{ searchHotel.numAdult+searchHotel.numChildren }} Guests, {{ searchHotel.numRooms }} Room" readonly style="height:37px;border-radius:5px;padding-left: 5px;width:95%;background-color:#fff;color:#000;border-color:#e1e1e1;"/>
-                                      <div id="popover-content" style="display: none">
-                                      
-                                      <!--  	<h5>Room 1</h5>-->
-                                      	<a class="close btnguestclosecase guestclose" id="guestclose">&times;</a>
-                                      	
-                                      	<div class="guests-room" id="guests-room">
-                                      	{% for key,room in rooms %}
-                	                      	<h5>Room {{ loop.index }}</h5>  
-                                      	<div class="row">
-                                      		<div class="col-lg-8">
-                                      			<i class="adults-count">{{ room.numAdult }}</i> Adults <i class="guests-text">(0-12 years)</i>
-                                      		</div>
-                                      		<div class="col-lg-4">
-                                      			<a class="adults input-group-addon" id="decrement" value="1" href="{{ key }}">-</a>
-                                      			<a class="adults input-group-addon" id="increment" href="{{ key }}">+</a>
-                                      		</div>                     	
-                                      	</div>
-                                      	<hr>
-                                      	<div class="row">
-                                      		<div class="col-lg-8">
-                                      			<i class="children-count">{{ room.numChildren }}</i> Children <i class="guests-text">(3-12 years)</i>
-                                      		</div>
-                                      		<div class="col-lg-4">
-                                      			<a class="children input-group-addon" id="decrement" value="0" href="{{ key }}">-</a>
-                                      			<a class="children input-group-addon" id="increment" href="{{ key }}">+</a>
-                                      		</div>                     	
-                                      	</div> 
-                                      	<hr> 
-                                      	{% endfor %}
-                                      	</div>
-                                      	<a href="#" id="add-room" value="{{ searchHotel.numRooms }}">Add Room</a>                                    	                      	
-                                      </div>
-                                      </span>
-                                    
-                                      <span class="submit-btn">
-                                      	 {{ form_widget(form.numAdult) }}
-                                      	  {{ form_widget(form.numChildren) }}
-                                      	   {{ form_widget(form.numRooms) }}
-                                        <button class="btn btn-transparent" style="color:#fff;height: 35px;width:100%;background-color:#EE2E24;">Search</button>                       
-                                      </span>
-                                     {{ form_end(form) }}
-                                     </div>
-                                        </div>        	
-                                     </div>
-                                     </div>               
-                                                    
-                                     </div>
-                            </div><!-- end tab-pane -->
+                <div id="fullwidth" class="col-sm-12">
 
-    </div></div></section>
-    <section>
-     <div class="container" >
-        <div class="row">
-        	<div class="col-md-3">
-        	</div>
-        	<div class="col-md-9">
-        		<h5 class="title pull-left" style="text-align:center;font-family:calibri;background-color: #fff;width:72%;margin-left:15px;color:#000;padding: 7px;">Available Hotels for  {{ adults }}&nbsp;Adults,&nbsp;{{ childs }}&nbsp;Childs</h5>
-        	</div>
+                    
+                    
+                    <div class="row">
+  <div class="col-md-9 col-md-push-3">
+				<div class="filter-page__content">
+				  <div class="filter-item-wrapper">
+					  
+					  {% for key,hotel in result %}
+					  <div class="row" style="margin-left: 0px;">
+					  <div class="flight-item border-box" style="padding-bottom: 50px">
+						  <div class="col-md-3">
+						  
+								  <div>
+									  <div class="item-media">
+										<div class="image-cover"><img src="{{ asset('images/hotels/'~hotel.imagePath) }}" alt="" style="height: 100%; width: auto;"></div>
+									  </div>
+								  </div>
+						  </div>
+						  <div class="col-md-9">
+									<div class="row">
+											<div class="col-md-6">
+											  <div class="item-body">
+												<div class="item-title">
+												  <h5><a href="flight-detail.html">{{ hotel.name }}</a></h5>
+												</div>
+												<div class="item-address">
+												 <span class="fa fa-map-marker"></span> {{ hotel.address.location }}, {{ hotel.address.city }}
+												</div>
+											  </div>
+										  
+										  </div>
+										<div class="col-md-6">
+												<div class="row">
+													<div class="item-price-more_hotels">
+													<div class="col-md-6"><div class="price" style="color:#747474"><span class="amount" style="color:#f26722"> <i class="fa fa-inr"></i> {{ hotel.price }}</span> per night</div></div>
+													{# <div class="col-md-6"><a href="{{ path('trip_booking_engine_confirm') }}?selected={{ key }}" class="awe-btn awe-btn btn btn-primary btn-normal btn-sm">Book now</a></div> #}
+													<div class="col-md-6"><a href="{{ path('trip_site_management_view_hotel',{ 'id' : hotel.id }) }}" class="awe-btn awe-btn btn btn-primary btn-normal btn-sm">Book now</a></div>
+													</div>
+												</div>
+										</div>
+									</div>
+								  
+								  
+							</div>
+						  </div>
+					  </div>
+					  {% endfor %}
+				  </div>
+					
+				</div>
+  </div>
+  <div class="col-md-3 col-md-pull-9 border-box sidebar-filter">
+    <div class="page-sidebar">
+      <div class="sidebar-title">
+        <h2>Hotels</h2>
+        <div class="clear-filter"><a href="#">Clear all</a></div>
+      </div>
+        {{ form_start(form) }}
+        {{ form_errors(form, { 'global_errors': true }) }}
+        <div class="widget">
+                 
+        <h3>Going To</h3>
+                                    <div class="form-group make-margin">
+                                         <div class="dropdown">
+                                             {{ form_widget(form.goingTo) }}                                            
+                                        </div>
+                                    </div>
+            <div class="clearfix"></div>
         </div>
+         <div class="widget">
+                  <div class="clearfix"></div>
+                
+<h3>Date</h3>
+                                 <div class="form-group make-margin">
+                                         <div class="dropdown">
+                                              {{ form_widget(form.date) }}                                            
+                                        </div>
+                                    </div>
+        <h3>ReturnDate</h3>
+                                    <div class="form-group make-margin">
+                                         <div class="dropdown">
+                                             {{ form_widget(form.returnDate) }}                                            
+                                        </div>
+                                    </div>
+            <div class="clearfix"></div>
+        </div>
+          <div class="clearfix"></div>
+     
+        
+        {{ form_end(form) }}
+    </div>
+  </div>
+</div>
+                    
+                    
+                    
+                </div>
+            </div>
         </div>
     </section>
-                     
-  <section id="listing" style="font-family:calibri;">
-    <div class="container" >
-      <div class="row">
-      
-        <nav class="col-md-3  border-box sidebar-filter " style="background-color:#fff;">
-        	<ul class="nav nav-pills nav-stacked" data-spy="affix" data-offset-top="205">
-          
-            <h5 class="toggle-title" >Filters Location</h5>
-            <aside class="toggle-content" id="filter-search">
-             {{ form_start(filterForm) }}
-             
-              <div class="general" >
-                
-                <ul class="custom-list additional-filter-list clearfix">
-                {% for key, item in filterForm.location.children %}			
-                  <li style="list-style-type: none;color:#000;">
-                    <span class="checkbox-input">
-                     
-                      {{ form_widget(item) }}
-                      {{ form_label(item) }}
-                    </span>
-                  </li>
-                  {% endfor %}                  
-                </ul>
-                
-                <hr class="filter-divider">
-                <h5 class="title">Price</h5>
-                
-                {{ form_widget(filterForm.price,{
-							'attr':{'data-min':''~searchHotel.min,'data-max':''~searchHotel.max,'data-from':''~searchHotel.minPrice,'data-to':''~searchHotel.maxPrice
-							}}) }}
-								
-               <hr class="filter-divider">
-                <h5 class="title">Property Type</h5>
-                <ul class="custom-list additional-filter-list clearfix">
-                
-                 {% for key, item in filterForm.properties.children %}			
-                  
-                    <span class="checkbox-input">
-                     
-                      {{ form_widget(item) }}
-                      {{ form_label(item) }}
-                    </span>
-                  </br>
-                  {% endfor %} 
-                 
-                </ul>
-              </div>
-            </aside>
-            </ul>
-       
-        </nav>
-        <nav class="col-md-3  border-box sidebar-filters" style="background-color:#fff;">
-        	<ul class="nav nav-pills nav-stacked" data-spy="affixresponsive" data-offset-top="205">
-          
-            <h5 class="toggle-title" >Filters Location</h5>
-            <aside class="toggle-content" id="filter-search">
-             {{ form_start(filterForm) }}
-             
-              <div class="general" >
-                
-                <ul class="custom-list additional-filter-list clearfix">
-                {% for key, item in filterForm.location.children %}			
-                  <li style="list-style-type: none;color:#000;">
-                    <span class="checkbox-input">
-                     
-                      {{ form_widget(item) }}
-                      {{ form_label(item) }}
-                    </span>
-                  </li>
-                  {% endfor %}                  
-                </ul>
-                
-                <hr class="filter-divider">
-                <h5 class="title">Price</h5>
-                
-                {{ form_widget(filterForm.price,{
-							'attr':{'data-min':''~searchHotel.min,'data-max':''~searchHotel.max,'data-from':''~searchHotel.minPrice,'data-to':''~searchHotel.maxPrice
-							}}) }}
-								
-               <hr class="filter-divider">
-                <h5 class="title">Property Type</h5>
-                <ul class="custom-list additional-filter-list clearfix">
-                
-                 {% for key, item in filterForm.properties.children %}			
-                  
-                    <span class="checkbox-input">
-                     
-                      {{ form_widget(item) }}
-                      {{ form_label(item) }}
-                    </span>
-                  </br>
-                  {% endfor %} 
-                 
-                </ul>
-              </div>
-            </aside>
-            </ul>
-       
-        </nav>
-       
-        <div class="listing-content col-md-9 ">
-       
-         
-          {% set i=0 %}
-          {% for hotel in result %}
-          <div class="listing-room-list" style="border: 1px solid #e1e1e1;">
-          <div class="row" >
-           <div class="col-md-3">
-            <div class="thumbnail">
-                {% if hotel.images.first %}
-                <img src="{{ asset('images/Hotels/'~hotel.images.first.imagePath) }}" alt="" class="img-responsive" height="100%">
-                              {% else %}
-               <img src="/hotel/web/img/Hotels/shirdib3.jpg" alt="" class="img-responsive" height="100%">
-               {% endif %}
-            </div>
-          </div>
-         
-            <div class="listing-room-content">
-              
-                <div class="col-md-9">
-                  <header style="margin-top:10px;margin-bottom:-20px;">
-                    <div class="pull-left">
-                    
-                    {% set room=1 %}
-                  
-            		 
-            		  {% if roomCountByHotel[hotel.id] is defined %}
-	            		  {% if roomCountByHotel[hotel.id] >= hotel.numRooms %}
-				                   {% set room=0 %}
-				          {% endif %}
-			          {% endif %}
-                   
-                     {% if (numRoom>hotel.availableRooms) or (hotel.numRooms<numRoom) or (hotel.soldOut or hotel.numRooms<1or room==0) or (searchHotel.date>=hotel.hotelblockStartDate and  searchHotel.date<=hotel.hotelblockEndDate) or ( searchHotel.returnDate>=hotel.hotelblockStartDate and searchHotel.returnDate<=hotel.hotelblockEndDate) or ( searchHotel.date<=hotel.hotelblockStartDate and searchHotel.returnDate>=hotel.hotelblockEndDate) %}
-                      <h5 class="title">
-                        {{ hotel.name }}
-                      </h5>
-                      {% else %}
-                      <h5 class="title">
-                        <a href="{{ path('trip_site_management_view_hotel',{ 'id' : hotel.id }) }}">{{ hotel.name }}</a>
-                      </h5>
-                      {% endif %}
-                      <ul class="tags custom-list list-inline pull-left" style="border:none;padding:0 0 20px;">
-                      
-                 
-                        <li class="location"><i class="fa fa-map-marker"></i> {{ hotel.location }}, {{ hotel.city }}</li>
-                       
-                      </ul>
-                    </div>
-                    <div class="pull-right">
-                   
-                  
-                        {% set guests=searchHotel.numAdult+searchHotel.numchildren %}
-                    {% set price=searchHotel.numRooms * hotel.price * numDay %}
-      
-                      
-                    </div>
-                    
-                    <div class="listing-facitilities">
-                    <div class="row" style="font-family:calibri;">
-                      <div class="col-md-3 col-sm-5" style="text-align: center;font-size: 20px;font-weight: 600;color: red;float:right;">
-                        {% set promotion = false %}
-              {% if hotel.promotionStartDate %}
-                {% if (hotel.promotionStartDate<=today) and (today<=hotel.promotionEndDate) %}  
-                 {% set promotion = true %}
-                 <div class="tipsy from-right-top active txt-ac uprcse price-tipsy">
-                 <div class="arrow_box info theme-blue  savedprice">You Save <i class="fa fa-inr"> {{ price - hotel.promotionPrice }}</i>
-          			</div>
-          			</div>
-                 
-                    <span class="price">
-                        <i class="fa fa-inr"></i> {{ hotel.promotionPrice }} <strike> <i class="fa fa-inr"></i> {{ price }} </strike>
-                      </span>
-                    {% endif %}
-                {% endif %}
-                   
-                   {% if  promotion == false  %} 
-                      <span class="price">
-                      
-                      {% if guests==searchHotel.numRooms %}
-    <p><span style="font-size:24px;"><i class="fa fa-inr"></i>&nbsp;{{price}}</span></br><span style="color:#000;font-size:12px;font-weight:normal;">{{ guests }}&nbsp;Guests,&nbsp;    {{ searchHotel.numRooms }}&nbsp;Rooms</span></p>
-{% elseif guests>1 and searchHotel.numRooms==1 %}
-	{% if searchHotel.numAdult==2 and searchHotel.numchildren==2 %}
-	{% set numRooms=searchHotel.numRooms+1 %}
-		{% set price=hotel.price*numRooms*numDay %}
-		<p><span style="font-size:24px;"><i class="fa fa-inr"></i>&nbsp;{{price}}</span></br><span style="color:#000;font-size:12px;font-weight:normal;">{{ guests }}&nbsp;Guests,&nbsp;{{ numRooms }}&nbsp;Rooms</span></p>
-	{% else %}
-{% set xprice=guests-1 %}
-{% set xprice=xprice*500 %}
-    <p><span style="font-size:24px;"><i class="fa fa-inr"></i>&nbsp;{{price+xprice}}</span></br><span style="color:#000;font-size:12px;font-weight:normal;">{{ guests }}&nbsp;Guests,&nbsp;{{ searchHotel.numRooms }}&nbsp;Rooms</span></p>
-    {% endif %}
-
-{% elseif guests>2 and searchHotel.numRooms==2 %}
-{% if searchHotel.numAdult==4 and searchHotel.numchildren==4 %}
-	{% set numRooms=searchHotel.numRooms+1 %}
-		{% set price=hotel.price*numRooms*numDay %}
-		<p><span style="font-size:24px;"><i class="fa fa-inr"></i>&nbsp;{{price}}</span></br><span style="color:#000;font-size:12px;font-weight:normal;">{{ guests }}&nbsp;Guests,&nbsp;{{ numRooms }}&nbsp;Rooms</span></p>
-	{% else %}
-{% set xprice=guests-2 %}
-{% set xprice=xprice*500 %}
-    <p><span style="font-size:24px;"><i class="fa fa-inr"></i>&nbsp;{{price+xprice}}</span></br><span style="color:#000;font-size:12px;font-weight:normal;">{{ guests }}&nbsp;Guests,&nbsp;{{ searchHotel.numRooms }}&nbsp;Rooms</span></p>
-    {% endif %}
-{% elseif guests>3 and searchHotel.numRooms==3 %}
-{% if searchHotel.numAdult==6 and searchHotel.numchildren==6 %}
-	{% set numRooms=searchHotel.numRooms+1 %}
-		{% set price=hotel.price*numRooms*numDay %}
-		<p><span style="font-size:24px;"><i class="fa fa-inr"></i>&nbsp;{{price}}</span></br><span style="color:#000;font-size:12px;font-weight:normal;">{{ guests }}&nbsp;Guests,&nbsp;{{ numRooms }}&nbsp;Rooms</span></p>
-	{% else %}
-{% set xprice=guests-3 %}
-{% set xprice=xprice*500 %}
-    <p><span style="font-size:24px;"><i class="fa fa-inr"></i>&nbsp;{{price+xprice}}</span></br><span style="color:#000;font-size:12px;font-weight:normal;">{{ guests }}&nbsp;Guests,&nbsp;{{ searchHotel.numRooms }}&nbsp;Rooms</span></p>
-    {% endif %}
-{% elseif guests>4 and searchHotel.numRooms==4 %}
-{% if searchHotel.numAdult==8 and searchHotel.numchildren==8 %}
-	{% set numRooms=searchHotel.numRooms+1 %}
-		{% set price=hotel.price*numRooms*numDay %}
-		<p><span style="font-size:24px;"><i class="fa fa-inr"></i>&nbsp;{{price}}</span></br><span style="color:#000;font-size:12px;font-weight:normal;">{{ guests }}&nbsp;Guests,&nbsp;{{ numRooms }}&nbsp;Rooms</span></p>
-	{% else %}
-{% set xprice=guests-4 %}
-{% set xprice=xprice*500 %}
-    <p><span style="font-size:24px;"><i class="fa fa-inr"></i>&nbsp;{{price+xprice}}</span></br><span style="color:#000;font-size:12px;font-weight:normal;">{{ guests }}&nbsp;Guests,&nbsp;{{ searchHotel.numRooms }}&nbsp;Rooms</span></p>
-    {% endif %}
-  {% else %}  
-{% endif %}
-   
-                      </span>
-                     {% endif %}
-                      </div>
-                      </div>
-                      </div>
-                      
-                    
-                  </header>
-                  <div class="listing-facitilities">
-                  <hr>
-                    <div class="row" style="margin-left: 0px;">
-                      <div class="col-md-3 col-sm-3">
-                        <ul class="facilities-list custom-list" style="font-size:13px;color:#777;">
-                           <li><i class="fa fa-wifi"></i><span> Free WiFi</span></li>
-                        </ul>
-                      </div>
-                      
-                      <div class="col-md-3 col-sm-3">
-                        <ul class="facilities-list custom-list" style="font-size:13px;color:#777;">                         
-                          <li><i class="fa fa-cutlery"></i><span>Free Hot Break Fast</span></li>
-                        </ul>
-                      </div>
-                      <div class="col-md-3 col-sm-3">
-                        <ul class="facilities-list custom-list" style="font-size:13px;color:#777;">
-                          <li><i class="fa fa-female"></i><span> Room service</span></li>
-                         
-                        </ul>
-                      </div>
-                      <div class="col-md-3 col-sm-3" style="margin-left: -20px;">
-                     <div class="pull-right">
-                   
-                   {% if (numRoom>hotel.availableRooms) or (hotel.numRooms<numRoom) or (hotel.soldOut or hotel.numRooms<1 or room==0) or (searchHotel.date>=hotel.hotelblockStartDate and  searchHotel.date<=hotel.hotelblockEndDate) or ( searchHotel.returnDate>=hotel.hotelblockStartDate and searchHotel.returnDate<=hotel.hotelblockEndDate) or ( searchHotel.date<=hotel.hotelblockStartDate and searchHotel.returnDate>=hotel.hotelblockEndDate) %} 
-                             <a class="awe-btn awe-btn btn btn-primary btn-normal btn-sm" disabled>
-                          Sold Out
-                        </a>                   
-                        	
-                        {% else %}
-                        <a href="{{ path('trip_site_management_view_hotel',{ 'id' : hotel.id }) }}" class="awe-btn awe-btn btn btn-primary btn-normal btn-sm" href="">
-                          Select Room
-                        </a>
-                        {% endif %}
-                        </div>
-                        </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {% endfor %}                    
-          
-          
-
-          
-       
-        </div>
-      </div>
-    </div>
-  </section>
-
 
 {% endblock %}

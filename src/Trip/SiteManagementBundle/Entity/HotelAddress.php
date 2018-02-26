@@ -4,7 +4,6 @@ namespace Trip\SiteManagementBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-
 /**
  * HotelAddress
  *
@@ -21,194 +20,223 @@ class HotelAddress
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="address_line1", type="string", length=100)
      */
     private $addressLine1;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="address_line2", type="string", length=100)
      */
     private $addressLine2;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="location", type="string", length=100)
      */
     private $location;
-    
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="pincode", type="string", length=100)
-     */
-    private $pincode;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="city", type="string", length=100)
      */
     private $city;
-    
+
     /**
      * @var integer
      *
      * @ORM\Column(name="city_id", type="integer")
      */
     private $cityId;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="hotel_id", type="integer")
+     */
+    private $hotelId;
+    
     /**
      * @ORM\OneToOne(targetEntity="Trip\SiteManagementBundle\Entity\Hotel", inversedBy="address")
      * @ORM\JoinColumn(name="hotel_id", referencedColumnName="id")
      */
     protected $hotel;
-    
+
+
     /**
+     * Get id
      *
-     * @return the integer
+     * @return integer 
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
-    
+
     /**
+     * Set addressLine1
      *
-     * @param
-     *        	$id
+     * @param string $addressLine1
+     * @return HotelAddress
      */
-    public function setId($id) {
-        $this->id = $id;
+    public function setAddressLine1($addressLine1)
+    {
+        $this->addressLine1 = $addressLine1;
+
         return $this;
     }
-    
+
     /**
+     * Get addressLine1
      *
-     * @return the string
+     * @return string 
      */
-    public function getAddressLine1() {
+    public function getAddressLine1()
+    {
         return $this->addressLine1;
     }
-    
+
     /**
+     * Set addressLine2
      *
-     * @param
-     *        	$addressLine1
+     * @param string $addressLine2
+     * @return HotelAddress
      */
-    public function setAddressLine1($addressLine1) {
-        $this->addressLine1 = $addressLine1;
+    public function setAddressLine2($addressLine2)
+    {
+        $this->addressLine2 = $addressLine2;
+
         return $this;
     }
-    
+
     /**
+     * Get addressLine2
      *
-     * @return the string
+     * @return string 
      */
-    public function getAddressLine2() {
+    public function getAddressLine2()
+    {
         return $this->addressLine2;
     }
-    
+
     /**
+     * Set location
      *
-     * @param
-     *        	$addressLine2
+     * @param string $location
+     * @return HotelAddress
      */
-    public function setAddressLine2($addressLine2) {
-        $this->addressLine2 = $addressLine2;
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
         return $this;
     }
-    
+
     /**
+     * Get location
      *
-     * @return the string
+     * @return string 
      */
-    public function getLocation() {
+    public function getLocation()
+    {
         return $this->location;
     }
-    
+
     /**
+     * Set city
      *
-     * @param
-     *        	$location
+     * @param string $city
+     * @return HotelAddress
      */
-    public function setLocation($location) {
-        $this->location = $location;
+    public function setCity($city)
+    {
+        $this->city = $city;
+
         return $this;
     }
-    
+
     /**
+     * Get city
      *
-     * @return the string
+     * @return string 
      */
-    public function getCity() {
+    public function getCity()
+    {
         return $this->city;
     }
-    
+
     /**
+     * Set cityId
      *
-     * @param
-     *        	$city
+     * @param integer $cityId
+     * @return HotelAddress
      */
-    public function setCity($city) {
-        $this->city = $city;
+    public function setCityId($cityId)
+    {
+        $this->cityId = $cityId;
+
         return $this;
     }
-    
+
     /**
+     * Get cityId
      *
-     * @return the integer
+     * @return integer 
      */
-    public function getCityId() {
+    public function getCityId()
+    {
         return $this->cityId;
     }
-    
+
     /**
+     * Set hotelId
      *
-     * @param
-     *        	$cityId
+     * @param integer $hotelId
+     * @return HotelAddress
      */
-    public function setCityId($cityId) {
-        $this->cityId = $cityId;
+    public function setHotelId($hotelId)
+    {
+        $this->hotelId = $hotelId;
+
         return $this;
     }
-    
+
     /**
+     * Get hotelId
      *
-     * @return the unknown_type
+     * @return integer 
      */
-    public function getHotel() {
-        return $this->hotel;
+    public function getHotelId()
+    {
+        return $this->hotelId;
     }
-    
     /**
+     * Set hotel
      *
-     * @param unknown_type $hotel
+     * @param integer $hotel
+     * @return HotelAddress
      */
-    public function setHotel($hotel) {
+    public function setHotel($hotel)
+    {
         $this->hotel = $hotel;
+
         return $this;
     }
-    
+
     /**
+     * Get hotel
      *
-     * @return the string
+     * @return integer 
      */
-    public function getPincode() {
-        return $this->pincode;
-    }
-    
-    /**
-     *
-     * @param
-     *        	$pincode
-     */
-    public function setPincode($pincode) {
-        $this->pincode = $pincode;
-        return $this;
+    public function getHotel()
+    {
+        return $this->hotel;
     }
 }
