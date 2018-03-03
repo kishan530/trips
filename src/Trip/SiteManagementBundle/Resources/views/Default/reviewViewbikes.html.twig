@@ -90,7 +90,7 @@ $('.vehicle-icon').click(function(e){
             <div class="row">
             	<div class="col-md-3">
             		<div class="brand-color">
-            			<h3 class="details">Date & Time For Pickup</h3>
+            			<h3 class="details">Modify Search</h3>
             			<hr>
             			<div class="row">
             				{{ form_start(form) }}
@@ -132,16 +132,21 @@ $('.vehicle-icon').click(function(e){
                             <div class="bike-background">                                
                                 <h5 class="bike-grid-title"><a style="color: #0694b6;" href="{{ path('trip_site_management_view_bikes',{ 'url':result.locationUrl }) }}">{{ result.title }}</a></h5>
                             
-                            <div class="col-md-5 text-center" >
-                                		<span class="black1">{{ picdate|date("d/m/Y h:i A") }}</span>
+                            <div class="row bikes">
+                                		<div class="col-md-5 text-center" style="padding-right: -1px;">
+                                		<span class="black1">{{ picdate|date("h:i A ") }}</span>
+                                		<span class="black2">{{ picdate|date("d/m/Y ") }}</span>
                                          </div>
                                          <div class="col-md-2 text-center" >
-                                         <p class="icon-font"><i class="fa fa-arrows-h" aria-hidden="true"></i></p>
+                                         <label class="valign">To</label>
                                          </div>
-                                         <div class="col-md-5 text-center" >
-                                         <span class="black1">{{ returndate|date("d/m/Y h:i A") }}</span>
+                                         <div class="col-md-5 text-center" style="padding-right: 0px;">
+                                         <span class="black1">{{ returndate|date("h:i A ") }}</span>
+                                         <span class="black2">{{ returndate|date("d/m/Y ") }}</span>
                                          </div>
+                                 	 </div>
                                 <h6 style="text-align:center;color:#000"><i class="fa fa-inr" aria-hidden="true"></i> {{ result.price }}</h6>
+                                 <span class="limit">({{ result.kmlimit }} km limit)</span>
                          		<div class="row">
                                          <div class="col-md-3" >
                                          </div>

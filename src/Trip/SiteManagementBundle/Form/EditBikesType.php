@@ -37,6 +37,7 @@ class EditBikesType extends AbstractType
 			    'required'    => true,
 			))
 			->add('count')
+			->add('kmlimit')
 			//->add('imgPath')
 			->add('imgpath', 'file',array(
 			    'required' => false,

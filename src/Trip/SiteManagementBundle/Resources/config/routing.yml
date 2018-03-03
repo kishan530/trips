@@ -200,3 +200,10 @@ trip_site_management_delete_packageImage:
 trip_site_management_view_twoday_package:
     path:     /view-twoday-package/{url}
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:viewtwodayPackage }
+    
+trip_site_management_bike_packages:
+    path:     /bikepackages
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikepackages }
+trip_site_management_bike_package_result:
+    path:     /bikepackageresult
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikepackageresult }
