@@ -106,11 +106,25 @@ class bikes
      * @ORM\Column(name="count", type="integer")
      */
     private $count;
-
+    //****************************************************jagadeesh*************************************************************//
     /**
-     * Get id
+     * @var integer
      *
-     * @return integer 
+     * @ORM\Column(name="kmlimit", type="integer")
+     */
+    private $kmlimit;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\bikespackage", mappedBy="bikes", cascade={"all"},  fetch="EAGER")
+     */
+    private $bikespackage;
+    
+    
+    public function __construct() {
+        $this->bikespackage = new ArrayCollection();
+    }
+    /**
+     * @return integer
      */
     public function getId()
     {
@@ -118,102 +132,39 @@ class bikes
     }
 
     /**
-     * Set title
-     *
-     * @param string $title
-     * @return PackageTitle
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-    
-        return $this;
-    }
-
-    /**
-     * Get title
-     *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
         return $this->title;
     }
+
     /**
-     * Set metaTitle
-     *
-     * @param string $metaTitle
-     * @return PackageTitle
-     */
-    public function setMetaTitle($metaTitle)
-    {
-        $this->metaTitle = $metaTitle;
-    
-        return $this;
-    }
-    /**
-     * Get metaTitle
-     *
-     * @return string 
+     * @return string
      */
     public function getMetaTitle()
     {
         return $this->metaTitle;
     }
-    
-    /**
-	 *
-	 * @return the integer
-	 */
-	public function getMetaKeywords() {
-		return $this->metaKeywords;
-	}
-	
-	/**
-	 *
-	 * @param
-	 * $metaKeywords
-	 */
-	public function setMetaKeywords($metaKeywords) {
-		$this->metaKeywords = $metaKeywords;
-		return $this;
-	}
-	
-	/**
-	 *
-	 * @return the integer
-	 */
-	public function getMetaDescription() {
-		return $this->metaDescription;
-	}
-	
-	/**
-	 *
-	 * @param
-	 *        	$metaDescription
-	 */
-	public function setMetaDescription($metaDescription) {
-		$this->metaDescription = $metaDescription;
-		return $this;
-	}
 
     /**
-     * Set statingPrice
-     *
-     * @param float $statingPrice
-     * @return PackageTitle
+     * @return integer
      */
-    public function setStatingPrice($statingPrice)
+    public function getMetaKeywords()
     {
-        $this->statingPrice = $statingPrice;
-    
-        return $this;
+        return $this->metaKeywords;
     }
 
     /**
-     * Get statingPrice
-     *
-     * @return float 
+     * @return integer
+     */
+    public function getMetaDescription()
+    {
+        return $this->metaDescription;
+    }
+
+    /**
+     * @return float
      */
     public function getStatingPrice()
     {
@@ -221,22 +172,15 @@ class bikes
     }
 
     /**
-     * Set imgPath
-     *
-     * @param string $imgPath
-     * @return PackageTitle
+     * @return string
      */
-    public function setImgPath($imgPath)
+    public function getLocation()
     {
-        $this->imgPath = $imgPath;
-    
-        return $this;
+        return $this->location;
     }
 
     /**
-     * Get imgPath
-     *
-     * @return string 
+     * @return string
      */
     public function getImgPath()
     {
@@ -244,22 +188,7 @@ class bikes
     }
 
     /**
-     * Set locationId
-     *
-     * @param \Integer $locationId
-     * @return PackageTitle
-     */
-    public function setLocationId($locationId)
-    {
-        $this->locationId = $locationId;
-    
-        return $this;
-    }
-
-    /**
-     * Get locationId
-     *
-     * @return \Integer 
+     * @return integer
      */
     public function getLocationId()
     {
@@ -267,81 +196,37 @@ class bikes
     }
 
     /**
-     * Set locationUrl
-     *
-     * @param string $locationUrl
-     * @return bikes
-     */
-    public function setLocationUrl($locationUrl)
-    {
-        $this->locationUrl = $locationUrl;
-    
-        return $this;
-    }
-
-    /**
-     * Get locationUrl
-     *
-     * @return string 
+     * @return string
      */
     public function getLocationUrl()
     {
         return $this->locationUrl;
     }
-	
-	/**
-	 *
-	 * @return the string
-	 */
-	public function getPreferTime() {
-		return $this->preferTime;
-	}
-	
-	/**
-	 *
-	 * @param
-	 *        	$preferTime
-	 */
-	public function setPreferTime($preferTime) {
-		$this->preferTime = $preferTime;
-		return $this;
-	}
-	
-	/**
-	 *
-	 * @return the float
-	 */
-	public function getFivehours() {
-		return $this->fivehours;
-	}
-	
-	/**
-	 *
-	 * @param
-	 *        	$fivehours
-	 */
-	public function setFivehours($fivehours) {
-		$this->fivehours = $fivehours;
-		return $this;
-	}
-	
-	/**
-	 *
-	 * @return the float
-	 */
-	public function getDayrent() {
-		return $this->dayrent;
-	}
-	
-	/**
-	 *
-	 * @param
-	 *        	$dayrent
-	 */
-	public function setDayrent($dayrent) {
-		$this->dayrent = $dayrent;
-		return $this;
-	}
+
+    /**
+     * @return string
+     */
+    public function getPreferTime()
+    {
+        return $this->preferTime;
+    }
+
+    /**
+     * @return float
+     */
+    public function getFivehours()
+    {
+        return $this->fivehours;
+    }
+
+    /**
+     * @return float
+     */
+    public function getDayrent()
+    {
+        return $this->dayrent;
+    }
+
     /**
      * @return boolean
      */
@@ -351,18 +236,139 @@ class bikes
     }
 
     /**
-     * @param boolean $soldOut
-     */
-    public function setSoldOut($soldOut)
-    {
-        $this->soldOut = $soldOut;
-    }
-    /**
      * @return integer
      */
     public function getCount()
     {
         return $this->count;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getKmlimit()
+    {
+        return $this->kmlimit;
+    }
+
+    /**
+     * @return \Trip\SiteManagementBundle\Entity\ArrayCollection
+     */
+    public function getBikespackage()
+    {
+        return $this->bikespackage;
+    }
+
+    /**
+     * @param integer $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @param string $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @param string $metaTitle
+     */
+    public function setMetaTitle($metaTitle)
+    {
+        $this->metaTitle = $metaTitle;
+    }
+
+    /**
+     * @param integer $metaKeywords
+     */
+    public function setMetaKeywords($metaKeywords)
+    {
+        $this->metaKeywords = $metaKeywords;
+    }
+
+    /**
+     * @param integer $metaDescription
+     */
+    public function setMetaDescription($metaDescription)
+    {
+        $this->metaDescription = $metaDescription;
+    }
+
+    /**
+     * @param float $statingPrice
+     */
+    public function setStatingPrice($statingPrice)
+    {
+        $this->statingPrice = $statingPrice;
+    }
+
+    /**
+     * @param string $location
+     */
+    public function setLocation($location)
+    {
+        $this->location = $location;
+    }
+
+    /**
+     * @param string $imgPath
+     */
+    public function setImgPath($imgPath)
+    {
+        $this->imgPath = $imgPath;
+    }
+
+    /**
+     * @param integer $locationId
+     */
+    public function setLocationId($locationId)
+    {
+        $this->locationId = $locationId;
+    }
+
+    /**
+     * @param string $locationUrl
+     */
+    public function setLocationUrl($locationUrl)
+    {
+        $this->locationUrl = $locationUrl;
+    }
+
+    /**
+     * @param string $preferTime
+     */
+    public function setPreferTime($preferTime)
+    {
+        $this->preferTime = $preferTime;
+    }
+
+    /**
+     * @param float $fivehours
+     */
+    public function setFivehours($fivehours)
+    {
+        $this->fivehours = $fivehours;
+    }
+
+    /**
+     * @param float $dayrent
+     */
+    public function setDayrent($dayrent)
+    {
+        $this->dayrent = $dayrent;
+    }
+
+    /**
+     * @param boolean $soldOut
+     */
+    public function setSoldOut($soldOut)
+    {
+        $this->soldOut = $soldOut;
     }
 
     /**
@@ -373,8 +379,25 @@ class bikes
         $this->count = $count;
     }
 
+    /**
+     * @param integer $kmlimit
+     */
+    public function setKmlimit($kmlimit)
+    {
+        $this->kmlimit = $kmlimit;
+    }
 
-	
+    /**
+     * @param \Trip\SiteManagementBundle\Entity\ArrayCollection $bikespackage
+     */
+    public function setBikespackage($bikespackage)
+    {
+        $this->bikespackage = $bikespackage;
+    }
+
+    
+    
+    
 	
 	
     

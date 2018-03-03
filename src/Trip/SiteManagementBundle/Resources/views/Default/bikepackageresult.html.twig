@@ -1,0 +1,181 @@
+{% extends 'page.html.twig' %}
+{% block stylesheets %}
+<link href="{{ asset('css/jquery.timepicker.css') }}" rel="stylesheet" media="screen">
+{% endblock %}
+
+{% block meta %}
+    <meta name="keywords" content="{{ bike.metaKeywords }}">
+    <meta name="description" content="{{ bike.metaDescription }}">  
+{% endblock %}
+{% block title %} Bikes On Rent | Justtrip.in {% endblock %}
+{% block javascripts %}
+<script src="{{ asset('js/jquery.timepicker.min.js') }}"></script>
+<script>
+    
+
+$('.preferTime').timepicker({ 'scrollDefault': 'now' });
+    
+         $('.adults').click(function(e){		
+			e.preventDefault(); //STOP default action 
+			 var id = $(this).attr('id');
+			 var value = parseInt($(this).attr('value'));
+             var numAdult = $(this).siblings("input[name=numAdult]");
+			 var adults =parseInt(numAdult.val());
+			 if (isNaN(adults)) { 
+				 adults= 0
+	            } 
+			 if(id=='decrement'){
+				 adults-=1;
+				 if(adults>=value) numAdult.val(adults); else exit();
+			  }else{
+				adults+=1;
+			    if(adults<=20)  numAdult.val(adults); else exit();
+				}	
+	    });
+    
+         $('.vehicle-icon').click(function(e){		
+			e.preventDefault(); //STOP default action 
+			 var id = $(this).attr('id');
+			 var price = $(this).attr('value');
+             var package = parseInt($(this).attr('title'));
+             $('.vehicle'+package).removeClass('active');
+             $(this).addClass('active');
+             $('#vehicleIndex'+package).val(id);
+             $('#price'+package).html(price);
+
+
+	       });
+        
+</script>
+<script type="text/javascript">
+		$(function(){
+			$('#datetime2').appendDtpicker();
+		});
+		
+	</script>
+	<script type="text/javascript">
+		$(function(){
+			$('#datetime3').appendDtpicker();
+		});
+		
+	</script>
+{% endblock %}
+
+{% block breadcrumb %}
+					<div class="c1 breadcrumb text-left">
+                        <div>
+                        	<span class="glyphicon glyphicon-home" style="padding:5px;"></span><a href="{{ path('trip_site_management_homepage')}}">Home</a>
+                        	<span><span class="glyphicon glyphicon-chevron-right" style="padding:5px;"></span><a href="{{ path('trip_site_management_bike_packages')}}">Bike Packages</a></span>
+                        	<span class="glyphicon glyphicon-chevron-right" style="padding:5px;"></span>Bike Package Result</span>
+                        
+                        	
+                        </div>
+                    </div>
+                    
+{% endblock %}
+
+{% block body %}
+<section class="section clearfix" style="padding:30px 0px 40px 0px;">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-3">
+			<div class="row">
+    			<div class="bike-background">
+    				<h3 class="filter">Modify Search</h3>
+    				<hr>
+    				<p class="filter1">Select Date & Time</p>
+    				<div class="row">
+            		    <form>
+            		    	{% set pickupdate = preferdate|date("d/m/Y h:i A") %}
+						    {% set returndate = returndate|date("d/m/Y h:i A") %}
+            				<div class="row" style="text-align:center;">
+            					<label class="filter-details">Pickup date & Time</label><br>
+            						<input class="black3 datetime2" id="datetime2" format="" type="text" name="preferdate" value="{{ pickupdate }}">
+            							<hr class="border">
+            					<label class="filter-details">Dropoff date & Time</label><br>
+            					    <input class="black3 datetime3" id="datetime3" format="" type="text" name="returndate" value="{{ returndate }}">
+            							<hr class="border">
+            						<input class="resultpage" id="vehicleIndex{{ bike.id }}" type="hidden" name="id" value="{{ id }}">
+            						<input type="hidden" name="packagetitle" class="form-control" value="{{ packagetitle }}"/>
+            						<input type="hidden" name="title" required="required" value="{{ title }}" class="bike-popupform">
+            						<button type="submit" class="btn btn-book-now view-bike1" value="Search" style="width:70%;height:30px;margin-bottom:10px;">Search
+                                	</button>
+                            </div>                    										
+    					</form>
+            		</div>
+    			</div>
+    			<p class="brandtype">Duration > <span class="black">{{ leftDays }} Days {{ hours }} Hours</span></p>                   
+            			<hr>
+    		 </div>
+		</div>
+		<div class="col-md-9">
+			<div class="bike-background">
+				<div class="row">
+                	<div class="col-lg-12 col-sm-12 col-xs-12">
+                	 
+                		<div class="col-md-4" >
+                		<h6 class="package-title">{{ packagetitle }}Days Package</h6>
+                			<div>
+                            	<img src="{{asset('images/bikes/'~bike.imgPath) }}" style="width: 100%;">
+                            </div>
+                            <div class="bike-background">
+                            	<h5 class="bike-grid-title1">{{ title }}</h5>
+                            	<div class="row bikes">
+                            	<div class="col-md-5 text-center" style="padding-right: -1px;">
+                                	<span class="black1">{{ pickupdate }}</span>
+                                </div>
+                                <div class="col-md-2 text-center" >
+                                	<label class="valign">To</label>
+                                </div>
+                                <div class="col-md-5 text-center" style="padding-right: 0px;">
+                                	<span class="black1">{{ returndate }}</span>
+                                </div>
+                            	</div>
+                            	<div class="row">
+                            	<div class="col-md-12" >
+                            	{#}<h4 class="packageprice">{{ packageprice }}</h4>{#}
+                            	{#}<h6 class="package-offer">{{ packageoffer }}% Offer Available</h6>{#}
+                            	<h6 style="text-align:center;color:#000"><i class="fa fa-inr" aria-hidden="true"></i> {{ resultprice }}</h6>
+                            	<span class="limit">({{ bike.kmlimit }} km limit)</span>
+                            	</div>
+                            	</div>
+                                <div class="row">
+									<div class="col-md-12" >
+                        				<form action="{{ path('trip_booking_engine_booking_bike') }}" method="get">
+                        				    {#}{% set price1 = packageprice %}{#}
+                            				<input type="hidden" name="packagetitle" class="form-control" value="{{ packagetitle }}">
+                                            <input type="hidden" name="price" class="form-control" value="{{ resultprice }}">
+                                            <input type="hidden" name="id" class="form-control" value="{{ id }}">
+                                            <input type="hidden" name="title" class="form-control" value="{{ title }}">
+                                            <input type="hidden" name="location" class="form-control" value="{{ location }}" >
+                                            <input type="hidden" name="pDate" class="form-control" value="{{ pickupdate }}">
+                                            <input type="hidden" name="rDate" class="form-control" value="{{ returndate }}">
+                                            <input type="hidden" name="leftdays" class="form-control" value="{{ leftDays }}"> 
+											<input type="hidden" name="hours" class="form-control" value="{{ hours }}"> 
+											<input type="hidden" name="countadd" class="form-control" value="1"> 
+											<input type="hidden" name="count" class="form-control" value="{{ bike.count }}"> 
+                                            {% if (bike.count <= 0) %}
+                                          			<a class="btn btn-book-now view-bike" disabled>
+                                                      Sold Out
+                                                    </a>   
+                                          	{% else %}
+                                                <button type="submit" class="btn aligncenter view-bike">Rent Now</button>
+                                            {% endif %}
+                        			   </form>
+                            	   </div>
+				                </div>
+                            </div>
+                		</div>
+                		
+                	</div>
+                </div>
+              </div>
+			</div>
+		</div>
+		<hr>
+	</div>
+</section>
+
+
+
+{% endblock %}

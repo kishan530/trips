@@ -1150,5 +1150,380 @@ input#trip_search_preferTime {
         /*margin: 0px 0 65px 0px;*/
     
 }
+
+/****************************************jagadeesh*************************************************/
+span.black1 {
+    font-size: 16px;
+    font-family: calibri;
+    color: #000000;
+    font-weight: bold;
+}
+
+span.black2 {
+    font-size: 16px;
+    font-family: calibri;
+    color: #212121;
+    font-weight: 500;
+}
+
+label.valign {
+    margin-top: 10px;
+    font-size: 18px;
+    font-family: calibri;
+}
+
+.row.bikes {
+    border-top: 3px solid #f6f6f6;
+    border-bottom: 3px solid #f6f6f6;
+	margin-bottom: 10px;
+	border-left:2px solid #F34F4F;
+}
+span.limit {
+    font-size: 13px;
+    text-align: center;
+    margin-left: 75px;
+}
+
+h3.details {
+    font-family: calibri;
+    font-size: 21px;
+    color: #F34F4F;
+	text-align:center;
+}
+
+p.price {
+    text-align: left;
+    font-weight: 700;
+    padding-top: 5px;
+    padding-right: 0px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    font-size: 15px;
+}
+
+p.pricevalue {
+    text-align: right;
+    font-weight: 700;
+    padding-top: 5px;
+    padding-right: 0px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    font-size: 15px;
+}
+
+span.excess {
+    text-align: right;
+    font-size: 13px;
+    padding-top: 2px;
+    padding-right: 0px;
+    padding-bottom: 2px;
+    padding-left: 10px;
+	font-weight: 400;
+   }
+   
+  h6.title {
+    color: #000;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+	font-family:calibri;
+}
+
+
+.btn-search {
+    text-align: center;
+    background-color: #F34F4F;
+    width: 124px;
+    height: 35px;
+    border-radius: 5px;
+    color: #fff;
+    font-family: calibri;
+    font-size: 16px;
+	margin-right: 230px;
+}
+
+h4.modal-title {
+    text-align: center;
+    color: #fff;
+}
+
+.modal-header {
+    min-height: 16.42857143px;
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+    background-color: #F34F4F;
+}
+
+.modal-header1 .close {
+    margin-top: 0px;
+    /*border: 1px solid #000;
+	border-width: 2px;
+	border-radius: 20px;*/
+    padding: 5px;
+    text-align: center;
+    color:#fff;
+	font-size: 25px;
+    opacity: 1;
+}
+.btn.focus{color:#333;text-decoration:none;}
+
+
+.modal-body1 {
+    position: relative;
+    /* padding: 15px; */
+}
+
+.modal-header1 {
+    min-height: 16.42857143px;
+    padding: 15px;
+    border-bottom: 1px solid #F34F4F;
+    background-color: #F34F4F;
+}
+
+.view-bike1 {
+    color: #fff;
+    background-color: #F34F4F;
+    font-size: 15px;
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 5px;
+    text-transform: capitalize;
+    font-family: calibri;
+    box-shadow: 0 5px 6px 0 rgba(201,201,201,.5);
+    /* -webkit-box-shadow: 0 5px 6px 0 rgba(201,201,201,.5); */
+    -moz-box-shadow: 0 5px 6px 0 rgba(201,201,201,.5);
+}
+
+h3.filter {
+	color:#F34F4F;
+    font-weight: 500;
+    text-align: center;
+    font-size: 25px;
+	cursor: text;
+    transition: .2s ease-out;
+    /*text-align: initial;*/
+	background-color: transparent;
+	border: none;
+	outline: none;
+	margin-left: 0px;
+	font-family:calibri;
+}
+ 
+p.filter1 {
+    font-weight: 400;
+    text-align: left;
+    font-size: 20px;
+	cursor: text;
+    transition: .2s ease-out;
+    text-align: center;
+	background-color: transparent;
+	border: none;
+	outline: none;
+	margin-left: 0px;
+	margin-top:10px;
+	font-family:calibri;
+} 
+
+label.filter-details {
+    font-size: 13px !important;
+    margin: 0 !important;
+    top: 1rem !important;
+    color: #000;
+    /*position: absolute;*/
+    top: 0.8rem;
+    left: 0;
+    font-size: 1rem;
+    cursor: text;
+    transition: .2s ease-out;
+    text-align: initial;
+}
+
+label.filter-details1 {
+    
+	font-size: 13px !important;
+    margin: 0 !important;
+    top: 4rem !important;
+    color: #9e9e9e;
+   /* position: absolute;*/
+    top: 0.8rem;
+    left: 0;
+    font-size: 1rem;
+    cursor: text;
+    transition: .2s ease-out;
+    text-align: initial;
+}
+
+input.black3 {
+    font-size: 13px !important;
+    margin: 0 !important;
+    top: 2rem !important;
+    color: #9e9e9e;
+    /*position: absolute;*/
+    top: 0.8rem;
+    left: 0;
+    font-size: 1rem;
+    cursor: text;
+    transition: .2s ease-out;
+    text-align: initial;
+	background-color: transparent;
+	border: none;
+	/*border-bottom: 1px solid #9e9e9e;*/
+	outline: none;
+	text-align:center;
+}
+
+input.black4 {
+    font-size: 13px !important;
+    margin: 0 !important;
+    top: 5rem !important;
+    color: #9e9e9e;
+    /*position: absolute;*/
+    top: 0.8rem;
+    left: 0;
+    font-size: 1rem;
+    cursor: text;
+    transition: .2s ease-out;
+    text-align: initial;
+	background-color: transparent;
+	border: none;
+	/*border-bottom: 1px solid #9e9e9e;*/
+	outline: none;
+	text-align:center;
+	
+}
+
+.bike-background {
+    background: #ffffff;
+    margin-bottom: 14px;
+    margin-top: -6px;
+    padding: 13px;
+    box-shadow: 0 5px 6px 0 rgba(201,201,201,.5);
+    /* -webkit-box-shadow: 0 5px 6px 0 rgba(201,201,201,.5); */
+    -moz-box-shadow: 0 5px 6px 0 rgba(201,201,201,.5);
+}
+
+hr.border{
+	margin-top: -1px;
+    border-top-color: #9e9e9e;
+	text-align:center;
+	width:50%;
+}
+
+h5.bike-grid-title1 {
+    color: #F34F4F;
+    font-size: 17px;
+	text-align:center;
+}
+
+.modal-body1{
+	padding: 35px;
+    margin-top: 0px;
+    margin-right: 0px;
+	margin-bottom:10px;
+	 margin-left: 0px;
+	 text-align: center;
+}
+
+span.package-title {
+    color: #F34F4F;
+    font-size: 20px;
+}
+
+
+h4.packageprice {
+    text-align: center;
+    color: #000;
+    font-size: 20px;
+    font-family: calibri;
+    font-weight: 500;
+}
+
+h6.package-title {
+    color: #F34F4F;
+    font-size: 20px;
+    text-align: center;
+    font-family: calibri;
+    font-weight: 500;
+}
+
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{color:#555;
+cursor:default;
+background-color:#fff;
+border:1px solid #ddd;
+border-bottom-color:transparent;
+border-top-color:#F34F4F;
+border-top-width: 2px;
+}
+
+h6.package-offer {
+    color: #F34F4F;
+    font-size: 20px;
+    text-align: center;
+    font-family: calibri;
+    font-weight: 500;
+}
+
+input.bike-popupform {
+    width: 70%;
+    padding: 10px;
+    border:none;
+	text-align:initial;
+	font-family: calibri;
+}
+
+select.bike-popupform {
+    width: 70%;
+    padding: 10px;
+    border:none;
+	text-align:initial;
+	font-family: calibri;
+}
+
+
+hr.bike-popup{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border: 0;
+    border-top: 1px solid #eee;
+	text-align:center;
+	width: 70%;
+}
+
+span.package-title1 {
+    color: #F34F4F;
+    font-size: 20px;
+	float:left;
+	margin-left:78px;
+}
+
+span.package-title2 {
+    color: #000;
+    font-size: 16px;
+	float:right;
+	margin-right:78px;
+}
+
+/*.glyphicon {
+    position: relative;
+    top: 1px;
+    font-size: 16px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    border: 1px solid #e1e1e1;
+    padding: 5px;
+    border-radius: 15px;
+    color: #fff;
+    background-color: #000;
+}*/
+
+
+/******************************************************jagadeesh**************************/
+
+
 /* End */
 

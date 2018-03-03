@@ -1,0 +1,417 @@
+{% extends 'page.html.twig' %}
+{% block stylesheets %}
+<link href="{{ asset('css/jquery.timepicker.css') }}" rel="stylesheet" media="screen">
+{% endblock %}
+{% block meta %}
+    <meta name="keywords" content="">
+    <meta name="description" content="">  
+{% endblock %}
+{% block title %}Bikes On Rent | Justtrip.in {% endblock %}
+{% block javascripts %}
+<script src="{{ asset('js/jquery.timepicker.min.js') }}"></script>
+<script>
+$('.preferTime').timepicker({ 'scrollDefault': 'now' });
+    
+         $('.adults').click(function(e){		
+			e.preventDefault(); //STOP default action 
+			 var id = $(this).attr('id');
+			 var value = parseInt($(this).attr('value'));
+             var numAdult = $(this).siblings("input[name=numAdult]");
+			 var adults =parseInt(numAdult.val());
+			 if (isNaN(adults)) { 
+				 adults= 0
+	            } 
+			 if(id=='decrement'){
+				 adults-=1;
+				 if(adults>=value) numAdult.val(adults); else exit();
+			  }else{
+				adults+=1;
+			    if(adults<=20)  numAdult.val(adults); else exit();
+				}	
+	    });
+    
+         $('.vehicle-icon').click(function(e){		
+			e.preventDefault(); //STOP default action 
+			 var id = $(this).attr('id');
+			 var price = $(this).attr('value');
+             var package = parseInt($(this).attr('title'));
+             $('.vehicle'+package).removeClass('active');
+             $(this).addClass('active');
+             $('#vehicleIndex'+package).val(id);
+             $('#price'+package).html(price);
+
+
+	       });
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $( ".datetime6_prefer_date" ).appendDtpicker({
+        onClose: function() {
+            var date2 = $('.datetime6_prefer_date').appendDtpicker('getDate');
+            date2.setDate(date2.getDate()+1)
+            $( ".datetime7_returnDate" ).appendDtpicker("setDate", date2);
+        }
+    });
+    $( ".datetime7_returnDate" ).appendDtpicker();
+});
+</script>
+	<script type="text/javascript">
+		$(function(){
+			$('.datetime8_prefer_date').appendDtpicker();
+				
+		});
+		
+	</script>
+	<script type="text/javascript">
+		$(function(){
+			$('.datetime9_returnDate').appendDtpicker();
+			
+		});
+		
+		
+	</script>
+	<script type="text/javascript">
+		$(function(){
+			$('.datetime10_prefer_date').appendDtpicker();
+				
+		});
+		
+	</script>
+	<script type="text/javascript">
+		$(function(){
+			$('.datetime11_returnDate').appendDtpicker();
+			
+		});
+		
+		
+	</script>
+{% endblock %}
+
+{% block breadcrumb %}
+                    <div class="c1 breadcrumb text-left">
+                        <div><span class="glyphicon glyphicon-home" style="padding:5px;"></span><a href="{{ path('trip_site_management_homepage')}}">Home</a><span>
+                        <span class="glyphicon glyphicon-chevron-right" style="padding:5px;"></span>Bike Packages</span></div>
+                    </div>
+                    <h3></h3>
+{% endblock %}
+
+{% block body %}
+
+<section class="space"></section>
+<section class="section clearfix" style="background-color:#fff;">
+    <div class="container">
+        <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-xs-12">
+                            {% for bike in bikes %} 
+                            <div class="col-md-4" >
+                            <div>
+                            	<img src="{{asset('images/bikes/'~bike.imgPath) }}" style="width: 100%;">
+                            </div>
+                            	<div class="bike-background">
+                            		<h6 class="title">{{ bike.title }}</h6>
+                                    <!-- Nav tabs -->
+                                    <ul class="nav nav-tabs">
+                                        {% for index,package in bike.bikespackage %}
+                                        {% if loop.index==1 %}
+                                        	<li class="col-md-4 active"><a href="#7days{{ bike.id }}" data-toggle="tab">
+                                            	<span>{{ package.packagename }}DAYS</span> </a>
+                                            </li>
+                                        {% elseif loop.index==2 %}
+                                            <li class="col-md-4"><a href="#15days{{ bike.id }}" data-toggle="tab">
+                                            	<span>{{ package.packagename }}DAYS</span></a>
+                                            </li>
+                                        {% else %}
+                                            <li class="col-md-4"><a href="#30days{{ bike.id }}" data-toggle="tab">
+                                                <span>{{ package.packagename }}DAYS</span></a>
+                                            </li>
+                                        {% endif %}
+                                        {% endfor %} 
+                                    </ul>
+                                    <!-- Tab panes -->
+                                    	<div class="tab-content">
+                                            {% for index,package in bike.bikespackage %}
+                                            {% if loop.index==1 %}
+                                            	<div class="tab-pane fade in active" id="7days{{ bike.id }}" style="font-size: 12px;">
+                                                	<div class="row">
+                        						    	<div class="col-md-6" style="text-align:left;">
+                            								<p class="price">Price</p>
+                            							    <span class="excess">Km limit</span><br>
+                            								<span class="excess">Excess km</span>
+                            								<p class="price">Additional Usage</p>
+                            								<span class="excess">Additional price/hr</span>
+                            								<span class="excess">Additional km limit</span>
+                        								</div>
+                                                        <div class="col-md-6" style="text-align:right;">
+                                                        	<p class="pricevalue">{{ package.packageprice }}.0</p>
+                                                        	<span class="excess">{{ package.packagekmlimit }}.0 km</span><br>
+                                                        	<span class="excess">{{ package.packageexcesskm }}.0/km</span><br>
+                                                        	<p class="price"></p><br>
+                                                        	<span class="excess">{{ package.packageadditionalpriceday }}.0/hr</span><br>
+                                                        	<span class="excess">{{ package.packageadditionalkmlimit }}.0 km/hr</span>
+                                                        </div>
+                        							</div>
+                        							{#}<div class="row">
+                        								<div class="col-md-12">
+                        									<h6 class="package-offer">{{ package.packageoffer }}% Offer Available</h6>
+                        								</div>
+                        							</div>{#}
+                        							<div class="row"> 
+                                                    	<div class="col-md-12" >
+                                                            {% if (bike.count <= 0) %}
+                                                            	<button class="btn btn-book-now view-bike" disabled>
+                                                                	Sold Out
+                                                                </button>   
+                                                            {% else %}
+                                                                <button class="btn btn-book-now view-bike1" data-toggle="modal" data-target=".myModal{{ bike.id }}">
+                                                                	Rent Now
+                                                                </button>
+                                                        <div class="modal fade myModal{{ bike.id }}" role="dialog">
+                                    						<div class="modal-dialog">
+                                    							<div class="modal-content">
+                                        							<div class="modal-header1">
+                                                                      	<button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                      		<h4 class="modal-title">Let's Ride</h4>
+                                        							</div>
+                                        						<div class="modal-body1" style="">
+                                        							<div class="row">
+                                        								<span class="package-title1">{{ bike.title }}</span>
+                                        								{#}<span class="glyphicon glyphicon-resize-horizontal"></span>{#}
+                                        								<span class="package-title2">{{ package.packagename }}Days Package</span>
+                                        							</div>
+                                        							<div class="row"><hr></div>
+                                          								{% set id= bike.id %}
+                                          								{% set title= bike.title %}
+                                          								{% set packagetitle= package.packagename %}
+                                          								{% set packageprice= package.packageprice %}
+                                          								{% set Kmlimit= package.packageadditionalkmlimit %}
+                                          								{% set packageoffer= package.packageoffer %}
+                                          								<form name="bike_package" action="{{ path('trip_site_management_bike_package_result') }}" method="get">
+                                                                        	<input type="hidden" name="packagetitle" class="form-control" value="{{ packagetitle }}">
+                                          								{#}{{ app.session.set('packagetitle',packagetitle) }}{#}
+                                                                        	<input type="hidden" name="packageprice" class="form-control" value="{{ packageprice }}">
+                                                                        	<input type="hidden" name="Kmlimit" class="form-control" value="{{ Kmlimit }}">
+                                                                        	<input type="hidden" name="packageoffer" class="form-control" value="{{ packageoffer }}">
+                                                                        	<input type="hidden" name="id" required="required" value="{{ id }}" class="bike-popupform"/>
+																			<input type="hidden" name="title" required="required" value="{{ title }}" class="bike-popupform">
+                                          								{#}{{ app.session.set('title',title) }}{#}
+																			<select class="bike-popupform" type="text" name="location"><br>
+                                                                        	<option>Tirupati</option>
+                                                                        	<option>Bangalore</option>
+                                                                        	</select>
+                                                                        	<hr class="bike-popup">
+                                                                        	<input type="datetime" class="datetime6_prefer_date bike-popupform" name="preferdate" required="required"  placeholder="Pickup Date"  required />
+                                                                        	<hr class="bike-popup">
+                                                                        	<input type="datetime" class="datetime7_returnDate bike-popupform" name="returndate" required="required"  placeholder="Return Date"  required />
+                                                                        	<hr class="bike-popup">
+                                                                        		<button type="submit" class="btn btn-book-now view-bike1" value="Search" style="height:20px;width:70%;height:30px;margin-bottom:10px;">Search
+                                                                        		</button>
+                                                                        </form>
+                                                  			    </div>
+                                        			            <div class="modal-footer">
+                                          					        {#}<button type="button_search" class="btn btn-search" data-dismiss="modal">Search</button>{#}
+                                        						</div>
+                                      						    </div>
+                                      
+                                   		 					</div>
+                                  						</div>
+                                                            {% endif %}
+                                                        </div>
+                                         			</div>
+                                                 </div>
+                                            {% elseif loop.index==2 %}
+                                            	<div class="tab-pane fade" id="15days{{ bike.id }}"  style="font-size: 12px;">
+                                                	<div class="row">
+                        						    	<div class="col-md-6" style="text-align:left;">
+                            								<p class="price">Price</p>
+                            							    <span class="excess">Km limit</span><br>
+                            								<span class="excess">Excess km</span>
+                            								<p class="price">Additional Usage</p>
+                            								<span class="excess">Additional price/hr</span>
+                            								<span class="excess">Additional km limit</span>
+                        								</div>
+                                                        <div class="col-md-6" style="text-align:right;">
+                                                        	<p class="pricevalue">{{ package.packageprice }}.0</p>
+                                                        	<span class="excess">{{ package.packagekmlimit }}.0 km</span><br>
+                                                        	<span class="excess">{{ package.packageexcesskm }}.0/km</span><br>
+                                                        	<p class="price"></p><br>
+                                                        	<span class="excess">{{ package.packageadditionalpriceday }}.0/hr</span><br>
+                                                        	<span class="excess">{{ package.packageadditionalkmlimit }}.0 km/hr</span>
+                                                        </div>
+                        							</div>
+                        							{#}<div class="row">
+                        								<div class="col-md-12">
+                        									<h6 class="package-offer">{{ package.packageoffer }}% Offer Available</h6>
+                        								</div>
+                        							</div>{#}
+                        							<div class="row"> 
+                                                    	<div class="col-md-12" >
+                                                            {% if (bike.count <= 0) %}
+                                                            	<button class="btn btn-book-now view-bike" disabled>
+                                                                	Sold Out
+                                                                </button>   
+                                                            {% else %}
+                                                                <button class="btn btn-book-now view-bike1" data-toggle="modal" data-target=".myModal{{ bike.id }}">
+                                                                	Rent Now
+                                                                </button>
+                                                        <div class="modal fade myModal{{ bike.id }}" role="dialog">
+                                    						<div class="modal-dialog">
+                                    							<div class="modal-content">
+                                        							<div class="modal-header1">
+                                                                      	<button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                      		<h4 class="modal-title">Let's Ride</h4>
+                                        							</div>
+                                        						<div class="modal-body1" style="">
+                                        							<div class="row">
+                                        								<span class="package-title1">{{ bike.title }}</span>
+                                        								<span class="package-title2">{{ package.packagename }}Days Package</span>
+                                        							</div>
+                                        							<div class="row"><hr></div>
+                                          								{% set id= bike.id %}
+                                          								{% set title= bike.title %}
+                                          								{% set packagetitle= package.packagename %}
+                                          								{% set packageprice= package.packageprice %}
+                                          								{% set Kmlimit= package.packageadditionalkmlimit %}
+                                          								{% set packageoffer= package.packageoffer %}
+                                          								<form name="bike_package" action="{{ path('trip_site_management_bike_package_result') }}" method="get">
+                                                                        	<input type="hidden" name="packagetitle" class="form-control" value="{{ packagetitle }}">
+                                          								{#}{{ app.session.set('packagetitle',packagetitle) }}{#}
+                                                                        	<input type="hidden" name="packageprice" class="form-control" value="{{ packageprice }}">
+                                                                        	<input type="hidden" name="Kmlimit" class="form-control" value="{{ Kmlimit }}">
+                                                                        	<input type="hidden" name="packageoffer" class="form-control" value="{{ packageoffer }}">
+                                                                        	<input type="hidden" name="id" required="required" value="{{ id }}" class="bike-popupform"/>
+																			<input type="hidden" name="title" required="required" value="{{ title }}" class="bike-popupform">
+                                          								{#}{{ app.session.set('title',title) }}{#}
+																			<select class="bike-popupform" type="text" name="location"><br>
+                                                                        	<option>Tirupati</option>
+                                                                        	<option>Bangalore</option>
+                                                                        	</select>
+                                                                        	<hr class="bike-popup">
+                                                                        	<input type="datetime" class="datetime8_prefer_date bike-popupform" name="preferdate" required="required"  placeholder="Pickup Date"  required />
+                                                                        	<hr class="bike-popup">
+                                                                        	<input type="datetime" class="datetime9_returnDate bike-popupform" name="returndate" required="required"  placeholder="Return Date"  required />
+                                                                        	<hr class="bike-popup">
+                                                                        		<button type="submit" class="btn btn-book-now view-bike1" value="Search" style="height:20px;width:70%;height:30px;margin-bottom:10px;">Search
+                                                                        		</button>
+                                                                        </form>
+                                                  			    </div>
+                                        			            <div class="modal-footer">
+                                          					        {#}<button type="button_search" class="btn btn-search" data-dismiss="modal">Search</button>{#}
+                                        						</div>
+                                      						    </div>
+                                      
+                                   		 					</div>
+                                  						</div>
+                                                            {% endif %}
+                                                        </div>
+                                         			</div>
+                                     			</div>
+                                             {% else %}
+                                                <div class="tab-pane fade" id="30days{{ bike.id }}" style="font-size: 12px;">
+                                                    <div class="row">
+                        						    	<div class="col-md-6" style="text-align:left;">
+                            								<p class="price">Price</p>
+                            							    <span class="excess">Km limit</span><br>
+                            								<span class="excess">Excess km</span>
+                            								<p class="price">Additional Usage</p>
+                            								<span class="excess">Additional price/hr</span>
+                            								<span class="excess">Additional km limit</span>
+                        								</div>
+                                                        <div class="col-md-6" style="text-align:right;">
+                                                        	<p class="pricevalue">{{ package.packageprice }}.0</p>
+                                                        	<span class="excess">{{ package.packagekmlimit }}.0 km</span><br>
+                                                        	<span class="excess">{{ package.packageexcesskm }}.0/km</span><br>
+                                                        	<p class="price"></p><br>
+                                                        	<span class="excess">{{ package.packageadditionalpriceday }}.0/hr</span><br>
+                                                        	<span class="excess">{{ package.packageadditionalkmlimit }}.0 km/hr</span>
+                                                        </div>
+                        							</div>
+                        							{#}<div class="row">
+                        								<div class="col-md-12">
+                        									<h6 class="package-offer">{{ package.packageoffer }}% Offer Available</h6>
+                        								</div>
+                        							</div>{#}
+                                                    <div class="row"> 
+                                                    	<div class="col-md-12" >
+                                                            {% if (bike.count <= 0) %}
+                                                            	<button class="btn btn-book-now view-bike" disabled>
+                                                                	Sold Out
+                                                                </button>   
+                                                            {% else %}
+                                                                <button class="btn btn-book-now view-bike1" data-toggle="modal" data-target=".myModal{{ bike.id }}">
+                                                                	Rent Now
+                                                                </button>
+                                                        <div class="modal fade myModal{{ bike.id }}" role="dialog">
+                                    						<div class="modal-dialog">
+                                    							<div class="modal-content">
+                                        							<div class="modal-header1">
+                                                                      	<button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                      		<h4 class="modal-title">Let's Ride</h4>
+                                        							</div>
+                                        						<div class="modal-body1" style="">
+                                        							<div class="row">
+                                        								<span class="package-title1">{{ bike.title }}</span>
+                                        								<span class="package-title2">{{ package.packagename }}Days Package</span>
+                                        							</div>
+                                        							<div class="row"><hr></div>
+                                          								{% set id= bike.id %}
+                                          								{% set title= bike.title %}
+                                          								{% set packagetitle= package.packagename %}
+                                          								{% set packageprice= package.packageprice %}
+                                          								{% set Kmlimit= package.packageadditionalkmlimit %}
+                                          								{% set packageoffer= package.packageoffer %}
+                                          								<form name="bike_package" action="{{ path('trip_site_management_bike_package_result') }}" method="get">
+                                                                        	<input type="hidden" name="packagetitle" class="form-control" value="{{ packagetitle }}">
+                                          								{#}{{ app.session.set('packagetitle',packagetitle) }}{#}
+                                                                        	<input type="hidden" name="packageprice" class="form-control" value="{{ packageprice }}">
+                                                                        	<input type="hidden" name="Kmlimit" class="form-control" value="{{ Kmlimit }}">
+                                                                        	<input type="hidden" name="packageoffer" class="form-control" value="{{ packageoffer }}">
+                                                                        	<input type="hidden" name="id" required="required" value="{{ id }}" class="bike-popupform"/>
+																			<input type="hidden" name="title" required="required" value="{{ title }}" class="bike-popupform">
+                                          								{#}{{ app.session.set('title',title) }}{#}
+																			<select class="bike-popupform" type="text" name="location"><br>
+                                                                        	<option>Tirupati</option>
+                                                                        	<option>Bangalore</option>
+                                                                        	</select>
+                                                                        	<hr class="bike-popup">
+                                                                        	<input type="datetime" class="datetime10_prefer_date bike-popupform" name="preferdate" required="required"  placeholder="Pickup Date"  required />
+                                                                        	<hr class="bike-popup">
+                                                                        	<input type="datetime" class="datetime11_returnDate bike-popupform" name="returndate" required="required"  placeholder="Return Date"  required />
+                                                                        	<hr class="bike-popup">
+                                                                        		<button type="submit" class="btn btn-book-now view-bike1" value="Search" style="height:20px;width:70%;height:30px;margin-bottom:10px;">Search
+                                                                        		</button>
+                                                                        </form>  	
+                                                  			    </div>
+                                        			            <div class="modal-footer">
+                                          					        {#}<button type="button_search" class="btn btn-search" data-dismiss="modal">Search</button>{#}
+                                        						</div>
+                                      						    </div>
+                                      
+                                   		 					</div>
+                                  						</div>
+                                                            {% endif %}
+                                                        </div>
+                                         			</div>
+                                                </div>
+                                             {% endif %}
+                                             {% endfor %}
+                               </div>
+                           </div>
+                        </div>
+                     {% endfor %}
+                 </div>
+             </div>
+         </div>    
+</section>
+<section class="space"></section>
+{% endblock %}
+                              
+                    
+						 
+					
+           
+            
+        
+  
+   
+        
