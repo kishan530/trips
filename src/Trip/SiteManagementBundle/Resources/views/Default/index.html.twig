@@ -186,7 +186,7 @@ $("#trip_search_multiple_1_leavingFrom").change(function() {
     }
     }
 </style>
-    <section class="section fullscreen background parallax" style="background-image:url({{ asset('images/home-banner.png') }});position: relative;padding: 73px 0;" data-img-width="1920" data-img-height="1003" data-diff="100">
+    <section class="section fullscreen background parallax" style="background-image:url({{ asset('images/Just-Trip-banner-6.jpg') }});position: relative;padding: 73px 0;" data-img-width="1920" data-img-height="1003" data-diff="100">
         <div class="container">
             <div class="row homeform">
                 {#
@@ -525,109 +525,6 @@ $("#trip_search_multiple_1_leavingFrom").change(function() {
             </div>
         </div>
     </section>
-   <section class="section clearfix section-bottom fullscreen background parallax sec-bg">
-		<div class="container">
-			
-			<div class="hotel-title">
-                <h3>OUR CARS </h3>
-                <hr class="left">
-            </div><!-- end hotel-title -->
-            <div class="row">
-                <div class="col-md-12">
-                	<div class="col-md-3">
-                		<div class="bike-background">  
-                		<img src="{{ asset('images/justtrip-hasback.jpg') }}" alt="" class="img-responsive">
-                		<hr>
-                		<h6 class="home-grid-title">Hatchback</h6>
-                		<p class="cars-grid-cont">Seating Capacity :<span class="cars-grid-left">4+1</span></p>
-                		<p class="cars-grid-cont">Per Kilo Meter :<span class="cars-grid-left">Rs 10/-</span></p>
-                		<p class="cars-grid-cont">Minimum Kms :<span class="cars-grid-left">300</span></p>
-                		<p class="cars-grid-cont">Driver Allowance :<span class="cars-grid-left">Rs 300/-</span></p>
-                		<p class="cars-grid-cont">Local Usage :<span class="cars-grid-left">Rs 1400/-+ Diesel</span></p>
-                		</div>
-                	</div>
-                	<div class="col-md-3">
-                		<div class="bike-background">  
-                		<img src="{{ asset('images/justtrip-sedan.jpg') }}" alt="" class="img-responsive">
-                		<hr>
-                		<h6 class="home-grid-title">Sedan</h6>
-                		<p class="cars-grid-cont">Seating Capacity :<span class="cars-grid-left">4+1</span></p>
-                		<p class="cars-grid-cont">Per Kilo Meter :<span class="cars-grid-left">Rs 9/-</span></p>
-                		<p class="cars-grid-cont">Minimum Kms :<span class="cars-grid-left">300</span></p>
-                		<p class="cars-grid-cont">Driver Allowance :<span class="cars-grid-left">Rs 300/-</span></p>
-                		<p class="cars-grid-cont">Local Usage :<span class="cars-grid-left">Rs 1600/-+ Diesel</span></p>
-                		</div>
-                	</div>
-                	<div class="col-md-3">
-                		<div class="bike-background">  
-                		<img src="{{ asset('images/justtrip-innova.jpg') }}" alt="" class="img-responsive">
-                		<hr>
-                		<h6 class="home-grid-title">SUV</h6>
-                		<p class="cars-grid-cont">Seating Capacity :<span class="cars-grid-left">7+1</span></p>
-                		<p class="cars-grid-cont">Per Kilo Meter :<span class="cars-grid-left">Rs 14/-</span></p>
-                		<p class="cars-grid-cont">Minimum Kms :<span class="cars-grid-left">300</span></p>
-                		<p class="cars-grid-cont">Driver Allowance :<span class="cars-grid-left">Rs 300/-</span></p>
-                		<p class="cars-grid-cont">Local Usage :<span class="cars-grid-left">Rs 2000/-+ Diesel</span></p>
-                		</div>
-                	</div>
-                	<div class="col-md-3">
-                		<div class="bike-background">  
-                		<img src="{{ asset('images/justtrip-tempo.jpg') }}" alt="" class="img-responsive" style="height: 132px;">
-                		<hr>
-                		<h6 class="home-grid-title">Tempo Traveller</h6>
-                		<p class="cars-grid-cont">Seating Capacity :<span class="cars-grid-left">12+1</span></p>
-                		<p class="cars-grid-cont">Per Kilo Meter :<span class="cars-grid-left">Rs 17/-</span></p>
-                		<p class="cars-grid-cont">Minimum Kms :<span class="cars-grid-left">350</span></p>
-                		<p class="cars-grid-cont">Driver Allowance :<span class="cars-grid-left">Rs 300/-</span></p>
-                		<p class="cars-grid-cont">Local Usage :<span class="cars-grid-left">Rs 2500/-+ Diesel</span></p>
-                		</div>
-                	</div>
-                </div><!-- end col -->
-            </div><!-- end row -->
-		</div><!-- end container -->
-	</section><!-- end section --> 
-	<section class="section clearfix section-bottom fullscreen background parallax">
-		<div class="container">
-		
-			<div class="hotel-title">
-                <h3>OUR FLEET</h3>
-                <hr class="left">
-            </div><!-- end hotel-title -->
-            <div class="row">
-                <div class="col-md-12">
-                	{% for bike in bikes %} 
-                            <div class="col-md-2">
-                            <div class="bike-background">   
-                            	 <img src="{{asset('images/bikes/'~bike.imgPath) }}" style="width: 100%;">                             
-                                <h4 style="text-align:center;color:#000"><a class="view-bikes-title" href="{{ path('trip_site_management_view_bikes',{ 'url':bike.locationUrl }) }}">{{ bike.title }}</a></h4>
-                                <div><h6 style="text-align:center;color:#000">Starts @{{ bike.statingPrice }}</h6></div>
-                                 <div class="row">
-                                         <div class="col-md-12" >
-                                         </div>
-                                         <div class="col-md-12" >
-                                         {% if (bike.count <= 0) %}
-                                          			<a class="btn btn-book-now view-bike" disabled>
-                                                      Sold Out
-                                                    </a>   
-                                          	{% else %}
-                                                <a class="btn btn-book-now view-bike" href="{{ path('trip_site_management_view_bikes',{ 'url':bike.locationUrl }) }}">
-                                                  Rent Now
-                                                </a>
-                                            {% endif %}
-        								{#<a class="btn aligncenter view-bike"   href="{{ path('trip_site_management_view_bikes',{'url':bike.locationUrl }) }}">Rent Now</a>#}
-                                         </div>
-                                         <div class="col-md-12" >
-                                         </div>
-                                 </div>
-                              
-                              </div>
-                            </div>
-                           {% endfor %}
-                </div>
-           </div>
-		</div>
-	
-	</section>
     <section class="section clearfix sec-bg">
         <div class="container">
             <div class="hotel-title">
@@ -837,6 +734,110 @@ $("#trip_search_multiple_1_leavingFrom").change(function() {
             </div><!-- end row -->
         </div><!-- end container -->
     </section><!-- end section -->  
+   <section class="section clearfix section-bottom fullscreen background parallax sec-bg">
+		<div class="container">
+			
+			<div class="hotel-title">
+                <h3>OUR CARS </h3>
+                <hr class="left">
+            </div><!-- end hotel-title -->
+            <div class="row">
+                <div class="col-md-12">
+                	<div class="col-md-3">
+                		<div class="bike-background">  
+                		<img src="{{ asset('images/justtrip-hasback.jpg') }}" alt="" class="img-responsive">
+                		<hr>
+                		<h6 class="home-grid-title">Hatchback</h6>
+                		<p class="cars-grid-cont">Seating Capacity :<span class="cars-grid-left">4+1</span></p>
+                		<p class="cars-grid-cont">Per Kilo Meter :<span class="cars-grid-left">Rs 10/-</span></p>
+                		<p class="cars-grid-cont">Minimum Kms :<span class="cars-grid-left">300</span></p>
+                		<p class="cars-grid-cont">Driver Allowance :<span class="cars-grid-left">Rs 300/-</span></p>
+                		<p class="cars-grid-cont">Local Usage :<span class="cars-grid-left">Rs 1400/-+ Diesel</span></p>
+                		</div>
+                	</div>
+                	<div class="col-md-3">
+                		<div class="bike-background">  
+                		<img src="{{ asset('images/justtrip-sedan.jpg') }}" alt="" class="img-responsive">
+                		<hr>
+                		<h6 class="home-grid-title">Sedan</h6>
+                		<p class="cars-grid-cont">Seating Capacity :<span class="cars-grid-left">4+1</span></p>
+                		<p class="cars-grid-cont">Per Kilo Meter :<span class="cars-grid-left">Rs 9/-</span></p>
+                		<p class="cars-grid-cont">Minimum Kms :<span class="cars-grid-left">300</span></p>
+                		<p class="cars-grid-cont">Driver Allowance :<span class="cars-grid-left">Rs 300/-</span></p>
+                		<p class="cars-grid-cont">Local Usage :<span class="cars-grid-left">Rs 1600/-+ Diesel</span></p>
+                		</div>
+                	</div>
+                	<div class="col-md-3">
+                		<div class="bike-background">  
+                		<img src="{{ asset('images/justtrip-innova.jpg') }}" alt="" class="img-responsive">
+                		<hr>
+                		<h6 class="home-grid-title">SUV</h6>
+                		<p class="cars-grid-cont">Seating Capacity :<span class="cars-grid-left">7+1</span></p>
+                		<p class="cars-grid-cont">Per Kilo Meter :<span class="cars-grid-left">Rs 14/-</span></p>
+                		<p class="cars-grid-cont">Minimum Kms :<span class="cars-grid-left">300</span></p>
+                		<p class="cars-grid-cont">Driver Allowance :<span class="cars-grid-left">Rs 300/-</span></p>
+                		<p class="cars-grid-cont">Local Usage :<span class="cars-grid-left">Rs 2000/-+ Diesel</span></p>
+                		</div>
+                	</div>
+                	<div class="col-md-3">
+                		<div class="bike-background">  
+                		<img src="{{ asset('images/justtrip-tempo.jpg') }}" alt="" class="img-responsive" style="height: 132px;">
+                		<hr>
+                		<h6 class="home-grid-title">Tempo Traveller</h6>
+                		<p class="cars-grid-cont">Seating Capacity :<span class="cars-grid-left">12+1</span></p>
+                		<p class="cars-grid-cont">Per Kilo Meter :<span class="cars-grid-left">Rs 17/-</span></p>
+                		<p class="cars-grid-cont">Minimum Kms :<span class="cars-grid-left">350</span></p>
+                		<p class="cars-grid-cont">Driver Allowance :<span class="cars-grid-left">Rs 300/-</span></p>
+                		<p class="cars-grid-cont">Local Usage :<span class="cars-grid-left">Rs 2500/-+ Diesel</span></p>
+                		</div>
+                	</div>
+                </div><!-- end col -->
+            </div><!-- end row -->
+		</div><!-- end container -->
+	</section><!-- end section --> 
+	<section class="section clearfix section-bottom fullscreen background parallax sec-bg">
+		<div class="container">
+		
+			<div class="hotel-title">
+                <h3>OUR FLEET</h3>
+                <hr class="left">
+            </div><!-- end hotel-title -->
+            <div class="row">
+                <div class="col-md-12">
+                	{% for bike in bikes %} 
+                            <div class="col-md-2">
+                            <div class="bike-background">   
+                            	 <img src="{{asset('images/bikes/'~bike.imgPath) }}" style="width: 100%;">                             
+                                <h4 style="text-align:center;color:#000"><a class="view-bikes-title" href="{{ path('trip_site_management_view_bikes',{ 'url':bike.locationUrl }) }}">{{ bike.title }}</a></h4>
+                                <div><h6 style="text-align:center;color:#000">Starts @{{ bike.statingPrice }}</h6></div>
+                                 <div class="row">
+                                         <div class="col-md-12" >
+                                         </div>
+                                         <div class="col-md-12" >
+                                         {% if (bike.count <= 0) %}
+                                          			<a class="btn btn-book-now view-bike" disabled>
+                                                      Sold Out
+                                                    </a>   
+                                          	{% else %}
+                                                <a class="btn btn-book-now view-bike" href="{{ path('trip_site_management_view_bikes',{ 'url':bike.locationUrl }) }}">
+                                                  Rent Now
+                                                </a>
+                                            {% endif %}
+        								{#<a class="btn aligncenter view-bike"   href="{{ path('trip_site_management_view_bikes',{'url':bike.locationUrl }) }}">Rent Now</a>#}
+                                         </div>
+                                         <div class="col-md-12" >
+                                         </div>
+                                 </div>
+                              
+                              </div>
+                            </div>
+                           {% endfor %}
+                </div>
+           </div>
+		</div>
+	
+	</section>
+    
 	
 	
     <section class="section clearfix section-bottom fullscreen background parallax">

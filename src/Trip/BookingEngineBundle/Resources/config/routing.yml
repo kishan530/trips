@@ -151,4 +151,16 @@ trip_booking_engine_vendor_list:
 trip_booking_engine_vendor_list_view_more:
     path:     /vendor-list-view -more
     defaults: { _controller: TripBookingEngineBundle:Booking:vendorListViewMore} 
+trip_booking_engine_dest_tpt:
+    path:     /tirupati/{url}
+    defaults: { _controller: TripBookingEngineBundle:Booking:destSearch }
+trip_booking_engine_dest_ch:
+    path:     /chennai/{url}
+    defaults: { _controller: TripBookingEngineBundle:Booking:destSearch }
+trip_booking_engine_dest_bl:
+    path:     /bangalore/{url}
+    defaults: { _controller: TripBookingEngineBundle:Booking:destSearch }
+trip_booking_engine_dest_kn:
+    path:     /bangalore/{url}
+    defaults: { _controller: TripBookingEngineBundle:Booking:destSearch }
        

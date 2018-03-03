@@ -1,0 +1,589 @@
+{% extends 'page.html.twig' %}
+{% block stylesheets %}
+		<link href="{{ asset('css/jquery.timepicker.css') }}" rel="stylesheet" media="screen">
+		
+{% endblock %}
+{% block meta %}
+    <meta name="keywords" content="{% for dest in destlocations %} {{ dest.metakeywords }} {% endfor %}">
+    <meta name="description" content="{% for dest in destlocations %} {{ dest.metades }} {% endfor %}">  
+{% endblock %}
+{% block title %} {% for dest in destlocations %} {{ dest.title }} {% endfor %} {% endblock %}
+{% block javascripts %}
+<script src="{{ asset('js/jquery.timepicker.min.js') }}"></script>
+
+
+
+<script>
+    
+    
+    $('#trip_search_preferTime').timepicker({ 'scrollDefault': 'now' });
+    
+     $('.adults').click(function(e){		
+			e.preventDefault(); //STOP default action 
+			 var id = $(this).attr('id');
+			 var value = parseInt($(this).attr('value'));
+			 var adults =parseInt( $('#trip_search_numAdult').val());
+			 if (isNaN(adults)) { 
+				 adults= 0
+	            } 
+			 if(id=='decrement'){
+				 adults-=1;
+				 if(adults>=value) $('#trip_search_numAdult').val(adults); else exit();
+			  }else{
+				adults+=1;
+			    if(adults<=20)  $('#trip_search_numAdult').val(adults); else exit();
+				}							 		   			   							
+	    });
+        $('.days').click(function(e){		
+			e.preventDefault(); //STOP default action 
+			 var id = $(this).attr('id');
+			 var value = parseInt($(this).attr('value'));
+			 var days =parseInt( $('#trip_search_numDays').val());
+			 if (isNaN(days)) { 
+				 days= 0
+	            } 
+			 if(id=='decrement'){
+				 days-=1;
+				 if(days>=value) $('#trip_search_numDays').val(days); else exit();
+			  }else{
+				days+=1;
+			    if(days<=20)  $('#trip_search_numDays').val(days); else exit();
+				}							 		   			   							
+	    });
+
+        
+        
+$("#trip_search_goingTo").change(function() {
+			$('#trip_search_date').focus();				
+		});
+
+$("#trip_search_leavingFrom").change(function() {
+            var selected = $(this).val();
+            $('#trip_search_goingTo option').removeAttr('disabled');
+            $('#trip_search_goingTo option[value="'+selected+'"]').attr('disabled',true);
+            $("#trip_search_goingTo").trigger("chosen:updated");				
+		});
+    
+$("#trip_search_multiple_0_leavingFrom").change(function() {
+            var selected = $(this).val();
+            $('#trip_search_multiple_0_goingTo option').removeAttr('disabled');
+            $('#trip_search_multiple_0_goingTo option[value="'+selected+'"]').attr('disabled',true);
+            $("#trip_search_multiple_0_goingTo").trigger("chosen:updated");				
+		});
+$("#trip_search_multiple_1_leavingFrom").change(function() {
+            var selected = $(this).val();
+            $('#trip_search_multiple_1_goingTo option').removeAttr('disabled');
+            $('#trip_search_multiple_1_goingTo option[value="'+selected+'"]').attr('disabled',true);
+            $("#trip_search_multiple_1_goingTo").trigger("chosen:updated");				
+		});
+    
+   $("#trip_search_multiple_0_goingTo").change(function() {	
+        var selected = $(this).val();
+       $("#trip_search_multiple_1_leavingFrom").val(selected);
+       $("#trip_search_multiple_1_leavingFrom").trigger("chosen:updated");
+        $('#trip_search_multiple_1_goingTo option').removeAttr('disabled');
+        $('#trip_search_multiple_1_goingTo option[value="'+selected+'"]').attr('disabled',true);
+        $("#trip_search_multiple_1_goingTo").trigger("chosen:updated");	
+        $("#trip_search_multiple_0_date").focus();
+		      });
+   $("#trip_search_multiple_1_goingTo").change(function() {	
+        var selected = $(this).val();
+       $("#trip_search_multiple_2_leavingFrom").val(selected);
+       $("#trip_search_multiple_2_leavingFrom").trigger("chosen:updated");
+        $('#trip_search_multiple_2_goingTo option').removeAttr('disabled');
+        $('#trip_search_multiple_2_goingTo option[value="'+selected+'"]').attr('disabled',true);
+        $("#trip_search_multiple_2_goingTo").trigger("chosen:updated");	
+        $("#trip_search_multiple_1_date").focus();
+		      });
+    
+    $(".tripNav label").change(function() {					
+        $(".tripNav label").removeClass('tripSel');
+        $(this).addClass('tripSel');
+       var type= $(this).attr('for');
+        if(type=='multicity'){
+            $('#multipleCity').show();
+            $('#genaral').hide();
+        }else{
+            $('#multipleCity').hide();
+            $('#genaral').show();
+        }
+        if(type=='roundtrip'){
+            $("#trip_search_returnDate").removeAttr("readonly");
+             $("#trip_search_returnDate").attr("required","true");
+        }else{
+            if(type!='dailyRent'){
+            $("#trip_search_returnDate").attr("readonly","readonly");
+            $("#trip_search_returnDate").val('');
+            $("#trip_search_returnDate").removeAttr("required");
+            }
+        }
+     });
+    
+    
+    
+     // keep track of how many city fields have been rendered
+    var cityCount = '{{ form.multiple|length }}';
+
+   // $(document).ready(function() {
+        $('#add-another-city').click(function(e) {
+            e.preventDefault();
+            if(cityCount>4){
+                alert('Max 5 only');
+                exit();
+            }
+
+            var cityList = $('#city-fields-list');
+
+            // grab the prototype template
+            var newWidget = cityList.attr('data-prototype');
+            // replace the "__name__" used in the id and name of the prototype
+            // with a number that's unique to your city
+            newWidget = newWidget.replace(/__name__/g, cityCount);
+            cityCount++;
+
+            // create a new list element and add it to the list
+            var newLi = $('<div></div>').html(newWidget);
+            newLi.appendTo(cityList);
+            var key = cityCount-1;
+            var next = key+1;
+             $( "#trip_search_multiple_"+key+"_date" ).datepicker({ dateFormat: 'dd/mm/yy',numberOfMonths:2,minDate: 0, });
+            $(".chosen-select").chosen({no_results_text: "Oops, nothing found!"});
+               $("#trip_search_multiple_"+key+"_goingTo").change(function() {	
+                    var selected = $(this).val();
+                   $("#trip_search_multiple_"+next+"_leavingFrom").val(selected);
+                   $("#trip_search_multiple_"+next+"_leavingFrom").trigger("chosen:updated");
+                    $('#trip_search_multiple_'+next+'_goingTo option').removeAttr('disabled');
+                    $('#trip_search_multiple_'+next+'_goingTo option[value="'+selected+'"]').attr('disabled',true);
+                    $("#trip_search_multiple_"+next+"_goingTo").trigger("chosen:updated");	
+                    $("#trip_search_multiple_"+key+"_date").focus();
+		      });
+            $("#trip_search_multiple_"+key+"_leavingFrom").change(function() {
+                var selected = $(this).val();
+                $('#trip_search_multiple_'+key+'_goingTo option').removeAttr('disabled');
+                $('#trip_search_multiple_'+key+'_goingTo option[value="'+selected+'"]').attr('disabled',true);
+                $("#trip_search_multiple_"+key+"_goingTo").trigger("chosen:updated");				
+		      });
+            var prev = key-1;
+            var selected = $("#trip_search_multiple_"+prev+"_goingTo").val();
+            $("#trip_search_multiple_"+key+"_leavingFrom").val(selected);
+            $("#trip_search_multiple_"+key+"_leavingFrom").trigger("chosen:updated");
+             $('#trip_search_multiple_'+key+'_goingTo option').removeAttr('disabled');
+            $('#trip_search_multiple_'+key+'_goingTo option[value="'+selected+'"]').attr('disabled',true);
+             $("#trip_search_multiple_"+key+"_goingTo").trigger("chosen:updated");
+        });
+   // });
+    
+   
+   
+</script>
+<script>
+
+$( window ).load(function(){
+	var locv=$('#txt_name1').val();;
+	$('#trip_search_leavingFrom').val(locv);
+
+});
+$( window ).load(function(){
+	var locv=$('#txt_name2').val();;
+	$('#trip_search_goingTo').val(locv);
+
+});
+
+$(document).ready(function() {
+    var date = new Date();
+
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+
+    var today = day + "-" + month + "-" + year;       
+    $("#trip_search_date").attr("value", today);
+});
+</script>
+{% endblock %}
+{% block breadcrumb %}
+					<div class="c1 breadcrumb text-left">
+                        <div>
+                        	<span class="glyphicon glyphicon-home" style="padding:5px;"></span><a href="{{ path('trip_site_management_homepage')}}">Home</a>
+                        	<span><span class="glyphicon glyphicon-chevron-right" style="padding:5px;"></span>{% for dest in destlocations %} {{ dest.title }} {% endfor %}</span>
+                      </div>
+                    </div>
+                    
+{% endblock %}
+ {% block body %}
+<style>
+    .tripNav label{
+        cursor: pointer;
+    }
+    @media (min-width:992px){
+    .remove_left{
+        padding-left: 0px;
+    }
+    .remove_right{
+        padding-right: 0px;
+    }
+    .btn-top{
+        margin-top: 25px !important;
+    }
+    }
+</style>
+
+    <section class="section fullscreen background parallax" style="background-image:url({{ asset('images/Just-Trip-banner-6.jpg') }});position: relative;padding: 73px 0;" data-img-width="1920" data-img-height="1003" data-diff="100">
+        <div class="container">
+            <div class="row homeform">
+                {#
+                <div class="col-md-12 col-xs-12">
+                    <div class="home-message banner-message">
+                        <h1> Help Line No :</br>+91-9900585533</h1>
+                        <h2> TAXI / HOTEL <br>Service providers in Tirupati </h2> 
+                        <h1> "Pay 10% Now And Book Your Ride" </h1>
+                       
+                    </div><!-- end homemessage -->
+                </div><!-- end col -->  #}
+                <div class="col-md-12 col-xs-12">
+                    <div class="home-form">
+                        <h2>{% for dest in destlocations %} {{ dest.title }} {% endfor %}</h2>
+                        
+                        <!-- Nav tabs -->
+                        {% block navTabs %}
+                        <ul class="nav nav-tabs homebanner" role="tablist">
+                            <li class="active"><a href="#tab_01" aria-controls="tab_01" role="tab" data-toggle="tab" class="homebanner-color"><i class="icon-sedan3"></i>   Cars</a></li>
+							<li><a href="{{ path('trip_site_management_bikes_on_rent')}}" class="homebanner-color"><img src="{{ asset('images/bike.png') }}" style="width:27px;height:23px;padding-right: 4px;top: 3px;position: relative;" /> Bikes</a></li>
+                            <!--<li><a href="#tab_02" aria-controls="tab_02" role="tab" data-toggle="tab"><i class="icon-hotel68"></i>  Hotels</a></li>-->
+                            <li><a href="{{ path('trip_site_management_homepage_packages')}}"><i class="icon-bag"></i>  Packages</a></li>
+                            
+                            <li><a href="#tab_04" aria-controls="tab_04" role="tab" data-toggle="tab"><i class="icon-travel25"></i>  Offers</a></li>
+                            
+                        </ul>
+                        
+                                     <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="tab_01">
+                            {{ form_start(form) }}
+				           {{ form_errors(form, { 'global_errors': true }) }}
+						   {#}
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <h3>  Book Your Cab Now</h3>
+                                    </div>
+                                </div>
+								{#}
+                                <div class="row tripNav">
+                                    <span>
+                                         <label for="oneway" class="tripSel">
+                                             <input type="radio" name="tripType" value="oneway" id="oneway" checked> 
+                                             One Way
+                                         </label>
+                                    </span>
+                                    <span>
+                                        <label for="roundtrip">
+                                            <input type="radio" name="tripType" value="roundtrip" id="roundtrip">
+                                            Round Trip
+                                        </label>
+                                    </span>
+                                    {#
+                                    <span>
+                                         <label for="multicity">
+                                            <input type="radio" name="tripType" value="multicity" id="multicity">
+                                            Multicity
+                                        </label>
+                                    </span>
+                                    #}
+                                    <span>
+                                         <label for="dailyRent">
+                                            <input type="radio" name="tripType" value="dailyRent" id="dailyRent">
+                                            Daily Rent
+                                        </label>
+                                    </span>
+                                </div>
+                                  
+                                <div class="row" id="genaral">
+                                    <div class="form-group fil col-md-2 col-sm-2 col-xs-12 remove_right">
+                                    	<div class="home-search-align">
+                                         
+                                         <div class="dropdown homesearch">
+                                             {{ form_widget(form.leavingFrom,{'attr':{'class':'home-seacrh-desg','choices':'Test' }}) }}
+                                        </div>
+                                      	 </div>
+                                    </div>
+                                    {#
+                                    <div class="form-group fil col-md-2 col-sm-2 col-xs-2 remove_right remove_left">
+                                         <i class="fa fa-arrow-left"></i><i class="fa fa-arrow-right"></i>
+                                    </div>
+                                    #}
+                                    <div class="form-group fil col-md-2 col-sm-2 col-xs-12 remove_right remove_left">
+                                    	<div class="home-search-align">
+                                         
+                                         <div class="dropdown homesearch">
+                                             {{ form_widget(form.goingTo,{'attr':{'class':'home-seacrh-desg' }}) }}              
+                                        </div>
+                                       </div>
+                                    </div>
+                                    <div class="form-group fil col-md-2 col-sm-2 col-xs-12 remove_right remove_left">
+                                    <div class="home-search-align">
+                                        
+                                        <div class="input-group homesearch">
+                                            {{ form_widget(form.date,{'attr':{'class':'home-seacrh-desg' }}) }}
+                                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                       </div>
+                                    </div>
+                                    <div class="form-group fil col-md-2 col-sm-2 col-xs-12 remove_right remove_left">
+                                    <div class="home-search-align">
+                                         
+                                        <div class="input-group homesearch">
+                                            {{ form_widget(form.returnDate,{'attr':{'class':'home-seacrh-desg' }}) }}          
+                                            
+                                              
+                                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                        </div>
+                                    </div> 
+                                    
+                                    <div class="form-group fil col-md-1 col-sm-1 col-xs-12 remove_right remove_left">
+                                         
+                                        <div class="input-group homesearch">
+                                            <a class="adults input-group-addon" id="decrement" value="1" href="#">-</a> 
+                                                    {{ form_widget(form.numAdult,{'attr':{'class':'home-seacrh-desg' }}) }} 
+                                            <a class="adults input-group-addon" id="increment" href="#">+</a>
+                                        </div>
+                                    </div>
+                                     <div class="form-group fil col-md-1 col-sm-1 col-xs-12 remove_right remove_left">
+                                      
+                                     <div class="input-group homesearch-time">
+                                        {{ form_widget(form.preferTime,{'attr':{'class':'home-seacrh-desg' }}) }}
+                                     </div>
+                                    </div>
+                                    <div class="form-group fil col-md-2 col-sm-2 col-xs-12">
+                                         <button type="submit" class="search-button">Search </button>
+                                    </div>
+                                    
+                                    
+                                </div>
+                                    <div style="display:none" class="row" id="multipleCity">
+                                    
+                                    
+                                         {% macro information_prototype(multiCity) %}
+                                    
+                                    
+                                            <div class="form-group make-margin fil col-md-4 col-sm-4 col-xs-12">
+                                                 {{ form_label(multiCity.leavingFrom) }}
+                                                 <div class="dropdown">
+                                                     {{ form_widget(multiCity.leavingFrom) }}
+                                                </div>
+
+                                            </div>
+                                    
+                                            <div class="form-group make-margin fil col-md-4 col-sm-4 col-xs-12">
+                                                                                                     
+                                                    {{ form_label(multiCity.goingTo) }}
+                                                   
+                                                    <div class="dropdown">
+                                                    {{ form_widget(multiCity.goingTo) }}
+                                                   </div>
+                                             </div>
+                                            <div class="form-group make-margin fil col-md-4 col-sm-4 col-xs-12">
+                                                 {{ form_label(multiCity.date) }}
+                                                 <div class="input-group">
+                                                     {{ form_widget(multiCity.date) }}
+                                                </div>
+
+                                            </div>
+                                           
+                                        {% endmacro %}
+                                         <div id="city-fields-list"
+                                                data-prototype="{{ _self.information_prototype(form.multiple.vars.prototype)|e }}">
+                                            {% for multiCity in form.multiple %}
+                                             <div class="form-group make-margin fil col-md-4 col-sm-4 col-xs-12">
+                                                 {{ form_label(multiCity.leavingFrom) }}
+                                                 <div class="dropdown">
+                                                     {{ form_widget(multiCity.leavingFrom) }}
+                                                </div>
+
+                                            </div>
+                                    
+                                            <div class="form-group make-margin fil col-md-4 col-sm-4 col-xs-12">
+                                                                                                     
+                                                    {{ form_label(multiCity.goingTo) }}
+                                                   
+                                                    <div class="dropdown">
+                                                    {{ form_widget(multiCity.goingTo) }}
+                                                   </div>
+                                             </div>
+                                            <div class="form-group make-margin fil col-md-4 col-sm-4 col-xs-12">
+                                                 {{ form_label(multiCity.date) }}
+                                                 <div class="input-group">
+                                                     {{ form_widget(multiCity.date) }}
+                                                </div>
+
+                                            </div>
+                                            {% endfor %}
+                                    </div>
+                                    
+                                     <div class="form-group make-margin fil col-md-2 col-sm-2 col-xs-12">
+                                      {# <div class="row">
+                                          <div class="col-md-6 col-sm-6 col-xs-6">
+                                            {{ form_label(form.numDays) }}
+                                         </div>
+                                         <div class="col-md-6 col-sm-6 col-xs-6">
+                                                 <div class="input-group">
+                                                     <a class="days input-group-addon" id="decrement" value="1" href="#">-</a> 
+                                                        {{ form_widget(form.numDays) }}
+                                                      <a class="days input-group-addon" id="increment" href="#">+</a>
+                                                </div>
+                                         </div>
+                                        </div> #}
+                                    </div>
+                                    <div class="form-group make-margin fil col-md-6 col-sm-6 col-xs-12">
+                                     <a href="#" id="add-another-city">Add another city</a>
+                                    
+                                    </div>
+                                </div>
+                                <div class="row">
+                                     
+                                   </div>
+                                {#}
+                                <div class="row">
+                                    <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                                        <button type="submit" class="btn btn-primary btn-block"><i class="icon-search"></i> Search </button>
+                                    </div>
+                                </div>
+                                {#}
+                                {{ form_end(form) }}
+                                
+                            </div><!-- end tab-pane -->
+
+                            <div role="tabpanel" class="tab-pane" id="tab_03">
+                                <h3>WHEN WOULD YOU LIKE TO GO?</h3>
+                                <form class="bookform form-inline row">
+                                    <div class="form-group col-md-12 col-sm-6 col-xs-12">
+                                        <input type="text" class="form-control" placeholder=" Destination: Country, City,Airport...">
+                                    </div>
+                                    <div class="form-group col-md-12 col-sm-6 col-xs-12">
+                                        <input type="text" class="form-control" placeholder=" Hotel: TUNAI, HAWAI...">
+                                    </div>
+                                    <div class="form-group col-md-12 col-sm-6 col-xs-12">
+                                        <input type="text" class="form-control" placeholder=" Time: May, Jun, Jully...">
+                                    </div>
+
+                                    <div class="form-group col-md-12 col-sm-6 col-xs-12">
+                                        <button type="submit" class="btn btn-primary btn-block"><i class="icon-search"></i> BOOK NOW</button>
+                                    </div>
+                                </form>
+                            </div><!-- end tab-pane -->
+
+                            <div role="tabpanel" class="tab-pane" id="tab_02">
+                                <h3>Where Woulf You Like To Go?</h3>
+                                       {{ form_start(hotelForm) }}
+                                        {{ form_errors(hotelForm, { 'global_errors': true }) }}
+                                
+                                
+                                <div class="row">                                
+                                   
+                                    <div class="form-group make-margin fil col-md-12 col-sm-12 col-xs-12">
+                                         {{ form_label(hotelForm.goingTo) }}
+                                         <div class="dropdown">
+                                             {{ form_widget(hotelForm.goingTo) }}                
+                                        </div>
+                                    </div>
+                                    <div class="form-group make-margin fil col-md-6 col-sm-6 col-xs-12">
+                                        {{ form_label(hotelForm.date) }} 
+                                        <div class="input-group">
+                                            {{ form_widget(hotelForm.date) }} 
+                                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group make-margin fil col-md-6 col-sm-6 col-xs-12">
+                                         {{ form_label(hotelForm.returnDate) }}
+                                        <div class="input-group">
+                                            {{ form_widget(hotelForm.returnDate) }}          
+                                            
+                                              
+                                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div> 
+                                    
+                                    <div class="form-group col-md-12 col-sm-6 col-xs-12">
+                                        <button type="submit" class="btn-primary btn-block search-button"><i class="icon-search"></i> Search </button>
+                                    </div>
+                                </div>
+                                   
+                               {{ form_end(hotelForm) }}
+                            </div><!-- end tab-pane -->
+
+                            <div role="tabpanel" class="tab-pane" id="tab_04">
+                                <h3>Get <i class="fa fa-inr"></i> 50 OFF on First Ride</h3>
+                                <div class="row">
+                                    <div class="col-md-12 col-xs-12 text-center">
+                                        <h3>Use This Coupon Code</h3>
+                                        <h4><span>FIRSTRIDE</span></h4>
+                                            
+                                    </div>
+                                </div>
+                            </div><!-- end tab-pane -->
+
+                            
+                        </div><!-- end tab-content -->
+                        {% endblock %}
+
+   
+                    </div><!-- end homeform -->
+                </div><!-- end col -->
+
+                          
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </section><!-- end section -->
+	<section class="section fullscreen background parallax">
+		<div class="container">
+			<div class="row">
+			{% for dest in destlocations %} 
+				<div class="col-md-12">
+					<h1 class="footerpages-h1">{{ dest.title }}</h1>
+					<input type="hidden" value="{{ dest.pick_location }}" id="txt_name1">
+					<input type="hidden" value="{{ dest.drop_location }}" id="txt_name2">
+					<hr>
+					{% for destcnt in dest.destcont %}
+					<h3 class="footerpages-h1">{{ destcnt.title }}</h3>
+						<p>{{ destcnt.description }}</p>
+					{% endfor %}
+				</div>
+				{% endfor %}
+				<div class="col-md-12">
+				<hr>
+				{% for destinations in destall %} 
+					<h3 class="footerpages-h1">Destinations Near {{ destinations.dest_url }}</h3>
+						{% for destcoll in destinations.destloc %}
+						    {% if destinations.dest_url=='tirupati' %}
+    						
+    							<a href="{{ path('trip_booking_engine_dest_tpt',{ 'url':destcoll.url }) }}">
+    							<p class="footer-innerpages-links">{{ destcoll.title }}</p>
+    							</a>
+    						
+    						{% elseif destinations.dest_url=='chennai' %}
+    						
+    							<a href="{{ path('trip_booking_engine_dest_ch',{ 'url':destcoll.url }) }}">
+    							<p class="footer-innerpages-links">{{ destcoll.title }}</p>
+    							</a>
+    						{% elseif destinations.dest_url=='bangalore' %}
+    						
+    							<a href="{{ path('trip_booking_engine_dest_bl',{ 'url':destcoll.url }) }}">
+    							<p class="footer-innerpages-links">{{ destcoll.title }}</p>
+    							</a>
+    						{% else %}
+    						
+    							<a href="{{ path('trip_booking_engine_dest_kn',{ 'url':destcoll.url }) }}">
+    							<p class="footer-innerpages-links">{{ destcoll.title }}</p>
+    							</a>
+    						
+						    {% endif %}
+						{% endfor %}
+				{% endfor %}
+				</div>
+			</div>
+		
+		</div>
+	</section>
+{% endblock %}

@@ -950,6 +950,7 @@ h2.que-numb {
 .packages-link
 {
 	color:#fff;
+	margin-bottom:0px;
 }
 a:hover, a > *:hover, a:focus {
     color: #F34F4F;
@@ -1002,7 +1003,7 @@ option {
 select#trip_search_goingTo {
 	background: transparent;
     border: none;
-    color: #00;
+    color: #000;
 }
 input#trip_search_date {
 	background: transparent;
@@ -1089,12 +1090,12 @@ input#trip_search_preferTime {
 	color:#000;
 }
 .home-form h2 {
-    font-size: 40px;
-    color: #F34F4F;
+    font-size: 47px;
+    color: #fff;
     padding: 10px 16px;
     margin-bottom: 0;
     font-family: calibri;
-    text-transform: uppercase;
+    text-transform: capitalize;
     /*letter-spacing: .1em;*/
     text-align:center;
 }
@@ -1149,6 +1150,29 @@ input#trip_search_preferTime {
     height: 100%;
         /*margin: 0px 0 65px 0px;*/
     
+}
+.footer-pages h6
+{
+	color:#fff;
+}
+h1.footerpages-h1 {
+    font-size: 30px;
+    font-family: calibri;
+    color: #222;
+}
+h3.footerpages-h1 {
+    font-size: 20px;
+    font-family: calibri;
+    color: #222;
+}
+.home-form h3 {
+    
+    color: #000!important;
+}
+.footer-innerpages-links
+{
+	font-size: 16px;
+    color: #007bff;
 }
 /* End */
 

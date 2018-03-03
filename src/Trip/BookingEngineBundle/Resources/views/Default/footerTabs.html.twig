@@ -1,20 +1,60 @@
 <div class="tab" role="tabpanel">
                                 <!-- Nav tabs -->
                                 <ul class="nav nav-tabs" role="tablist">
-                                	<li role="presentation" class="active"><a href="#Section3" aria-controls="messages" role="tab" data-toggle="tab">Packages</a></li>
-                                    <li role="presentation"><a href="#Section2" aria-controls="profile" role="tab" data-toggle="tab">Bikes On Rent</a></li>
-                                    <li role="presentation"><a href="#Section1" aria-controls="home" role="tab" data-toggle="tab">Taxi Services</a></li>
+                                	<li role="presentation" class="active"><a href="#Section1" aria-controls="home" role="tab" data-toggle="tab">Taxi Services</a></li>
+                                	 <li role="presentation"><a href="#Section2" aria-controls="profile" role="tab" data-toggle="tab">Bikes On Rent</a></li>
+                                	<li role="presentation"><a href="#Section3" aria-controls="messages" role="tab" data-toggle="tab">Packages</a></li>
+                                  
                                 </ul>
                                 <!-- Tab panes -->
+                                
                                 <div class="tab-content tabs">
-                                    <div role="tabpanel" class="tab-pane fade in active" id="Section3" style="font-size: 12px;">
-                                           {% for package in onepackages %} 
-                                           <a href="{{ path('trip_site_management_homepage_special_packages',{ 'url':package.locationUrl }) }}">
-                                           <span class="packages-link">{{ package.title }} In Tirupati</span></a>|
-                                           {% endfor %}
-                                           
-                                        </div>
-                                    <div role="tabpanel" class="tab-pane fade" id="Section2"  style="font-size: 12px;">
+                                	<div role="tabpanel" class="tab-pane fade in active" id="Section1" style="font-size: 12px;">
+                                      
+                                      <div class="row" style="margin-top:20px;">
+                                    {% for destval in dest %} 
+                                    {% if destval.dest_url=='tirupati' %}
+                                   	 	<div class="col-md-3 footer-pages">
+                                    		<h6>Cabs In {{ destval.dest_url }}</h6>
+                                        	{% for loc in destval.destloc %}
+                                        	<a href="{{ path('trip_booking_engine_dest_tpt',{ 'url':loc.url }) }}">
+                                    		<p class="packages-link">{{ loc.title }}</p>
+                                    		</a>
+                                    		{% endfor %}
+                                    	</div>
+                                    	{% elseif destval.dest_url=='chennai' %}
+                                    		<div class="col-md-3 footer-pages">
+                                        		<h6>Cabs In {{ destval.dest_url }}</h6>
+                                            	{% for loc in destval.destloc %}
+                                            	<a href="{{ path('trip_booking_engine_dest_ch',{ 'url':loc.url }) }}">
+                                        		<p class="packages-link">{{ loc.title }}</p>
+                                        		</a>
+                                        		{% endfor %}
+                                    		</div>
+                                    	{% elseif destval.dest_url=='bangalore' %}
+                                    		<div class="col-md-3 footer-pages">
+                                        		<h6>Cabs In {{ destval.dest_url }}</h6>
+                                            	{% for loc in destval.destloc %}
+                                            	<a href="{{ path('trip_booking_engine_dest_bl',{ 'url':loc.url }) }}">
+                                        		<p class="packages-link">{{ loc.title }}</p>
+                                        		</a>
+                                        		{% endfor %}
+                                    		</div>
+                                    	{% else %}
+                                    		<div class="col-md-3 footer-pages">
+                                        		<h6>Cabs In {{ destval.dest_url }}</h6>
+                                            	{% for loc in destval.destloc %}
+                                            	<a href="{{ path('trip_booking_engine_dest_bl',{ 'url':loc.url }) }}">
+                                        		<p class="packages-link">{{ loc.title }}</p>
+                                        		</a>
+                                        		{% endfor %}
+                                    		</div>
+                                       {% endif %}
+                                    {% endfor %}
+                                    
+                                    </div>
+                                   </div>
+                                   <div role="tabpanel" class="tab-pane fade" id="Section2"  style="font-size: 12px;">
                                         {% for bike in bikes %} 
                                         <a href="{{ path('trip_site_management_view_bikes',{ 'url':bike.locationUrl }) }}">
                                        <span class="packages-link">{{ bike.title }} In Tirupati</span>
@@ -22,10 +62,14 @@
                                        {% endfor %}
                                         
                                     </div>
-                                    <div role="tabpanel" class="tab-pane fade" id="Section1" style="font-size: 12px;">
-                                      {% for city in cities %} 
-                                       <span>Taxi services in {{ city.name }}</span>|
-                                       {% endfor %}
-                                    </div>
-                                </div>
+                                    <div role="tabpanel" class="tab-pane fade" id="Section3" style="font-size: 12px;">
+                                           {% for package in onepackages %} 
+                                           <a href="{{ path('trip_site_management_homepage_special_packages',{ 'url':package.locationUrl }) }}">
+                                           <span class="packages-link">{{ package.title }} In Tirupati</span></a>|
+                                           {% endfor %}
+                                           
+                                        </div>
+                                    
+                                    
+                              </div>
 </div>

@@ -1544,7 +1544,6 @@ class SiteManagementController extends Controller
     		return $this->redirect($this->generateUrl('trip_site_management_price_viewbikes',array('id'=>$entity->getId())));
     	}
     	
-    	 
     	 return $this->render('TripSiteManagementBundle:Default:viewBikes.html.twig',array(
     			
     			'bike'=>$bike,

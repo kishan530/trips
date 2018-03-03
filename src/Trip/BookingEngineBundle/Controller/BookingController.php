@@ -50,6 +50,9 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Trip\BookingEngineBundle\Form\VendorNewVehicleType;
 use Trip\BookingEngineBundle\Form\VendorNewDriverType;
 use Trip\BookingEngineBundle\Entity\VendorVehicleFee;
+use Trip\BookingEngineBundle\Entity\Destinations;
+use Trip\BookingEngineBundle\Entity\Destinationlocations;
+
 class BookingController extends Controller
 {
     
@@ -120,16 +123,10 @@ class BookingController extends Controller
         //echo 'hi';
         //exit();
         $bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
-       // $cities = $em->getRepository('TripSiteManagementBundle:City')->findAll();
-        //$packages = $em->getRepository('TripSiteManagementBundle:PackageTitle')->findAll();
-        //echo var_dump($bikes);
-        //die();
         return $this->render($view, array(
             'form'   => $form->createView(),
             'hotelForm'   => $hotelForm->createView(),
             'bikes' => $bikes,
-            //'cities'=> $cities,
-            //'packages' => $packages,
         ));
     }
     public function footerAction(){
@@ -137,12 +134,13 @@ class BookingController extends Controller
         $bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
         $cities = $em->getRepository('TripSiteManagementBundle:City')->findAll();
         $url= 'one';
-        //$packagetitle = $em->getRepository('TripSiteManagementBundle:PackageTitle')->findAll();
+        $dest = $em->getRepository('TripBookingEngineBundle:Destinations')->findAll();
         $onepackages = $em->getRepository('TripSiteManagementBundle:PackageTitle')->findBy(array('type' => $url));
         return $this->render('TripBookingEngineBundle:Default:footerTabs.html.twig', array(
             'bikes' => $bikes,
             'cities'=> $cities,
             'onepackages' => $onepackages,
+            'dest' => $dest,
         ));
         
         
@@ -1491,7 +1489,44 @@ class BookingController extends Controller
         
         return $this->redirect($url, 301);
     }
-    
+    public function destSearchAction(Request $request,$url)
+    {
+        $security = $this->container->get ( 'security.context' );
+        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+       // $url1='tirupati';
+        return $this->getDest('TripBookingEngineBundle:Default:destSearch.html.twig',$request,$url);
+        
+    }
+    private function getDest($view,$request,$url){
+        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        $security = $this->container->get ( 'security.context' );
+        $uri_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $uri_segments = explode('/', $uri_path);
+        $getid=$uri_segments[4];
+        $searchFilter = new SearchFilter();
+        $searchHotel = new SearchHotel();
+        $hotelForm   = $this->createSearchHotelForm($searchHotel);
+        $destlocation = $em->getRepository('TripBookingEngineBundle:Destinationlocations')->findBy(array('url' => $url));
+        if($destlocation){
+            $destlocation= $destlocation[0];
+            $destlocations = $em->getRepository('TripBookingEngineBundle:Destinationlocations')->findBy(array('url' => $url));
+        }else{
+            
+        }
+        $destall = $em->getRepository('TripBookingEngineBundle:Destinations')->findBy(array('dest_url' => $getid));
+        $cities = $em->getRepository('TripSiteManagementBundle:City')->findAll();
+        $form   = $this->createSearchForm($searchFilter);
+        return $this->render($view, array(
+            'form'   => $form->createView(),
+            'hotelForm'   => $hotelForm->createView(),
+            'destlocation' => $destlocation,
+            'destlocations' => $destlocations,
+            'destall' => $destall,
+            
+        ));
+    }
     
     //**************End************//
     //********** Bikes Booking Controllers**************//
