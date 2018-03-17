@@ -26,15 +26,13 @@ class StartPoint
      * @var string
      * @ORM\Column(name="start_point", type="string", length=50)
      * @Assert\Length(max = 100, maxMessage="Your Name cannot contain more then 50")
-     * @Assert\Regex(
-     *     pattern="/^[a-zA-Z&]+([s ][A-Za-z&]+)*$/",
-     *     match=true,
-     *     message="Please enter a valid Name"
-     * )
      */
     private $name;
    
     private $active;
+    
+    
+    private $location;
     /**
      * @ORM\ManyToOne(targetEntity="Trip\SiteManagementBundle\Entity\Package", inversedBy="startPoint")
      * @ORM\JoinColumn(name="package_id", referencedColumnName="id")
@@ -45,6 +43,22 @@ class StartPoint
     
 	
 	/**
+     * @return mixed
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * @param mixed $location
+     */
+    public function setLocation($location)
+    {
+        $this->location = $location;
+    }
+
+    /**
 	 *
 	 * @return the integer
 	 */

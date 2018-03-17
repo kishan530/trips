@@ -3,7 +3,7 @@
 namespace Trip\SiteManagementBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * This is a Entity to hold the data of City
  *

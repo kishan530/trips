@@ -207,3 +207,45 @@ trip_site_management_bike_packages:
 trip_site_management_bike_package_result:
     path:     /bikepackageresult
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikepackageresult }
+    
+trip_site_management_edit_bikes_package:
+    path:     /edit/{id}/bikespackage
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:editBikesPackage }
+trip_site_management_delete_bike_package:
+    path:     /delete/{id}/bikespackage
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:deleteBikesPackage }
+    
+trip_site_management_edit_package_Price:
+    path:     /edit/{id}/packageprice
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:editPackagePrice }
+trip_site_management_delete_package_Price:
+    path:     /delete/{id}/packageprice
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:deletePackagePrice }
+    
+trip_site_management_edit_pickup_location:
+    path:     /edit/{id}/pickuplocation
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:editpickuplocation }
+trip_site_management_delete_pickup_location:
+    path:     /delete/{id}/pickuplocation
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:deletepickuplocation }
+    
+trip_site_management_edit_placetovisit_location:
+    path:     /edit/{id}/placetovisitlocation
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:editplacetovisitlocation }
+trip_site_management_delete_placetovisit_location:
+    path:     /delete/{id}/placetovisitlocation
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:deleteplacetovisitlocation }
+    
+trip_site_management_edit_drop_location:
+    path:     /edit/{id}/droplocation
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:editdroplocation }
+trip_site_management_delete_drop_location:
+    path:     /delete/{id}/droplocation
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:deletedroplocation }
+    
+trip_site_management_edit_package_image:
+    path:     /edit/{id}/packageimage
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:editpackageimage }
+trip_site_management_delete_package_image:
+    path:     /delete/{id}/packageimage
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:deletepackageimage }

@@ -10,16 +10,39 @@
                <div class="col-lg-7">
                     
                    {{ form_start(form) }}
-                   <div class="row form-group">
-                            <div class="col-lg-12">
-                            	{{ form_label(form.title) }}
-                                {{ form_widget(form.title) }}
-                            </div>                  
-                    </div>                      
+                                      
                     {{ form_end(form) }}
                     </div>
+                   </div>
+                    </div>
+            <div class="row">
+             <h4>Existing Content</h4>
+                <div id="fullwidth" class="col-sm-6">
+					<table class="table table-bordered col-lg-12 col-sm-12" id="content-tbl">
+					<tr>
+						<th>Sl.No</th>
+						<th>Package Name</th>						
+						<th>/</th>
+					</tr>
+						{% for i in package.bikespackage %} 
+                        <tr>
+                        	<td>{{ loop.index }}</td>
+							 <td>
+                                {{ i.packagename }}Days Package
+                            </td>							
+							<td>
+								<a href="{{ path('trip_site_management_edit_bikes_package',{ 'id': i.id }) }}"><i class="fa fa-pencil-square-o"></i></a>
+								<a href="{{ path('trip_site_management_delete_bike_package',{ 'id': i.id }) }}" class="delete" title="{{ i.packagename }}"><i class="fa fa-trash-o"></i></a>								
+							</td>
+                        </tr>
+                    {% endfor %}
+					</table>
+                </div>
+               <h4>Add Another Package</h4>
+                <div id="fullwidth" class="col-sm-6">
+					
                 </div>
             </div>
-          </div> 
+        </div> 
     </section>
 {% endblock %}
