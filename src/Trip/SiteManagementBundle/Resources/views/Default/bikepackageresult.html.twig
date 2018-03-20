@@ -86,18 +86,17 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
     				<p class="filter1">Select Date & Time</p>
     				<div class="row">
             		    <form>
-            		    	{% set pickupdate = preferdate|date("d/m/Y h:i A") %}
-						    {% set returndate = returndate|date("d/m/Y h:i A") %}
-            				<div class="row" style="text-align:center;">
+            		    	<div class="row" style="text-align:center;">
             					<label class="filter-details">Pickup date & Time</label><br>
-            						<input class="black3 datetime2" id="datetime2" format="" type="text" name="preferdate" value="{{ pickupdate }}">
+            						<input class="black3 datetime2" id="datetime2" format="" type="text" name="preferdate" value="{{ preferdate }}">
             							<hr class="border">
             					<label class="filter-details">Dropoff date & Time</label><br>
             					    <input class="black3 datetime3" id="datetime3" format="" type="text" name="returndate" value="{{ returndate }}">
             							<hr class="border">
             						<input class="resultpage" id="vehicleIndex{{ bike.id }}" type="hidden" name="id" value="{{ id }}">
-            						<input type="hidden" name="packagetitle" class="form-control" value="{{ packagetitle }}"/>
+            						<input type="hidden" name="packagename" class="form-control" value="{{ packagetitle }}"/>
             						<input type="hidden" name="title" required="required" value="{{ title }}" class="bike-popupform">
+            						<input type="hidden" name="packageoffer" required="required" value="{{ packageoffer }}" class="bike-popupform">
             						<button type="submit" class="btn btn-book-now view-bike1" value="Search" style="width:70%;height:30px;margin-bottom:10px;">Search
                                 	</button>
                             </div>                    										
@@ -121,6 +120,8 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                             <div class="bike-background">
                             	<h5 class="bike-grid-title1">{{ title }}</h5>
                             	<div class="row bikes">
+                            	{% set pickupdate = preferdate|date("d/m/Y h:i A") %}
+						        {% set returndate = returndate|date("d/m/Y h:i A") %}
                             	<div class="col-md-5 text-center" style="padding-right: -1px;">
                                 	<span class="black1">{{ pickupdate }}</span>
                                 </div>
@@ -136,7 +137,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                             	{#}<h4 class="packageprice">{{ packageprice }}</h4>{#}
                             	{#}<h6 class="package-offer">{{ packageoffer }}% Offer Available</h6>{#}
                             	<h6 style="text-align:center;color:#000"><i class="fa fa-inr" aria-hidden="true"></i> {{ resultprice }}</h6>
-                            	<span class="limit">({{ bike.kmlimit }} km limit)</span>
+                            	<span class="limit">({{ bike.kmlimit }} km limit/day)</span>
                             	</div>
                             	</div>
                                 <div class="row">

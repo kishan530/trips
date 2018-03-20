@@ -1600,13 +1600,12 @@ class SiteManagementController extends Controller
         $em = $this->getDoctrine()->getManager();
         $session = $request->getSession();
         $id = $request->get('id');
-        $title = $request->get('title');
-        //$title = $session->get('title');
-        $packagetitle = $request->get('packagetitle');
-        //$packagetitle = $session->get('packagetitle');
         $packageprice = $request->get('packageprice');
         $Kmlimit = $request->get('Kmlimit');
+        $packagetitle =$request->get('packagename');
+        $title =$request->get('title');
         $packageoffer= $request->get('packageoffer');
+        
         $location= $request->get('location');
         $bike = $em->getRepository('TripSiteManagementBundle:bikes')->findBy(array('id' => $id));
         
@@ -1617,6 +1616,7 @@ class SiteManagementController extends Controller
             
         }
         
+       
         $session->set('bikeid',$bike);
         
         $pickupdate= $request->get('preferdate');
@@ -1627,11 +1627,11 @@ class SiteManagementController extends Controller
         $difference=date_diff($picdate,$rtrdate);
         $leftDays = $difference->d;
         $hours = $difference->h;
+             
         $dayrent=$bike->getDayrent();
         $statingPrice=$bike->getStatingPrice();
         $packageofferprice=$packageoffer/100;
-        
-       
+         
         if ($hours==0){
             
             if ($leftDays<7){
@@ -1679,6 +1679,7 @@ class SiteManagementController extends Controller
                         $offerprice=$dayscal*$packageofferprice;
                         $price= $dayscal-$offerprice;
                         $finalprice=$price+$inc;
+                        
                     }
                 }else{
                     $totaldays= $leftDays + 1;
@@ -1691,11 +1692,11 @@ class SiteManagementController extends Controller
                         $price=$dayrent*$totaldays;
                         $offerprice= $price*$packageofferprice;
                         $finalprice=$price-$offerprice;
-                    }
+                                            }
                 }
             }
         }
-
+        
                           
             return $this->render('TripSiteManagementBundle:Default:bikepackageresult.html.twig',array(
             
@@ -1708,8 +1709,8 @@ class SiteManagementController extends Controller
             'Kmlimit'=>$Kmlimit,
             'packageoffer'=>$packageoffer,
            // 'form'   => $form->createView(),
-            'preferdate' => $picdate,
-            'returndate' => $rtrdate,
+                'preferdate' => $pickupdate,
+                'returndate' => $returndate,
             'leftDays' => $leftDays,
             'hours' => $hours,
             'resultprice' => $finalprice,

@@ -42,50 +42,170 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 
 
 	       });
+         </script>
+<script>
+         $(".book-now").click(function(e){
+        	 e.preventDefault(); //STOP default action 
+        	 var bikeName = $(this).attr('bike-name');
+        	 var packageName = $(this).attr('package-name');
+        	 var bikeid = $(this).attr('bike-id');
+        	 var packageprice = $(this).attr('package-price');
+        	 var offerprice = $(this).attr('offer-price');
+        	 var  Kmlimit = $(this).attr('Km-limit');
+        	 
+        	 $(".model-package-name").val(packageName);
+             $(".model-bike-name").val(bikeName);
+             $(".model-package-name").html(packageName);
+             $(".model-bike-name").html(bikeName);
+             $("#model-bike-id").val(bikeid);
+               $("#model-package-price").val(packageprice);
+               $("#model-package-offerprice").val(offerprice);
+               $("#model-package-Kmlimit").val(Kmlimit);
+               
+               $("#mymodel7days").modal('show');
+
+               
+             
+         });
+
+         $(".book-now1").click(function(e){
+        	 e.preventDefault(); //STOP default action 
+        	 var bikeName = $(this).attr('bike-name');
+        	 var packageName = $(this).attr('package-name');
+        	 var bikeid = $(this).attr('bike-id');
+        	 var packageprice = $(this).attr('package-price');
+        	 var offerprice = $(this).attr('offer-price');
+        	 var  Kmlimit = $(this).attr(' Km-limit');
+        	 
+             $(".model-package-name1").val(packageName);
+             $(".model-bike-name1").val(bikeName);
+             $(".model-package-name1").html(packageName);
+             $(".model-bike-name1").html(bikeName);
+             $("#model-bike-id1").val(bikeid);
+               $("#model-package-price1").val(packageprice);
+               $("#model-package-offerprice1").val(offerprice);
+               $("#model-package-Kmlimit1").val(Kmlimit);
+               
+               $("#mymodel15days").modal('show');
+
+               
+             
+         });
+
+         $(".book-now2").click(function(e){
+        	 e.preventDefault(); //STOP default action 
+        	 var bikeName = $(this).attr('bike-name');
+        	 var packageName = $(this).attr('package-name');
+        	 var bikeid = $(this).attr('bike-id');
+        	 var packageprice = $(this).attr('package-price');
+        	 var offerprice = $(this).attr('offer-price');
+        	 var  Kmlimit = $(this).attr(' Km-limit');
+        	
+        	 
+        	 $(".model-package-name2").val(packageName);
+             $(".model-bike-name2").val(bikeName);
+        	 $(".model-package-name2").html(packageName);
+             $(".model-bike-name2").html(bikeName);
+             $("#model-bike-id2").val(bikeid);
+               $("#model-package-price2").val(packageprice);
+               $("#model-package-offerprice2").val(offerprice);
+               $("#model-package-Kmlimit2").val(Kmlimit);
+               
+               $("#mymodel30days").modal('show');
+            
+               
+         });
 </script>
 
 <script type="text/javascript">
-$(document).ready(function(){
-    $( ".datetime6_prefer_date" ).appendDtpicker({
-        onClose: function() {
-            var date2 = $('.datetime6_prefer_date').appendDtpicker('getDate');
-            date2.setDate(date2.getDate()+1)
-            $( ".datetime7_returnDate" ).appendDtpicker("setDate", date2);
-        }
-    });
-    $( ".datetime7_returnDate" ).appendDtpicker();
+
+$(function(){
+ 	var d = new Date();
+	var month = parseInt(d.getMonth()) +1;
+	$('#datetime6_prefer_date').val(d.getDate() + '-' + month + '-' + d.getFullYear()+ ' ' +d.getHours()+ ':' +d.getMinutes());
+	d.setDate(d.getDate() + 7);
+	var month = parseInt(d.getMonth()) +1; 
+	$('#datetime7_returnDate').change(function() {
+	    $('#datetime6_prefer_date').appendDtpicker({
+	    });
+	});
+	$('#datetime6_prefer_date').change(function() {
+	var from = $("#datetime6_prefer_date").val().split("-");
+	var year = from[2].split(" ");
+	var from2 = year[0]+'.'+from[1]+'.'+from[0];
+	//alert(from);
+	var t = new Date(from2);
+	t.setDate(t.getDate() + 7);
+	$('#datetime7_returnDate').appendDtpicker({
+	    });
+	$('#datetime7_returnDate').handleDtpicker('setMinDate', t);
+	$('#datetime7_returnDate').trigger('change');
+	});
+	$('#datetime7_returnDate').trigger('change');
+	$('#datetime6_prefer_date').trigger('change');
 });
+
 </script>
-	<script type="text/javascript">
-		$(function(){
-			$('.datetime8_prefer_date').appendDtpicker();
-				
-		});
-		
-	</script>
-	<script type="text/javascript">
-		$(function(){
-			$('.datetime9_returnDate').appendDtpicker();
-			
-		});
-		
-		
-	</script>
-	<script type="text/javascript">
-		$(function(){
-			$('.datetime10_prefer_date').appendDtpicker();
-				
-		});
-		
-	</script>
-	<script type="text/javascript">
-		$(function(){
-			$('.datetime11_returnDate').appendDtpicker();
-			
-		});
-		
-		
-	</script>
+
+<script type="text/javascript">
+
+$(function(){
+ 	var d = new Date();
+	var month = parseInt(d.getMonth()) +1;
+	$('#datetime8_prefer_date').val(d.getDate() + '-' + month + '-' + d.getFullYear()+ ' ' +d.getHours()+ ':' +d.getMinutes());
+	d.setDate(d.getDate() + 15);
+	var month = parseInt(d.getMonth()) +1;
+	$('#datetime9_returnDate').change(function() {
+	    $('#datetime8_prefer_date').appendDtpicker({
+	    });
+	});
+	$('#datetime8_prefer_date').change(function() {
+	var from = $("#datetime8_prefer_date").val().split("-");
+	var year = from[2].split(" ");
+	var from2 = year[0]+'.'+from[1]+'.'+from[0];
+	//alert(from);
+	var t = new Date(from2);
+	t.setDate(t.getDate() + 15);
+	$('#datetime9_returnDate').appendDtpicker({
+	    });
+	$('#datetime9_returnDate').handleDtpicker('setMinDate', t);
+	$('#datetime9_returnDate').trigger('change');
+	});
+	$('#datetime9_returnDate').trigger('change');
+	$('#datetime8_prefer_date').trigger('change');
+});
+
+</script>
+
+<script type="text/javascript">
+$(function(){
+ 	var d = new Date();
+	var month = parseInt(d.getMonth()) +1;
+	$('#datetime10_prefer_date').val(d.getDate() + '-' + month + '-' + d.getFullYear()+ ' ' +d.getHours()+ ':' +d.getMinutes());
+	d.setDate(d.getDate() + 30);
+	var month = parseInt(d.getMonth()) +1;
+	$('#datetime11_returnDate').change(function() {
+	    $('#datetime10_prefer_date').appendDtpicker({
+	    });
+	});
+	$('#datetime10_prefer_date').change(function() {
+	var from = $("#datetime10_prefer_date").val().split("-");
+	var year = from[2].split(" ");
+	var from2 = year[0]+'.'+from[1]+'.'+from[0];
+	//alert(from);
+	var t = new Date(from2);
+	t.setDate(t.getDate() + 30);
+	$('#datetime11_returnDate').appendDtpicker({
+	    });
+	$('#datetime11_returnDate').handleDtpicker('setMinDate', t);
+	$('#datetime11_returnDate').trigger('change');
+	});
+	$('#datetime11_returnDate').trigger('change');
+	$('#datetime10_prefer_date').trigger('change');
+});
+
+</script>
+	
 {% endblock %}
 
 {% block breadcrumb %}
@@ -114,7 +234,7 @@ $(document).ready(function(){
                                     <ul class="nav nav-tabs">
                                         {% for index,package in bike.bikespackage %}
                                         {% if loop.index==1 %}
-                                        	<li class="col-md-4 active"><a href="#7days{{ bike.id }}" data-toggle="tab">
+                                        	<li class="col-md-4 active"><a href="#7days" data-toggle="tab">
                                             	<span>{{ package.packagename }}DAYS</span> </a>
                                             </li>
                                         {% elseif loop.index==2 %}
@@ -132,7 +252,7 @@ $(document).ready(function(){
                                     	<div class="tab-content">
                                             {% for index,package in bike.bikespackage %}
                                             {% if loop.index==1 %}
-                                            	<div class="tab-pane fade in active" id="7days{{ bike.id }}" style="font-size: 12px;">
+                                            	<div class="tab-pane fade in active" id="7days" style="font-size: 12px;">
                                                 	<div class="row">
                         						    	<div class="col-md-6" style="text-align:left;">
                             								<p class="price">Price</p>
@@ -163,59 +283,18 @@ $(document).ready(function(){
                                                                 	Sold Out
                                                                 </button>   
                                                             {% else %}
-                                                                <button class="btn btn-book-now view-bike1" data-toggle="modal" data-target=".myModal{{ bike.id }}">
+                                                                <button class="btn btn-book-now view-bike1 book-now" 
+                                                                bike-name="{{ bike.title }}" 
+                                                                package-name="{{ package.packagename }}" 
+                                                                bike-id="{{ bike.id }}" 
+                                                                package-price="{{ package.packageprice }}"
+                                                                Km-limit="{{ package.packagekmlimit }}"
+                                                                offer-price="{{ package.packageoffer }}">
                                                                 	Rent Now
                                                                 </button>
-                                                        <div class="modal fade myModal{{ bike.id }}" role="dialog">
-                                    						<div class="modal-dialog">
-                                    							<div class="modal-content">
-                                        							<div class="modal-header1">
-                                                                      	<button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                      		<h4 class="modal-title">Let's Ride</h4>
-                                        							</div>
-                                        						<div class="modal-body1" style="">
-                                        							<div class="row">
-                                        								<span class="package-title1">{{ bike.title }}</span>
-                                        								{#}<span class="glyphicon glyphicon-resize-horizontal"></span>{#}
-                                        								<span class="package-title2">{{ package.packagename }}Days Package</span>
-                                        							</div>
-                                        							<div class="row"><hr></div>
-                                          								{% set id= bike.id %}
-                                          								{% set title= bike.title %}
-                                          								{% set packagetitle= package.packagename %}
-                                          								{% set packageprice= package.packageprice %}
-                                          								{% set Kmlimit= package.packageadditionalkmlimit %}
-                                          								{% set packageoffer= package.packageoffer %}
-                                          								<form name="bike_package" action="{{ path('trip_site_management_bike_package_result') }}" method="get">
-                                                                        	<input type="hidden" name="packagetitle" class="form-control" value="{{ packagetitle }}">
-                                          								{#}{{ app.session.set('packagetitle',packagetitle) }}{#}
-                                                                        	<input type="hidden" name="packageprice" class="form-control" value="{{ packageprice }}">
-                                                                        	<input type="hidden" name="Kmlimit" class="form-control" value="{{ Kmlimit }}">
-                                                                        	<input type="hidden" name="packageoffer" class="form-control" value="{{ packageoffer }}">
-                                                                        	<input type="hidden" name="id" required="required" value="{{ id }}" class="bike-popupform"/>
-																			<input type="hidden" name="title" required="required" value="{{ title }}" class="bike-popupform">
-                                          								{#}{{ app.session.set('title',title) }}{#}
-																			<select class="bike-popupform" type="text" name="location"><br>
-                                                                        	<option>Tirupati</option>
-                                                                        	<option>Bangalore</option>
-                                                                        	</select>
-                                                                        	<hr class="bike-popup">
-                                                                        	<input type="datetime" class="datetime6_prefer_date bike-popupform" name="preferdate" required="required"  placeholder="Pickup Date"  required />
-                                                                        	<hr class="bike-popup">
-                                                                        	<input type="datetime" class="datetime7_returnDate bike-popupform" name="returndate" required="required"  placeholder="Return Date"  required />
-                                                                        	<hr class="bike-popup">
-                                                                        		<button type="submit" class="btn btn-book-now view-bike1" value="Search" style="height:20px;width:70%;height:30px;margin-bottom:10px;">Search
-                                                                        		</button>
-                                                                        </form>
-                                                  			    </div>
-                                        			            <div class="modal-footer">
-                                          					        {#}<button type="button_search" class="btn btn-search" data-dismiss="modal">Search</button>{#}
-                                        						</div>
-                                      						    </div>
-                                      
-                                   		 					</div>
-                                  						</div>
+                                                        
                                                             {% endif %}
+                                                            
                                                         </div>
                                          			</div>
                                                  </div>
@@ -251,57 +330,16 @@ $(document).ready(function(){
                                                                 	Sold Out
                                                                 </button>   
                                                             {% else %}
-                                                                <button class="btn btn-book-now view-bike1" data-toggle="modal" data-target=".myModal{{ bike.id }}">
+                                                                <button class="btn btn-book-now view-bike1 book-now1" 
+                                                                bike-name="{{ bike.title }}" 
+                                                                package-name="{{ package.packagename }}" 
+                                                                bike-id="{{ bike.id }}" 
+                                                                package-price="{{ package.packageprice }}"
+                                                                Km-limit="{{ package.packagekmlimit }}"
+                                                                offer-price="{{ package.packageoffer }}">
                                                                 	Rent Now
                                                                 </button>
-                                                        <div class="modal fade myModal{{ bike.id }}" role="dialog">
-                                    						<div class="modal-dialog">
-                                    							<div class="modal-content">
-                                        							<div class="modal-header1">
-                                                                      	<button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                      		<h4 class="modal-title">Let's Ride</h4>
-                                        							</div>
-                                        						<div class="modal-body1" style="">
-                                        							<div class="row">
-                                        								<span class="package-title1">{{ bike.title }}</span>
-                                        								<span class="package-title2">{{ package.packagename }}Days Package</span>
-                                        							</div>
-                                        							<div class="row"><hr></div>
-                                          								{% set id= bike.id %}
-                                          								{% set title= bike.title %}
-                                          								{% set packagetitle= package.packagename %}
-                                          								{% set packageprice= package.packageprice %}
-                                          								{% set Kmlimit= package.packageadditionalkmlimit %}
-                                          								{% set packageoffer= package.packageoffer %}
-                                          								<form name="bike_package" action="{{ path('trip_site_management_bike_package_result') }}" method="get">
-                                                                        	<input type="hidden" name="packagetitle" class="form-control" value="{{ packagetitle }}">
-                                          								{#}{{ app.session.set('packagetitle',packagetitle) }}{#}
-                                                                        	<input type="hidden" name="packageprice" class="form-control" value="{{ packageprice }}">
-                                                                        	<input type="hidden" name="Kmlimit" class="form-control" value="{{ Kmlimit }}">
-                                                                        	<input type="hidden" name="packageoffer" class="form-control" value="{{ packageoffer }}">
-                                                                        	<input type="hidden" name="id" required="required" value="{{ id }}" class="bike-popupform"/>
-																			<input type="hidden" name="title" required="required" value="{{ title }}" class="bike-popupform">
-                                          								{#}{{ app.session.set('title',title) }}{#}
-																			<select class="bike-popupform" type="text" name="location"><br>
-                                                                        	<option>Tirupati</option>
-                                                                        	<option>Bangalore</option>
-                                                                        	</select>
-                                                                        	<hr class="bike-popup">
-                                                                        	<input type="datetime" class="datetime8_prefer_date bike-popupform" name="preferdate" required="required"  placeholder="Pickup Date"  required />
-                                                                        	<hr class="bike-popup">
-                                                                        	<input type="datetime" class="datetime9_returnDate bike-popupform" name="returndate" required="required"  placeholder="Return Date"  required />
-                                                                        	<hr class="bike-popup">
-                                                                        		<button type="submit" class="btn btn-book-now view-bike1" value="Search" style="height:20px;width:70%;height:30px;margin-bottom:10px;">Search
-                                                                        		</button>
-                                                                        </form>
-                                                  			    </div>
-                                        			            <div class="modal-footer">
-                                          					        {#}<button type="button_search" class="btn btn-search" data-dismiss="modal">Search</button>{#}
-                                        						</div>
-                                      						    </div>
-                                      
-                                   		 					</div>
-                                  						</div>
+                                                        
                                                             {% endif %}
                                                         </div>
                                          			</div>
@@ -338,57 +376,16 @@ $(document).ready(function(){
                                                                 	Sold Out
                                                                 </button>   
                                                             {% else %}
-                                                                <button class="btn btn-book-now view-bike1" data-toggle="modal" data-target=".myModal{{ bike.id }}">
+                                                                <button class="btn btn-book-now view-bike1 book-now2" 
+                                                                bike-name="{{ bike.title }}" 
+                                                                package-name="{{ package.packagename }}" 
+                                                                bike-id="{{ bike.id }}" 
+                                                                package-price="{{ package.packageprice }}"
+                                                                Km-limit="{{ package.packagekmlimit }}"
+                                                                offer-price="{{ package.packageoffer }}">
                                                                 	Rent Now
                                                                 </button>
-                                                        <div class="modal fade myModal{{ bike.id }}" role="dialog">
-                                    						<div class="modal-dialog">
-                                    							<div class="modal-content">
-                                        							<div class="modal-header1">
-                                                                      	<button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                      		<h4 class="modal-title">Let's Ride</h4>
-                                        							</div>
-                                        						<div class="modal-body1" style="">
-                                        							<div class="row">
-                                        								<span class="package-title1">{{ bike.title }}</span>
-                                        								<span class="package-title2">{{ package.packagename }}Days Package</span>
-                                        							</div>
-                                        							<div class="row"><hr></div>
-                                          								{% set id= bike.id %}
-                                          								{% set title= bike.title %}
-                                          								{% set packagetitle= package.packagename %}
-                                          								{% set packageprice= package.packageprice %}
-                                          								{% set Kmlimit= package.packageadditionalkmlimit %}
-                                          								{% set packageoffer= package.packageoffer %}
-                                          								<form name="bike_package" action="{{ path('trip_site_management_bike_package_result') }}" method="get">
-                                                                        	<input type="hidden" name="packagetitle" class="form-control" value="{{ packagetitle }}">
-                                          								{#}{{ app.session.set('packagetitle',packagetitle) }}{#}
-                                                                        	<input type="hidden" name="packageprice" class="form-control" value="{{ packageprice }}">
-                                                                        	<input type="hidden" name="Kmlimit" class="form-control" value="{{ Kmlimit }}">
-                                                                        	<input type="hidden" name="packageoffer" class="form-control" value="{{ packageoffer }}">
-                                                                        	<input type="hidden" name="id" required="required" value="{{ id }}" class="bike-popupform"/>
-																			<input type="hidden" name="title" required="required" value="{{ title }}" class="bike-popupform">
-                                          								{#}{{ app.session.set('title',title) }}{#}
-																			<select class="bike-popupform" type="text" name="location"><br>
-                                                                        	<option>Tirupati</option>
-                                                                        	<option>Bangalore</option>
-                                                                        	</select>
-                                                                        	<hr class="bike-popup">
-                                                                        	<input type="datetime" class="datetime10_prefer_date bike-popupform" name="preferdate" required="required"  placeholder="Pickup Date"  required />
-                                                                        	<hr class="bike-popup">
-                                                                        	<input type="datetime" class="datetime11_returnDate bike-popupform" name="returndate" required="required"  placeholder="Return Date"  required />
-                                                                        	<hr class="bike-popup">
-                                                                        		<button type="submit" class="btn btn-book-now view-bike1" value="Search" style="height:20px;width:70%;height:30px;margin-bottom:10px;">Search
-                                                                        		</button>
-                                                                        </form>  	
-                                                  			    </div>
-                                        			            <div class="modal-footer">
-                                          					        {#}<button type="button_search" class="btn btn-search" data-dismiss="modal">Search</button>{#}
-                                        						</div>
-                                      						    </div>
-                                      
-                                   		 					</div>
-                                  						</div>
+                                                        
                                                             {% endif %}
                                                         </div>
                                          			</div>
@@ -399,7 +396,121 @@ $(document).ready(function(){
                            </div>
                         </div>
                      {% endfor %}
-                 </div>
+                     <div class="modal fade myModal7days" id="mymodel7days"  role="dialog">
+                      <div class="modal-dialog">
+                       <div class="modal-content">
+                        <div class="modal-header1">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                               <h4 class="modal-title">Let's Ride</h4>
+                        </div>
+                        <div class="modal-body1" style="">
+                         <div class="row">
+                            <span class="package-title1"><span class="model-bike-name"></span></span>
+                            <span class="package-title2"><span class="model-package-name"></span>Days Package</span><br>
+                         </div>
+                         <div class="row"><hr></div>
+                            <form name="bike_package" action="{{ path('trip_site_management_bike_package_result') }}" method="get">
+                            	<input id="model-bike-id" type="hidden" name="id" required="required" value="" class="bike-popupform"/>
+                            	<input id="model-package-Kmlimit" type="hidden" name="Kmlimit" required="required" value="" class="bike-popupform"/>
+                            	<input class="model-bike-name" type="hidden" name="title" required="required" value="" class="bike-popupform"/>
+                            	<input class="model-package-name" type="hidden" name="packagename" required="required" value="" class="bike-popupform"/>
+                            	<input id="model-package-offerprice" type="hidden" name="packageoffer" required="required" value="" class="bike-popupform"/>
+                            	<input id="model-package-price" type="hidden" name="packageprice" required="required" value="" class="bike-popupform"/>
+								<select class="bike-popupform" type="text" name="location"><br>
+                                	<option>Tirupati</option>
+                                    <option>Bangalore</option>
+                                </select>
+                                <hr class="bike-popup">
+                                <input type="datetime" class=" bike-popupform" id="datetime6_prefer_date" name="preferdate" required="required"  placeholder="Pickup Date"  required />
+                                <hr class="bike-popup">
+                            	<input type="datetime" class=" bike-popupform" id ="datetime7_returnDate" name="returndate" required="required"  placeholder="Return Date" data-value=""  required />
+                                <hr class="bike-popup">
+                                <button type="submit" class="btn btn-book-now view-bike1" value="Search" style="height:20px;width:70%;height:30px;margin-bottom:10px;">Search
+                                </button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                        </div>
+                       </div>
+                      </div>
+                     </div>
+                     <div class="modal fade myModal15days" id="mymodel15days"  role="dialog">
+                      <div class="modal-dialog">
+                       <div class="modal-content">
+                        <div class="modal-header1">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                               <h4 class="modal-title">Let's Ride</h4>
+                        </div>
+                        <div class="modal-body1" style="">
+                         <div class="row">
+                            <span class="package-title1"><span class="model-bike-name1"></span></span>
+                            <span class="package-title2"><span class="model-package-name1"></span>Days Package</span><br>
+                         </div>
+                         <div class="row"><hr></div>
+                            <form name="bike_package" action="{{ path('trip_site_management_bike_package_result') }}" method="get">
+                            	<input id="model-bike-id1" type="hidden" name="id" required="required" value="" class="bike-popupform"/>
+                            	<input id="model-package-Kmlimit1" type="hidden" name="Kmlimit" required="required" value="" class="bike-popupform"/>
+                            	<input class="model-bike-name1" type="hidden" name="title" required="required" value="" class="bike-popupform"/>
+                            	<input class="model-package-name1" type="hidden" name="packagename" required="required" value="" class="bike-popupform"/>
+                            	<input id="model-package-offerprice1" type="hidden" name="packageoffer" required="required" value="" class="bike-popupform"/>
+                            	<input id="model-package-price1" type="hidden" name="packageprice" required="required" value="" class="bike-popupform"/>
+								<select class="bike-popupform" type="text" name="location"><br>
+                                	<option>Tirupati</option>
+                                    <option>Bangalore</option>
+                                </select>
+                                <hr class="bike-popup">
+                                <input type="datetime" class=" bike-popupform" id="datetime8_prefer_date" name="preferdate" required="required"  placeholder="Pickup Date"  required />
+                                <hr class="bike-popup">
+                            	<input type="datetime" class=" bike-popupform" id ="datetime9_returnDate" name="returndate" required="required"  placeholder="Return Date" data-value=""  required />
+                                <hr class="bike-popup">
+                                <button type="submit" class="btn btn-book-now view-bike1" value="Search" style="height:20px;width:70%;height:30px;margin-bottom:10px;">Search
+                                </button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                        </div>
+                       </div>
+                      </div>
+                     </div>
+                     <div class="modal fade myModal30days" id="mymodel30days"  role="dialog">
+                      <div class="modal-dialog">
+                       <div class="modal-content">
+                        <div class="modal-header1">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                               <h4 class="modal-title">Let's Ride</h4>
+                        </div>
+                        <div class="modal-body1" style="">
+                         <div class="row">
+                            <span class="package-title1"><span class="model-bike-name2"></span></span>
+                            <span class="package-title2"><span class="model-package-name2"></span>Days Package</span><br>
+                         </div>
+                         <div class="row"><hr></div>
+                            <form name="bike_package" action="{{ path('trip_site_management_bike_package_result') }}" method="get">
+                            	<input id="model-bike-id2" type="hidden" name="id" required="required" value="" class="bike-popupform"/>
+                            	<input id="model-package-Kmlimit2" type="hidden" name="Kmlimit" required="required" value="" class="bike-popupform"/>
+                            	<input class="model-bike-name2" type="hidden" name="title" required="required" value="" class="bike-popupform"/>
+                            	<input class="model-package-name2" type="hidden" name="packagename" required="required" value="" class="bike-popupform"/>
+                            	<input id="model-package-offerprice2" type="hidden" name="packageoffer" required="required" value="" class="bike-popupform"/>
+                            	<input id="model-package-price2" type="hidden" name="packageprice" required="required" value="" class="bike-popupform"/>
+								<select class="bike-popupform" type="text" name="location"><br>
+                                	<option>Tirupati</option>
+                                    <option>Bangalore</option>
+                                </select>
+                                <hr class="bike-popup">
+                                <input type="datetime" class=" bike-popupform" id="datetime10_prefer_date" name="preferdate" required="required"  placeholder="Pickup Date"  required />
+                                <hr class="bike-popup">
+                            	<input type="datetime" class=" bike-popupform" id ="datetime11_returnDate" name="returndate" required="required"  placeholder="Return Date" data-value=""  required />
+                                <hr class="bike-popup">
+                                <button type="submit" class="btn btn-book-now view-bike1" value="Search" style="height:20px;width:70%;height:30px;margin-bottom:10px;">Search
+                                </button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                        </div>
+                       </div>
+                      </div>
+                     </div>
+                    </div>
              </div>
          </div>    
 </section>
