@@ -1,0 +1,14 @@
+<h3 class="review-apply-filter">Locations</h3>
+<div class="review-filters-loc">
+{% for key,areas in bikesarea %}
+<input type="checkbox" name="check_list_loc[]" value="{{ areas.area }}"
+ onclick="this.form.submit()" {% for checklist in filterloc %}{% if checklist== areas.area %} checked {% endif %}{% endfor %}> {{ areas.area }}<br>
+{% endfor %}
+</div>
+<h3 class="review-apply-filter">Bikes</h3>
+<div class="review-filters-bikes">
+{% for bike in bikes %}
+<input type="checkbox" name="check_list_bikes[]" value="{{ bike.id }}" onclick="this.form.submit()"
+{% for checklist in filterbikes %}{% if checklist== bike.id %} checked {% endif %}{% endfor %}> {{ bike.title }}<br>
+{% endfor %}
+</div>

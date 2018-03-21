@@ -1,0 +1,25 @@
+{% extends 'page.html.twig' %}
+{% block javascripts %}
+<script>
+$( window ).load(function(){
+	var locv=$('#txt_name1').val();;
+	$('#trip_site_management_edit_bikes_maincity_cityid').val(locv);
+
+});
+</script>
+{% endblock %}
+{% block body %}
+
+    <section class="section clearfix">
+        <div class="container">
+            <div class="row">
+            <input type="hidden" value="{{ editbikesmaincity.cityid }}" id="txt_name1">
+                <div id="fullwidth" class="col-sm-12">
+               <div class="col-lg-7">
+                   {{ form_start(form) }}{{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+          </div> 
+    </section>
+{% endblock %}

@@ -60,79 +60,72 @@ var packageCount = '{{ form.packageList|length }}';
         <div class="container">
             <div class="row">
                 <div id="fullwidth" class="col-sm-12">
-                <span class="package-title">Existing Content</span>
-                   {{ form_start(form) }}
-                   <div class="row">
-                	<div id="fullwidth" class="col-sm-7">
-                      <div class="row form-group">
-                            <div class="col-lg-12">
-                            	{{ form_label(form.title) }}
-                                {{ form_widget(form.title) }}
-                            </div> 
-                      </div>
-                      <div class="row form-group">
-                            <div class="col-lg-12">
-                            	{{ form_label(form.metatitle) }}
-                                {{ form_widget(form.metatitle) }}
-                            </div> 
-                      </div>
-                      <div class="row form-group">
-                            <div class="col-lg-12">
-                            	{{ form_label(form.metakeywords) }}
-                                {{ form_widget(form.metakeywords) }}
-                            </div> 
-                      </div> <div class="row form-group">
-                            <div class="col-lg-12">
-                            	{{ form_label(form.metadescription) }}
-                                {{ form_widget(form.metadescription) }}
-                            </div> 
-                      </div> <div class="row form-group">
-                            <div class="col-lg-12">
-                            	{{ form_label(form.statingprice) }}
-                                {{ form_widget(form.statingprice) }}
-                            </div> 
-                      </div> <div class="row form-group">
-                            <div class="col-lg-12">
-                            	{{ form_label(form.fivehours) }}
-                                {{ form_widget(form.fivehours) }}
-                            </div> 
-                      </div> <div class="row form-group">
-                            <div class="col-lg-12">
-                            	{{ form_label(form.dayrent) }}
-                                {{ form_widget(form.dayrent) }}
-                            </div> 
-                      </div> <div class="row form-group">
-                            <div class="col-lg-12">
-                            	{{ form_label(form.locationurl) }}
-                                {{ form_widget(form.locationurl) }}
-                            </div> 
-                      </div> <div class="row form-group">
-                            <div class="col-lg-12">
-                            	{{ form_label(form.soldOut) }}
-                                {{ form_widget(form.soldOut) }}
-                            </div> 
-                      </div>
-                      <div class="row form-group">
-                            <div class="col-lg-12">
-                            	{{ form_label(form.count) }}
-                                {{ form_widget(form.count) }}
-                            </div> 
-                      </div> 
-                      <div class="row form-group">
-                            <div class="col-lg-12">
-                            	{{ form_label(form.kmlimit) }}
-                                {{ form_widget(form.kmlimit) }}
-                            </div> 
-                      </div>
-                      <div class="row form-group">
-                            <div class="col-lg-12">
-                            	{{ form_label(form.imgpath) }}
-                                {{ form_widget(form.imgpath) }}
-                            </div> 
-                      </div> 
-                     </div>
-                    </div> 
-                    {{ form_end(form) }}                  
+               <div class="col-lg-7">
+               		<h3>Edit Bike</h3>
+                   {{ form_start(form) }}{{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+             <div class="row">
+            <hr>
+                <div id="fullwidth" class="col-sm-6">
+					<table class="table table-bordered col-lg-12 col-sm-12">
+					<tr>
+						<th>Sl.No</th>
+						<th>Title</th>
+						<th>Url</th>
+						
+						<th>/</th>
+					</tr>
+                    {% for bikecities in bikecity %}
+                        <tr>
+                        	<td>{{ loop.index }}</td>
+							 <td>
+                                {{ bikecities.title }}
+                            </td>
+							 <td>
+                                {{ bikecities.url }}
+                            </td>
+							
+							<td>
+								<a href="{{ path('trip_site_management_edit_bikes_city',{ 'id': bikecities.id }) }}"><i class="fa fa-pencil-square-o"></i></a>
+							</td>
+                        </tr>
+                    {% endfor %}
+					</table>
+                </div>
+                <div id="fullwidth" class="col-sm-6">
+                	<h3>Add Bike City</h3>
+                	{{ render(controller('TripSiteManagementBundle:SiteManagement:addbikescity')) }}
+                </div>
+               
+            </div>
+            <div class="row">
+            <hr>
+                <div id="fullwidth" class="col-sm-6">
+					<table class="table table-bordered col-lg-12 col-sm-12">
+					<tr>
+						<th>Sl.No</th>
+						<th>Area</th>
+						<th>Bikes Avilable</th>
+						<th>City Name</th>
+						<th>/</th>
+					</tr>
+                    {% for areas in bikecityarea %}
+                        <tr>
+                        	<td>{{ loop.index }}</td>
+							 <td>
+                                {{ areas.area }}
+                            </td>
+							 <td>
+                                {{ areas.count }}
+                            </td>
+							<td>
+                                {{ locations[areas.cityid].name }}
+                            </td>
+							<td>
+								<a href="{{ path('trip_site_management_edit_bikes_cityarea',{ 'id': areas.id }) }}"><i class="fa fa-pencil-square-o"></i></a>
+                <span class="package-title">Existing Content</span>                
     				<div class="row">
                  	<div id="fullwidth" class="col-sm-6">
              	 	  <span class="package-title">Existing Packages</span><br>
@@ -155,6 +148,14 @@ var packageCount = '{{ form.packageList|length }}';
                         </tr>
                     {% endfor %}
 					</table>
+                </div>
+                <div id="fullwidth" class="col-sm-6">
+                	<h3>Add Bike City Area</h3>
+                	{{ render(controller('TripSiteManagementBundle:SiteManagement:addbikescityarea')) }}
+                </div>
+               
+            </div>
+          </div> 
 					</div>
 					</div>
 					<div class="row">

@@ -161,6 +161,29 @@ trip_booking_engine_dest_bl:
     path:     /bangalore/{url}
     defaults: { _controller: TripBookingEngineBundle:Booking:destSearch }
 trip_booking_engine_dest_kn:
-    path:     /bangalore/{url}
+    path:     /kanipakam/{url}
     defaults: { _controller: TripBookingEngineBundle:Booking:destSearch }
-       
+trip_booking_engine_searchpages_list:
+    path:     /searchpageslist
+    defaults: { _controller: TripBookingEngineBundle:Booking:searchpagesList }
+trip_booking_engine_edit_searchpages:
+    path:     /edit/{id}
+    defaults: { _controller: TripBookingEngineBundle:Booking:editSearchpages }
+trip_booking_engine_edit_searchpagesloc:
+    path:     /edit/{id}/pages
+    defaults: { _controller: TripBookingEngineBundle:Booking:editSearchpagesloc }
+trip_booking_engine_edit_searchpagescont:
+    path:     /edit/{id}/page-cont
+    defaults: { _controller: TripBookingEngineBundle:Booking:editSearchpagescont }
+trip_booking_engine_edit_searchpagestaxitype:
+    path:     /edit/{id}/page-taxitype
+    defaults: { _controller: TripBookingEngineBundle:Booking:editsearchPagestaxitype }
+trip_booking_engine_add_searchpagesloc:
+    path:     /add-pages
+    defaults: { _controller: TripBookingEngineBundle:Booking:addSearchpagesloc }
+trip_booking_engine_add_searchpagescont:
+    path:     /addpage-cont
+    defaults: { _controller: TripBookingEngineBundle:Booking:addSearchpagescont }
+trip_booking_engine_add_searchpagestaxitype:
+    path:     /add-pagetaxitype
+    defaults: { _controller: TripBookingEngineBundle:Booking:addSearchpagestaxitype }

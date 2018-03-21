@@ -179,12 +179,12 @@ $("#trip_search_multiple_1_leavingFrom").change(function() {
 <script>
 
 $( window ).load(function(){
-	var locv=$('#txt_name1').val();;
+	var locv=$('#txt_name1').val();
 	$('#trip_search_leavingFrom').val(locv);
 
 });
 $( window ).load(function(){
-	var locv=$('#txt_name2').val();;
+	var locv=$('#txt_name2').val();
 	$('#trip_search_goingTo').val(locv);
 
 });
@@ -234,15 +234,6 @@ $(document).ready(function() {
     <section class="section fullscreen background parallax" style="background-image:url({{ asset('images/Just-Trip-banner-6.jpg') }});position: relative;padding: 73px 0;" data-img-width="1920" data-img-height="1003" data-diff="100">
         <div class="container">
             <div class="row homeform">
-                {#
-                <div class="col-md-12 col-xs-12">
-                    <div class="home-message banner-message">
-                        <h1> Help Line No :</br>+91-9900585533</h1>
-                        <h2> TAXI / HOTEL <br>Service providers in Tirupati </h2> 
-                        <h1> "Pay 10% Now And Book Your Ride" </h1>
-                       
-                    </div><!-- end homemessage -->
-                </div><!-- end col -->  #}
                 <div class="col-md-12 col-xs-12">
                     <div class="home-form">
                         <h2>{% for dest in destlocations %} {{ dest.title }} {% endfor %}</h2>
@@ -250,12 +241,12 @@ $(document).ready(function() {
                         <!-- Nav tabs -->
                         {% block navTabs %}
                         <ul class="nav nav-tabs homebanner" role="tablist">
-                            <li class="active"><a href="#tab_01" aria-controls="tab_01" role="tab" data-toggle="tab" class="homebanner-color"><i class="icon-sedan3"></i>   Cars</a></li>
-							<li><a href="{{ path('trip_site_management_bikes_on_rent')}}" class="homebanner-color"><img src="{{ asset('images/bike.png') }}" style="width:27px;height:23px;padding-right: 4px;top: 3px;position: relative;" /> Bikes</a></li>
-                            <!--<li><a href="#tab_02" aria-controls="tab_02" role="tab" data-toggle="tab"><i class="icon-hotel68"></i>  Hotels</a></li>-->
-                            <li><a href="{{ path('trip_site_management_homepage_packages')}}"><i class="icon-bag"></i>  Packages</a></li>
+                            <li class="active"><a href="#tab_01" aria-controls="tab_01" role="tab" data-toggle="tab" class="homebanner-color">Cabs</a></li>
+							<li><a href="{{ path('trip_site_management_bikes_on_rent')}}" class="homebanner-color"> Bikes</a></li>
+                            <!--<li><a href="#tab_02" aria-controls="tab_02" role="tab" data-toggle="tab">Hotels</a></li>-->
+                            <li><a href="{{ path('trip_site_management_homepage_packages')}}">Packages</a></li>
                             
-                            <li><a href="#tab_04" aria-controls="tab_04" role="tab" data-toggle="tab"><i class="icon-travel25"></i>  Offers</a></li>
+                            <li><a href="#tab_04" aria-controls="tab_04" role="tab" data-toggle="tab">Offers</a></li>
                             
                         </ul>
                         
@@ -539,35 +530,91 @@ $(document).ready(function() {
 	<section class="section fullscreen background parallax">
 		<div class="container">
 			<div class="row">
+				<div class="col-md-9">
 			{% for dest in destlocations %} 
 				<div class="col-md-12">
 					<h1 class="footerpages-h1">{{ dest.title }}</h1>
-					<input type="hidden" value="{{ dest.pick_location }}" id="txt_name1">
-					<input type="hidden" value="{{ dest.drop_location }}" id="txt_name2">
+					<input type="hidden" value="{{ dest.picklocation }}" id="txt_name1">
+					<input type="hidden" value="{{ dest.droplocation }}" id="txt_name2">
 					<hr>
 					{% for destcnt in dest.destcont %}
 					<h3 class="footerpages-h1">{{ destcnt.title }}</h3>
 						<p>{{ destcnt.description }}</p>
 					{% endfor %}
+					<div class="col-md-2">
+					</div>
+					<div class="col-md-8">
+					<table class="table" style="border: 1px solid #e0e0e0;">
+						<tbody>
+							<tr>
+								<th class="footer-innerpages-tablerow1">Taxi Type</th>
+								<th class="footer-innerpages-tablerow1">Price Per Day</th>
+							</tr>
+					{% for key,taxitype in dest.desttaxitype %}
+						<tr>
+							<td class="footer-innerpages-tablerow2" style="{% if loop.index is odd %}  background-color:#f9f9f9; {% endif %}">{{ taxitype.taxitype }}</td>
+							<td class="footer-innerpages-tablerow2" style="{% if loop.index is odd %}  background-color:#f9f9f9; {% endif %}"><span><i class="fa fa-inr"></i> {{ taxitype.priceperday }}</span></td>
+						</tr>
+						
+					{% endfor %}
+					</tbody>
+					</table>
+					</div>
+					<div class="col-md-2">
+					</div>
 				</div>
 				{% endfor %}
 				<div class="col-md-12">
 				<hr>
+					<div class="col-md-1">
+					</div>
+					<div class="col-md-10">
+						<table class="table" style="border: 1px solid #e0e0e0;">
+						<tbody>
+							<tr>
+								<th class="footer-innerpages-tablerow1">Type of Cab</th>
+								<th class="footer-innerpages-tablerow1">Capacity</th>
+								<th class="footer-innerpages-tablerow1">Ideal For</th>
+							</tr>
+							<tr>
+								<td class="footer-innerpages-tablerow2" style=" background-color:#f9f9f9;">Tata Indica</td>
+								<td class="footer-innerpages-tablerow2" style=" background-color:#f9f9f9;">4</td>
+								<td class="footer-innerpages-tablerow2" style=" background-color:#f9f9f9;">Short Distance Trips</td>
+							</tr>
+							<tr>
+								<td class="footer-innerpages-tablerow2">Toyota Etios</td>
+								<td class="footer-innerpages-tablerow2">4</td>
+								<td class="footer-innerpages-tablerow2">Small Families</td>
+							</tr>
+							<tr>
+								<td class="footer-innerpages-tablerow2" style=" background-color:#f9f9f9;">Toyota Innova</td>
+								<td class="footer-innerpages-tablerow2" style=" background-color:#f9f9f9;">6/7</td>
+								<td class="footer-innerpages-tablerow2" style=" background-color:#f9f9f9;">Long Distance/ Large Group</td>
+							</tr>
+						</tbody>
+					</table>
+					</div>
+					<div class="col-md-1">
+					</div>
+					
+				</div>
+			</div>
+			
+				<div class="col-md-3">
+				<div class="row search-pages-sidebar">
 				{% for destinations in destall %} 
-					<h3 class="footerpages-h1">Destinations Near {{ destinations.dest_url }}</h3>
+					<h3 class="footerpages-h1">Destinations Near {{ destinations.desturl }}</h3>
 						{% for destcoll in destinations.destloc %}
-						    {% if destinations.dest_url=='tirupati' %}
-    						
+						    {% if destinations.desturl=='tirupati' %}
     							<a href="{{ path('trip_booking_engine_dest_tpt',{ 'url':destcoll.url }) }}">
     							<p class="footer-innerpages-links">{{ destcoll.title }}</p>
     							</a>
-    						
-    						{% elseif destinations.dest_url=='chennai' %}
+    						{% elseif destinations.desturl=='chennai' %}
     						
     							<a href="{{ path('trip_booking_engine_dest_ch',{ 'url':destcoll.url }) }}">
     							<p class="footer-innerpages-links">{{ destcoll.title }}</p>
     							</a>
-    						{% elseif destinations.dest_url=='bangalore' %}
+    						{% elseif destinations.desturl=='bangalore' %}
     						
     							<a href="{{ path('trip_booking_engine_dest_bl',{ 'url':destcoll.url }) }}">
     							<p class="footer-innerpages-links">{{ destcoll.title }}</p>
@@ -581,6 +628,7 @@ $(document).ready(function() {
 						    {% endif %}
 						{% endfor %}
 				{% endfor %}
+					</div>
 				</div>
 			</div>
 		

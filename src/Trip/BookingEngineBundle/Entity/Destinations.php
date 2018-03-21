@@ -25,16 +25,15 @@ class Destinations
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="dest_location", type="integer", length=100)
+     * @ORM\Column(name="dest_location", type="string", length=50)
      */
-    private $dest_location;
+    private $name;
     /**
      * @var string
      *
      * @ORM\Column(name="dest_url", type="string", length=100)
      */
-    private $dest_url;
+    private $desturl;
 
     /**
      * @var boolean
@@ -43,14 +42,15 @@ class Destinations
      */
     private $active;
     /**
-     * @ORM\OneToMany(targetEntity="Trip\BookingEngineBundle\Entity\Destinationlocations", mappedBy="dest_id", cascade={"all"},  fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="Trip\BookingEngineBundle\Entity\Destinationlocations", mappedBy="popular", cascade={"all"})
      */
     private $destloc;
-
+    
     public function __construct() {
         $this->destloc = new ArrayCollection();
         
     }
+   
     /**
      * @return integer
      */
@@ -67,20 +67,22 @@ class Destinations
         $this->id = $id;
     }
 
+    
+
     /**
      * @return string
      */
-    public function getDest_location()
+    public function getName()
     {
-        return $this->dest_location;
+        return $this->name;
     }
 
     /**
-     * @param string $dest_location
+     * @param string $name
      */
-    public function setDest_location($dest_location)
+    public function setName($name)
     {
-        $this->dest_location = $dest_location;
+        $this->name = $name;
     }
 
     /**
@@ -98,24 +100,23 @@ class Destinations
     {
         $this->active = $active;
     }
-
     /**
      * @return string
      */
-    public function getDest_url()
+    public function getDesturl()
     {
-        return $this->dest_url;
+        return $this->desturl;
     }
 
     /**
-     * @param string $dest_url
+     * @param string $desturl
      */
-    public function setDest_url($dest_url)
+    public function setDesturl($desturl)
     {
-        $this->dest_url = $dest_url;
+        $this->desturl = $desturl;
     }
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * @return mixed
      */
     public function getDestloc()
     {
@@ -123,7 +124,7 @@ class Destinations
     }
 
     /**
-     * @param \Doctrine\Common\Collections\ArrayCollection $destloc
+     * @param mixed $destloc
      */
     public function setDestloc($destloc)
     {
@@ -131,7 +132,5 @@ class Destinations
     }
 
 
-
-
-   
+    
 }
