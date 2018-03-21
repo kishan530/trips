@@ -74,6 +74,7 @@ use Trip\SiteManagementBundle\Form\EditPickuplocationType;
 use Trip\SiteManagementBundle\Form\EditPlacetovisitlocationType;
 use Trip\SiteManagementBundle\Form\EditDroplocationType;
 use Trip\SiteManagementBundle\Form\PackageImageType;
+use Trip\SiteManagementBundle\Form\AddBikesPackageType;
 
 class SiteManagementController extends Controller
 {
@@ -1230,9 +1231,7 @@ class SiteManagementController extends Controller
         $contentList->add($content);
         $contentCollection = $package->getContent();
         
-        $packageUrl =  $package->getPackageUrl();
-        $packageUrl = substr($packageUrl,0, strrpos($packageUrl, '-'));
-        $package->setPackageUrl($packageUrl);
+        
         
         $form   = $this->createEditPackageForm($package,$id);
         $form->handleRequest($request);
@@ -1995,6 +1994,46 @@ class SiteManagementController extends Controller
         
     }
     
+    //****************************************************add package****************************************//
+    
+    public function addBikesPackageAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        $package = new bikes();
+        $bikeid= $session->get('bikeid');
+        $bikes =$em->getRepository('TripSiteManagementBundle:bikes')->find($bikeid);
+        $bikespackage = new bikespackage();
+        
+        $form   = $this->createaddBikesPackageForm($bikespackage);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $bikespackage->setBikes($bikes);
+            $em->persist($bikespackage);
+            $em->flush();
+            
+            return $this->redirect($this->generateUrl('trip_site_management_edit_bikes',array('id'=>$bikeid)));
+            
+        }
+        
+        
+        return $this->render('TripSiteManagementBundle:Default:addBikespackage.html.twig',array(
+            'bikespackage' => $bikespackage,
+            
+            'form'   => $form->createView(),
+        ));
+    }
+    
+    private function createaddBikesPackageForm($bikespackage){
+        $bookingService = $this->container->get( 'booking.services' );
+        $form = $this->createForm(new AddBikesPackageType(), $bikespackage, array(
+            'action' => $this->generateUrl('trip_site_management_add_bike_package'),
+            'method' => 'POST',
+        ));
+        $form->add('submit', 'submit', array('label' => 'Insert'));
+        
+        return $form;
+    }
+    
     
     //*******************************************************jagadeesh*******************************************************//
     
@@ -2561,8 +2600,13 @@ class SiteManagementController extends Controller
     }
     public function editBikesAction(Request $request,$id){
         $em = $this->getDoctrine()->getManager();
-        //$package = new Package();
+        $session = $request->getSession();
+        $package = new bikes();
+        $session->set('bikeid',$id);
         $package =$em->getRepository('TripSiteManagementBundle:bikes')->find($id);
+        $package_id = $package->getId();
+        $bikespackage =$em->getRepository('TripSiteManagementBundle:bikespackage')->findBy(array('bikes' => $id));
+        
         $form   = $this->createEditBikesForm($package,$id);
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -2594,6 +2638,7 @@ class SiteManagementController extends Controller
         
         return $this->render('TripSiteManagementBundle:Default:editBikes.html.twig',array(
             'package' => $package,
+            'bikespackage'=> $bikespackage,
             'form'   => $form->createView(),
         ));
     }

@@ -214,6 +214,9 @@ trip_site_management_edit_bikes_package:
 trip_site_management_delete_bike_package:
     path:     /delete/{id}/bikespackage
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:deleteBikesPackage }
+trip_site_management_add_bike_package:
+    path:     /add-bikespackage
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:addBikesPackage }    
     
 trip_site_management_edit_package_Price:
     path:     /edit/{id}/packageprice

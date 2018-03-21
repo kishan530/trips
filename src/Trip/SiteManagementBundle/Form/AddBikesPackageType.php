@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class EditBikesPackageType extends AbstractType
+class AddBikesPackageType extends AbstractType
 {
     
     /**
@@ -52,6 +52,6 @@ class EditBikesPackageType extends AbstractType
      */
     public function getName()
     {
-        return 'trip_site_management_edit_bikes_package';
+        return 'trip_site_management_add_bike_package';
     }
 }
