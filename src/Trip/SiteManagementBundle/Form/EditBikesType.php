@@ -50,6 +50,12 @@ class EditBikesType extends AbstractType
 			        'prototype'=>true,
 			    ),
 			))
+			->add('packageList', 'collection', array(
+			    'type'   => new EditBikesPackageType(),
+			    'allow_add'    => true,
+			    'prototype'=>true,
+			    'required'    => false,
+			    ))
         ;
     }
     

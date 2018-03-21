@@ -129,7 +129,7 @@ class Package
     private $content;
     
     /**
-     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\PackageImages", mappedBy="package", cascade={"persist"}, fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\PackageImages", mappedBy="package", cascade={"all"})
      */
     private $images;
     /**

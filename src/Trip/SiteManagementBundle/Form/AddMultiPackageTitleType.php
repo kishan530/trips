@@ -44,6 +44,7 @@ class AddMultiPackageTitleType extends AbstractType
 			        'class'   => 'filestyle',
 			        'allow_add'    => true,
 			        'prototype'=>true,
+			        'multiple' => true,
 			    ),
 			))
 			

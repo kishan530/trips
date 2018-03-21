@@ -1,9 +1,62 @@
 {% extends 'page.html.twig' %}
 {% block javascripts %}
+<script>
+
+var packageCount = '{{ form.packageList|length }}';
+ 
+    $('#add-another-content').click(function(e) {
+            e.preventDefault();
+            /*if(itemCount>4){
+                alert('Max 5 only');
+                exit();
+            }*/
+
+            var packageList = $('#package-list');
+
+            // grab the prototype template
+            var newWidget = packageList.attr('data-prototype');
+            // replace the "__name__" used in the id and name of the prototype
+            // with a number that's unique to your city
+            newWidget = newWidget.replace(/__name__/g, packageCount);
+            packageCount++;
+
+            // create a new list element and add it to the list
+            var newLi = $('<div></div>').html(newWidget);
+            newLi.appendTo(packageList);
+        });
+
+
+    $(".package-tbl").on('click', '.delete', function (e) {
+    	e.preventDefault(); //STOP default action
+    	  var url = $(this).attr('href');
+    	   var name = $(this).attr('title');
+            if (!confirm(" "+name+"days Package details will be deleted permanently form the system, please confirm")) {
+    		            exit();
+    		  }	
+    	  var tr = $(this).parent().parent();
+    		        $.ajax({
+    					url: url,
+    					type: "GET",
+    					success: function(data) {
+    						//alert(data); 
+    						if(data=='true'){
+    							tr.remove();
+    						}else{
+    							$('#error').html(data);
+    						}
+    					},
+    					
+    					error: function(XMLHttpRequest, textStatus, errorThrown)
+    					{
+    					 alert('Error: ' +  errorThrown);
+    					}
+    				});			       
+    });
+    
+    </script>
 {% endblock %}
 {% block body %}
-
-    <section class="section clearfix">
+<section class="section clearfix">
         <div class="container">
             <div class="row">
                 <div id="fullwidth" class="col-sm-12">
@@ -72,6 +125,25 @@
                             </td>
 							<td>
 								<a href="{{ path('trip_site_management_edit_bikes_cityarea',{ 'id': areas.id }) }}"><i class="fa fa-pencil-square-o"></i></a>
+                <span class="package-title">Existing Content</span>                
+    				<div class="row">
+                 	<div id="fullwidth" class="col-sm-6">
+             	 	  <span class="package-title">Existing Packages</span><br>
+						<table class="table table-bordered col-lg-12 col-sm-12 package-tbl">
+						 <tr>
+						 <th>Sl.No</th>
+						 <th>Package Name</th>						
+						 <th>/</th>
+					     </tr>
+						{% for i in bikespackage %} 
+                        <tr>
+                        	<td>{{ loop.index }}</td>
+							 <td>
+                                {{ i.packagename }}Days Package
+                            </td>							
+							<td>
+								<a href="{{ path('trip_site_management_edit_bikes_package',{ 'id': i.id }) }}"><i class="fa fa-pencil-square-o"></i></a>
+								<a href="{{ path('trip_site_management_delete_bike_package',{ 'id': i.id }) }}" class="delete" title="{{ i.packagename }}"><i class="fa fa-trash-o"></i></a>								
 							</td>
                         </tr>
                     {% endfor %}
@@ -84,5 +156,31 @@
                
             </div>
           </div> 
+					</div>
+					</div>
+					<div class="row">
+					<a href="#" id="add-another-content">Add another Package</a><br>
+				<div id="fullwidth" class="col-sm-6">
+					  {% macro information_prototype(j) %}
+                         <span class="package-title">New Package</span>
+                        	<div class="row form-group">
+                        	<div class="row">
+                 			<div id="fullwidth" class="col-sm-6">
+                         {{ render(controller('TripSiteManagementBundle:SiteManagement:addBikesPackage')) }}
+                        </div>
+                     {% endmacro %}
+                        <div id="package-list"
+                            data-prototype="{{ _self.information_prototype(form.packageList.vars.prototype)|e }}">
+                            {% for j in form.packageList %}
+                            {{ _self.information_prototype(j) }}
+                            {% endfor %}
+                        </div>
+              </div>
+              </div>
+              </div>
+           </div>
+          </div>
+         </div>
+        </div> 
     </section>
 {% endblock %}

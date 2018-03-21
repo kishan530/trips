@@ -3,6 +3,7 @@
 namespace Trip\SiteManagementBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * bikes
@@ -132,10 +133,14 @@ class bikes
      * @ORM\Column(name="active", type="boolean")
      */
     private $active;
-    
+    /**
+     * @var string
+     */
+    private $packagelist;
     
     public function __construct() {
         $this->bikespackage = new ArrayCollection();
+        $this->packagelist = new ArrayCollection();
         $this->bikescity = new ArrayCollection();
         $this->bikescityarea = new ArrayCollection();
     }
@@ -145,6 +150,22 @@ class bikes
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getPackagelist()
+    {
+        return $this->packagelist;
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\ArrayCollection $packagelist
+     */
+    public function setPackagelist($packagelist)
+    {
+        $this->packagelist = $packagelist;
     }
 
     /**
