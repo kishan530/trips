@@ -62,6 +62,11 @@ class BikeBooking
      * @ORM\Column(name="bikelocation", type="string")
      */
     private $bikelocation;
+    /**
+     * @var string
+     * @ORM\Column(name="bikearea", type="string")
+     */
+    private $bikearea;
     
     /**
      * @ORM\OneToOne(targetEntity="Trip\BookingEngineBundle\Entity\Booking", inversedBy="bikeBooking")
@@ -226,6 +231,22 @@ class BikeBooking
     {
         $this->hours = $hours;
     }
+    /**
+     * @return string
+     */
+    public function getBikearea()
+    {
+        return $this->bikearea;
+    }
+
+    /**
+     * @param string $bikearea
+     */
+    public function setBikearea($bikearea)
+    {
+        $this->bikearea = $bikearea;
+    }
+
 
 
     

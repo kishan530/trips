@@ -3,46 +3,13 @@
 <link href="{{ asset('css/jquery.timepicker.css') }}" rel="stylesheet" media="screen">
 {% endblock %}
 {% block meta %}
-    <meta name="keywords" content="">
-    <meta name="description" content="">  
+    <meta name="keywords" content="{{ bikeslocbase.metaKeywords }}">
+    <meta name="description" content="{{ bikeslocbase.metaDescription }}">  
 {% endblock %}
-{% block title %}Bikes On Rent | Justtrip.in {% endblock %}
+{% block title %}Bikes On Rent In {{ locations[bikeslocbase.cityid].name }} | Justtrip.in {% endblock %}
 {% block javascripts %}
 <script src="{{ asset('js/jquery.timepicker.min.js') }}"></script>
-<script>
-$('.preferTime').timepicker({ 'scrollDefault': 'now' });
-    
-         $('.adults').click(function(e){		
-			e.preventDefault(); //STOP default action 
-			 var id = $(this).attr('id');
-			 var value = parseInt($(this).attr('value'));
-             var numAdult = $(this).siblings("input[name=numAdult]");
-			 var adults =parseInt(numAdult.val());
-			 if (isNaN(adults)) { 
-				 adults= 0
-	            } 
-			 if(id=='decrement'){
-				 adults-=1;
-				 if(adults>=value) numAdult.val(adults); else exit();
-			  }else{
-				adults+=1;
-			    if(adults<=20)  numAdult.val(adults); else exit();
-				}	
-	    });
-    
-         $('.vehicle-icon').click(function(e){		
-			e.preventDefault(); //STOP default action 
-			 var id = $(this).attr('id');
-			 var price = $(this).attr('value');
-             var package = parseInt($(this).attr('title'));
-             $('.vehicle'+package).removeClass('active');
-             $(this).addClass('active');
-             $('#vehicleIndex'+package).val(id);
-             $('#price'+package).html(price);
 
-
-	       });
-</script>
 <script type="text/javascript">
 		$(function(){
 			$('#datetime2').appendDtpicker();	
@@ -56,7 +23,11 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 		});
 		
 	</script>
-	<script>
+<script>
+
+</script>
+
+<script>
 			$(document).ready(function(){
 				$("#datetime3").change(function(){
 					var first=$("#datetime2").val();
@@ -71,7 +42,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 					}
 				});
 			});
-		</script>
+</script>
 	<script>
 	 $(function() {
 		    var date = new Date();
@@ -82,20 +53,25 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 		    minDate: new Date(currentYear, currentMonth, currentDate)
 		    });
 		})
-		$(window).load(function(){        
-   $('#myModal').modal('show');
-   $("#myModal").modal({
-       backdrop: 'static',
-       keyboard: false
-   });
-    }); 
+		
+	</script>
+	<script>
+	$( window ).load(function(){
+		var locv=$('#txt_name1').val();
+		$('#trip_sitemanagementbundle_bikes_on_rent_location').val(locv);
+
+	});
+	</script>
+	<script>
+	
 	</script>
 {% endblock %}
 
 {% block body %}
 <section class="section clearfix" style="/*background-color:#f9f9f9;*/background-repeat: no-repeat;padding:30px;background-image:url({{ asset('images/jtp-bikes-4.png') }});padding: 73px 0px;/*background-attachment: fixed;*/background-size: 1600px 684.712px;background-position: 51% -60px;">
 	<div class="bike-book">
-		<h2 class="sub-title-bikesonrent"> Rent A Bike</h2>
+		<h2 class="sub-title-bikesonrent"> Rent A Bike In {{ locations[bikeslocbase.cityid].name }}</h2>
+		<input type="hidden" value="{{ locations[bikeslocbase.cityid].name }}" id="txt_name1">
         {#}<img src="{{asset('images/bikes/s2.jpg') }}" style="width: 100%;">{#}
         <div class="container bike-price-book1">
         	<div class="row">
@@ -107,7 +83,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                    					<tbody>
                    						<tr>
                    							<td class="text-center" style="background: transparent;border:none"><a href="{{ path('trip_site_management_homepage')}}"  class="homebanner-color"> Cabs</a></td>
-                   							<td class="bikes-search-tabs" style="background: #F34F4F;">Bikes</td>
+                   							<td class="bikes-search-tabs" style="background: #F34F4F;border: none;">Bikes</td>
                    							<td class="text-center" style="background: transparent;border:none"><a href="{{ path('trip_site_management_homepage_packages')}}"> Packages</a></td>
                    							<td class="text-center" style="background: transparent;border:none"><a href="#tab_04" aria-controls="tab_04" role="tab" data-toggle="tab">Offers</a></td>
                    							
@@ -165,97 +141,54 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                 <hr class="left">
             </div><!-- end hotel-title -->
                             {% for bike in bikes %} 
-                            <div class="col-md-2" >
+                            {% if bike.active==1 %}
+                            <div class="col-md-3" >
+                            <div class="bike-background">
                             <div>
                             <img src="{{asset('images/bikes/'~bike.imgPath) }}" style="width: 100%;">
                             </div>
-                            <div class="bike-background">                                
-                                <h4 style="text-align:center;color:#000"><a class="view-bikes-title" href="{{ path('trip_site_management_view_bikes',{ 'url':bike.locationUrl }) }}">{{ bike.title }}</a></h4>
+                                     
+                            	{% for bikecities in bike.bikescity %}
+                                    {% if bikecities.cityid==bikeslocbase.cityid %}                       
+                                <h4 style="text-align:center;color:#000"><a class="view-bikes-title" href="{{ path('trip_site_management_view_bikes',{ 'url':bikecities.url }) }}">{{ bike.title }}</a></h4>
+                                	{% endif %}
+                                {% endfor %}
                                 <div><h6 style="text-align:center;color:#000">Starts @{{ bike.statingPrice }}</h6></div>
                                  <div class="row">
-                                         <div class="col-md-12" >
-                                         </div>
+                                        {#} <div class="col-md-12" >
+                                         	{% for bikearea in bike.bikescityarea %}
+                                         		{% if bikearea.cityid==bikeslocbase.cityid %}
+                                         		<p>{{ bikearea.area }}</p>
+                                         		{% endif %}
+                                         	{% endfor %}
+                                         </div>{#}
                                          <div class="col-md-12" >
                                          {% if (bike.count <= 0) %}
                                           			<a class="btn btn-book-now view-bike" disabled>
                                                       Sold Out
                                                     </a>   
                                           	{% else %}
-                                                <a class="btn btn-book-now view-bike" href="{{ path('trip_site_management_view_bikes',{ 'url':bike.locationUrl }) }}">
+                                          		{% for bikecities in bike.bikescity %}
+                                         		{% if bikecities.cityid==bikeslocbase.cityid %}
+                                                <a class="btn btn-book-now view-bike" href="{{ path('trip_site_management_view_bikes',{ 'url':bikecities.url }) }}">
                                                   Rent Now
                                                 </a>
+                                                {% endif %}
+                                         	{% endfor %}
                                             {% endif %}
         								{#<a class="btn aligncenter view-bike"   href="{{ path('trip_site_management_view_bikes',{'url':bike.locationUrl }) }}">Rent Now</a>#}
                                          </div>
                                          <div class="col-md-12" >
+                                         	
                                          </div>
                                  </div>
                               
                               </div>
                             </div>
+                            {% endif %}
                            {% endfor %}
                     </div>
-                    {#}
-					 <div class="col-lg-2 col-xs-12 text-center">
-					<img src="{{ asset('images/Sidebar.png') }}">
-	<h1 style="font-size:20px;">+91-9663133008</h1>
-       
-		</div>
-		{#}
-					
-           <div id="myModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
-              <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                  <div class="bike-search-modal-header">
-                  	<div class="row">
-                  		<div class="col-md-3">
-                  			<h4 class="bikes-search-locationspop">I want to rent a</h4>
-                    	</div>
-                    	<div class="col-md-2">
-                    		<h4 class="bikes-search-locationspop2">Bike</h4>
-                    	</div>
-                    	<div class="col-md-7">
-                    		{#}<button type="button" class="close" data-dismiss="modal">&times;</button>#}
-                    	</div>
-                  	</div>
-                  </div>
-                  <div class="modal-body">
-                    <div class="row">
-                    	<div class="col-md-1">
-                    	</div>
-                    	<div class="col-md-11">
-                    		<h4 class="bikes-search-popup-heading1">Popular Cities</h4>
-                    		<strong class="strong-city-popup">India</strong>
-                    		<div class="row">
-                    			<div class="col-md-1">
-                    			</div>
-                    			<div class="col-md-5">
-                    				<a href="{{ path('trip_site_management_bikes_on_rent_tpt')}}">
-                    				<img src="{{asset('images/justtrip-tpt-bike.png') }}" class="img-center">
-                    				<h4 class="bikes-search-popup-heading2">Tirupati</h4>
-                    				</a>
-                    			</div>
-                    			<div class="col-md-5">
-                    				<a href="{{ path('trip_site_management_bikes_on_rent_blr')}}">
-                    				<img src="{{asset('images/justtrip-blr-bikes.png') }}" class="img-center">
-                    				<h4 class="bikes-search-popup-heading2">Bangalore</h4>
-                    				</a>
-                    			</div>
-                    			<div class="col-md-1">
-                    			</div>
-                    		</div>
-                    	</div>
-                    </div>
-                  </div>
-                  <div class="bike-search-modal-header text-center">
-                    <strong class="footer-cont">Select city to continue</strong>
-                  </div>
-                </div>
-            
-              </div>
-            </div>
-            
+                   
         </div>
     </div>
    

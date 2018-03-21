@@ -35,10 +35,14 @@ class PriceviewbikesType extends AbstractType
             		'multiple' => false,
                     'label' => 'Location',
 					'required'    => true,
+                     'disabled' => true,
             		'choices' => array(
 							'Tirupati' => 'Tirupati',
 							'Bangalore' => 'Bangalore'
 							),
+            'attr'   =>  array(
+                'class'=>'bikepreferDate'
+            ),
             		
                     
             ))
@@ -52,8 +56,8 @@ class PriceviewbikesType extends AbstractType
         		'attr'   =>  array(
         				'data-date-format'=>'yyyy-MM-dd HH:mm:ss',
         				//'data-date-format'=>'dd/mm/yyyy HH:mm:ss',
-        				'placeholder'=>'Pickup Date',
-        				//'class'=>'preferDate'
+        		    'placeholder'=>'START TRIP',
+        		    'class'=>'bikepreferDate'
         				//'class'=>'date',
         				//'name' => 'date',
         		),
@@ -79,8 +83,8 @@ class PriceviewbikesType extends AbstractType
         		'attr'   =>  array(
         				'data-date-format'=>'yyyy-MM-dd HH:mm:ss',
         				//'data-date-format'=>'dd/mm/yyyy',
-        				'placeholder'=>'Return Date',
-        				//'class'=>'preferDate'
+        		    'placeholder'=>'END TRIP',
+        		    'class'=>'bikepreferDate'
         		),
         		
         ))

@@ -118,10 +118,26 @@ class bikes
      * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\bikespackage", mappedBy="bikes", cascade={"all"},  fetch="EAGER")
      */
     private $bikespackage;
+    /**
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\BikesCity", mappedBy="bikes", cascade={"all"},  fetch="EAGER")
+     */
+    private $bikescity;
+    /**
+     * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\BikesCityArea", mappedBy="bikes", cascade={"all"},  fetch="EAGER")
+     */
+    private $bikescityarea;
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="active", type="boolean")
+     */
+    private $active;
     
     
     public function __construct() {
         $this->bikespackage = new ArrayCollection();
+        $this->bikescity = new ArrayCollection();
+        $this->bikescityarea = new ArrayCollection();
     }
     /**
      * @return integer
@@ -394,13 +410,53 @@ class bikes
     {
         $this->bikespackage = $bikespackage;
     }
+    /**
+     * @return \Trip\SiteManagementBundle\Entity\ArrayCollection
+     */
+    public function getBikescity()
+    {
+        return $this->bikescity;
+    }
 
-    
-    
-    
-	
-	
-    
-   
+    /**
+     * @param \Trip\SiteManagementBundle\Entity\ArrayCollection $bikescity
+     */
+    public function setBikescity($bikescity)
+    {
+        $this->bikescity = $bikescity;
+    }
+    /**
+     * @return \Trip\SiteManagementBundle\Entity\ArrayCollection
+     */
+    public function getBikescityarea()
+    {
+        return $this->bikescityarea;
+    }
+
+    /**
+     * @param \Trip\SiteManagementBundle\Entity\ArrayCollection $bikescityarea
+     */
+    public function setBikescityarea($bikescityarea)
+    {
+        $this->bikescityarea = $bikescityarea;
+    }
+    /**
+     * @return boolean
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param boolean $active
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+    }
+
+
+
 
 }

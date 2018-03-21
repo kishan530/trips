@@ -52,7 +52,15 @@ use Trip\BookingEngineBundle\Form\VendorNewDriverType;
 use Trip\BookingEngineBundle\Entity\VendorVehicleFee;
 use Trip\BookingEngineBundle\Entity\Destinations;
 use Trip\BookingEngineBundle\Entity\Destinationlocations;
-
+use Trip\BookingEngineBundle\Entity\DestinationContent;
+use Trip\BookingEngineBundle\Entity\DestinationTaxitype;
+use Trip\BookingEngineBundle\Form\SearchPagesType;
+use Trip\BookingEngineBundle\Form\SearchPagesLocType;
+use Trip\BookingEngineBundle\Form\AddSearchPagesLocType;
+use Trip\BookingEngineBundle\Form\SearchPagesContType;
+use Trip\BookingEngineBundle\Form\SearchPagesTaxiType;
+use Trip\BookingEngineBundle\Form\AddSearchPagesContType;
+use Trip\BookingEngineBundle\Form\AddSearchPagesTaxiType;
 class BookingController extends Controller
 {
     
@@ -122,7 +130,8 @@ class BookingController extends Controller
         $hotelForm   = $this->createSearchHotelForm($searchHotel);
         //echo 'hi';
         //exit();
-        $bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
+        $active='1';
+        $bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findBy(array('active' => $active));
         return $this->render($view, array(
             'form'   => $form->createView(),
             'hotelForm'   => $hotelForm->createView(),
@@ -134,7 +143,8 @@ class BookingController extends Controller
         $bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
         $cities = $em->getRepository('TripSiteManagementBundle:City')->findAll();
         $url= 'one';
-        $dest = $em->getRepository('TripBookingEngineBundle:Destinations')->findAll();
+        $active='1';
+        $dest = $em->getRepository('TripBookingEngineBundle:Destinations')->findBy(array('active' => $active));
         $onepackages = $em->getRepository('TripSiteManagementBundle:PackageTitle')->findBy(array('type' => $url));
         return $this->render('TripBookingEngineBundle:Default:footerTabs.html.twig', array(
             'bikes' => $bikes,
@@ -827,11 +837,17 @@ class BookingController extends Controller
         $booking = $session->get('bookingObj');
         $amountToPay = $session->get('amountToPay');
         $em = $this->getDoctrine()->getManager();
+        $countinsert = $session->get('countinsert');
+        $id = $session->get('id');
+        //echo var_dump($countinsert);
+        //die();
         if($status=='success'){
             $booking->setStatus('booked');
             $paymentMode = $booking->getPaymentMode();
             $finalPrice = $booking->getFinalPrice();
-            
+            $dql3 = "UPDATE TripSiteManagementBundle:bikes b SET b.count = '$countinsert' WHERE b.id = '$id' ";
+            $query = $em->createQuery($dql3);
+            $query -> execute();
             $booking->setAmountPaid($amountToPay);
             $booking->setPaymentId($paymentId);
             $em->merge($booking);
@@ -926,7 +942,7 @@ class BookingController extends Controller
         
         
         $info['redirect_url']='https://test.payu.in/_payment';
-        
+        https://checkout.citruspay.com/payu
         return $this->redirect($info['redirect_url']);
         
         //return $info['redirect_url'];
@@ -1489,6 +1505,7 @@ class BookingController extends Controller
         
         return $this->redirect($url, 301);
     }
+    /******************Search Pages*****************************/
     public function destSearchAction(Request $request,$url)
     {
         $security = $this->container->get ( 'security.context' );
@@ -1507,6 +1524,7 @@ class BookingController extends Controller
         $getid=$uri_segments[4];
         $searchFilter = new SearchFilter();
         $searchHotel = new SearchHotel();
+        $active='1';
         $hotelForm   = $this->createSearchHotelForm($searchHotel);
         $destlocation = $em->getRepository('TripBookingEngineBundle:Destinationlocations')->findBy(array('url' => $url));
         if($destlocation){
@@ -1515,7 +1533,7 @@ class BookingController extends Controller
         }else{
             
         }
-        $destall = $em->getRepository('TripBookingEngineBundle:Destinations')->findBy(array('dest_url' => $getid));
+        $destall = $em->getRepository('TripBookingEngineBundle:Destinations')->findBy(array('desturl' => $getid));
         $cities = $em->getRepository('TripSiteManagementBundle:City')->findAll();
         $form   = $this->createSearchForm($searchFilter);
         return $this->render($view, array(
@@ -1526,6 +1544,265 @@ class BookingController extends Controller
             'destall' => $destall,
             
         ));
+    }
+    public function searchpagesListAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $destnew = new Destinations();
+        $destinationsList = $em->getRepository('TripBookingEngineBundle:Destinations')->findAll();
+        $cities = $em->getRepository('TripSiteManagementBundle:City')->findAll();
+        $form   = $this->createSearchpageForm($destnew);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $em->persist($destnew);
+            $em->flush();
+            return $this->redirect($this->generateUrl('trip_booking_engine_searchpages_list'));
+            
+        }
+        return $this->render('TripBookingEngineBundle:Default:searchpagesList.html.twig',array(
+            'destinationsList' => $destinationsList,
+            'cities' => $cities,
+            'form'   => $form->createView(),
+        ));
+    }
+    private function createSearchpageForm($destnew){
+        $bookingService = $this->container->get( 'booking.services' );
+        $form = $this->createForm(new SearchPagesType($bookingService), $destnew, array(
+            'action' => $this->generateUrl('trip_booking_engine_searchpages_list'),
+            'method' => 'POST',
+        ));
+        $form->add('submit', 'submit', array('label' => 'Insert'));
+        
+        return $form;
+    }
+    public function editSearchpagesAction(Request $request,$id){
+        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        $session->set('mainid',$id);
+        $dest =$em->getRepository('TripBookingEngineBundle:Destinations')->find($id);
+        $destlocation = $em->getRepository('TripBookingEngineBundle:Destinationlocations')->findBy(array('popular' => $id));
+        
+        $form   = $this->createEditSearchpageForm($dest,$id);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $dest = $em->merge($dest);
+            $em->flush();
+            
+            return $this->redirect($this->generateUrl('trip_booking_engine_searchpages_list'));
+            
+        }
+        
+        return $this->render('TripBookingEngineBundle:Default:editsearchPages.html.twig',array(
+            'dest' => $dest,
+            'destlocation' => $destlocation,
+            'form'   => $form->createView(),
+            
+        ));
+    }
+   
+    private function createEditSearchpageForm($dest,$id){
+        $bookingService = $this->container->get( 'booking.services' );
+        $form = $this->createForm(new SearchPagesType($bookingService), $dest, array(
+            'action' => $this->generateUrl('trip_booking_engine_edit_searchpages',array('id'=>$id)),
+            'method' => 'POST',
+        ));
+        $form->add('submit', 'submit', array('label' => 'Update'));
+        
+        return $form;
+    }
+    public function editSearchpageslocAction(Request $request,$id){
+        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        $session->set('id',$id);
+        $destlocation = $em->getRepository('TripBookingEngineBundle:Destinationlocations')->find($id);
+        $destlocationcontent = $em->getRepository('TripBookingEngineBundle:DestinationContent')->findBy(array('dest_loc_id' => $id));
+        $destlocationtaxitype = $em->getRepository('TripBookingEngineBundle:DestinationTaxitype')->findBy(array('dest_loc_id' => $id));
+        $form   = $this->createEditSearchpagelocForm($destlocation,$id);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $destlocation = $em->merge($destlocation);
+            $em->flush();
+            
+            return $this->redirect($this->generateUrl('trip_booking_engine_edit_searchpagesloc',array('id'=>$id)));
+            
+        }
+        
+        return $this->render('TripBookingEngineBundle:Default:editsearchPagesloc.html.twig',array(
+            'destlocation' => $destlocation,
+            'destlocationcontent' => $destlocationcontent,
+            'destlocationtaxitype' => $destlocationtaxitype,
+            'form'   => $form->createView(),
+        ));
+    }
+    private function createEditSearchpagelocForm($destlocation,$id){
+        $bookingService = $this->container->get( 'booking.services' );
+        $form = $this->createForm(new SearchPagesLocType($bookingService), $destlocation, array(
+            'action' => $this->generateUrl('trip_booking_engine_edit_searchpagesloc',array('id'=>$id)),
+            'method' => 'POST',
+        ));
+        $form->add('submit', 'submit', array('label' => 'Update'));
+        
+        return $form;
+    }
+    public function editSearchpagescontAction(Request $request,$id){
+        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        $mainid = $session->get('mainid');
+        $destlocationcontent = $em->getRepository('TripBookingEngineBundle:DestinationContent')->find($id);
+        //$destlocationcontent = $em->getRepository('TripBookingEngineBundle:DestinationContent')->findBy(array('dest_loc_id' => $id));
+        $form   = $this->createEditSearchpagecontForm($destlocationcontent,$id);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $destlocationcontent = $em->merge($destlocationcontent);
+            $em->flush();
+            
+            return $this->redirect($this->generateUrl('trip_booking_engine_edit_searchpages',array('id'=>$mainid)));
+            
+        }
+        
+        return $this->render('TripBookingEngineBundle:Default:editsearchPagescont.html.twig',array(
+            'destlocationcontent' => $destlocationcontent,
+            //'destlocationcontent' => $destlocationcontent,
+            'form'   => $form->createView(),
+        ));
+    }
+    private function createEditSearchpagecontForm($destlocationcontent,$id){
+        $bookingService = $this->container->get( 'booking.services' );
+        $form = $this->createForm(new SearchPagesContType($bookingService), $destlocationcontent, array(
+            'action' => $this->generateUrl('trip_booking_engine_edit_searchpagescont',array('id'=>$id)),
+            'method' => 'POST',
+        ));
+        $form->add('submit', 'submit', array('label' => 'Update'));
+        
+        return $form;
+    }
+    public function editsearchPagestaxitypeAction(Request $request,$id){
+        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        $mainid = $session->get('mainid');
+        $destlocationtaxitype = $em->getRepository('TripBookingEngineBundle:DestinationTaxitype')->find($id);
+        //$destlocationcontent = $em->getRepository('TripBookingEngineBundle:DestinationContent')->findBy(array('dest_loc_id' => $id));
+        $form   = $this->createEditSearchpagetaxitypeForm($destlocationtaxitype,$id);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $destlocationtaxitype = $em->merge($destlocationtaxitype);
+            $em->flush();
+            
+            return $this->redirect($this->generateUrl('trip_booking_engine_edit_searchpages',array('id'=>$mainid)));
+            
+        }
+        
+        return $this->render('TripBookingEngineBundle:Default:editsearchPagestaxitype.html.twig',array(
+            'destlocationtaxitype' => $destlocationtaxitype,
+            //'destlocationcontent' => $destlocationcontent,
+            'form'   => $form->createView(),
+        ));
+    }
+    private function createEditSearchpagetaxitypeForm($destlocationtaxitype,$id){
+        $bookingService = $this->container->get( 'booking.services' );
+        $form = $this->createForm(new SearchPagesTaxiType($bookingService), $destlocationtaxitype, array(
+            'action' => $this->generateUrl('trip_booking_engine_edit_searchpagestaxitype',array('id'=>$id)),
+            'method' => 'POST',
+        ));
+        $form->add('submit', 'submit', array('label' => 'Update'));
+        
+        return $form;
+    }
+    public function addSearchpageslocAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        $id = $session->get('id');
+        $destlocation = $em->getRepository('TripBookingEngineBundle:Destinations')->find($id);
+        $destlocanew= new Destinationlocations();
+        $form   = $this->createSearchpagelocForm($destlocanew);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $destlocanew->setPopular($destlocation);
+            $em->persist($destlocanew);
+            $em->flush();
+            
+            return $this->redirect($this->generateUrl('trip_booking_engine_searchpages_list'));
+            
+        }
+       
+        return $this->render('TripBookingEngineBundle:Default:addsearchPagesloc.html.twig',array(
+            'form'   => $form->createView(),
+        ));
+    }
+    private function createSearchpagelocForm($destlocanew){
+        $bookingService = $this->container->get( 'booking.services' );
+        $form = $this->createForm(new AddSearchPagesLocType($bookingService), $destlocanew, array(
+            'action' => $this->generateUrl('trip_booking_engine_add_searchpagesloc'),
+            'method' => 'POST',
+        ));
+        $form->add('submit', 'submit', array('label' => 'Insert'));
+        
+        return $form;
+    }
+    public function addSearchpagescontAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        $id = $session->get('id');
+        $destlocation = $em->getRepository('TripBookingEngineBundle:Destinationlocations')->find($id);
+        $destcontanew= new DestinationContent();
+       // $destloc= new Destinationlocations();
+       // $contentList=$destloc->getDestcont();
+        $form   = $this->createSearchpagecontForm($destcontanew);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $destcontanew->setDest_loc_id($destlocation);
+            $em->persist($destcontanew);
+            $em->flush();
+            
+            return $this->redirect($this->generateUrl('trip_booking_engine_searchpages_list'));
+            
+        }
+        
+        return $this->render('TripBookingEngineBundle:Default:addsearchPagescont.html.twig',array(
+            'form'   => $form->createView(),
+            'contentList' => $destcontanew,
+        ));
+    }
+    private function createSearchpagecontForm($destcontanew){
+        $bookingService = $this->container->get( 'booking.services' );
+        $form = $this->createForm(new AddSearchPagesContType($bookingService), $destcontanew, array(
+            'action' => $this->generateUrl('trip_booking_engine_add_searchpagescont'),
+            'method' => 'POST',
+        ));
+        $form->add('submit', 'submit', array('label' => 'Insert'));
+        
+        return $form;
+    }
+    public function addSearchpagestaxitypeAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        $id = $session->get('id');
+        $destlocation = $em->getRepository('TripBookingEngineBundle:Destinationlocations')->find($id);
+        $desttaxitypenew= new DestinationTaxitype();
+        $form   = $this->createSearchpagetaxitypeForm($desttaxitypenew);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $desttaxitypenew->setDest_loc_id($destlocation);
+            $em->persist($desttaxitypenew);
+            $em->flush();
+            
+            return $this->redirect($this->generateUrl('trip_booking_engine_searchpages_list'));
+            
+        }
+        
+        return $this->render('TripBookingEngineBundle:Default:addsearchPagestaxitype.html.twig',array(
+            'form'   => $form->createView(),
+            'contentList' => $desttaxitypenew,
+        ));
+    }
+    private function createSearchpagetaxitypeForm($desttaxitypenew){
+        $bookingService = $this->container->get( 'booking.services' );
+        $form = $this->createForm(new AddSearchPagesTaxiType($bookingService), $desttaxitypenew, array(
+            'action' => $this->generateUrl('trip_booking_engine_add_searchpagestaxitype'),
+            'method' => 'POST',
+        ));
+        $form->add('submit', 'submit', array('label' => 'Insert'));
+        
+        return $form;
     }
     
     //**************End************//
@@ -1589,10 +1866,12 @@ class BookingController extends Controller
         $pDate = $request->get('pDate');
         $rDate = $request->get('rDate');
         $price = $request->get('price');
+       // $price=10;
         $leftdays = $request->get('leftdays');
         $hours = $request->get('hours');
         $location = $request->get('location');
         $countinsert = $request->get('countinsert');
+        $bikearea = $request->get('bikearea');
         $package =$em->getRepository('TripSiteManagementBundle:bikes')->find($id);
         $count = $package->getCount();
         //echo var_dump($package);
@@ -1609,7 +1888,7 @@ class BookingController extends Controller
         $session->set('location',$location);
         $session->set('count',$count);
         $session->set('countinsert',$countinsert);
-        
+        $session->set('bikearea',$bikearea);
         $guest = $session->get('guest');
         $customer = new Customer();
         //$customer->setEmail($guest->getEmail());
@@ -1627,6 +1906,7 @@ class BookingController extends Controller
             'price'=> $price,
             'leftdays' => $leftdays,
             'hours' => $hours,
+            'bikearea' => $bikearea,
             'step'=>'personal',
         ));
         
@@ -1658,9 +1938,7 @@ class BookingController extends Controller
         $location = $session->get('location');
         $paymentMode = $request->get('mode');
         $countinsert = $session->get('countinsert');
-        $dql3 = "UPDATE TripSiteManagementBundle:bikes b SET b.count = '$countinsert' WHERE b.id = '$id' ";
-        $query = $em->createQuery($dql3);
-        $query -> execute();
+        $bikearea = $session->get('bikearea');
         //$count = $session->get('count');
         //echo var_dump($countinsert);
         
@@ -1710,6 +1988,7 @@ class BookingController extends Controller
             $bikebooking->setLeftdays($leftdays);
             $bikebooking->setHours($hours);
             $bikebooking->setBikelocation($location);
+            $bikebooking->setBikearea($bikearea);
             $booking->setBikeBooking($bikebooking);
             $discount = 0;
             if($couponApplyed){
@@ -1746,7 +2025,9 @@ class BookingController extends Controller
             }
             $serviceTax = 0;
             $swachBharthCess = round($finalPrice*(2.5/100),2);
+            //$swachBharthCess =0;
             $krishiKalyanCess = round($finalPrice*(2.5/100),2);
+           // $krishiKalyanCess =0;
             $totalTax = $serviceTax+$swachBharthCess+$krishiKalyanCess;
             $amountToPay = round($amountToPayadv+$totalTax);
             $finalPrice = $finalPrice+$totalTax;
@@ -1796,6 +2077,7 @@ class BookingController extends Controller
                 'leftdays' => $leftdays,
                 'hours' => $hours,
                 'location' => $location,
+                'bikearea' => $bikearea,
                 'paymentMode' => $paymentMode,
                 'finalPrice' => $finalPrice,
                 'amountToPayadv' => $amountToPayadv,
@@ -1809,6 +2091,7 @@ class BookingController extends Controller
             'discount'=>0,
             'filter'=>$searchFilter,
             'locations' => $locations,
+            'bikearea' => $bikearea,
             'step'=>'personal',
         ));
         

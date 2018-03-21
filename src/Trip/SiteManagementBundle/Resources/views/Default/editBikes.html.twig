@@ -8,17 +8,80 @@
             <div class="row">
                 <div id="fullwidth" class="col-sm-12">
                <div class="col-lg-7">
-                    
-                   {{ form_start(form) }}
-                   <div class="row form-group">
-                            <div class="col-lg-12">
-                            	{{ form_label(form.title) }}
-                                {{ form_widget(form.title) }}
-                            </div>                  
-                    </div>                      
-                    {{ form_end(form) }}
+               		<h3>Edit Bike</h3>
+                   {{ form_start(form) }}{{ form_end(form) }}
                     </div>
                 </div>
+            </div>
+             <div class="row">
+            <hr>
+                <div id="fullwidth" class="col-sm-6">
+					<table class="table table-bordered col-lg-12 col-sm-12">
+					<tr>
+						<th>Sl.No</th>
+						<th>Title</th>
+						<th>Url</th>
+						
+						<th>/</th>
+					</tr>
+                    {% for bikecities in bikecity %}
+                        <tr>
+                        	<td>{{ loop.index }}</td>
+							 <td>
+                                {{ bikecities.title }}
+                            </td>
+							 <td>
+                                {{ bikecities.url }}
+                            </td>
+							
+							<td>
+								<a href="{{ path('trip_site_management_edit_bikes_city',{ 'id': bikecities.id }) }}"><i class="fa fa-pencil-square-o"></i></a>
+							</td>
+                        </tr>
+                    {% endfor %}
+					</table>
+                </div>
+                <div id="fullwidth" class="col-sm-6">
+                	<h3>Add Bike City</h3>
+                	{{ render(controller('TripSiteManagementBundle:SiteManagement:addbikescity')) }}
+                </div>
+               
+            </div>
+            <div class="row">
+            <hr>
+                <div id="fullwidth" class="col-sm-6">
+					<table class="table table-bordered col-lg-12 col-sm-12">
+					<tr>
+						<th>Sl.No</th>
+						<th>Area</th>
+						<th>Bikes Avilable</th>
+						<th>City Name</th>
+						<th>/</th>
+					</tr>
+                    {% for areas in bikecityarea %}
+                        <tr>
+                        	<td>{{ loop.index }}</td>
+							 <td>
+                                {{ areas.area }}
+                            </td>
+							 <td>
+                                {{ areas.count }}
+                            </td>
+							<td>
+                                {{ locations[areas.cityid].name }}
+                            </td>
+							<td>
+								<a href="{{ path('trip_site_management_edit_bikes_cityarea',{ 'id': areas.id }) }}"><i class="fa fa-pencil-square-o"></i></a>
+							</td>
+                        </tr>
+                    {% endfor %}
+					</table>
+                </div>
+                <div id="fullwidth" class="col-sm-6">
+                	<h3>Add Bike City Area</h3>
+                	{{ render(controller('TripSiteManagementBundle:SiteManagement:addbikescityarea')) }}
+                </div>
+               
             </div>
           </div> 
     </section>

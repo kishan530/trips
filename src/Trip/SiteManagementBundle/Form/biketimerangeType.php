@@ -44,6 +44,7 @@ class biketimerangeType extends AbstractType
             		'multiple' => false,
                     'label' => 'Location',
 					'required'    => true,
+                    'disabled' => true,
             		'choices' => array(
 							'Tirupati' => 'Tirupati',
 							'Bangalore' => 'Bangalore'
@@ -56,7 +57,7 @@ class biketimerangeType extends AbstractType
             ))
         ->add('date','datetime',array(
         		'required'    => true,
-        		'label' => 'Pick Up Date & Time',
+        		'label' => 'Start Trip',
         		'widget'=> 'single_text',
         		'input' => 'datetime',
         		//'format'=>'d/M/y h:m A',
@@ -64,7 +65,7 @@ class biketimerangeType extends AbstractType
         		'attr'   =>  array(
         				'data-date-format'=>'yyyy-MM-dd HH:mm:ss',
         				//'data-date-format'=>'dd/mm/yyyy HH:mm:ss',
-        				'placeholder'=>'Pickup Date',
+        				'placeholder'=>'START TRIP',
         				'class'=>'bikepreferDate'
         				//'class'=>'date',
         				//'name' => 'date',
@@ -83,7 +84,7 @@ class biketimerangeType extends AbstractType
         )) */
         ->add('returndate','datetime',array(
         		'required'    => true,
-        		'label' => 'Return Date & Time',
+        		'label' => 'End Trip',
         		'widget'=> 'single_text',
         		'input' => 'datetime',
         		//'format'=>'d/M/y h:m A',
@@ -91,7 +92,7 @@ class biketimerangeType extends AbstractType
         		'attr'   =>  array(
         				'data-date-format'=>'yyyy-MM-dd HH:mm:ss',
         				//'data-date-format'=>'dd/mm/yyyy',
-        				'placeholder'=>'Return Date',
+        				'placeholder'=>'END TRIP',
         				'class'=>'bikepreferDate'
         		),
         		

@@ -43,36 +43,54 @@ $('.vehicle-icon').click(function(e){
 		$(function(){
 			$('#datetime2').appendDtpicker();
 		});
+		
+		
 	</script>
 	<script type="text/javascript">
 		$(function(){
 			$('#datetime3').appendDtpicker();
 		});
+		
 	</script>
+	<script>
+			$(document).ready(function(){
+				$("#datetime3").change(function(){
+					var first=$("#datetime2").val();
+					var second=$("#datetime3").val();
+					if(first===second)
+					{
+						alert("Reture date is inavlid please select returndate greaterthan pickupdate");
+					}
+					else{
+						//alert("this is different string");
+						//return;
+					}
+				});
+			});
+		</script>
 {% endblock %}
 
 {% block breadcrumb %}
-                    
-                    <div class="c1 breadcrumb text-left">
+	<div class="c1 breadcrumb text-left">
                         <div>
                         	<span class="glyphicon glyphicon-home" style="padding:5px;"></span><a href="{{ path('trip_site_management_homepage')}}">Home</a>
-                        	<span><span class="glyphicon glyphicon-chevron-right" style="padding:5px;"></span>View Bikes</span>
-                        	<span><span class="glyphicon glyphicon-chevron-right" style="padding:5px;"></span>{{bike.title}}</span>
+                        	<span><span class="glyphicon glyphicon-chevron-right" style="padding:5px;"></span>Bike List</span>
                       </div>
                     </div>
+                   
                     <h3></h3>
 {% endblock %}
 
 {% block body %}
 
-<section class="section clearfix">
+    <section class="section clearfix">
     
     	
         <div class="container">
             <div class="row">
-            	<div class="">
-				{#<div class="brand-color">
-            			<h3 class="details">Date & Time For Pickup</h3>
+            	<div class="col-md-3">
+            		<div class="brand-color">
+            			<h3 class="details">Modify Search</h3>
             			<hr>
             			<div class="row">
             				{{ form_start(form) }}
@@ -80,117 +98,125 @@ $('.vehicle-icon').click(function(e){
                              {{ form_errors(form.date) }}
                              {{ form_errors(form.returndate) }}
 								<div class="col-md-12 bikes-form-font">
-									{{ form_label(form.location) }} 
+                             	{{ form_label(form.location) }} 
                                 {{ form_widget(form.location) }}
-								</div>
+                                </div>
                              	<div class="col-md-12 bikes-form-font">
+                             	<hr class="hr-nomargin">
                              	{{ form_label(form.date) }} 
                                 {{ form_widget(form.date, {'id': 'datetime2'}) }}
                                 </div>
                                 <div class="col-md-12 bikes-form-font">
+                                <hr class="hr-nomargin">
                                 {{ form_label(form.returndate) }} 
                                 {{ form_widget(form.returndate, {'id': 'datetime3'}) }}
+                                </div>
+                                <div class="col-md-12">
+                                <hr class="hr-nomargin">
+                                	<div class="col-md-2">
+                                	</div>
+                                    <div class="col-md-8">
+                                    {{ form_widget(form.submit)}}
+                                    </div>
+                                    <div class="col-md-2">
+                                	</div>
                                 </div>
                                 
                              {{ form_end(form) }}
             			</div>
-            			
-            			
+            			 <p class="brandtype">Duration > <span class="black">{{ leftDays }} Days {{ hours }} Hours</span></p>                   
             			<hr>
             			
-            		</div>#}
-            		
+            		</div>
             	</div>
-            	<div class="col-md-8">
+            	<div class="col-md-9">
             		<div class="row">
-            		
-					<div class="bike-book">
-                    <img src="{{asset('images/bikes/'~bike.imgPath) }}" style="width: 100%;">
-					</div>
-					</div>
-				</div>
-                <div class="col-lg-4 col-sm-4 col-xs-4">
-					<div class="brand-color">
-					<h3 class="details textcenter">{{bike.title}}</h3>
-					<hr>
-					<p class="brandtype" style="font-weight:bold"> > <span class="black" style="font-weight:normal">{{ booking.date|date("d/m/Y h:i A") }}</span></p>
-					<p class="brandtype" style="font-weight:bold"> < <span class="black" style="font-weight:normal">{{ booking.returndate|date("d/m/Y h:i A") }}</span></p>
-					<p class="brandtype">Duration > <span class="black">{% set difference = (booking.date).diff((booking.returndate)) %}
-                        {% set leftDays = difference.days %}
-                        {% set hours = difference.h %}
-                        {% if leftDays == 1 %}
-                          1 day
-                        {% else %}
-                          {{ leftDays }} days 
-                     {% endif %}{{ hours }} Hours</span><br>
-                     {#}<div>{% set bike = 15 %}
-                        {% set day = 150 %}
-                        {% set fivehours = hours %}
-                        {% if fivehours <= 5 %}
-    						{%  set test1 = bike * fivehours %}
-                            {{ test1 }}
-                            {% else %}
-                            <p>0</p>
-                        {% endif %}</div>{#}
-                     </p>
-					 <p class="brandtype"> Location <span class="black" style="font-weight:normal">{{booking.location}}</span>
-					<hr>
-                    {% set dayret = bike.dayrent %}
-                                        {% set test2 = 150 %}
-                                        {% set startprice = bike.statingPrice %}
-                                        {%  set test3 = leftDays * test2 %}
-                                        {%  set test5 = hours * startprice %}
-                                        {% set fivehours = hours %}
-                                        {% if fivehours==0 %}
-                                        	<h5 class="bike-price"><i class="fa fa-inr" aria-hidden="true"></i> {{ dayret * leftDays }}</h5>
-											{% set price1 = dayret * leftDays  %}
-                                        {% else %}
-                                            {% if fivehours <= 5  %}
-                                            	{% set fixhours=5 %}
-                        						{%  set fivehoursbase = startprice * fixhours %}
-                                                <h5 class="bike-price"><i class="fa fa-inr" aria-hidden="true"></i> {{ fivehoursbase + dayret * leftDays  }}</h5>
-                                                {% set price1 =  fivehoursbase + dayret * leftDays  %}
-												{% else %}
-                                                	 {% if fivehours <= 10 %}
-                                                        {% set inc= hours * startprice  %}
-                                                        {% set dayscal= leftDays * dayret %}
-                                     
-                                                		<h5 class="bike-price"><i class="fa fa-inr" aria-hidden="true"></i> {{ dayscal + inc }}</h5>
-														{% set price1 =  dayscal + inc  %}
-                                             			{% else %}
-                                             			{% set totaldays= leftDays + 1 %}
-                                             	
-                                             			<h5 class="bike-price"><i class="fa fa-inr" aria-hidden="true"></i> {{ totaldays * dayret }}</h5>
-                                                        {% set price1 =  totaldays * dayret  %}
-														{% endif %}
-                                              {% endif %}
-                                        {% endif %}   
-										<div class="row">
+                        <div class="col-lg-12 col-sm-12 col-xs-12">
+                            
+                         
+                     </div>    
+                     <div class="col-lg-12 col-sm-12 col-xs-12">
+                            {% for result in resultset %} 
+                            {% if result.id==url %}
+                            <div class="col-md-4" >
+                            <div class="bike-background"> 
+                            <div>
+                            <img src="{{asset('images/bikes/'~result.imgPath) }}" style="width: 100%;">
+                            </div>
+                                                           
+                                <h5 class="bike-grid-title"><a style="color: #0694b6;" href="{{ path('trip_site_management_view_bikes',{ 'url':result.locationUrl }) }}">{{ result.title }}</a></h5>
+                            			<form action="{{ path('trip_site_management_homepage_bikes_submit') }}" method="get">
+                            			<div class="row bikes-loc">
+                            			<div class="col-md-1"></div>
+                            			<div class="col-md-9">
+                            				<p class="text-center selectarea-label">Available at</p>
+                            				<select name="bikearea" class="bikes-locabase">
+													{% for bikearea in bike.bikescityarea %}
+                                                     {% if bikearea.cityid==bikeslocbase.cityid and bikearea.active=='1' %}
+                                                     <option value="{{ bikearea.area }}">{{ bikearea.area }}</option>
+                                                     {% endif %}
+                                                     {% endfor %}
+											</select>
+											<hr class="hr-nomargin" style="padding-bottom:10px;border-color: #787878;">
+                            			</div>
+                            			<div class="col-md-1"></div>
+									</div>
+									
+                            <div class="row bikes">
+                                		<div class="col-md-5 text-center" style="padding-right: -1px;">
+                                		<span class="black1">{{ picdate|date("h:i A ") }}</span>
+                                		<span class="black2">{{ picdate|date("d/m/Y ") }}</span>
+                                         </div>
+                                         <div class="col-md-2 text-center" >
+                                         <label class="valign">To</label>
+                                         </div>
+                                         <div class="col-md-5 text-center" style="padding-right: 0px;">
+                                         <span class="black1">{{ returndate|date("h:i A ") }}</span>
+                                         <span class="black2">{{ returndate|date("d/m/Y ") }}</span>
+                                         </div>
+                                 	 </div>
+                                <h6 style="text-align:center;color:#000"><i class="fa fa-inr" aria-hidden="true"></i> {{ result.price }} <span class="limit">({{ result.kmlimit }} km/day)</span></h6>
+                                 <span class="limit">({{ result.kmlimit }} km limit)</span>
+                         		<div class="row">
                                          <div class="col-md-3" >
                                          </div>
                                          <div class="col-md-12" >
-											<form action="{{ path('trip_site_management_homepage_bikes_submit') }}" method="get">
-												{% set preferDate = booking.date|date("d/m/Y h:i A") %}
-												{% set returnDate = booking.returndate|date("d/m/Y h:i A") %}
-												<input type="hidden" name="id" class="form-control" value="{{ bike.id }}"> 
-												<input type="hidden" name="title" class="form-control" value="{{ bike.title }}"> 
+											
+												{% set preferDate = picdate|date("d/m/Y h:i A") %}
+												{% set returnDate = returndate|date("d/m/Y h:i A") %}
+												<input type="hidden" name="id" class="form-control" value="{{ result.id }}"> 
+												<input type="hidden" name="title" class="form-control" value="{{ result.title }}"> 
 												<input type="hidden" name="pDate" class="form-control" value="{{ preferDate }}"> 
 												<input type="hidden" name="rDate" class="form-control" value="{{ returnDate }}"> 
-												<input type="hidden" name="price" class="form-control" value="{{ price1 }}"> 
+												<input type="hidden" name="price" class="form-control" value="{{ result.price }}"> 
 												<input type="hidden" name="leftdays" class="form-control" value="{{ leftDays }}"> 
 												<input type="hidden" name="hours" class="form-control" value="{{ hours }}"> 
-												<input type="hidden" name="location" class="form-control" value="{{booking.location}}">
+												<input type="hidden" name="location" class="form-control" value="{{ location }}">
 												<input type="hidden" name="countadd" class="form-control" value="1"> 
-												<input type="hidden" name="count" class="form-control" value="{{ bike.count }}">  
-												<button type="submit" class="btn aligncenter view-bike">Rent Now</button>
+												<input type="hidden" name="count" class="form-control" value="{{ result.count }}"> 
+												
+												{% if (result.count <= 0) %}
+                                          			<a class="btn btn-book-now view-bike" disabled>
+                                                      Sold Out
+                                                    </a>   
+                                          	{% else %}
+                                                <button type="submit" class="btn aligncenter view-bike">Rent Now</button>
+                                            {% endif %}
 											</form>
                                          </div>
                                          <div class="col-md-3" >
+                                         
                                          </div>
                                  </div>
-										
-									</div>
-				</div>
+                         	</div>
+                         </div>
+                             {% endif %}
+                         {% endfor %}
+                     </div>    
+            	</div>
+            	
+            	
+            </div>
         </div>
     </section>
 {% endblock %}

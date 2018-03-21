@@ -49,12 +49,12 @@ class Destinationlocations
      * @var integer
      * @ORM\Column(name="pick_location", type="integer", length=100,nullable=true)
      */
-    private $pick_location;
+    private $picklocation;
     /**
      * @var integer
      * @ORM\Column(name="drop_location", type="integer", length=100,nullable=true)
      */
-    private $drop_location;
+    private $droplocation;
     /**
      * @var string
      *
@@ -74,18 +74,28 @@ class Destinationlocations
      */
     private $active;
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="dest_id", type="integer", length=25)
+     */
+    private $destid;
+    /**
      * @ORM\ManyToOne(targetEntity="Trip\BookingEngineBundle\Entity\Destinations", inversedBy="destloc")
      * @ORM\JoinColumn(name="dest_id", referencedColumnName="id")
      */
-    private $dest_id;
+    private $popular;
 	/**
      * @ORM\OneToMany(targetEntity="Trip\BookingEngineBundle\Entity\DestinationContent", mappedBy="dest_loc_id", cascade={"all"},  fetch="EAGER")
      */
     private $destcont;
+    /**
+     * @ORM\OneToMany(targetEntity="Trip\BookingEngineBundle\Entity\DestinationTaxitype", mappedBy="dest_loc_id", cascade={"all"},  fetch="EAGER")
+     */
+    private $desttaxitype;
 
     public function __construct() {
         $this->destcont = new ArrayCollection();
-        
+        $this->desttaxitype = new ArrayCollection();
     }
     /**
      * @return integer
@@ -167,36 +177,54 @@ class Destinationlocations
         $this->metades = $metades;
     }
 
+    
+
     /**
-     * @return string
+     * @return integer
      */
-    public function getPick_location()
+    public function getPicklocation()
     {
-        return $this->pick_location;
+        return $this->picklocation;
     }
 
     /**
-     * @param string $pick_location
+     * @param integer $picklocation
      */
-    public function setPick_location($pick_location)
+    public function setPicklocation($picklocation)
     {
-        $this->pick_location = $pick_location;
+        $this->picklocation = $picklocation;
     }
 
     /**
-     * @return string
+     * @return integer
      */
-    public function getDrop_location()
+    public function getDroplocation()
     {
-        return $this->drop_location;
+        return $this->droplocation;
     }
 
     /**
-     * @param string $drop_location
+     * @return integer
      */
-    public function setDrop_location($drop_location)
+    public function getDestid()
     {
-        $this->drop_location = $drop_location;
+        return $this->destid;
+    }
+
+    /**
+     * @param integer $destid
+     */
+    public function setDestid($destid)
+    {
+        $this->destid = $destid;
+    }
+
+    /**
+     * @param integer $droplocation
+     */
+    public function setDroplocation($droplocation)
+    {
+        $this->droplocation = $droplocation;
     }
 
     /**
@@ -262,25 +290,37 @@ class Destinationlocations
     {
         $this->active = $active;
     }
-
     /**
      * @return mixed
      */
-    public function getDest_id()
+    public function getPopular()
     {
-        return $this->dest_id;
+        return $this->popular;
     }
 
     /**
-     * @param mixed $dest_id
+     * @param mixed $popular
      */
-    public function setDest_id($dest_id)
+    public function setPopular($popular)
     {
-        $this->dest_id = $dest_id;
+        $this->popular = $popular;
+    }
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getDesttaxitype()
+    {
+        return $this->desttaxitype;
     }
 
+    /**
+     * @param \Doctrine\Common\Collections\ArrayCollection $desttaxitype
+     */
+    public function setDesttaxitype($desttaxitype)
+    {
+        $this->desttaxitype = $desttaxitype;
+    }
 
-    
 
    
 }

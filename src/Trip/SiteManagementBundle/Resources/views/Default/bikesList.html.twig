@@ -13,9 +13,9 @@ $("select").change(function() {
 
     <section class="section clearfix">
         <div class="container">
-        <h3>Bikes List</h3>
             <div class="row">
-                <div id="fullwidth" class="col-sm-12">
+                <div id="fullwidth" class="col-sm-6">
+                <h3>Bikes List</h3>
 					<table class="table table-bordered col-lg-12 col-sm-12">
 					<tr>
 						<th>Sl.No</th>
@@ -45,6 +45,41 @@ $("select").change(function() {
                     {% endfor %}
 					</table>
                 </div>
+                <div id="fullwidth" class="col-sm-6">
+                	<div class="row">
+                        <h3>Bikes Main Cisties List</h3>
+        					<table class="table table-bordered col-lg-12 col-sm-12">
+        					<tr>
+        						<th>Sl.No</th>
+        						<th>City Name</th>
+        						<th>URL</th>
+        						
+        						<th>/</th>
+        					</tr>
+                             {% for maincities in bikescitymain %}
+                                <tr>
+                                	<td>{{ loop.index }}</td>
+                                    <td>
+                                        {{ locations[maincities.cityid].name }}
+                                    </td>
+        							 <td>
+                                        {{ maincities.url }}
+                                    </td>
+        							
+        							<td>
+        								<a href="{{ path('trip_site_management_edit_bikes_maincity',{ 'id': maincities.id }) }}"><i class="fa fa-pencil-square-o"></i></a>
+        							</td>
+                                </tr>
+                            {% endfor %}
+        					</table>
+					</div>
+					<div class="row">
+						<hr>
+						<h3>Add Bikes Main City</h3>
+						{{ form_start(form) }}{{ form_end(form) }}
+					</div>
+                </div>
+                
             </div>
         </div>
 </section>
