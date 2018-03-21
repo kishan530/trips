@@ -1713,7 +1713,7 @@ class SiteManagementController extends Controller
             'leftDays' => $leftDays,
             'hours' => $hours,
             'resultprice' => $finalprice,
-            'location' => $location,
+                'location' => $location,
             'dayrent' => $dayrent,
             'statingPrice' =>$statingPrice,
         ));
