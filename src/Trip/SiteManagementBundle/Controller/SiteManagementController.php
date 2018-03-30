@@ -1979,7 +1979,8 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
     
     public function editBikesPackageAction(Request $request,$id){
         $em = $this->getDoctrine()->getManager();
-        //$package = new Package();
+        $session = $request->getSession();
+        $bikeid= $session->get('bikeid');
         $bikesContent =$em->getRepository('TripSiteManagementBundle:bikespackage')->find($id);
         
         $form   = $this->createEditBikesPackageForm($bikesContent,$id);
@@ -1988,7 +1989,7 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
             $bikesContent = $em->merge($bikesContent);
             $em->flush();
             
-            return $this->redirect($this->generateUrl('trip_site_management_bikes_list'));
+            return $this->redirect($this->generateUrl('trip_site_management_edit_bikes',array('id'=>$bikeid)));
             
         }
         
