@@ -134,6 +134,12 @@ class bikes
      */
     private $active;
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="packageoffer", type="integer")
+     */
+    private $packageoffer;
+    /**
      * @var string
      */
     private $packagelist;

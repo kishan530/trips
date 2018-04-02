@@ -206,15 +206,6 @@ $(function(){
 
 </script>
 
-	<script type="text/javascript">
-	$(window).load(function(){        
-   $('#myModal').modal('show');
-   $("#myModal").modal({
-       backdrop: 'static',
-       keyboard: false
-   });
-    }); 
-	</script>
 {% endblock %}
 
 {% block breadcrumb %}
@@ -226,10 +217,11 @@ $(function(){
 {% endblock %}
 
 {% block body %}
+
 <section class="section clearfix" style="background-repeat: no-repeat;padding:30px;background-image:url({{ asset('images/jtp-bikes-4.png') }});padding: 33px 0px;background-size: 1600px 329.712px;background-position: 51% -60px;">
 	<div class="bike-book">
-		<h2 class="sub-title-bikesonrentpackage"> Rent A Bike</h2>
-		<input type="hidden" value="" id="txt_name1">
+		<h2 class="sub-title-bikesonrentpackage"> Rent A Bike In {{ locations[bikeslocbase.cityid].name }}</h2>
+		<input type="hidden" value="{{ locations[bikeslocbase.cityid].name }}" id="txt_name1">
         {#}<img src="{{asset('images/bikes/s2.jpg') }}" style="width: 100%;">{#}
     </div>
 </section>
@@ -431,10 +423,7 @@ $(function(){
                             	<input class="model-package-name" type="hidden" name="packagename" required="required" value="" class="bike-popupform"/>
                             	<input id="model-package-offerprice" type="hidden" name="packageoffer" required="required" value="" class="bike-popupform"/>
                             	<input id="model-package-price" type="hidden" name="packageprice" required="required" value="" class="bike-popupform"/>
-								<select class="bike-popupform" type="text" name="location" required><br>
-                                	<option>Tirupati</option>
-                                    <option>Bangalore</option>
-                                </select>
+								<input class="bike-popupform" type="text" name="location" value="{{ geturl }}" readonly="readonly" required><br>
                                 <hr class="bike-popup">
                                 <input type="datetime" class=" bike-popupform" id="datetime6_prefer_date" name="preferdate" required="required"  placeholder="Pickup Date"  required />
                                 <hr class="bike-popup">
@@ -469,10 +458,7 @@ $(function(){
                             	<input class="model-package-name1" type="hidden" name="packagename" required="required" value="" class="bike-popupform"/>
                             	<input id="model-package-offerprice1" type="hidden" name="packageoffer" required="required" value="" class="bike-popupform"/>
                             	<input id="model-package-price1" type="hidden" name="packageprice" required="required" value="" class="bike-popupform"/>
-								<select class="bike-popupform" type="text" name="location" required><br>
-                                	<option>Tirupati</option>
-                                    <option>Bangalore</option>
-                                </select>
+								<input class="bike-popupform" type="text" name="location" value="{{ geturl }}" readonly="readonly" required><br>
                                 <hr class="bike-popup">
                                 <input type="datetime" class=" bike-popupform" id="datetime8_prefer_date" name="preferdate" required="required"  placeholder="Pickup Date"  required />
                                 <hr class="bike-popup">
@@ -507,10 +493,7 @@ $(function(){
                             	<input class="model-package-name2" type="hidden" name="packagename" required="required" value="" class="bike-popupform"/>
                             	<input id="model-package-offerprice2" type="hidden" name="packageoffer" required="required" value="" class="bike-popupform"/>
                             	<input id="model-package-price2" type="hidden" name="packageprice" required="required" value="" class="bike-popupform"/>
-								<select class="bike-popupform" type="text" name="location" required><br>
-                                	<option>Tirupati</option>
-                                    <option>Bangalore</option>
-                                </select>
+								<input class="bike-popupform" type="text" name="location" value="{{ geturl }}" readonly="readonly" required><br>
                                 <hr class="bike-popup">
                                 <input type="datetime" class=" bike-popupform" id="datetime10_prefer_date" name="preferdate" required="required"  placeholder="Pickup Date"  required />
                                 <hr class="bike-popup">
@@ -526,58 +509,6 @@ $(function(){
                       </div>
                      </div>
                     </div>
-                    <div id="myModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
-              <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                  <div class="bike-search-modal-header">
-                  	<div class="row">
-                  		<div class="col-md-3">
-                  			<h4 class="bikes-search-locationspop">I want to rent a</h4>
-                    	</div>
-                    	<div class="col-md-2">
-                    		<h4 class="bikes-search-locationspop2">Bike</h4>
-                    	</div>
-                    	<div class="col-md-7">
-                    		{#}<button type="button" class="close" data-dismiss="modal">&times;</button>#}
-                    	</div>
-                  	</div>
-                  </div>
-                  <div class="modal-body">
-                    <div class="row">
-                    	<div class="col-md-1">
-                    	</div>
-                    	<div class="col-md-11">
-                    		<h4 class="bikes-search-popup-heading1">Popular Cities</h4>
-                    		<strong class="strong-city-popup">India</strong>
-                    		<div class="row">
-                    			<div class="col-md-1">
-                    			</div>
-                    			<div class="col-md-5">
-                    				<a href="{{ path('trip_site_management_bike_packages_tpt')}}">
-                    				<img src="{{asset('images/justtrip-tpt-bike.png') }}" class="img-center">
-                    				<h4 class="bikes-search-popup-heading2">Tirupati</h4>
-                    				</a>
-                    			</div>
-                    			<div class="col-md-5">
-                    				<a href="{{ path('trip_site_management_bike_packages_blr')}}">
-                    				<img src="{{asset('images/justtrip-blr-bikes.png') }}" class="img-center">
-                    				<h4 class="bikes-search-popup-heading2">Bangalore</h4>
-                    				</a>
-                    			</div>
-                    			<div class="col-md-1">
-                    			</div>
-                    		</div>
-                    	</div>
-                    </div>
-                  </div>
-                  <div class="bike-search-modal-header text-center">
-                    <strong class="footer-cont">Select city to continue</strong>
-                  </div>
-                </div>
-            
-              </div>
-            </div>
              </div>
          </div>    
 </section>

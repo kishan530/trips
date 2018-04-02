@@ -203,6 +203,14 @@ trip_site_management_bike_packages:
 trip_site_management_bike_package_result:
     path:     /bikepackageresult
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikepackageresult }
+trip_site_management_bike_packages_tpt:
+    path:     /tirupati/bike-packages-in-tirupati
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikepackagesBasedonlocation }
+trip_site_management_bike_packages_blr:
+    path:     /bangalore/bike-packages-in-bangalore
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikepackagesBasedonlocation }
+    
+    
 trip_site_management_bikes_on_rent_tpt:
     path:     /tirupati/bikes-on-rent-in-tirupati
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikesonRentBasedonlocation }

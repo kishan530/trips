@@ -59,6 +59,102 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 		});
 		
 	</script>
+	<script>
+	var s=$('.disabled');
+	console.log("this is children method"+s);
+	var o=$('.disabled select')
+	for(i=0;i<o.length;i++){
+		var store=o[i];
+		var r=$(store).val();
+		console.log(r);
+		if(r==null){
+			$(s[i]).css('display','none');
+		}	
+	}
+	</script>
+	<script>
+			$(document).ready(function(){
+				$("#datetime3").change(function(){
+					var first=$("#datetime2").val();
+					var second=$("#datetime3").val();
+					if(first===second)
+					{
+						alert("Reture date is inavlid please select returndate greaterthan pickupdate");
+					}
+					else{
+						//alert("this is different string");
+						//return;
+					}
+				});
+			});
+		</script>
+		<script>
+	$(function () {
+
+		var $tableRows = $('table.myListloc tr');
+		var lastInput = '';
+
+		$('#packagefilterloc').keyup(function () {
+		    var sValue = $.trim($('input#packagefilterloc').val());
+		    if(lastInput==sValue) return;
+		    if (sValue == '') {
+		        $tableRows.show();
+		    } else {
+		        $tableRows.each(function () {
+		            var oLabel = $(this).find('label');
+		            if (oLabel.length > 0) {
+		                if (oLabel.text().toLowerCase().indexOf(sValue.toLowerCase()) >= 0) {
+		                    $(this).show();
+		                } else {
+		                    $(this).hide();
+		                }
+		            }
+		        });
+		        lastInput=sValue;
+		    }
+		});
+
+		$('img.removeSelections').click(function () {
+		    $('table.myListloc input[type="checkbox"]').prop("checked", false);
+		})
+		});
+
+		
+	</script>
+	<script>
+	$(function () {
+
+		var $tableRows = $('table.myListbikes tr');
+		var lastInput = '';
+
+		$('#packagefilterbikes').keyup(function () {
+		    var sValue = $.trim($('input#packagefilterbikes').val());
+		    if(lastInput==sValue) return;
+		    if (sValue == '') {
+		        $tableRows.show();
+		    } else {
+		        $tableRows.each(function () {
+		            var oLabel = $(this).find('label');
+		            if (oLabel.length > 0) {
+		                if (oLabel.text().toLowerCase().indexOf(sValue.toLowerCase()) >= 0) {
+		                    $(this).show();
+		                } else {
+		                    $(this).hide();
+		                }
+		            }
+		        });
+		        lastInput=sValue;
+		    }
+		});
+
+		$('img.removeSelections').click(function () {
+		    $('table.myListbikes input[type="checkbox"]').prop("checked", false);
+		})
+		});
+
+		
+	</script>
+		
 {% endblock %}
 
 {% block breadcrumb %}
@@ -75,108 +171,205 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 {% endblock %}
 
 {% block body %}
-<section class="section clearfix" style="padding:30px 0px 40px 0px;">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-3">
-			<div class="row">
-    			<div class="bike-background">
-    				<h3 class="filter">Modify Search</h3>
-    				<hr>
-    				<p class="filter1">Select Date & Time</p>
-    				<div class="row">
-            		    <form>
-            		    	<div class="row" style="text-align:center;">
-            					<label class="filter-details">Pickup date & Time</label><br>
+<section class="section clearfix filter-box" style="background-color:#fff;">
+	 	<div class="container">
+            			<div class="row">
+                   				<div class="col-md-12">
+                   					<div class="row">
+                   						<div class="col-md-2">
+                   						<h3 class="review-modifiy">Modify Search</h3>
+                   						</div>
+                                         <form>
+                                         <div class="col-md-2 bikes-form-font" style="text-align:center;">
+            					<label class="filter-details2">Location</label><br>
+            					    <input type="text" name="location" class="black3 datetime2" value="{{ location }}"/>
+            							<hr class="hr-nomargin hr-border-color">
+            							</div>
+            		    	<div class="col-md-2 bikes-form-font" style="text-align:center;">
+            					<label class="filter-details2">Pickup date & Time</label><br>
             						<input class="black3 datetime2" id="datetime2" format="" type="text" name="preferdate" value="{{ preferdate }}">
-            							<hr class="border">
-            					<label class="filter-details">Dropoff date & Time</label><br>
+            							<hr class="hr-nomargin hr-border-color">
+            							</div>
+            							<div class="col-md-2 bikes-form-font" style="text-align:center;">
+            					<label class="filter-details2">Dropoff date & Time</label><br>
             					    <input class="black3 datetime3" id="datetime3" format="" type="text" name="returndate" value="{{ returndate }}">
-            							<hr class="border">
+            							<hr class="hr-nomargin hr-border-color">
+            							</div>
             						<input class="resultpage" id="vehicleIndex{{ bike.id }}" type="hidden" name="id" value="{{ id }}">
             						<input type="hidden" name="packagename" class="form-control" value="{{ packagetitle }}"/>
             						<input type="hidden" name="title" required="required" value="{{ title }}" class="bike-popupform">
             						<input type="hidden" name="packageoffer" required="required" value="{{ packageoffer }}" class="bike-popupform">
+            						<div class="col-md-2 bikes-form-font" style="text-align:center;">
             						<button type="submit" class="btn btn-book-now view-bike1" value="Search" style="width:70%;height:30px;margin-bottom:10px;">Search
                                 	</button>
-                            </div>                    										
-    					</form>
-            		</div>
+                                       </div>       										
+    					                <div class="col-md-2" style="text-align:center;">
+    					                <h6 class="package-title">{{ packagetitle }}Days Package</h6>
+                                         	<p class="brandtype">Duration > <span class="black">{{ leftDays }} Days {{ hours }} Hours</span></p>
+                   						</div>
+                                     </div>
+                   				</div> 
+                   			</div>
+	 		</div>
+	 </section>
+<section class="section clearfix" style="padding:20px 0px 0px 0px;">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-3">
+			<div class="row">
+    			<div class="bike-background1">
+    				<h3 class="review-apply-filter text-center">Apply Filters</h3>
+            		{{ render(controller('TripSiteManagementBundle:SiteManagement:packagebikesFilters', { 'active': 1, 'cityid': bikeslocbase.cityid })) }}
+            		</form>
     			</div>
-    			<p class="brandtype">Duration > <span class="black">{{ leftDays }} Days {{ hours }} Hours</span></p>                   
-            			<hr>
     		 </div>
 		</div>
 		<div class="col-md-9">
-			<div class="bike-background">
-				<div class="row">
+			<div class="row">
                 	<div class="col-lg-12 col-sm-12 col-xs-12">
-                	 
-                		<div class="col-md-4" >
-                		<h6 class="package-title">{{ packagetitle }}Days Package</h6>
-                			<div>
-                            	<img src="{{asset('images/bikes/'~bike.imgPath) }}" style="width: 100%;">
+                	{% for suggestedbikes in resultset %} 
+                	  <div class="col-md-4 disabled">
+                		<div class="bike-background">
+                		<div>
+                            	<img src="{{asset('images/bikes/'~suggestedbikes.imgPath) }}" style="width: 100%;">
                             </div>
-                            <div class="bike-background">
-                            	<h5 class="bike-grid-title1">{{ title }}</h5>
+                            <form action="{{ path('trip_booking_engine_booking_bike') }}" method="get">
+                            	<h5 class="bike-grid-title1">{{ suggestedbikes.title }}</h5>
+                            	<div class="row bikes-loc">
+                            			<div class="col-md-12">
+                            				<p class="text-center selectarea-label">Available at</p>
+                            					{{ render(controller('TripSiteManagementBundle:SiteManagement:reviewbikesSelectoptions', { 'id': suggestedbikes.id, 'active': 1, 'cityid': bikeslocbase.cityid })) }}
+											<hr class="hr-nomargin" style="padding-bottom:10px;border-color: #787878;">
+                            			</div>
+									</div>
                             	<div class="row bikes">
-                            	{% set pickupdate = preferdate|date("d/m/Y h:i A") %}
-						        {% set returndate = returndate|date("d/m/Y h:i A") %}
+                            	
                             	<div class="col-md-5 text-center" style="padding-right: -1px;">
-                                	<span class="black1">{{ pickupdate }}</span>
+                                	<span class="black1">{{ preferdate|date("d/m/Y h:i A") }}</span>
                                 </div>
                                 <div class="col-md-2 text-center" >
                                 	<label class="valign">To</label>
                                 </div>
                                 <div class="col-md-5 text-center" style="padding-right: 0px;">
-                                	<span class="black1">{{ returndate }}</span>
+                                	<span class="black1">{{ returndate|date("d/m/Y h:i A") }}</span>
                                 </div>
                             	</div>
-                            	<div class="row">
-                            	<div class="col-md-12" >
-                            	{#}<h4 class="packageprice">{{ packageprice }}</h4>{#}
-                            	{#}<h6 class="package-offer">{{ packageoffer }}% Offer Available</h6>{#}
-                            	<h6 style="text-align:center;color:#000"><i class="fa fa-inr" aria-hidden="true"></i> {{ resultprice }}</h6>
-                            	<span class="limit">({{ bike.kmlimit }} km limit/day)</span>
+                            	<div class="row-rentnow">
+                            	
+                            	<div class="col-md-6" >
+                            	<h6 class="price""><i class="fa fa-inr" aria-hidden="true"></i> {{ suggestedbikes.price }}</h6>
+                            	<span class="limit">({{ suggestedbikes.kmlimit }} km/day)</span>
                             	</div>
-                            	</div>
-                                <div class="row">
-									<div class="col-md-12" >
-                        				<form action="{{ path('trip_booking_engine_booking_bike') }}" method="get">
-                        				    {#}{% set price1 = packageprice %}{#}
+                            	<div class="col-md-6" >
+                            	{% set startdate = preferdate|date("d/m/Y h:i A") %}
+						        {% set enddate = returndate|date("d/m/Y h:i A") %}
                             				<input type="hidden" name="packagetitle" class="form-control" value="{{ packagetitle }}">
-                                            <input type="hidden" name="price" class="form-control" value="{{ resultprice }}">
+                                            <input type="hidden" name="price" class="form-control" value="{{ suggestedbikes.price }}">
                                             <input type="hidden" name="id" class="form-control" value="{{ id }}">
-                                            <input type="hidden" name="title" class="form-control" value="{{ title }}">
+                                            <input type="hidden" name="title" class="form-control" value="{{ suggestedbikes.title }}">
                                             <input type="hidden" name="location" class="form-control" value="{{ location }}" >
-                                            <input type="hidden" name="pDate" class="form-control" value="{{ pickupdate }}">
-                                            <input type="hidden" name="rDate" class="form-control" value="{{ returndate }}">
+                                            <input type="hidden" name="pDate" class="form-control" value="{{ startdate }}">
+                                            <input type="hidden" name="rDate" class="form-control" value="{{ enddate }}">
                                             <input type="hidden" name="leftdays" class="form-control" value="{{ leftDays }}"> 
 											<input type="hidden" name="hours" class="form-control" value="{{ hours }}"> 
 											<input type="hidden" name="countadd" class="form-control" value="1"> 
-											<input type="hidden" name="count" class="form-control" value="{{ bike.count }}"> 
-                                            {% if (bike.count <= 0) %}
-                                          			<a class="btn btn-book-now view-bike" disabled>
+											<input type="hidden" name="count" class="form-control" value="{{ suggestedbikes.count }}"> 
+                                            {% if (suggestedbikes.count <= 0) %}
+                                          			<a class="btn btn-book-now view-bike3" style="background-color: #e0e0e0;opacity:1;" disabled>
                                                       Sold Out
                                                     </a>   
                                           	{% else %}
-                                                <button type="submit" class="btn aligncenter view-bike">Rent Now</button>
+                                                <button type="submit" class="btn aligncenter view-bike2">Rent Now</button>
                                             {% endif %}
+                                            </div>
+                                            </div>
                         			   </form>
                             	   </div>
 				                </div>
+				                {% endfor %}
                             </div>
-                		</div>
-                		
+                            
+                            </div>
                 	</div>
                 </div>
-              </div>
-			</div>
+            </div>   
 		</div>
 		<hr>
 	</div>
 </section>
-
+<section class="section clearfix" style="padding:0px 0px 40px 0px;">
+<h2 class="Suggested Bikes" style="text-align:center;">Suggested Bikes</h2>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+			<div class="row">
+                	<div class="col-lg-12 col-sm-12 col-xs-12">
+                	{% for suggestedbikes in resultset1 %} 
+                	  <div class="col-md-3 disabled">
+                		<div class="bike-background">
+                			<div>
+                            	<img src="{{asset('images/bikes/'~suggestedbikes.imgPath) }}" style="width: 100%;">
+                            </div>
+                            <form action="{{ path('trip_booking_engine_booking_bike') }}" method="get">
+                            	<h5 class="bike-grid-title1">{{ suggestedbikes.title }}</h5>
+                            	<div class="row bikes-loc">
+                            			<div class="col-md-12">
+                            				<p class="text-center selectarea-label">Available at</p>
+                            					{{ render(controller('TripSiteManagementBundle:SiteManagement:reviewbikesSelectoptions', { 'id': suggestedbikes.id, 'active': 1, 'cityid': bikeslocbase.cityid })) }}
+											<hr class="hr-nomargin" style="padding-bottom:10px;border-color: #787878;">
+                            			</div>
+									</div>
+                            	<div class="row bikes">
+                            	
+                            	<div class="col-md-5 text-center" style="padding-right: -1px;">
+                                	<span class="black1">{{ preferdate|date("d/m/Y h:i A") }}</span>
+                                </div>
+                                <div class="col-md-2 text-center" >
+                                	<label class="valign">To</label>
+                                </div>
+                                <div class="col-md-5 text-center" style="padding-right: 0px;">
+                                	<span class="black1">{{ returndate|date("d/m/Y h:i A") }}</span>
+                                </div>
+                            	</div>
+                            	<div class="row-rentnow">
+                            	<div class="col-md-6" >
+                            	<h6 class="price"><i class="fa fa-inr" aria-hidden="true"></i> {{ suggestedbikes.price }}</h6>
+                            	<span class="limit">({{ suggestedbikes.kmlimit }} km/day)</span>
+                            	</div>
+                            	<div class="col-md-6" >
+                            	{% set startdate = preferdate|date("d/m/Y h:i A") %}
+						        {% set enddate = returndate|date("d/m/Y h:i A") %}
+                        					<input type="hidden" name="packagetitle" class="form-control" value="{{ packagetitle }}">
+                                            <input type="hidden" name="price" class="form-control" value="{{ suggestedbikes.price }}">
+                                            <input type="hidden" name="id" class="form-control" value="{{ id }}">
+                                            <input type="hidden" name="title" class="form-control" value="{{ title }}">
+                                            <input type="hidden" name="location" class="form-control" value="{{ location }}" >
+                                            <input type="hidden" name="pDate" class="form-control" value="{{ startdate }}">
+                                            <input type="hidden" name="rDate" class="form-control" value="{{ enddate }}">
+                                            <input type="hidden" name="leftdays" class="form-control" value="{{ leftDays }}"> 
+											<input type="hidden" name="hours" class="form-control" value="{{ hours }}"> 
+											<input type="hidden" name="countadd" class="form-control" value="1"> 
+											<input type="hidden" name="count" class="form-control" value="{{ suggestedbikes.count }}"> 
+                                            {% if (suggestedbikes.count <= 0) %}
+                                          			<a class="btn btn-book-now view-bike3" style="background-color: #e0e0e0;opacity:1;" disabled>
+                                                      Sold Out
+                                                    </a>   
+                                          	{% else %}
+                                                <button type="submit" class="btn aligncenter view-bike2">Rent Now</button>
+                                            {% endif %}
+                                            </div>
+                                            </div>
+                        			   </form>
+                            	   </div>
+				                </div>
+				                {% endfor %}
+                            </div>
+                            
+                            </div>
+                       </div>
+		</div>
+	</div>
+</section>		
 
 
 {% endblock %}

@@ -1608,8 +1608,6 @@ class SiteManagementController extends Controller
     }
     //****************************************************jagadeesh*************************************************//
     
-    
-    
     public function bikepackagesAction(Request $request){
         $em = $this->getDoctrine()->getManager();
         $bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
@@ -1647,7 +1645,49 @@ class SiteManagementController extends Controller
         ));
     }
     
-    private function createbikepackageForm($entity)
+    
+    public function bikepackagesBasedonlocationAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        $security = $this->container->get ( 'security.context' );
+        $uri_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $uri_segments = explode('/', $uri_path);
+        $geturl=$uri_segments[4];
+        
+        $bikeslocbase= $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findBy(array('url' => $geturl));
+        
+        if($bikeslocbase){
+            $bikeslocbase= $bikeslocbase[0];
+            $bikeslocbased = $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findAll(array('url' => $geturl));
+        }else{
+            
+        }
+        $session->set('bikemainloc',$geturl);
+        
+        $bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
+        $locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
+        $locations = $this->getLocationsByIndex($locations);
+        $id='22/01/2018 05:00 PM';
+        
+        $dql3 = "SELECT b.id from TripBookingEngineBundle:BikeBooking b where b.rdate= '$id' ";
+        $query = $em->createQuery($dql3);
+        $query -> execute();
+        $brdate = $query->getResult();
+        $sysdate= new \DateTime('Asia/Kolkata');
+        $session = $request->getSession();
+        $session->set('resultSet',$bikes);
+        $entity= new Biketime();
+        $form   = $this->createviewbikesForm($entity);
+        return $this->render('TripSiteManagementBundle:Default:bikepackagesBasedonloc.html.twig',array(
+            'bikes' => $bikes,
+            'form'   => $form->createView(),
+            'locations' => $locations,
+            'bikeslocbase' => $bikeslocbase,
+            'geturl' => $geturl,
+        ));
+    }
+    
+     private function createbikepackageForm($entity)
     {
         $bookingService = $this->container->get( 'booking.services' );
         $form = $this->createForm(new biketimerangeType(), $entity, array(
@@ -1658,7 +1698,7 @@ class SiteManagementController extends Controller
         return $form;
     }
     
-    
+ //******************************************bikepackage***********************************************************//   
     
     public function bikepackageresultAction(Request $request){
         $em = $this->getDoctrine()->getManager();
@@ -1680,89 +1720,52 @@ class SiteManagementController extends Controller
             
         }
         
-       
-        $session->set('bikeid',$bike);
+        
+        $session = $request->getSession();
+        $packagebikemainloc = $session->get('bikemainloc');
+        $packagefilterloc=$request->get('check_list_loc_package');
+        $session->set('filterloc',$packagefilterloc);
+        $packagefilterbikes=$request->get('check_list_bikes_package');
+        $session->set('filterbikes',$packagefilterbikes);
+        
+        $bikeslocbase= $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findBy(array('url' => $packagebikemainloc));
+        
+        if($bikeslocbase){
+            $bikeslocbase= $bikeslocbase[0];
+            $bikeslocbased = $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findAll(array('url' => $packagebikemainloc));
+        }else{
+            
+        }
+        $suggestedbikes= $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
+        $entity= new Biketime();
+        
+        $session->set('id',$id);
         
         $pickupdate= $request->get('preferdate');
         $picdate = new \DateTime($pickupdate);
         $returndate= $request->get('returndate');
         $rtrdate = new \DateTime($returndate);
-       
+        
         $difference=date_diff($picdate,$rtrdate);
         $leftDays = $difference->d;
         $hours = $difference->h;
-             
+        
         $dayrent=$bike->getDayrent();
         $statingPrice=$bike->getStatingPrice();
         $packageofferprice=$packageoffer/100;
-         
-        if ($hours==0){
-            
-            if ($leftDays<7){
-                $finalprice=$dayrent*$leftDays;
-                
-            }
-            else{
-                $price=$dayrent*$leftDays;
-                $offerprice= $price*$packageofferprice;
-                $finalprice=$price-$offerprice;
-            }
-        }else{
-            
-            if ($hours <= 5){
-                
-                if ($leftDays<7){
-                    $fixhours= 5;
-                    $fivehoursbase = $statingPrice * $hours;
-                    $finalprice=$fivehoursbase + $dayrent * $leftDays;
-                    
-                }
-                else{
-                    $fixhours= 5;
-                    $fivehoursbase = $statingPrice * $hours;
-                    $pricecal=$dayrent * $leftDays;
-                    $offerprice= $pricecal*$packageofferprice;
-                    $price=$pricecal-$offerprice;
-                    $finalprice= $price+$fivehoursbase;
-                   
-                }
-            }
-            else{
-                if ($hours <= 10){
-                    
-                    
-                    if ($leftDays<7){
-                        $inc= $hours * $statingPrice;
-                        $dayscal= $leftDays * $dayrent;
-                        $finalprice=$dayscal + $inc;
-                        
-                    }
-                    else{
-                        $inc= $hours * $statingPrice;
-                        $dayscal= $leftDays * $dayrent;
-                        $offerprice=$dayscal*$packageofferprice;
-                        $price= $dayscal-$offerprice;
-                        $finalprice=$price+$inc;
-                        
-                    }
-                }else{
-                    $totaldays= $leftDays + 1;
-                    
-                    if ($totaldays<7){
-                        $finalprice=$dayrent*$totaldays;
-                        
-                    }
-                    else{
-                        $price=$dayrent*$totaldays;
-                        $offerprice= $price*$packageofferprice;
-                        $finalprice=$price-$offerprice;
-                                            }
-                }
-            }
-        }
         
-                          
-            return $this->render('TripSiteManagementBundle:Default:bikepackageresult.html.twig',array(
+        
+        
+        
+        
+        $result=$this->getResultbybikesPackage($request,$id);
+        $resultset=$this->getPackageResultbybikescal($result,$leftDays,$hours);
+        
+        
+        $result=$this->getPackageResultbybikespackage();
+        $resultset1=$this->getPackageResultbybikescal($result,$leftDays,$hours);
+        
+        return $this->render('TripSiteManagementBundle:Default:bikepackageresult.html.twig',array(
             
             'bike'=>$bike,
             'bikes'=>$bikes,
@@ -1772,18 +1775,240 @@ class SiteManagementController extends Controller
             'packageprice'=>$packageprice,
             'Kmlimit'=>$Kmlimit,
             'packageoffer'=>$packageoffer,
-           // 'form'   => $form->createView(),
-                'preferdate' => $pickupdate,
-                'returndate' => $returndate,
+            // 'form'   => $form->createView(),
+            'preferdate' => $pickupdate,
+            'returndate' => $returndate,
             'leftDays' => $leftDays,
             'hours' => $hours,
-            'resultprice' => $finalprice,
+            //'resultprice' => $finalprice,
             'location' => $location,
             'dayrent' => $dayrent,
             'statingPrice' =>$statingPrice,
+            'bikeslocbase' => $bikeslocbase,
+            'resultset1' => $resultset1,
+            'resultset' => $resultset,
+            'suggestedbikes' => $suggestedbikes,
         ));
         
     }
+    
+    
+    
+    public function packagebikesSelectoptionsAction(Request $request,$id,$active,$cityid){
+        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        $packagefilterloc = $session->get('filterloc');
+        
+        if(!is_null($packagefilterloc))
+        {
+            $ids = join("','",$packagefilterloc);
+            $dql3 = "SELECT b.id,b.area,b.active,b.bikeid from TripSiteManagementBundle:BikesCityArea
+            b where b.bikes=$id and b.active=$active and b.cityid=$cityid and b.area in('$ids')";
+            $em = $this->getDoctrine()->getManager();
+            $query = $em->createQuery($dql3);
+            $bikesarea = $query->getResult();
+        }else{
+            $dql3 = "SELECT b.id,b.area,b.active from TripSiteManagementBundle:BikesCityArea b
+            where b.bikes=$id and b.active=$active and b.cityid=$cityid";
+            $em = $this->getDoctrine()->getManager();
+            $query = $em->createQuery($dql3);
+            $bikesarea = $query->getResult();
+        }
+        
+        
+        return $this->render('TripSiteManagementBundle:Default:packagebikesSelectoptions.html.twig', array(
+            'bikesarea' => $bikesarea,
+            
+        ));
+        
+        
+    }
+    public function packagebikesFiltersAction(Request $request,$active,$cityid){
+        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        $packagefilterloc = $session->get('filterloc');
+        $packagefilterbikes = $session->get('filterbikes');
+        $id = $session->get('id');
+        $dql3 = "SELECT DISTINCT b.area from TripSiteManagementBundle:BikesCityArea b where b.active=$active and b.cityid=$cityid";
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery($dql3);
+        $bikesarea = $query->getResult();
+        $bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
+        return $this->render('TripSiteManagementBundle:Default:packagebikesFilters.html.twig', array(
+            'bikesarea' => $bikesarea,
+            'bike' => $bikes,
+            'packagefilterloc' =>$packagefilterloc,
+            'packagefilterbikes' => $packagefilterbikes,
+            'id' => $id,
+        ));
+        
+        
+    }
+    
+    
+    
+    
+    public function getResultbybikesPackage($request, $id){
+        $session = $request->getSession();
+        $em = $this->getDoctrine()->getManager();
+        $packagefilterbikes = $session->get('filterbikes');
+        if(!is_null($packagefilterbikes))
+        {
+            
+            $ids = join("','",$packagefilterbikes);
+            $dql3 = "SELECT
+b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,b.location,b.packageoffer
+        from TripSiteManagementBundle:bikes b
+         where b.active=1 and b.id in('$ids')";
+            
+            $em = $this->getDoctrine()->getManager();
+            $query = $em->createQuery($dql3);
+            $result = $query->getResult();
+            
+        }else{
+            
+            $dql3 = "SELECT
+b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,b.location,b.packageoffer
+        from TripSiteManagementBundle:bikes b
+         where b.active=1 and b.id=$id";
+            
+            $em = $this->getDoctrine()->getManager();
+            $query = $em->createQuery($dql3);
+            $result = $query->getResult();
+            
+        }
+        
+        
+        //$bikes =
+        $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
+        return $result;
+    }
+    
+    
+    public function getPackageResultbybikescal($result,$leftDays,$hours){
+        
+        
+        $tempCollection = array();
+        foreach($result as $row){
+            $bike = array();
+            $bike['id']=$row['id'];
+            $bike['dayrent']=$row['dayrent'];
+            $bike['statingPrice']=$row['statingPrice'];
+            $bike['imgPath']=$row['imgPath'];
+            $bike['locationUrl']=$row['locationUrl'];
+            $bike['title']=$row['title'];
+            $bike['count']=$row['count'];
+            $bike['location']=$row['location'];
+            $bike['kmlimit']=$row['kmlimit'];
+            $bike['packageoffer']=$row['packageoffer'];
+            
+            if ($hours==0){
+                
+                if ($leftDays<7){
+                    $dayrent= $bike['dayrent'];
+                    $finalprice=$dayrent*$leftDays;
+                    
+                }
+                else{
+                    $dayrent= $bike['dayrent'];
+                    $price=$dayrent*$leftDays;
+                    $packageoffer= $bike['packageoffer'];
+                    $packageofferprice=$packageoffer/100;
+                    $offerprice= $price*$packageofferprice;
+                    $finalprice=$price-$offerprice;
+                }
+            }else{
+                
+                if ($hours <= 5){
+                    
+                    if ($leftDays<7){
+                        $dayrent= $bike['dayrent'];
+                        $fixhours= 5;
+                        $statingPrice= $bike['statingPrice'];
+                        $fivehoursbase = $statingPrice * $hours;
+                        $finalprice=$fivehoursbase + $dayrent * $leftDays;
+                        
+                    }
+                    else{
+                        $dayrent= $bike['dayrent'];
+                        $fixhours= 5;
+                        $statingPrice= $bike['statingPrice'];
+                        $fivehoursbase = $statingPrice * $hours;
+                        $packageoffer= $bike['packageoffer'];
+                        $packageofferprice=$packageoffer/100;
+                        $pricecal=$dayrent * $leftDays;
+                        $offerprice= $pricecal*$packageofferprice;
+                        $price=$pricecal-$offerprice;
+                        $finalprice= $price+$fivehoursbase;
+                        
+                    }
+                }
+                else{
+                    if ($hours <= 10){
+                        
+                        
+                        if ($leftDays<7){
+                            $dayrent= $bike['dayrent'];
+                            $statingPrice= $bike['statingPrice'];
+                            $inc= $hours * $statingPrice;
+                            $dayscal= $leftDays * $dayrent;
+                            $finalprice=$dayscal + $inc;
+                            
+                        }
+                        else{
+                            $dayrent= $bike['dayrent'];
+                            $statingPrice= $bike['statingPrice'];
+                            $inc= $hours * $statingPrice;
+                            $dayscal= $leftDays * $dayrent;
+                            $packageoffer= $bike['packageoffer'];
+                            $packageofferprice=$packageoffer/100;
+                            $offerprice=$dayscal*$packageofferprice;
+                            $price= $dayscal-$offerprice;
+                            $finalprice=$price+$inc;
+                            
+                        }
+                    }else{
+                        $totaldays= $leftDays + 1;
+                        
+                        if ($totaldays<7){
+                            $dayrent= $bike['dayrent'];
+                            $finalprice=$dayrent*$totaldays;
+                            
+                        }
+                        else{
+                            $dayrent= $bike['dayrent'];
+                            $price=$dayrent*$totaldays;
+                            $packageoffer= $bike['packageoffer'];
+                            $packageofferprice=$packageoffer/100;
+                            $offerprice= $price*$packageofferprice;
+                            $finalprice=$price-$offerprice;
+                            
+                        }
+                    }
+                }
+            }
+            $bike['price']= $finalprice;
+            $tempCollection[$row['id']]=$bike;
+        }
+        
+        return $tempCollection;
+        
+    }
+    
+    
+    public function getPackageResultbybikespackage(){
+        $em = $this->getDoctrine()->getManager();
+        $dql3 = "SELECT b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,b.location,b.packageoffer
+        from TripSiteManagementBundle:bikes b
+         where b.active=1";
+        
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery($dql3);
+        $result = $query->getResult();
+        
+        return $result;
+    }
+    
     
     
     //*************************************************jagadeesh new***************************************//
@@ -1791,7 +2016,8 @@ class SiteManagementController extends Controller
     
     public function editBikesPackageAction(Request $request,$id){
         $em = $this->getDoctrine()->getManager();
-        //$package = new Package();
+        $session = $request->getSession();
+        $bikeid= $session->get('bikeid');
         $bikesContent =$em->getRepository('TripSiteManagementBundle:bikespackage')->find($id);
         
         $form   = $this->createEditBikesPackageForm($bikesContent,$id);
@@ -1800,7 +2026,7 @@ class SiteManagementController extends Controller
             $bikesContent = $em->merge($bikesContent);
             $em->flush();
             
-            return $this->redirect($this->generateUrl('trip_site_management_bikes_list'));
+            return $this->redirect($this->generateUrl('trip_site_management_edit_bikes',array('id'=>$bikeid)));
             
         }
         
@@ -2160,7 +2386,10 @@ class SiteManagementController extends Controller
 	   $filterloc=$request->get('check_list_loc');
 	   $session->set('filterloc',$filterloc);
 	   $filterbikes=$request->get('check_list_bikes');
+	   
+	   
 	   $session->set('filterbikes',$filterbikes);
+
 	   $filtermainloc=$request->get('filtermainloc');
 	   if(!is_null($filtermainloc))
 	   {
@@ -2184,6 +2413,8 @@ class SiteManagementController extends Controller
 	           
 	       }
 	   }
+
+	   
 		$bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
 		$entity= new Biketime();
 		
@@ -2203,6 +2434,7 @@ class SiteManagementController extends Controller
     	    {
     	        
     	        $result=$this->getResultbybikesfilters($filterbikes);
+    	        
     	            $resultset=$this->getResultbybikescal($result,$leftDays,$hours);
     	    }else{
     	        
@@ -2286,6 +2518,8 @@ class SiteManagementController extends Controller
         
         
     }
+    
+    
     public function getResultbybikesfilters($filterbikes){
         $em = $this->getDoctrine()->getManager();
         $ids = join("','",$filterbikes);   
