@@ -68,76 +68,14 @@
 {% endblock %}
 
 {% block body %}
-<section class="section clearfix" style="/*background-color:#f9f9f9;*/background-repeat: no-repeat;padding:30px;background-image:url({{ asset('images/jtp-bikes-4.png') }});padding: 73px 0px;/*background-attachment: fixed;*/background-size: 1600px 684.712px;background-position: 51% -60px;">
-	<div class="bike-book">
-		<h2 class="sub-title-bikesonrent"> Rent A Bike In {{ locations[bikeslocbase.cityid].name }}</h2>
-		<input type="hidden" value="{{ locations[bikeslocbase.cityid].name }}" id="txt_name1">
-        {#}<img src="{{asset('images/bikes/s2.jpg') }}" style="width: 100%;">{#}
-        <div class="container bike-price-book1">
-        	<div class="row">
-       			<div class="col-md-2"></div>
-       				<div class="col-md-8 sub-book1">
-       					<div class="row">
-       					<div class="col-md-6">
-       						<table class="table">
-                   					<tbody>
-                   						<tr>
-                   							<td class="text-center" style="background: transparent;border:none"><a href="{{ path('trip_site_management_homepage')}}"  class="homebanner-color"> Cabs</a></td>
-                   							<td class="bikes-search-tabs" style="background: #F34F4F;border: none;">Bikes</td>
-                   							<td class="text-center" style="background: transparent;border:none"><a href="{{ path('trip_site_management_homepage_packages')}}"> Packages</a></td>
-                   							<td class="text-center" style="background: transparent;border:none"><a href="#tab_04" aria-controls="tab_04" role="tab" data-toggle="tab">Offers</a></td>
-                   							
-                   						</tr>
-                   					</tbody>
-                   				</table>
-       					</div>
-       					<div class="col-md-6">
-       					
-       					</div>
-                           	
-                         </div>
-       				</div>
-       				<div class="col-md-2"></div>   
-       			</div>
-       		<div class="row">
-       			<div class="col-md-2"></div>
-       				<div class="col-md-8">
-       					<div class="row">
-                             {{ form_start(form) }}
-                             {{ form_errors(form) }}
-                             {{ form_errors(form.date) }}
-                             {{ form_errors(form.returndate) }}
-								<div class="col-md-3 bikes-form-font sub-book1">
-                             	
-                                {{ form_widget(form.location) }}
-                                </div>
-                             	<div class="col-md-3 bikes-form-font sub-book3">
-                                {{ form_widget(form.date, {'id': 'datetime2'}) }}
-                                </div>
-                                <div class="col-md-3 bikes-form-font sub-book3">
-                                	{{ form_widget(form.returndate, {'id': 'datetime3'}) }}
-                                	
-                                </div>
-                                <div class="col-md-3 sub-book4">
-                                {{ form_label(form.submit) }} 
-                                {{ form_widget(form.submit) }}
-                                </div>
-                             {{ form_end(form) }}
-                         </div>
-       				</div>
-       				<div class="col-md-2"></div>   
-       			</div>
-        </div>  
-    </div>
-    
-</section>
+
 <section class="space"></section>
 <section class="section clearfix">
     <div class="container">
         <div class="row">
                         <div class="col-lg-12 col-sm-12 col-xs-12">
                         <div class="hotel-title">
-                <h3>OUR FLEET</h3>
+                <h3 class="berlin">OUR FLEET</h3>
                 <hr class="left">
             </div><!-- end hotel-title -->
                             {% for bike in bikes %} 
@@ -151,9 +89,10 @@
                             	{% for bikecities in bike.bikescity %}
                                     {% if bikecities.cityid==bikeslocbase.cityid %}                       
                                 <h4 style="text-align:center;color:#000"><a class="view-bikes-title" href="{{ path('trip_site_management_view_bikes',{ 'url':bikecities.url }) }}">{{ bike.title }}</a></h4>
-                                	{% endif %}
+                                	 <p class="price-starts">Starts @{{ bike.statingPrice }}</p>
+                                    {% endif %}
                                 {% endfor %}
-                                <div><h6 style="text-align:center;color:#000">Starts @{{ bike.statingPrice }}</h6></div>
+                               
                                  <div class="row">
                                         {#} <div class="col-md-12" >
                                          	{% for bikearea in bike.bikescityarea %}
@@ -195,4 +134,102 @@
         
         
 </section>
+<section class="section clearfix section-bottom fullscreen background parallax sec-bg">
+		<div class="container">
+			<div class="hotel-title">
+                <h3 class="berlin">Do you have Questions?</h3>
+                <hr class="left">
+            </div><!-- end hotel-title -->
+            <div class="row">
+            	<div class="col-md-6">
+            		<img src="{{ asset('images/justtrip-questions.png') }}" alt="" class="img-responsive">
+            	</div>
+            	<div class="col-md-6">
+            		<div class="que">
+            		<p class="berlin have-question">Have any Doubts?</p>
+            		<p class="berlin">Have an issue or want to know about how things work?<br> Just ring us up! We would love to hear you out!</p>
+            		<p class="berlin">Call us 24/7 Support</p>
+            		<h2 class="que-numb berlin">+91-9663133008</h2>
+            		</div>
+            	</div>
+            </div>
+        </div>
+    </section>
+    <section class="section" data-img-width="1920" data-img-height="586" data-diff="10">
+        <div class="container">
+            <div id="testimonials">
+                 <div class="testi-item">
+                    <div class="hotel-title text-center">
+                        <h3 class="berlin">THANKS YOU TRIPS! THIS IS AMAZING TRAVEL!</h3>
+                        <hr>
+                        <p>It was nice service provided by Just Trip, it was my first journey to tirupati.Just Trip people are so helpfull :)</p>
+                        <h6>- Ravi / TCS Mumbai</h6>
+                    </div>
+                </div><!-- end testi-item -->
+
+                <div class="testi-item">
+                    <div class="hotel-title text-center">
+                        <h3>THANKS YOU TRIPS! THIS IS AMAZING TRAVEL!</h3>
+                        <hr>
+                        <p>It was nice service provided by Just Trip, it was my first journey to tirupati.Just Trip people are so helpfull :)</p>
+                        <h6>- Ravi / TCS Mumbai</h6>
+                    </div>
+                </div><!-- end testi-item -->
+            </div><!-- end testimonials -->
+        </div><!-- end container -->
+    </section><!-- end section -->
+    <section>
+    	<div id="myModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+              <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="bike-search-modal-header">
+                  	<div class="row">
+                  		<div class="col-md-3">
+                  			<h4 class="bikes-search-locationspop">I want to rent a</h4>
+                    	</div>
+                    	<div class="col-md-2">
+                    		<h4 class="bikes-search-locationspop2">Bike</h4>
+                    	</div>
+                    	<div class="col-md-7">
+                    		<button type="button" class="close" data-dismiss="modal">&times;</button>
+                    	</div>
+                  	</div>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+                    	<div class="col-md-1">
+                    	</div>
+                    	<div class="col-md-11">
+                    		<h4 class="bikes-search-popup-heading1">Popular Cities</h4>
+                    		<strong class="strong-city-popup">India</strong>
+                    		<div class="row">
+                    			<div class="col-md-1">
+                    			</div>
+                    			<div class="col-md-5">
+                    				<a href="{{ path('trip_site_management_bikes_on_rent_blr')}}">
+                    				<img src="{{asset('images/justtrip-blr-bikes.png') }}" class="img-center">
+                    				<h4 class="bikes-search-popup-heading2">Bangalore</h4>
+                    				</a>
+                    			</div>
+                    			<div class="col-md-5">
+                    				<a href="{{ path('trip_site_management_bikes_on_rent_tpt')}}">
+                    				<img src="{{asset('images/justtrip-tpt-bike.png') }}" class="img-center">
+                    				<h4 class="bikes-search-popup-heading2">Tirupati</h4>
+                    				</a>
+                    			</div>
+                    			<div class="col-md-1">
+                    			</div>
+                    		</div>
+                    	</div>
+                    </div>
+                  </div>
+                  <div class="bike-search-modal-header text-center">
+                    <strong class="footer-cont">Select city to continue</strong>
+                  </div>
+                </div>
+            
+              </div>
+            </div>
+    </section>
 {% endblock %}

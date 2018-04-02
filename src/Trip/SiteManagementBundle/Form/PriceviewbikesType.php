@@ -30,22 +30,22 @@ class PriceviewbikesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        ->add('location', 'choice', array(
+        /*->add('location', 'choice', array(
             		'expanded' => false,
             		'multiple' => false,
                     'label' => 'Location',
 					'required'    => true,
                      'disabled' => true,
             		'choices' => array(
-							'Tirupati' => 'Tirupati',
-							'Bangalore' => 'Bangalore'
+							'tirupati' => 'Tirupati',
+							'bangalore' => 'Bangalore'
 							),
             'attr'   =>  array(
                 'class'=>'bikepreferDate'
             ),
             		
                     
-            ))
+            ))*/
         ->add('date','datetime',array(
         		'required'    => true,
         		'label' => 'Pick Up Date & Time',

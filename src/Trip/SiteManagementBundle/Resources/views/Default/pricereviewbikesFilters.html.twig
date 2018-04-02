@@ -14,7 +14,7 @@
         {% for key,areas in bikesarea %}
             <tr>
                 <td style="background: #fff;">
-                    <input type="checkbox" name="check_list_loc[]" value="{{ areas.area }}" 
+                    <input type="checkbox" name="price_check_list_loc[]" value="{{ areas.area }}" 
                     onclick="this.form.submit()" {% for checklist in filterloc %}{% if checklist== areas.area %} checked {% endif %}{% endfor %} > 
                     <label for="">{{ areas.area }}</label>
                 </td>      
@@ -40,8 +40,8 @@
             {% for bike in bikes %}
             	<tr>
                 <td style="background: #fff;">
-                    <input type="checkbox" name="check_list_bikes[]" value="{{ bike.id }}" onclick="this.form.submit()"
-                    {% for checklist in filterbikes %}{% if checklist== bike.id %} checked {% endif %}{% endfor %}> 
+                    <input type="checkbox" name="price_check_list_bikes[]" value="{{ bike.id }}" onclick="this.form.submit()"
+                    {% for checklist in filterbikes %}{% if checklist== bike.id %} checked {% endif %}{% endfor %} {% if url== bike.id %} checked {% endif %}> 
                     <label for="">{{ bike.title }}</label><br>
                  </td>
                </tr>

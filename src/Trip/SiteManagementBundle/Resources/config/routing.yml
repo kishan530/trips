@@ -10,9 +10,6 @@ trip_site_management_add_services:
 trip_site_management_add_locations:
     path:     /add/locations
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:addLocations }
-trip_site_management_add_hotel:
-    path:     /add/hotel
-    defaults: { _controller: TripSiteManagementBundle:SiteManagement:addHotel }
 trip_site_management_hotels_list:
     path:     /hotels-list
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:hotelsList }
@@ -143,7 +140,7 @@ trip_site_management_delete_image:
     path:     /delete-image
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:deleteImagePackage }	
 trip_site_management_bikes_on_rent:
-    path:     /bikes
+    path:     /
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikesonRent }
 trip_site_management_view_bikes:
     path:     /bikes/{url}
@@ -264,7 +261,6 @@ trip_site_management_edit_drop_location:
 trip_site_management_delete_drop_location:
     path:     /delete/{id}/droplocation
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:deletedroplocation }
-    
 trip_site_management_edit_package_image:
     path:     /edit/{id}/packageimage
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:editpackageimage }

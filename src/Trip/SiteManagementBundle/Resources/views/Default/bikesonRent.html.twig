@@ -93,10 +93,10 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 {% endblock %}
 
 {% block body %}
-<section class="section clearfix" style="/*background-color:#f9f9f9;*/background-repeat: no-repeat;padding:30px;background-image:url({{ asset('images/jtp-bikes-4.png') }});padding: 73px 0px;/*background-attachment: fixed;*/background-size: 1600px 684.712px;background-position: 51% -60px;">
+{#}<section class="section clearfix" style="/*background-color:#f9f9f9;*/background-repeat: no-repeat;padding:30px;background-image:url({{ asset('images/jtp-bikes-4.png') }});padding: 73px 0px;/*background-attachment: fixed;*/background-size: 1600px 684.712px;background-position: 51% -60px;">
 	<div class="bike-book">
 		<h2 class="sub-title-bikesonrent"> Rent A Bike</h2>
-        {#}<img src="{{asset('images/bikes/s2.jpg') }}" style="width: 100%;">{#}
+        <img src="{{asset('images/bikes/s2.jpg') }}" style="width: 100%;">
         <div class="container bike-price-book1">
         	<div class="row">
        			<div class="col-md-2"></div>
@@ -154,7 +154,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
         </div>  
     </div>
     
-</section>
+</section>{#}
 <section class="space"></section>
 <section class="section clearfix">
     <div class="container">
@@ -231,15 +231,15 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                     			<div class="col-md-1">
                     			</div>
                     			<div class="col-md-5">
-                    				<a href="{{ path('trip_site_management_bikes_on_rent_tpt')}}">
-                    				<img src="{{asset('images/justtrip-tpt-bike.png') }}" class="img-center">
-                    				<h4 class="bikes-search-popup-heading2">Tirupati</h4>
-                    				</a>
-                    			</div>
-                    			<div class="col-md-5">
                     				<a href="{{ path('trip_site_management_bikes_on_rent_blr')}}">
                     				<img src="{{asset('images/justtrip-blr-bikes.png') }}" class="img-center">
                     				<h4 class="bikes-search-popup-heading2">Bangalore</h4>
+                    				</a>
+                    			</div>
+                    			<div class="col-md-5">
+                    				<a href="{{ path('trip_site_management_bikes_on_rent_tpt')}}">
+                    				<img src="{{asset('images/justtrip-tpt-bike.png') }}" class="img-center">
+                    				<h4 class="bikes-search-popup-heading2">Tirupati</h4>
                     				</a>
                     			</div>
                     			<div class="col-md-1">

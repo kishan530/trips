@@ -68,6 +68,92 @@ $('.vehicle-icon').click(function(e){
 				});
 			});
 		</script>
+		<script>
+	$( window ).load(function(){
+		var locv=$('#location').val();
+		$('#trip_sitemanagementbundle_price_viewbikes_location').val(locv);
+
+	});
+	</script>
+	<script>
+	var s=$('.disabled');
+	console.log("this is children method"+s);
+	var o=$('.disabled select')
+	for(i=0;i<o.length;i++){
+		var store=o[i];
+		var r=$(store).val();
+		console.log(r);
+		if(r==null){
+			$(s[i]).css('display','none');
+		}	
+	}
+	</script>
+	<script>
+	$(function () {
+
+		var $tableRows = $('table.myListloc tr');
+		var lastInput = '';
+
+		$('#filterloc').keyup(function () {
+		    var sValue = $.trim($('input#filterloc').val());
+		    if(lastInput==sValue) return;
+		    if (sValue == '') {
+		        $tableRows.show();
+		    } else {
+		        $tableRows.each(function () {
+		            var oLabel = $(this).find('label');
+		            if (oLabel.length > 0) {
+		                if (oLabel.text().toLowerCase().indexOf(sValue.toLowerCase()) >= 0) {
+		                    $(this).show();
+		                } else {
+		                    $(this).hide();
+		                }
+		            }
+		        });
+		        lastInput=sValue;
+		    }
+		});
+
+		$('img.removeSelections').click(function () {
+		    $('table.myListloc input[type="checkbox"]').prop("checked", false);
+		})
+		});
+
+		
+	</script>
+	<script>
+	$(function () {
+
+		var $tableRows = $('table.myListbikes tr');
+		var lastInput = '';
+
+		$('#filterbikes').keyup(function () {
+		    var sValue = $.trim($('input#filterbikes').val());
+		    if(lastInput==sValue) return;
+		    if (sValue == '') {
+		        $tableRows.show();
+		    } else {
+		        $tableRows.each(function () {
+		            var oLabel = $(this).find('label');
+		            if (oLabel.length > 0) {
+		                if (oLabel.text().toLowerCase().indexOf(sValue.toLowerCase()) >= 0) {
+		                    $(this).show();
+		                } else {
+		                    $(this).hide();
+		                }
+		            }
+		        });
+		        lastInput=sValue;
+		    }
+		});
+
+		$('img.removeSelections').click(function () {
+		    $('table.myListbikes input[type="checkbox"]').prop("checked", false);
+		})
+		});
+
+		
+	</script>
 {% endblock %}
 
 {% block breadcrumb %}
@@ -82,63 +168,139 @@ $('.vehicle-icon').click(function(e){
 {% endblock %}
 
 {% block body %}
-
+	<section class="section clearfix filter-box" style="background-color:#fff;">
+	 	<div class="container">
+            			<div class="row">
+                   				<div class="col-md-12">
+                   				<input type="hidden" value="{{ location }}" id="location">
+                   					<div class="row" style="margin-top: 11px;">
+                   						<div class="col-md-10">
+                   						{#}<h3 class="review-modifiy">Modify Search</h3>{#}
+                   						<div class="row">
+                                         {{ form_start(form) }}
+                                         {{ form_errors(form) }}
+                                         {{ form_errors(form.date) }}
+                                         {{ form_errors(form.returndate) }}
+            								<div class="col-md-3">
+            								<div class="bikes-form-font"> 
+            								<p class="bikes-search-result-p-form"><span class="glyphicon glyphicon-map-marker"></span>  Selected City</p>
+                                            <a type="button" class="btn btn-info btn-lg review-resulst-popup" data-toggle="modal" data-target="#myModal">{{ location }}</a>
+                                            </div>
+                                            </div>
+                                         	<div class="col-md-3">
+                                         	<div class="bikes-form-font"> 
+                                         	<p class="bikes-search-result-p-form"><span class="bikes-searchresults-icons"><i class="fa fa-calendar"></i></span>  Start date and time</p>
+                                            {{ form_widget(form.date, {'id': 'datetime2'}) }}
+                                           </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                            <div class="bikes-form-font"> 
+                                            <p class="bikes-search-result-p-form"><span class="bikes-searchresults-icons"><i class="fa fa-calendar"></i></span> End date and time</p>
+                                            	{{ form_widget(form.returndate, {'id': 'datetime3'}) }}
+                                            	</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                            {{ form_label(form.submit) }} 
+                                            {{ form_widget(form.submit,{'id':'reviewsubmit'}) }}
+                                            </div>
+                                            </div>
+                                         </div>
+                                         <div class="col-md-2">
+                                         	<p class="brandtype">Duration > <span class="black">{{ leftDays }} Days {{ hours }} Hours</span></p>
+                   						</div>
+                                     </div>
+                   				</div> 
+                   			</div>
+	 		</div>
+	 </section>
     <section class="section clearfix">
     
     	
         <div class="container">
             <div class="row">
             	<div class="col-md-3">
-            		<div class="brand-color">
-            			<h3 class="details">Modify Search</h3>
-            			<hr>
-            			<div class="row">
-            				{{ form_start(form) }}
-                             {{ form_errors(form) }}
-                             {{ form_errors(form.date) }}
-                             {{ form_errors(form.returndate) }}
-								<div class="col-md-12 bikes-form-font">
-                             	{{ form_label(form.location) }} 
-                                {{ form_widget(form.location) }}
-                                </div>
-                             	<div class="col-md-12 bikes-form-font">
-                             	<hr class="hr-nomargin">
-                             	{{ form_label(form.date) }} 
-                                {{ form_widget(form.date, {'id': 'datetime2'}) }}
-                                </div>
-                                <div class="col-md-12 bikes-form-font">
-                                <hr class="hr-nomargin">
-                                {{ form_label(form.returndate) }} 
-                                {{ form_widget(form.returndate, {'id': 'datetime3'}) }}
-                                </div>
-                                <div class="col-md-12">
-                                <hr class="hr-nomargin">
-                                	<div class="col-md-2">
-                                	</div>
-                                    <div class="col-md-8">
-                                    {{ form_widget(form.submit)}}
-                                    </div>
-                                    <div class="col-md-2">
-                                	</div>
-                                </div>
-                                
-                             {{ form_end(form) }}
-            			</div>
-            			 <p class="brandtype">Duration > <span class="black">{{ leftDays }} Days {{ hours }} Hours</span></p>                   
-            			<hr>
-            			
+            		<div class="row filter-box-aside"> 
+            		<h3 class="review-apply-filter text-center">Apply Filters</h3>
+            		<input type="hidden" value="{{ location }}" name="bikemainloc">
+            		{{ render(controller('TripSiteManagementBundle:SiteManagement:pricereviewbikesFilters', { 'active': 1, 'cityid': bikeslocbase.cityid })) }}
             		</div>
+            		<div id="myModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+                                      <div class="modal-dialog">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                          <div class="bike-search-modal-header">
+                                          	<div class="row">
+                                          		<div class="col-md-3">
+                                          			<h4 class="bikes-search-locationspop">I want to rent a</h4>
+                                            	</div>
+                                            	<div class="col-md-2">
+                                            		<h4 class="bikes-search-locationspop2">Bike</h4>
+                                            	</div>
+                                            	<div class="col-md-7">
+                                            		<button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            	</div>
+                                          	</div>
+                                          </div>
+                                          <div class="modal-body">
+                                            <div class="row">
+                                            	<div class="col-md-1">
+                                            	</div>
+                                            	<div class="col-md-11">
+                                            		<h4 class="bikes-search-popup-heading1">Popular Cities</h4>
+                                            		<strong class="strong-city-popup">India</strong>
+                                            		<div class="row">
+                                            			<div class="col-md-1">
+                                            			</div>
+                                            			<div class="col-md-5">
+                                            				<img src="{{asset('images/justtrip-blr-bikes.png') }}" class="img-center">
+                                            				<div class="row">
+                                            					<div class="col-md-3">
+                                            					
+                                            					</div>
+                                            					<div class="col-md-6">
+                                            						<input type="submit" name="filtermainloc" value="Bangalore" class="bikes-search-popup-heading2 text-center resview-bikes-pop-loc">
+                                            					</div>
+                                            					<div class="col-md-3">
+                                            					
+                                            					</div>
+                                            				</div>
+                                            			</div>
+                                            			<div class="col-md-5">
+                                            			
+                                            				<img src="{{asset('images/justtrip-tpt-bike.png') }}" class="img-center">
+                                            				<div class="row">
+                                            					<div class="col-md-3">
+                                            					
+                                            					</div>
+                                            					<div class="col-md-6">
+                                            						<input type="submit" name="filtermainloc" value="Tirupati" class="bikes-search-popup-heading2 text-center resview-bikes-pop-loc" style="border:none;">
+                                            					</div>
+                                            					<div class="col-md-3">
+                                            					
+                                            					</div>
+                                            				</div>
+                                            			</div>
+                                            			<div class="col-md-1">
+                                            			</div>
+                                            		</div>
+                                            	</div>
+                                            </div>
+                                          </div>
+                                          <div class="bike-search-modal-header text-center">
+                                            <strong class="footer-cont">Select city to continue</strong>
+                                          </div>
+                                        </div>
+                                    
+                                      </div>
+                        </div>
+                        
+            		{{ form_end(form) }}
             	</div>
             	<div class="col-md-9">
             		<div class="row">
-                        <div class="col-lg-12 col-sm-12 col-xs-12">
-                            
-                         
-                     </div>    
                      <div class="col-lg-12 col-sm-12 col-xs-12">
                             {% for result in resultset %} 
-                            {% if result.id==url %}
-                            <div class="col-md-4" >
+                            <div class="col-md-4 disabled">
                             <div class="bike-background"> 
                             <div>
                             <img src="{{asset('images/bikes/'~result.imgPath) }}" style="width: 100%;">
@@ -150,13 +312,7 @@ $('.vehicle-icon').click(function(e){
                             			<div class="col-md-1"></div>
                             			<div class="col-md-9">
                             				<p class="text-center selectarea-label">Available at</p>
-                            				<select name="bikearea" class="bikes-locabase">
-													{% for bikearea in bike.bikescityarea %}
-                                                     {% if bikearea.cityid==bikeslocbase.cityid and bikearea.active=='1' %}
-                                                     <option value="{{ bikearea.area }}">{{ bikearea.area }}</option>
-                                                     {% endif %}
-                                                     {% endfor %}
-											</select>
+                            					{{ render(controller('TripSiteManagementBundle:SiteManagement:pricereviewbikesSelectoptions', { 'id': result.id, 'active': 1, 'cityid': bikeslocbase.cityid })) }}
 											<hr class="hr-nomargin" style="padding-bottom:10px;border-color: #787878;">
                             			</div>
                             			<div class="col-md-1"></div>
@@ -176,7 +332,6 @@ $('.vehicle-icon').click(function(e){
                                          </div>
                                  	 </div>
                                 <h6 style="text-align:center;color:#000"><i class="fa fa-inr" aria-hidden="true"></i> {{ result.price }} <span class="limit">({{ result.kmlimit }} km/day)</span></h6>
-                                 <span class="limit">({{ result.kmlimit }} km limit)</span>
                          		<div class="row">
                                          <div class="col-md-3" >
                                          </div>
@@ -210,7 +365,6 @@ $('.vehicle-icon').click(function(e){
                                  </div>
                          	</div>
                          </div>
-                             {% endif %}
                          {% endfor %}
                      </div>    
             	</div>

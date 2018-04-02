@@ -1,0 +1,64 @@
+
+	<div class="bike-book" style="padding: 150px 0px;">
+		<h2 class="sub-title-bikesonrent"> Rent A Bike In {{ bikemainloc }}</h2>
+		<input type="hidden" value="{{ bikemainloc }}" id="txt_name1">
+        {#}<img src="{{asset('images/bikes/s2.jpg') }}" style="width: 100%;">{#}
+        <div class="container bike-price-book1">
+        	<div class="row">
+       			<div class="col-md-2"></div>
+       				<div class="col-md-8 sub-book1">
+       					<div class="row">
+       					<div class="col-md-6">
+       						<table class="table" style="display:none">
+                   					<tbody>
+                   						<tr>
+                   							<td class="text-center" style="background: transparent;border:none"><a href="{{ path('trip_site_management_homepage')}}"  class="homebanner-color"> Cabs</a></td>
+                   							<td class="bikes-search-tabs" style="background: #F34F4F;border: none;">Bikes</td>
+                   							<td class="text-center" style="background: transparent;border:none"><a href="{{ path('trip_site_management_homepage_packages')}}"> Packages</a></td>
+                   							<td class="text-center" style="background: transparent;border:none"><a href="#tab_04" aria-controls="tab_04" role="tab" data-toggle="tab">Offers</a></td>
+                   							
+                   						</tr>
+                   					</tbody>
+                   				</table>
+       					</div>
+       					<div class="col-md-6">
+       					
+       					</div>
+                           	
+                         </div>
+       				</div>
+       				<div class="col-md-2"></div>   
+       			</div>
+       		<div class="row">
+       			<div class="col-md-2"></div>
+       				<div class="col-md-8">
+       					<div class="row">
+                             {{ form_start(form) }}
+                             {{ form_errors(form) }}
+                             {{ form_errors(form.date) }}
+                             {{ form_errors(form.returndate) }}
+								<div class="col-md-3 bikes-form-font sub-book3">
+                             	 <a type="button" class="btn btn-info btn-lg location-click-popup" data-toggle="modal" data-target="#myModal">{{ bikemainloc }}</a>
+                                </div>
+                             	<div class="col-md-3 bikes-form-font sub-book3">
+                                {{ form_widget(form.date, {'id': 'datetime2'}) }}
+                                </div>
+                                <div class="col-md-3 bikes-form-font sub-book3">
+                                	{{ form_widget(form.returndate, {'id': 'datetime3'}) }}
+                                </div>
+                                <div class="col-md-3 sub-book4">
+                                {{ form_label(form.submit) }} 
+                                {{ form_widget(form.submit) }}
+                                </div>
+                             {{ form_end(form) }}
+                         </div>
+       				</div>
+       				<div class="col-md-2"></div>   
+       			</div>
+       			<h3 class="home-banner-offer">Just go</h3>
+    			<p class="home-banner-offer-p">Minute basis at Rs 2/Km*</p>
+        </div>  
+    </div>
+    <div style="padding: 20px 0px;">
+    
+    </div>

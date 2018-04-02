@@ -99,10 +99,13 @@ Date();a=s.createElement(o),
            
         </div><!-- end container -->
     </div><!-- end topbar -->
-
-    <header class="header  {% block header %} {% endblock %}">
+	
+    
+    {% block banner %} 
+    
+    <header class="header  " style="/*background-color:#f9f9f9;*/background-repeat: no-repeat;padding: 0px 73px 0px 21px;background-image:url({{ asset('images/justtrip-bike-main-banner.jpg') }});/*background-attachment: fixed;*/background-size: 1600px 684.712px;background-position: 51% -60px;">
         <div class="menu-container">
-            <div class="container" style="padding-right: 0px;padding-left: 0px;">
+            <div class="" style="padding-right: 0px;padding-left: 0px;">
                 <div class="menu-wrapper">
                     <nav id="navigation" class="navbar" role="navigation">
                         <div class="navbar-inner">
@@ -117,47 +120,28 @@ Date();a=s.createElement(o),
         									<a id="brand" class="clearfix navbar-brand" href="{{ path('trip_site_management_billing_list')}}">
                                             <img src="{{ asset('images/Juttrip-new-logo-small.png') }}" alt="Trips"></a>
         								{% else %}
-                                        <a id="brand" class="clearfix navbar-brand" href="{{ path('trip_site_management_homepage')}}">
-                                            <img src="{{ asset('images/Juttrip-new-logo-small.png') }}" alt="Trips"></a>
+                                        <a id="brand" class="clearfix navbar-brand-trans" href="{{ path('trip_site_management_homepage')}}" style="margin:0px;">
+                                            <img src="{{ asset('images/justtriplogo-trans-w.png') }}" alt="Trips"></a>
         								{% endif %}
                                     </div><!-- end navbar-header -->
                         		</div>
-                        		<div class="col-md-8">
+                        		
                         				<div id="navbar-collapse" class="navbar-right navbar-collapse collapse clearfix">
-                                            <ul class="nav navbar-nav yamm">
+                                            <ul class="nav navbar-nav yamm bg-trans">
             									 {% if is_granted('ROLE_ADMIN') is same as(false) %}
-                                                <li class="dropdown">
-                                                    <a href="{{ path('trip_site_management_homepage')}}">Cabs</a>
-                                                </li><!-- end yamm-fw -->
+                                                
                                                <!-- <li><a href="{{ path('trip_site_management_homepage_hotels')}}">Hotels</a></li>-->
-                                                	<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Bikes</a>
-                                                    	<ul class="dropdown-menu" role="menu">
-            											<li><a href="{{ path('trip_site_management_bikes_on_rent') }}">Bikes</a></li>
-            											<li><a href="{{ path('trip_site_management_bike_packages') }}">Bike Packages</a></li>
-            					                   	</ul>
-                                               		 </li>  
-                                                	<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Packages</a>
-                                                    <ul class="dropdown-menu" role="menu">
-            											<li><a href="{{ path('trip_site_management_homepage_packages')}}" >One Day Packages</a></li>
-            											<li><a href="{{ path('trip_site_management_homepage_twoday_packages')}}" >Two Day Packages</a></li>
-            											<li><a href="{{ path('trip_booking_engine_customPackage') }}">Custom Package</a></li>
+                                                	<li class="dropdown"><a href="{{ path('trip_site_management_bikes_on_rent') }}" class="dropdown-toggle" data-toggle="dropdown">Bikes</a>
+                                                    	
             											{% if is_granted('ROLE_SUPER_ADMIN') %}
-                                                        {# <li><a href="{{ path('trip_site_management_add_package') }}">Add Package</a></li>#}
-                                                         {#<li><a href="{{ path('trip_site_management_add_packagelocations') }}">Add PackageLocation</a></li>#}
-                                                         {#<li><a href="{{ path('trip_site_management_add_package_price') }}">Add PackagePrice</a></li>#}
-                                                          <li><a href="{{ path('trip_site_management_package_list') }}">Package List</a></li>
-            											  <li><a href="{{ path('trip_site_management_multipackage_list') }}">Multi Package List</a></li>
-            											  <li><a href="{{ path('trip_site_management_hotels_list') }}">Hotels List</a></li>
+            											<ul class="dropdown-menu" role="menu">
             											  <li><a href="{{ path('trip_site_management_bikes_list') }}">Bikes List</a></li>
-            											  <li><a href="{{ path('trip_booking_engine_searchpages_list') }}">Search Pages List</a></li>
-            											  <li><a href="{{ path('trip_site_management_add_multipackage') }}">Add Multi Packages</a></li>
-            											  <li><a href="{{ path('trip_site_management_add_packagecat') }}">Add Package Cat</a></li>
-            											  <li><a href="{{ path('trip_site_management_add_twoday_packagelocations') }}">Add PackageDetails</a></li>
             											  <li><a href="{{ path('trip_site_management_add_bike') }}">Add bike</a></li>
+                                                        </ul>
                                                          {% endif %}  
-                                                        
-                                                    </ul>
-                                                </li>            
+            					                   	
+                                               		 </li>  
+                                                	          
             									 
                                                
             								    {% endif %}
@@ -175,10 +159,6 @@ Date();a=s.createElement(o),
                                                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin</a>
                                                     <ul class="dropdown-menu" role="menu">
                                                         <li><a href="{{ path('trip_site_management_add_locations') }}">Add Locations</a></li>
-                                                        <li><a href="{{ path('trip_site_management_add_vehicle') }}">Add Vehicles</a></li>
-                                                        <li><a href="{{ path('trip_site_management_add_services') }}">Add Services</a></li>
-                                                         <li><a href="{{ path('trip_site_management_add_hotel') }}">Add Hotel</a></li>                                           
-            											 <li><a href="{{ path('trip_site_management_booking_update_price') }}">Update Price</a></li>
             											 <li><a href="{{ path ('trip_booking_engine_testcustomPackage') }}">Justtrip Accounts</a></li>
                                                         <li><a href="{{ path ('trip_site_management_billing_list') }}">Justtrip Accounts List</a></li>
                                                         
@@ -193,6 +173,10 @@ Date();a=s.createElement(o),
                                                     </ul>
                                                 </li>
                                                 {% endif %}
+                                                <li><a href="{{ path('trip_site_management_bike_packages') }}">Bike Packages</a></li>
+                                                <li><a href="{{ path('trip_site_management_about') }}">Why justtrip</a></li>
+                                                 <li><a href="{{ path('trip_site_management_faq') }}">FAQS</a></li>
+                                                 
             									 {% if is_granted('ROLE_ADMIN') is same as(false) %}
                                                  <li  class="dropdown"><a href="{{ path('trip_security_sign_up')}}">My Account</a>
                                                     <ul class="dropdown-menu" role="menu">
@@ -214,15 +198,16 @@ Date();a=s.createElement(o),
                                                {# <li class="sidebar-dropper"><a data-toggle="sidebar" data-target=".sidebar-right" class="noborder" href="#"><i class="icon-menu27"></i></a></li>#}
             									 {% endif %}
                                             </ul><!-- end navbar-right -->
-                                        </div><!-- end navbar-callopse -->
-                        		</div>
-                        		<div class="col-md-2">
-                        			<div class="pull-right">
-                        			<p class="new-header-mobile-reachus"><i class="icon-telephone5"></i> Reach Us</p>
-                        			<p class="new-header-mobile"> +91-9663133008</p>
+                                            <div class="pull-right" style="margin-left: 19px;">
+                        			<p class="new-header-mobile-reachus-trans"><i class="icon-telephone5"></i> Reach Us</p>
+                        			<p class="new-header-mobile-trans"> +91-9663133008</p>
                         			
                                     
                                 </div><!-- end left -->
+                                        </div><!-- end navbar-callopse -->
+                        		
+                        		<div class="col-md-2">
+                        			
                         		</div>
                         	</div>
                             
@@ -246,9 +231,10 @@ Date();a=s.createElement(o),
                 </ul>
             </div>
         </div><!-- end sidebar menu -->
-    </header><!-- end header --> 
-    
-    {% block banner %} {% endblock %}
+     {{ render(controller('TripSiteManagementBundle:SiteManagement:homebannersearch')) }}
+     
+     </header><!-- end header --> 
+    {% endblock %}
 
          {% block body %}{% endblock %}
     <footer class="footer clearfix">
