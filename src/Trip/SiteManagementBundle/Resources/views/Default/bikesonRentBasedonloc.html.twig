@@ -87,9 +87,14 @@
                             </div>
                                      
                             	{% for bikecities in bike.bikescity %}
-                                    {% if bikecities.cityid==bikeslocbase.cityid %}                       
-                                <h4 style="text-align:center;color:#000"><a class="view-bikes-title" href="{{ path('trip_site_management_view_bikes',{ 'url':bikecities.url }) }}">{{ bike.title }}</a></h4>
-                                	 <p class="price-starts">Starts @{{ bike.statingPrice }}</p>
+                                    {% if bikecities.cityid==bikeslocbase.cityid %} 
+                                             {% if bikecities.cityid ==1 %}                 
+                                			<h4 style="text-align:center;color:#000"><a class="view-bikes-title" href="{{ path('trip_site_management_view_bikestpt',{ 'url':bikecities.url }) }}">{{ bike.title }}</a></h4>
+                                			 <p class="price-starts">Starts @{{ bike.statingPrice }}</p>
+                                			 {% else %}
+                                			 	<h4 style="text-align:center;color:#000"><a class="view-bikes-title" href="{{ path('trip_site_management_view_bikesblr',{ 'url':bikecities.url }) }}">{{ bike.title }}</a></h4>
+                                			 	<p class="price-starts">Starts @{{ bike.statingPrice }}</p>
+                                	 		{% endif %}
                                     {% endif %}
                                 {% endfor %}
                                
@@ -109,9 +114,15 @@
                                           	{% else %}
                                           		{% for bikecities in bike.bikescity %}
                                          		{% if bikecities.cityid==bikeslocbase.cityid %}
-                                                <a class="btn btn-book-now view-bike" href="{{ path('trip_site_management_view_bikes',{ 'url':bikecities.url }) }}">
-                                                  Rent Now
-                                                </a>
+                                         			{% if bikecities.cityid ==1 %} 
+                                                        <a class="btn btn-book-now view-bike" href="{{ path('trip_site_management_view_bikestpt',{ 'url':bikecities.url }) }}">
+                                                          Rent Now
+                                                        </a>
+                                                        {% else %}
+                                                        <a class="btn btn-book-now view-bike" href="{{ path('trip_site_management_view_bikesblr',{ 'url':bikecities.url }) }}">
+                                                          Rent Now
+                                                        </a>
+                                                      {% endif %}
                                                 {% endif %}
                                          	{% endfor %}
                                             {% endif %}

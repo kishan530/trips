@@ -1,7 +1,7 @@
 
 	<div class="bike-book" style="padding: 150px 0px;">
-		<h2 class="sub-title-bikesonrent"> Rent A Bike In {{ bikemainloc }}</h2>
-		<input type="hidden" value="{{ bikemainloc }}" id="txt_name1">
+		<h2 class="sub-title-bikesonrent"> Rent A Bike In {{ locations[bikeslocbase.cityid].name }}</h2>
+		<input type="hidden" value="{{ locations[bikeslocbase.cityid].name }}" id="txt_name1">
         {#}<img src="{{asset('images/bikes/s2.jpg') }}" style="width: 100%;">{#}
         <div class="container bike-price-book1">
         	<div class="row">
@@ -38,7 +38,7 @@
                              {{ form_errors(form.date) }}
                              {{ form_errors(form.returndate) }}
 								<div class="col-md-3 bikes-form-font sub-book3">
-                             	 <a type="button" class="btn btn-info btn-lg location-click-popup" data-toggle="modal" data-target="#myModal">{{ bikemainloc }}</a>
+                             	 <a type="button" class="btn btn-info btn-lg location-click-popup" data-toggle="modal" data-target="#myModal">{{ locations[bikeslocbase.cityid].name }}</a>
                                 </div>
                              	<div class="col-md-3 bikes-form-font sub-book3">
                                 {{ form_widget(form.date, {'id': 'datetime2'}) }}

@@ -1514,7 +1514,7 @@ p.berlin.have-question {
 {
 	    background: #F34F4F;
     margin-bottom: -13px;
-    margin-top: -10px;
+   
     
 }
 .view-bike-results {
@@ -1601,6 +1601,69 @@ input .search-location-infilters : focus-within
 .bikes-search-popup-heading2.text-center.resview-bikes-pop-loc:hover
 {
 	color:red;
+}
+.h2-view-bikes
+{
+	font-size: 20px;
+}
+.h3-view-bikes
+{
+	font-size: 18px;
+}
+.backsearch-results-view-bikes
+{
+	font-size: 13px;
+    color: #c1c1c1;
+}
+.backsearch-results-view-bikes-icon
+{
+	font-size: 22px;
+    margin-right: 5px;
+    margin-top: -2px;
+    color: #c1c1c1;
+}
+span.count-bikes {
+    
+    color: #F34F4F;
+    float:right;
+}
+.viewbikes-price-loc
+{
+	font-size: 18px;
+    font-family: calibri;
+}
+.viewbikes-price-loc-span
+{
+	color: #c1c1c1;
+}
+.span-bike-amities
+{
+	color: #626262;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0px 5px 0px 5px;
+}
+.li-aminites
+{
+	color: #888;
+}
+.terms-conditi {
+    padding: 10px;
+    border: 2px dashed #e0e0e0;
+}
+p.terms-conditi-p {
+    margin: 0px;
+    font-size: 11px;
+    color: #888;
+}
+strong.terms-conditi-strong {
+    font-size: 13px;
+    font-family: calibri;
+}
+h2.bike-desc {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: -5px;
 }
 /* End */
 /****************************************jagadeesh*************************************************/

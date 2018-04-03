@@ -17,29 +17,15 @@ class EditBikesType extends AbstractType
     {
         $builder
             ->add('title')
-			->add('metatitle')
-			->add('metakeywords','textarea')
-            ->add('metadescription','textarea')
+			
 			->add('statingprice')
 			->add('fivehours')
 			->add('dayrent')
 			//->add('imgpath')
-			->add('locationurl')
-			->add('soldOut', 'choice', array(
-			    'expanded' => false,
-			    'multiple' => false,
-			    'label' => 'Sold Out',
-			    'choices' => array(
-			        '0'=>'No',
-			        '1'=>'Yes',
-			        
-			    ),
-			    'required'    => true,
-			))
-			->add('count')
 			->add('packageoffer')
 			->add('kmlimit')
-			//->add('imgPath')
+			->add('speedlimit')
+			->add('excess')
 			->add('imgpath', 'file',array(
 			    'required' => false,
 			    'data_class' => null,

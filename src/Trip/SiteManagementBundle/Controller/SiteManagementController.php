@@ -2683,7 +2683,7 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
     	
     	return $this->render('TripSiteManagementBundle:Default:priceViewbikes.html.twig',array(
     			//'customer'   => $customer,
-    			'booking'=>$booking,
+    			//'booking'=>$booking,
     			'bike'=>$bike,
     			'bikes'=>$bikes,
     			'form'   => $form->createView(),
@@ -3176,25 +3176,18 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
         $session = $request->getSession();
         $session->set('bikeid',$id);
         $package =$em->getRepository('TripSiteManagementBundle:bikes')->find($id);
+        
         $bikecity =$em->getRepository('TripSiteManagementBundle:BikesCity')->findBy(array('bikeid' => $id));
         $bikecityarea =$em->getRepository('TripSiteManagementBundle:BikesCityArea')->findBy(array('bikeid' => $id));
         $locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
         $locations = $this->getLocationsByIndex($locations);
         $session = $request->getSession();
-        $package = new bikes();
         $package_id = $package->getId();
         $bikespackage =$em->getRepository('TripSiteManagementBundle:bikespackage')->findBy(array('bikes' => $id));
         $form   = $this->createEditBikesForm($package,$id);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $packageImages = $package->getImgPath();
-            //echo var_dump($packageImages);
-            //die();
-            //$packageImageList =$package->getImgPath();
-            //$packageImages =$package->getImgPath();
-            
-           // echo var_dump($package);
-            // exit();
             if (!is_null($packageImages)) {
                 $file_name = $packageImages->getClientOriginalName ();
                 $dir = 'images/bikes/';

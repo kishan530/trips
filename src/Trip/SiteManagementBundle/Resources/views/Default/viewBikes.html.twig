@@ -80,7 +80,16 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 		var locv=$('#txt_name1').val();
 		$('#trip_sitemanagementbundle_price_viewbikes_location').val(locv);
 
-	});
+	});	
+	</script>
+	<script>
+	
+	jQuery(document).ready(function($){
+	    //open popup
+	    $('.pop-up-button').on('click', function(event){
+	        event.preventDefault();
+	        $('.bikepreferDate').addClass('is-visible');
+	    });
 	</script>
 {% endblock %}
 
@@ -98,12 +107,117 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 {% endblock %}
 
 {% block body %}
-<section class="section clearfix" style="/*background-color:#f9f9f9;*/background-repeat: no-repeat;padding:30px;background-image:url({{ asset('images/jtp-bikes-4.png') }});padding: 73px 0px;/*background-attachment: fixed;*/background-size: 1600px 684.712px;background-position: 51% -60px;">
-	<div class="bike-book">
-		<h2 class="sub-title-bikesonrent"> {{ bikecity.title }}</h2>
-		<input type="hidden" value="" id="txt_name1">
+<section class="section clearfix filter-box" style="background-color:#fff;">
+	 	<div class="container">
+            			<div class="row">
+                   				<div class="col-md-12">
+                   					<div class="row" style="margin-top: 11px;">
+                   						<div class="col-md-1">
+                   						</div>
+                   						<div class="col-md-10">
+                   						{#}<h3 class="review-modifiy">Modify Search</h3>{#}
+                   						<div class="row">
+                                        	  {{ form_start(form) }}
+                                             {{ form_errors(form) }}
+                                             {{ form_errors(form.date) }}
+                                             {{ form_errors(form.returndate) }}
+                								<div class="col-md-3">
+                								<div class="bikes-form-font"> 
+                								<p class="bikes-search-result-p-form"><span class="glyphicon glyphicon-map-marker"></span>  Selected City</p>
+                                             	<a type="button" class="btn btn-info btn-lg location-click-popup" data-toggle="modal" data-target="#myModal">{{ locations[bikecity.cityid].name }}</a>
+                                                <input type="hidden" name="bikemainloc" value="{{ locations[bikecity.cityid].name }}" >
+                                                </div>
+                                                </div>
+                                             	<div class="col-md-3">
+                                             	<div class="bikes-form-font"> 
+                                             	<p class="bikes-search-result-p-form"><span class="bikes-searchresults-icons"><i class="fa fa-calendar"></i></span>  Start date and time</p>
+                                                {{ form_widget(form.date, {'id': 'datetime2'}) }}
+                                                </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                <div class="bikes-form-font"> 
+                                                <p class="bikes-search-result-p-form"><span class="bikes-searchresults-icons"><i class="fa fa-calendar"></i></span> End date and time</p>
+                                                	{{ form_widget(form.returndate, {'id': 'datetime3'}) }}
+                                                </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                {{ form_label(form.submit) }} 
+                                                {{ form_widget(form.submit,{'id':'reviewsubmit'}) }}
+                                                </div>
+                                             
+                                            </div>
+                                         </div>
+                                         <div class="col-md-1">
+                   						</div>
+                                     </div>
+                   				</div> 
+                   			</div>
+                   <div style="padding-bottom: 10px;"></div>
+	 		</div>
+	 </section>
+<section class="section clearfix" style="padding: 39px 0;">
+	<div class="container bike-book">
+		{#}<h2 class="h2-view-bikes"> {{ bikecity.title }}</h2>{#}
+		<div class="row">
+			<div class="col-md-4">
+				{% if bikecity.cityid==48 %}
+				<a href="{{ path('trip_site_management_bikes_on_rent_blr')}}" class="backsearch-results-view-bikes"><i class="fa fa-angle-left backsearch-results-view-bikes-icon" aria-hidden="true"></i> Back to Search Results</a>
+				{% else %}
+				<a href="{{ path('trip_site_management_bikes_on_rent_tpt')}}" class="backsearch-results-view-bikes"><i class="fa fa-angle-left backsearch-results-view-bikes-icon" aria-hidden="true"></i> Back to Search Results</a>
+				{% endif %}
+				<img src="{{asset('images/bikes/'~bike.imgPath) }}" style="width: 100%;">
+			</div>
+			<div class="col-md-8">
+				<h1 class="h3-view-bikes">{{ bike.title }}</h1>
+				<h2 class="bike-desc"> {{ bikecity.title }}</h2>
+				<div class="row">
+					<div class="col-md-6">
+					<hr>
+						{% for key,area in bike.bikescityarea %}
+        					{% if area.cityid==bikecity.cityid %}
+            					{% if area.area=='Near APSRTC Busstand' %}
+            					<p>{{ area.area }} <span class="count-bikes text-center">{{ area.count }} Bikes Avilable</span></p>
+            					{% elseif area.area=='BTM 1st stage' %}
+            					<p>{{ area.area }} <span class="count-bikes text-center">{{ area.count }} Bikes Avilable</span></p>
+            					{% endif %}
+        					{% endif %}
+        				{% endfor %}
+        				
+						<div class="row">
+							<div class="col-md-6">
+								<span class="viewbikes-price-loc-span"><strong class="viewbikes-price-loc"><i class="fa fa-inr" aria-hidden="true"></i> {{ bike.statingPrice }}</strong> / Hour</span>
+								<div><hr></div>
+								<ul>
+									<li class="li-aminites">Speed Limit  <span class="span-bike-amities">{{ bike.speedlimit }}</span> km/hr</li>
+									<li class="li-aminites">Km Limit  <span class="span-bike-amities">{{ bike.kmlimit }}</span> km/day</li>
+									<li class="li-aminites">Excess   <span class="span-bike-amities"><i class="fa fa-inr" aria-hidden="true"></i> {{ bike.excess }}</span> /km</li>
+								</ul>
+								<button class="btn btn-book-now view-bike pop-up-button">Book Now</button>
+								{{ form_end(form) }}
+							</div>
+							<div class="col-md-6 text-center">
+								<span class="viewbikes-price-loc-span"><strong class="viewbikes-price-loc"><i class="fa fa-inr" aria-hidden="true"></i> {{ bike.dayrent }}</strong> / Day</span>
+								<div><hr></div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="terms-conditi">
+							<strong class="terms-conditi-strong">Terms & Conditions</strong>
+							<p class="terms-conditi-p">- Rider needs to present a valid Driving License at the time of picking up the vehicle.</p>
+							<p class="terms-conditi-p">- Original ID proof (Voter ID, Aadhaar Card, Pan Card or Passport) needs to be submitted at the time of pick up.</p>
+							<p class="terms-conditi-p">- If customer drives the bike above 150 km/day then Rs.3 excess Fee will be levied per Kilometer.</p>
+							<p class="terms-conditi-p">- Late Return fee would be 1hour rent charges (if informed), 1hour rent charges X 2 (without informing).</p>
+							<p class="terms-conditi-p">- 1 Complimentary helmets will be provided.</p>
+							<p class="terms-conditi-p">- Over speeding charges are 200rs per alert and fuel charges are not included.</p>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
         {#}<img src="{{asset('images/bikes/s2.jpg') }}" style="width: 100%;">{#}
-        <div class="container bike-price-book1">
+       {#} <div class="container bike-price-book1">
         	<div class="row">
        			<div class="col-md-2"></div>
        				<div class="col-md-8 sub-book1">
@@ -160,9 +274,12 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
        				</div>   
        				
        			</div>
-        </div>  
-    </div>
+        </div>  {#}
     
+    
+    
+    
+    </div>
 </section>
 {#}<section class="section clearfix" style="padding:30px 0px 40px 0px;">
 	<div class="container">

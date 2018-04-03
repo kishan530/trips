@@ -140,6 +140,18 @@ class bikes
      */
     private $packageoffer;
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="speedlimit", type="integer")
+     */
+    private $speedlimit;
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="excess", type="integer")
+     */
+    private $excess;
+    /**
      * @var string
      */
     private $packagelist;
@@ -482,6 +494,54 @@ class bikes
     {
         $this->active = $active;
     }
+    /**
+     * @return integer
+     */
+    public function getPackageoffer()
+    {
+        return $this->packageoffer;
+    }
+
+    /**
+     * @param integer $packageoffer
+     */
+    public function setPackageoffer($packageoffer)
+    {
+        $this->packageoffer = $packageoffer;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getSpeedlimit()
+    {
+        return $this->speedlimit;
+    }
+
+    /**
+     * @param integer $speedlimit
+     */
+    public function setSpeedlimit($speedlimit)
+    {
+        $this->speedlimit = $speedlimit;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getExcess()
+    {
+        return $this->excess;
+    }
+
+    /**
+     * @param integer $excess
+     */
+    public function setExcess($excess)
+    {
+        $this->excess = $excess;
+    }
+
 
 
 
