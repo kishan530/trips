@@ -1446,7 +1446,7 @@ button#trip_sitemanagementbundle_price_viewbikes_submit {
     text-transform:uppercase;
 }
 .new-header-mobile-reachus-trans{
-	margin: 0px 0px 0px 0px;
+	margin: 11px 0px 0px 0px;
     text-align: center;
     text-transform: uppercase;
     font-size: 12px;
@@ -1477,7 +1477,7 @@ button#trip_sitemanagementbundle_price_viewbikes_submit {
 	font-size: 30px;
     color: #fff;
     font-family: calibri;
-    margin: -18px 0px 0px 0px;
+    margin: -12px 0px 0px 0px;
 }
 p.price-starts {
     text-align: center;
@@ -1665,7 +1665,21 @@ h2.bike-desc {
     color: #888;
     margin-bottom: -5px;
 }
+ul.nav.navbar-nav.yamm.bg-trans {
+    margin-top: 17px;
+}
+.navbar-brand > img {
+    margin: 0px 0;
+}
+.bike-packages-title-bg
+{
+	margin-top: 18px;
+	background-color: #f8f8f8;
+}
 /* End */
+/*********Media Query************/
+
+/**********end***************/
 /****************************************jagadeesh*************************************************/
 span.black1 {
     font-size: 16px;
@@ -2037,11 +2051,9 @@ h2.sub-title-bikesonrentpackage {
         font-family: calibri;
     margin: 0 0 5px;
     text-align: center;
-    font-weight: 500;
-    color: #fff;
-    text-transform: uppercase;
+    font-weight: 600;
+    color: #43464b;
     font-size: 35px;
-    text-shadow: 0 0 18px #131313;
 }
 
 h2.Suggested.Bikes {

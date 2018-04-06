@@ -140,7 +140,7 @@ trip_site_management_delete_image:
     path:     /delete-image
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:deleteImagePackage }	
 trip_site_management_bikes_on_rent:
-    path:     /
+    path:     / 
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikesonRent }
 trip_site_management_view_bikes:
     path:     /bikes/{url}
@@ -216,7 +216,7 @@ trip_site_management_bike_packages_blr:
     path:     /bangaluru/bike-packages-in-bangalore
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikepackagesBasedonlocation }
     
-    
+
 trip_site_management_bikes_on_rent_tpt:
     path:     /tirupathi/bikes-on-rent-in-tirupati
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikesonRentBasedonlocation }

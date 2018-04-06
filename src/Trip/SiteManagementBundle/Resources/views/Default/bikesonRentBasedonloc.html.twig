@@ -9,10 +9,10 @@
 {% block title %}Bikes On Rent In {{ locations[bikeslocbase.cityid].name }} | Justtrip.in {% endblock %}
 {% block javascripts %}
 <script src="{{ asset('js/jquery.timepicker.min.js') }}"></script>
-
 <script type="text/javascript">
 		$(function(){
 			$('#datetime2').appendDtpicker();	
+			
 		});
 		
 	</script>
@@ -25,6 +25,21 @@
 	</script>
 <script>
 
+$('#datetime3').change(function() {
+    $('#datetime2').appendDtpicker({
+	    maxDate: $('#datetime3').val() // when the end time changes, update the maxDate on the start field
+    });
+});
+
+$('#datetime2').change(function() {
+    $('#datetime3').appendDtpicker({
+	    minDate: $('#datetime2').val() // when the start time changes, update the minDate on the end field
+    });
+});
+
+
+
+	
 </script>
 
 <script>
@@ -56,15 +71,15 @@
 		
 	</script>
 	<script>
+	
 	$( window ).load(function(){
 		var locv=$('#txt_name1').val();
 		$('#trip_sitemanagementbundle_bikes_on_rent_location').val(locv);
 
 	});
 	</script>
-	<script>
 	
-	</script>
+	
 {% endblock %}
 
 {% block body %}

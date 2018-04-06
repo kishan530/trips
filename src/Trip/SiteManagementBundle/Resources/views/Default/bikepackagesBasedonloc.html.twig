@@ -218,9 +218,20 @@ $(function(){
 
 {% block body %}
 
-<section class="section clearfix" style="background-repeat: no-repeat;padding:30px;background-image:url({{ asset('images/jtp-bikes-4.png') }});padding: 33px 0px;background-size: 1600px 329.712px;background-position: 51% -60px;">
-	<div class="bike-book">
-		<h2 class="sub-title-bikesonrentpackage"> Rent A Bike In {{ locations[bikeslocbase.cityid].name }}</h2>
+<section class="section clearfix bike-packages-title-bg">
+	<div class="container bike-book hotel-title">
+		<div class="row">
+			<div class="col-md-4">
+			
+			</div>
+			<div class="col-md-4">
+			<h2 class="sub-title-bikesonrentpackage"> Rent A Bike In {{ locations[bikeslocbase.cityid].name }}</h2>
+			<hr class="left">
+			</div>
+			<div class="col-md-4">
+			
+			</div>
+		</div>
 		<input type="hidden" value="{{ locations[bikeslocbase.cityid].name }}" id="txt_name1">
         {#}<img src="{{asset('images/bikes/s2.jpg') }}" style="width: 100%;">{#}
     </div>

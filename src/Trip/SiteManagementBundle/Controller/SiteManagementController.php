@@ -1555,6 +1555,8 @@ class SiteManagementController extends Controller
         $uri_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $uri_segments = explode('/', $uri_path);
         $geturl=$uri_segments[4];
+        
+        //$geturl= 'tirupathi';
         $bikeslocbase= $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findBy(array('url' => $geturl));
         if($bikeslocbase){
             $bikeslocbase= $bikeslocbase[0];
@@ -2332,7 +2334,7 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
     public function viewBikesAction(Request $request,$url){
     	$em = $this->getDoctrine()->getManager();
 		$session = $request->getSession();
-		//$bikemainloc = $session->get('bikemainloc');
+		$bikemainloc = $session->get('bikemainloc');
 		
 		$bikecity = $em->getRepository('TripSiteManagementBundle:BikesCity')->findBy(array('url' => $url));
 		if($bikecity){
@@ -2362,7 +2364,7 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
     	 		'form'   => $form->createView(),
     	     'bikecity' => $bikecity,
     	     'locations' => $locations,
-    	     //'bikemainloc' => $bikemainloc,
+    	     'bikemainloc' => $bikemainloc,
     	     'bikeurl' => $bikeurl,
     	));
     	 
@@ -2622,6 +2624,7 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
 		    if($bikeslocbase){
 		        $bikeslocbase= $bikeslocbase[0];
 		        $bikeslocbased = $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findAll(array('url' => $bikemainloc));
+		       
 		    }else{
 		        
 		    }
@@ -2629,13 +2632,16 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
 		}else
 		{
 		    $bikemainloc = $request->get('bikemainloc');
+		   
 		    $bikeslocbase= $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findBy(array('url' => $bikemainloc));
 		    if($bikeslocbase){
 		        $bikeslocbase= $bikeslocbase[0];
 		        $bikeslocbased = $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findAll(array('url' => $bikemainloc));
+		       
 		    }else{
 		        
 		    }
+		    
 		    
 		}
 		
