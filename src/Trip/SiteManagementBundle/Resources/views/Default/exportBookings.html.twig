@@ -1,4 +1,4 @@
- <table id="result" class="table table-bordered col-lg-12 col-sm-12" border="1">
+<table id="result" class="table table-bordered col-lg-12 col-sm-12" border="1">
 	               {% if bookings|length>0 %}	
                           <tr class="blue">
                                 <th>Booking Id #</th>
@@ -22,17 +22,13 @@
 						
                      {% for booking in bookings if bookings|length>0 %}
                        {% if booking.customerId %}
-                        {% set service = booking.vehicleBooking.first %}
-                        {% set customer = customers[booking.customerId] %}
-                        <tr class="wrap-text">
+                      <tr class="wrap-text">
                             <td>{{ booking.bookingId }}</td> 
-                            <td>{{ customer.name }}</td> 
-                            <td>{{ customer.mobile }}</td> 
-                            <td>{{ customer.email }}</td> 
+                           
                            {# <td>{{ customer.Address }}</td> #}
                             
                             <td>{{ booking.numDays }}</td>
-                            <td>{{ service.tripType }}</td>
+                           
                             <td>{{ booking.bookedOn|date('d/m/Y') }}</td>
                             <td>{{ booking.numAdult }}</td>
                             <td>{{ booking.totalPrice }}</td>
@@ -44,53 +40,7 @@
                         
                         </tr>
                         <tr class="wrap-text">
-                            <td colspan="15" class="oddClass">
-                            <table class="table table-bordered col-lg-12 col-sm-12 oddClass">
-                                 {% for service in booking.vehicleBooking if booking.vehicleBooking|length>0 %}
-                                    <tr class="oddClass">
-                                        <td>{{ service.model }}</td>
-                                         
-                                        <td>{% if service.leavingFrom %} {{ locations[service.leavingFrom].name }} {% endif %}</td>                                     
-                                        <td>{{ locations[service.goingTo].name }}</td>
-                                        
-                                        <td> {{ service.date|date('d/m/Y') }} </td>
-                                       {% if service.tripType!='custom package' %}
-                                <td>{% if service.tripType=='roundtrip' %} {{ service.returnDate|date('F jS Y') }} {% else %} - {% endif %}</td>
-                                         {% endif %}
-                                          <td>{{ booking.preferTime }}</td>
-                                          
-                     {% if service.tripType=='custom package' %}
-                     {#}
-                                         <td align="center">           
-            {% for p in booking.pickUp %} 
-                 {{ locations[p.location].name }} {% if loop.last is same as(false) %} / {% endif %}
-             {% endfor %}             
-    		</td>
-    		<td align="center"> 
-    		{% if booking.placesToVisit|length>0 %}            
-            {% for p in booking.drop %} 
-                 {{ locations[p.location].name }} {% if loop.last is same as(false) %} / {% endif %}
-             {% endfor %}     
-             {% else %}
-                   N/A
-              {% endif %}        
-    		</td>
-    		{#}
-    		<td align="center">    
-    		 {% if service.placesToVisit|length>0 %}                                                    
-                                                            
-            {% for p in service.placesToVisit %} 
-                 {{ locations[p.location].name }} {% if loop.last is same as(false) %} , {% endif %}
-             {% endfor %}
-             {% else %}
-                   N/A
-              {% endif %}              
-    		</td>
-    		 {% endif %}
-                                    </tr>
-                                {% endfor %}
-                            </table>
-                            </td>
+                         
                         </tr>
                         {% endif %}
                     {% endfor %}

@@ -83,8 +83,7 @@ $('#datetime2').change(function() {
 {% endblock %}
 
 {% block body %}
-
-<section class="space"></section>
+<section class="nospace"></section>
 <section class="section clearfix">
     <div class="container">
         <div class="row">
@@ -94,8 +93,8 @@ $('#datetime2').change(function() {
                 <hr class="left">
             </div><!-- end hotel-title -->
                             {% for bike in bikes %} 
-                            {% if bike.active==1 %}
-                            <div class="col-md-3" >
+                            
+                            <div class="col-md-3">
                             <div class="bike-background">
                             <div>
                             <img src="{{asset('images/bikes/'~bike.imgPath) }}" style="width: 100%;">
@@ -121,7 +120,7 @@ $('#datetime2').change(function() {
                                          		{% endif %}
                                          	{% endfor %}
                                          </div>{#}
-                                         <div class="col-md-12" >
+                                         <div class="col-md-12">
                                          {% if (bike.count <= 0) %}
                                           			<a class="btn btn-book-now view-bike" disabled>
                                                       Sold Out
@@ -150,7 +149,7 @@ $('#datetime2').change(function() {
                               
                               </div>
                             </div>
-                            {% endif %}
+                           
                            {% endfor %}
                     </div>
                    

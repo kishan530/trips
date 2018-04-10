@@ -107,7 +107,6 @@ class bikes
      * @ORM\Column(name="count", type="integer")
      */
     private $count;
-    //****************************************************jagadeesh*************************************************************//
     /**
      * @var integer
      *

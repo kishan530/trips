@@ -133,22 +133,14 @@ class Booking
     private $paymentMode;
     
     /**
-     * @ORM\OneToMany(targetEntity="Trip\BookingEngineBundle\Entity\HotelBooking", mappedBy="booking", cascade={"persist"})
-     */
-    private $hotelBooking;
-    /**
-     * @ORM\OneToMany(targetEntity="Trip\BookingEngineBundle\Entity\VehicleBooking", mappedBy="booking", cascade={"persist"})
-     */
-    private $vehicleBooking;
-    /**
      * @ORM\OneToOne(targetEntity="Trip\BookingEngineBundle\Entity\BikeBooking", mappedBy="booking", cascade={"persist"})
      */
     private $bikeBooking;
 
     
     public function __construct() {
-    	$this->hotelBooking = new ArrayCollection();
-    	$this->vehicleBooking = new ArrayCollection();
+    	//$this->hotelBooking = new ArrayCollection();
+    	//$this->vehicleBooking = new ArrayCollection();
     	//$this->bikeBooking = new ArrayCollection();
     }
      
@@ -753,59 +745,6 @@ class Booking
     	return $this->paymentMode;
 
     }
-    
-    /**
-	 *
-	 * @return the integer
-	 */
-	public function getHotelBooking() {
-		return $this->hotelBooking;
-	}
-	
-	/**
-	 *
-	 * @param
-	 *        	$hotelBooking
-	 */
-	public function setHotelBooking($hotelBooking) {
-		$this->hotelBooking = $hotelBooking;
-		return $this;
-	}  
-    /**
-	 *
-	 * @param
-	 *        	$hotelBooking
-	 */
-	public function addHotelBooking($hotelBooking) {
-		$this->hotelBooking->add($hotelBooking);
-		return $this;
-	} 
-     /**
-	 *
-	 * @return the integer
-	 */
-	public function getVehicleBooking() {
-		return $this->vehicleBooking;
-	}
-	
-	/**
-	 *
-	 * @param
-	 *        	$id
-	 */
-	public function setVehicleBooking($vehicleBooking) {
-		$this->vehicleBooking = $vehicleBooking;
-		return $this;
-	}
-    	/**
-	 *
-	 * @param
-	 *        	$id
-	 */
-	public function addVehicleBooking($vehicleBooking) {
-		$this->vehicleBooking->add($vehicleBooking);
-		return $this;
-	}
     /**
      * @return \Doctrine\Common\Collections\ArrayCollection
      */

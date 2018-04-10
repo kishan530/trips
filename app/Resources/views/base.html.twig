@@ -130,11 +130,11 @@ Date();a=s.createElement(o),
                                             <ul class="nav navbar-nav yamm bg-trans">
             									 {% if is_granted('ROLE_ADMIN') is same as(false) %}
                                                 
-                                               <!-- <li><a href="{{ path('trip_site_management_homepage_hotels')}}">Hotels</a></li>-->
-                                                	<li class="dropdown"><a href="{{ path('trip_site_management_bikes_on_rent') }}" class="dropdown-toggle" data-toggle="dropdown">Bikes</a>
+                                              
+                                                	<li class="dropdown"><a href="{{ path('trip_site_management_bikes_on_rent') }}">Bikes</a>
                                                     	
             											{% if is_granted('ROLE_SUPER_ADMIN') %}
-            											<ul class="dropdown-menu" role="menu">
+            											<ul class="dropdown-menu submenu-margin" role="menu">
             											  <li><a href="{{ path('trip_site_management_bikes_list') }}">Bikes List</a></li>
             											  <li><a href="{{ path('trip_site_management_add_bike') }}">Add bike</a></li>
                                                         </ul>
@@ -157,15 +157,13 @@ Date();a=s.createElement(o),
                                                
                                                 {% if is_granted('ROLE_SUPER_ADMIN') %}
                                                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin</a>
-                                                    <ul class="dropdown-menu" role="menu">
+                                                    <ul class="dropdown-menu submenu-margin" role="menu">
                                                         <li><a href="{{ path('trip_site_management_add_locations') }}">Add Locations</a></li>
-            											 <li><a href="{{ path ('trip_booking_engine_testcustomPackage') }}">Justtrip Accounts</a></li>
-                                                        <li><a href="{{ path ('trip_site_management_billing_list') }}">Justtrip Accounts List</a></li>
-                                                        
+            											
                                                     </ul>
                                                 </li>
                                                  <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Dashbord</a>
-                                                    <ul class="dropdown-menu" role="menu">
+                                                    <ul class="dropdown-menu submenu-margin" role="menu">
                                                         <li><a href="{{ path('trip_site_management_booking_search') }}">Bookings</a></li>
                                                         <li><a href="{{ path('trip_site_management_users') }}">Users</a></li>
                                                         <li><a href="{{ path('trip_site_management_contactList') }}">Contact List</a></li>
@@ -179,7 +177,7 @@ Date();a=s.createElement(o),
                                                  
             									 {% if is_granted('ROLE_ADMIN') is same as(false) %}
                                                  <li  class="dropdown"><a href="{{ path('trip_security_sign_up')}}">My Account</a>
-                                                    <ul class="dropdown-menu" role="menu">
+                                                    <ul class="dropdown-menu submenu-margin" role="menu">
                                                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}  
                                                             <li><a href="{{ path('fos_user_security_logout') }}"><b>{% trans%}Logout{% endtrans %}</b></a> </li>
             										    {% else %}

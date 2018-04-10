@@ -486,7 +486,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                     			<div class="col-md-5">
                     			{% for url in bikeurl %}
                     			{% if url.cityid==48 %}
-                    				<a href="{{ path('trip_site_management_view_bikes',{ 'url':url.url }) }}">
+                    				<a href="{{ path('trip_site_management_view_bikesblr',{ 'url':url.url }) }}">
                     				<img src="{{asset('images/justtrip-blr-bikes.png') }}" class="img-center">
                     				<h4 class="bikes-search-popup-heading2">Bangalore</h4>
                     				</a>
@@ -496,7 +496,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                     			<div class="col-md-5">
                     				{% for url in bikeurl %}
                     			    {% if url.cityid==1 %}
-                    				<a href="{{ path('trip_site_management_view_bikes',{ 'url':url.url }) }}">
+                    				<a href="{{ path('trip_site_management_view_bikestpt',{ 'url':url.url }) }}">
                     				<img src="{{asset('images/justtrip-tpt-bike.png') }}" class="img-center">
                     				<h4 class="bikes-search-popup-heading2">Tirupati</h4>
                     				</a>

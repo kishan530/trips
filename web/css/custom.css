@@ -1676,6 +1676,20 @@ ul.nav.navbar-nav.yamm.bg-trans {
 	margin-top: 18px;
 	background-color: #f8f8f8;
 }
+ul.dropdown-menu.submenu-margin{
+	margin-top: -15px;
+}
+section.nospace {
+    margin-bottom: -67px;
+}
+.hot-deals{
+	background-color: #f26722;
+    color: #FFF !important;
+    padding: 5px;
+}
+.col-md-3.disabled {
+    display: none;
+}
 /* End */
 /*********Media Query************/
 

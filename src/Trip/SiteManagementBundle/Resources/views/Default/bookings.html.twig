@@ -2,7 +2,6 @@
 {% block javascripts %}
 
 <script>
-    
     $("#result").on('click', '.jobStatus', function (e) {
 	 e.preventDefault(); //STOP default action
 	 var id = $(this).attr('href');
@@ -30,7 +29,6 @@
 	       }
 	   });
 });
-
 </script>
 
 {% endblock %}
@@ -105,40 +103,38 @@
                                 <th>Booking Id #</th>
                                 <th>Name</th>
                                 <th>Mobile</th>
-                               <th>Email</th> 
-                                {#} <th>Address</th>
-                                <th>Prefer Time</th>{#}
-                                <th>No of Days</th>
-                                <th>Trip Type</th>
+                               <th>Email</th>
                                 <th>Booked On </th>
-                                <th>Adult </th>
                                 <th>Total Price</th>
                                 <th>Discount</th>
+                                <th>CGST</th>
+                                 <th>SGST</th>
                                 <th>Final Price</th>
                                 <th> Amount Paid </th>
                                 <th> Payment Id </th>
                                 <th> Status </th>
                                 <th> action </th>
 							</tr>	
+							
 					{% endif %}			
 						
                      {% for booking in bookings if bookings|length>0 %}
-                       {% if booking.customerId %}
-                        {% set service = booking.vehicleBooking.first %}
-                        {% set customer = customers[booking.customerId] %}
+                   
+                       	
                         <tr class="wrap-text">
                             <td>{{ booking.bookingId }}</td> 
-                            <td>{{ customer.name }}</td> 
+                            {% for customer in customers %}
+                       			{% if booking.customerId==customer.id %}
+                             <td>{{ customer.name }}</td> 
                             <td>{{ customer.mobile }}</td> 
                             <td>{{ customer.email }}</td> 
-                           {# <td>{{ customer.Address }}</td> #}
-                            
-                            <td>{{ booking.numDays }}</td>
-                            <td>{{ service.tripType }}</td>
+                                {% endif %}
+                       		{% endfor %}
                             <td>{{ booking.bookedOn|date('d/m/Y') }}</td>
-                            <td>{{ booking.numAdult }}</td>
                             <td>{{ booking.totalPrice }}</td>
                             <td>{{ booking.discount }}</td>
+                            <td>{{ booking.swachBharthCess }}</td>
+                            <td>{{ booking.krishiKalyanCess }}</td>
                             <td>{{ booking.finalPrice }}</td>
                             <td>{{ booking.amountPaid }}</td>
                             <td>{{ booking.paymentId }}</td>
@@ -146,61 +142,26 @@
                             <td><a href="{{ booking.id }}" class="jobStatus" value="{% if booking.jobStatus=='Open' %}Close{% else %}Open{% endif %}">
                                 {% if booking.jobStatus=='Open' %} Close {% else %} Open {% endif %}
                                 </a> </td>
-                        
                         </tr>
-                        <tr class="wrap-text">
-                            <td colspan="15" class="oddClass">
-                            <table class="table table-bordered col-lg-12 col-sm-12 oddClass">
-                                 {% for service in booking.vehicleBooking if booking.vehicleBooking|length>0 %}
-                                    <tr class="oddClass">
-                                        <td>{{ service.model }}</td>
-                                        
-                                        
-                                       
-                                        <td> {{ service.date|date('d/m/Y') }} </td>
-                                        {% if service.tripType!='custom package' %}
-                                <td>{% if service.tripType=='roundtrip' %} {{ service.returnDate|date('F jS Y') }} {% else %} - {% endif %}</td>
-                                      {% endif %}
-                                         <td>{% if booking.preferTime %} {{ booking.preferTime }} {% else %} {{ service.preferTime }} {% endif %}</td>
-                                      <td>{% if service.leavingFrom %} {{ locations[service.leavingFrom].name }} {% endif %}</td>
-                                        <td>{{ locations[service.goingTo].name }}</td>   
-                                      {% if service.tripType=='custom package' %}
-                                    {#}     <td align="center">           
-            {% for p in booking.pickUp %} 
-                 {{ locations[p.location].name }} {% if loop.last is same as(false) %} / {% endif %}
-             {% endfor %}             
-    		</td>
-    		<td align="center"> 
-    		{% if booking.placesToVisit|length>0 %}            
-            {% for p in booking.drop %} 
-                 {{ locations[p.location].name }} {% if loop.last is same as(false) %} / {% endif %}
-             {% endfor %}     
-             {% else %}
-                   N/A
-              {% endif %}        
-    		</td>
-    		{#}
-    		<td align="center">    
-    		 {% if service.placesToVisit|length>0 %}                                                    
-                                                            
-            {% for p in service.placesToVisit %} 
-                 {{ locations[p.location].name }} {% if loop.last is same as(false) %} , {% endif %}
-             {% endfor %}
-             {% else %}
-                   N/A
-              {% endif %}              
-    		</td>
-    		 {% endif %} 
-    		  <td>{{ service.description }}</td>
-                                         
-                                    </tr>
-                                {% endfor %}
-                            </table>
+                       	 	<tr class="wrap-text">
+                       	 	{% for bikesbooking in bikesbookings %}
+                             	{% if booking.id==bikesbooking.bikebookingid %}
+                             	<td>{{ bikesbooking.bikename }}</td>
+                             	<td>{{ bikesbooking.price }}</td>
+                             	<td>{{ bikesbooking.pdate }}</td>
+                             	<td>{{ bikesbooking.rdate }}</td>
+                             	<td>{{ bikesbooking.leftdays }}</td>
+                             	<td>{{ bikesbooking.hours }}</td>
+                             	<td>{{ bikesbooking.bikelocation }}</td>
+                             	<td>{{ bikesbooking.bikearea }}</td>
+                             	{% endif %}
+                        	 {% endfor %}
                             </td>
                         </tr>
-                        {% endif %}
+                    
                     {% endfor %}
                         </table>
+                        
                     </div>
                 </div>
             </div>

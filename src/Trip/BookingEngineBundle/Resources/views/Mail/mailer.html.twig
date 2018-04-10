@@ -10,7 +10,7 @@
 		</tr>
 		<tr>
 			<td style="text-align:center">
-				<h2 style="margin:0px;padding:0px">{{ service.model }}</h2>				
+				<h2 style="margin:0px;padding:0px"></h2>				
 			</td>
 		</tr>
 	</tbody></table>
@@ -36,19 +36,11 @@
 <table width="100%" align="center" style="border:1px solid #ccc" cellpadding="0" cellspacing="0">
 <tbody><tr style="background:#e8e8e8;color:#666">
 <th style="border:solid 1px #dddddd" height="30">Booking Id #</th>
-<th style="border:solid 1px #dddddd">Date of journey</th>
-<th style="border:solid 1px #dddddd">Return Date</th>
-<th style="border:solid 1px #dddddd">No of Days</th>
-<th style="border:solid 1px #dddddd">Trip Type</th>
 <th style="border:solid 1px #dddddd">Booked On </th>
-<th style="border:solid 1px #dddddd">Adult </th>
 </tr>
 <tr style="color:#666;background:#fcfcfc">
 <td align="center" style="border:solid 1px #dddddd" height="30">{{ booking.bookingId }}</td>
-<td align="center" style="border:solid 1px #dddddd"> {{ service.date|date('F jS Y') }}  </td>
-<td align="center" style="border:solid 1px #dddddd"> {% if service.tripType=='roundtrip' %} {{ service.returnDate|date('F jS Y') }} {% else %} - {% endif %}  </td>
 <td align="center" style="border:solid 1px #dddddd">{{ booking.numDays }}</td>
-<td align="center" style="border:solid 1px #dddddd">{{ service.tripType }}</td>
 <td align="center" style="border:solid 1px #dddddd">{{ booking.bookedOn|date('d/m/Y') }}</td>
 <td align="center" style="border:solid 1px #dddddd"> {{ booking.numAdult }} </td>
 </tr>
@@ -59,23 +51,47 @@
 <tbody><tr style="background:#e8e8e8;color:#666">
 <th style="border:solid 1px #dddddd" height="30">Total Fare</th>
 <th style="border:solid 1px #dddddd">Discount</th>
-<th style="border:solid 1px #dddddd">Tax</th>
-<th style="border:solid 1px #dddddd">Service Tax</th>
-<th style="border:solid 1px #dddddd">Service Tax</th>
+<th style="border:solid 1px #dddddd">SGSTS</th>
+<th style="border:solid 1px #dddddd">CGSTS</th>
 <th style="border:solid 1px #dddddd">Amount Paid</th>
 <th style="border:solid 1px #dddddd">Balance Amount</th>
 </tr>
 <tr style="color:#666;background:#fcfcfc">
 <td align="center" style="border:solid 1px #dddddd" height="30">Rs {{ booking.totalPrice }} </td>
 <td align="center" style="border:solid 1px #dddddd">Rs {{ booking.discount }}</td>
-
-<td align="center" style="border:solid 1px #dddddd">Rs {{ booking.tax }} </td>
-<td align="center" style="border:solid 1px #dddddd">Rs {{ booking.serviceTax }} </td>
+<td align="center" style="border:solid 1px #dddddd">Rs {{ booking.swachBharthCess }} </td>
+<td align="center" style="border:solid 1px #dddddd">Rs {{ booking.krishiKalyanCess }} </td>
 <td align="center" style="border:solid 1px #dddddd"> Rs {{ booking.amountPaid }} </td>
 <td align="center" style="border:solid 1px #dddddd">Rs {{ booking.finalPrice - booking.amountPaid }} </td>
 </tr>
 
-</tbody></table><div class="yj6qo"></div><div class="adL">
+</tbody></table>
+<table width="100%" align="center" style="border:1px solid #ccc" cellpadding="0" cellspacing="0">
+<tbody><tr style="background:#e8e8e8;color:#666">
+<th style="border:solid 1px #dddddd" height="30">Bike Name</th>
+<th style="border:solid 1px #dddddd">Start Date</th>
+<th style="border:solid 1px #dddddd">End Date</th>
+<th style="border:solid 1px #dddddd">Days</th>
+<th style="border:solid 1px #dddddd">Hours</th>
+<th style="border:solid 1px #dddddd">City</th>
+<th style="border:solid 1px #dddddd">Area</th>
+</tr>
+<tr style="color:#666;background:#fcfcfc">
+                            {% for bikesbooking in bikesbookings %}
+                             	{% if booking.id==bikesbooking.bikebookingid %}
+                             	<td align="center" style="border:solid 1px #dddddd">{{ bikesbooking.bikename }}</td>
+                             	<td align="center" style="border:solid 1px #dddddd">{{ bikesbooking.pdate }}</td>
+                             	<td align="center" style="border:solid 1px #dddddd">{{ bikesbooking.rdate }}</td>
+                             	<td align="center" style="border:solid 1px #dddddd">{{ bikesbooking.leftdays }}</td>
+                             	<td align="center" style="border:solid 1px #dddddd">{{ bikesbooking.hours }}</td>
+                             	<td align="center" style="border:solid 1px #dddddd">{{ bikesbooking.bikelocation }}</td>
+                             	<td align="center" style="border:solid 1px #dddddd">{{ bikesbooking.bikearea }}</td>
+                             	{% endif %}
+                        	 {% endfor %}
+</tr>
+
+</tbody></table>
+<div class="yj6qo"></div><div class="adL">
 
 </div></div><div class="adL">
 </div></div><div class="adL">

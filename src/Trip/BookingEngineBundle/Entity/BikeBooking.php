@@ -67,7 +67,12 @@ class BikeBooking
      * @ORM\Column(name="bikearea", type="string")
      */
     private $bikearea;
-    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="booking_id", type="integer")
+     */
+    private $bikebookingid;
     /**
      * @ORM\OneToOne(targetEntity="Trip\BookingEngineBundle\Entity\Booking", inversedBy="bikeBooking")
      * @ORM\JoinColumn(name="booking_id", referencedColumnName="id")
@@ -246,8 +251,23 @@ class BikeBooking
     {
         $this->bikearea = $bikearea;
     }
+    /**
+     * @return integer
+     */
+    public function getBikebookingid()
+    {
+        return $this->bikebookingid;
+    }
 
+    /**
+     * @param integer $bikebookingid
+     */
+    public function setBikebookingid($bikebookingid)
+    {
+        $this->bikebookingid = $bikebookingid;
+    }
 
+   
 
     
 }
