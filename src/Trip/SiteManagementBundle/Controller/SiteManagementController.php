@@ -560,10 +560,21 @@ class SiteManagementController extends Controller
      
    
 	 //************Bikes *******************//
+    public function bikescityAction(Request $request,$cityid){
+        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        $session->set('geturl',$cityid);
+        echo $cityid;
+        die();
+        return $this->render('TripSiteManagementBundle:Default:bikesonRent.html.twig',array(
+           
+        ));
+    }
     public function bikesonRentAction(Request $request){
     	$em = $this->getDoctrine()->getManager();
     	$bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
 		$locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
+		$bikesmaincity = $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findAll();
     	$locations = $this->getLocationsByIndex($locations);
     	$id='22/01/2018 05:00 PM';
     	
@@ -581,7 +592,7 @@ class SiteManagementController extends Controller
     	    //'bookrdate'=> $bookrdate,
     			'form'   => $form->createView(),
 				'locations' => $locations,
-    			
+    	    'bikesmaincity' => $bikesmaincity,
     	));
     }
     public function footerAction(){
@@ -602,15 +613,17 @@ class SiteManagementController extends Controller
         
     }
     
-    public function bikesonRentBasedonlocationAction(Request $request){
+    public function bikesonRentBasedonlocationAction(Request $request,$cityid){
         $em = $this->getDoctrine()->getManager();
         $session = $request->getSession();
-        $security = $this->container->get ( 'security.context' );
+       /* $security = $this->container->get ( 'security.context' );
         $uri_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $uri_segments = explode('/', $uri_path);
         $geturl=$uri_segments[4];
-        
+        */
         //$geturl= 'tirupathi';
+        $geturl = $cityid;
+        $session->set('geturl',$geturl);
         $bikeslocbase= $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findBy(array('url' => $geturl));
         if($bikeslocbase){
             $bikeslocbase= $bikeslocbase[0];
@@ -634,12 +647,13 @@ class SiteManagementController extends Controller
         $session->set('resultSet',$bikes);
         //$entity= new Biketime();
         //$form   = $this->createviewbikesForm($entity);
+        $bikesmaincity = $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findAll();
         return $this->render('TripSiteManagementBundle:Default:bikesonRentBasedonloc.html.twig',array(
             'bikes' => $bikes,
             //'form'   => $form->createView(),
             'locations' => $locations,
             'bikeslocbase' => $bikeslocbase,
-            
+            'bikesmaincity'=> $bikesmaincity,
             
         ));
     }
@@ -668,6 +682,7 @@ class SiteManagementController extends Controller
         $bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
         //$bikespackage = $em->getRepository('TripSiteManagementBundle:bikespackage')->findAll();
         $locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
+        $bikesmaincity = $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findAll();
         $locations = $this->getLocationsByIndex($locations);
         
         
@@ -696,19 +711,21 @@ class SiteManagementController extends Controller
             //'bookrdate'=> $bookrdate,
             'form'   => $form->createView(),
             'locations' => $locations,
+            'bikesmaincity' => $bikesmaincity,
             
         ));
     }
     
     
-    public function bikepackagesBasedonlocationAction(Request $request){
+    public function bikepackagesBasedonlocationAction(Request $request,$cityid){
         $em = $this->getDoctrine()->getManager();
         $session = $request->getSession();
-        $security = $this->container->get ( 'security.context' );
+       /* $security = $this->container->get ( 'security.context' );
         $uri_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $uri_segments = explode('/', $uri_path);
-        $geturl=$uri_segments[4];
+        $geturl=$uri_segments[4];*/
         
+        $geturl = $cityid;
         $bikeslocbase= $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findBy(array('url' => $geturl));
         
         if($bikeslocbase){
@@ -762,7 +779,7 @@ class SiteManagementController extends Controller
         $packagetitle =$request->get('packagename');
         $title =$request->get('title');
         $packageoffer= $request->get('packageoffer');
-        
+        $session->set('packageoffer',$packageoffer);
         $location= $request->get('location');
         $bike = $em->getRepository('TripSiteManagementBundle:bikes')->findBy(array('id' => $id));
         
@@ -800,23 +817,23 @@ class SiteManagementController extends Controller
         $rtrdate = new \DateTime($returndate);
         
         $difference=date_diff($picdate,$rtrdate);
-        $leftDays = $difference->d;
+        //$leftDays = $difference->d;
+        $leftDays =  $difference->days;
         $hours = $difference->h;
+        //echo $difference->days;
+        //die();
         
         $dayrent=$bike->getDayrent();
         $statingPrice=$bike->getStatingPrice();
         $packageofferprice=$packageoffer/100;
-        
-        
-        
-        
+       
         
         $result=$this->getResultbybikesPackage($request,$id);
-        $resultset=$this->getPackageResultbybikescal($result,$leftDays,$hours);
+        $resultset=$this->getPackageResultbybikescal($request,$result,$leftDays,$hours);
         
         
         $result=$this->getPackageResultbybikespackage();
-        $resultset1=$this->getPackageResultbybikescal($result,$leftDays,$hours);
+        $resultset1=$this->getPackageResultbybikescal($request,$result,$leftDays,$hours);
         
         return $this->render('TripSiteManagementBundle:Default:bikepackageresult.html.twig',array(
             
@@ -938,8 +955,8 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
     }
     
     
-    public function getPackageResultbybikescal($result,$leftDays,$hours){
-        
+    public function getPackageResultbybikescal($request,$result,$leftDays,$hours){
+        $session = $request->getSession();
         
         $tempCollection = array();
         foreach($result as $row){
@@ -953,7 +970,10 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
             $bike['count']=$row['count'];
             $bike['location']=$row['location'];
             $bike['kmlimit']=$row['kmlimit'];
-            $bike['packageoffer']=$row['packageoffer'];
+            $packageoffer = $session->get('packageoffer');
+           
+            //$bike['packageoffer']=$packageoffer;
+            //$bike['packageoffer']=$row['packageoffer'];
             
             if ($hours==0){
                 
@@ -965,7 +985,7 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
                 else{
                     $dayrent= $bike['dayrent'];
                     $price=$dayrent*$leftDays;
-                    $packageoffer= $bike['packageoffer'];
+                    $packageoffer= $session->get('packageoffer');
                     $packageofferprice=$packageoffer/100;
                     $offerprice= $price*$packageofferprice;
                     $finalprice=$price-$offerprice;
@@ -987,7 +1007,7 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
                         $fixhours= 5;
                         $statingPrice= $bike['statingPrice'];
                         $fivehoursbase = $statingPrice * $hours;
-                        $packageoffer= $bike['packageoffer'];
+                        $packageoffer= $session->get('packageoffer');
                         $packageofferprice=$packageoffer/100;
                         $pricecal=$dayrent * $leftDays;
                         $offerprice= $pricecal*$packageofferprice;
@@ -1013,7 +1033,7 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
                             $statingPrice= $bike['statingPrice'];
                             $inc= $hours * $statingPrice;
                             $dayscal= $leftDays * $dayrent;
-                            $packageoffer= $bike['packageoffer'];
+                            $packageoffer= $session->get('packageoffer');
                             $packageofferprice=$packageoffer/100;
                             $offerprice=$dayscal*$packageofferprice;
                             $price= $dayscal-$offerprice;
@@ -1031,8 +1051,9 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
                         else{
                             $dayrent= $bike['dayrent'];
                             $price=$dayrent*$totaldays;
-                            $packageoffer= $bike['packageoffer'];
+                            $packageoffer= $session->get('packageoffer');
                             $packageofferprice=$packageoffer/100;
+                            
                             $offerprice= $price*$packageofferprice;
                             $finalprice=$price-$offerprice;
                             
@@ -1153,6 +1174,25 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
     	$em = $this->getDoctrine()->getManager();
 		$session = $request->getSession();
 		$bikemainloc = $session->get('bikemainloc');
+		//$bikeslocbase = $session->get('bikeslocbase');
+		$uri_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+		$uri_segments = explode('/', $uri_path);
+		$geturl=$uri_segments[4];
+		
+		if ($geturl=='tirupati'){
+		    $urlloc='tirupathi';
+		}elseif($geturl=='bangalore'){
+		    $urlloc='bengaluru';
+		}
+		//$geturl= 'tirupathi';
+		$bikeslocbase= $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findBy(array('url' => $urlloc));
+		if($bikeslocbase){
+		    $bikeslocbase= $bikeslocbase[0];
+		    $bikeslocbased = $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findAll(array('url' => $urlloc));
+		}else{
+		    
+		}
+		
 		
 		$bikecity = $em->getRepository('TripSiteManagementBundle:BikesCity')->findBy(array('url' => $url));
 		if($bikecity){
@@ -1175,6 +1215,7 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
 		$session->set('bikeurl',$bike);
 		$entity= new Biketime();
 		$form   = $this->createpriceviewbikesForm($entity,$url);
+		$bikeall = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
     	 return $this->render('TripSiteManagementBundle:Default:viewBikes.html.twig',array(
     			
     			'bike'=>$bike,
@@ -1183,7 +1224,9 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
     	     'bikecity' => $bikecity,
     	     'locations' => $locations,
     	     'bikemainloc' => $bikemainloc,
+    	     'bikeslocbase' => $bikeslocbase,
     	     'bikeurl' => $bikeurl,
+    	     'bikeall' => $bikeall,
     	));
     	 
     }
@@ -1248,9 +1291,9 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
     	    $returndate=$entity->getReturndate();
     	    //$location=$entity->getLocation();
     	    $difference=date_diff($picdate,$returndate);
-    	    $leftDays = $difference->d;
+    	    $leftDays = $difference->days;
     	    $hours = $difference->h;
-    	    
+    	   
     	    if(!is_null($filterbikes))
     	    {
     	        
@@ -1356,7 +1399,7 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
     public function getResultbybikes(){
         $em = $this->getDoctrine()->getManager();
         $dql3 = "SELECT b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,b.location
-        from TripSiteManagementBundle:bikes b
+        from TripSiteManagementBundle:bikes b where b.active=1
          ";
         
         $em = $this->getDoctrine()->getManager();
@@ -1482,10 +1525,11 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
     	    $returndate=$entity->getReturndate();
     	    $location=$entity->getLocation();
     	    $difference=date_diff($picdate,$returndate);
-    	    $leftDays = $difference->d;
+    	    $leftDays = $difference->days;
     	    $hours = $difference->h;
     	    
     	    $result=$this->getResultbybikesprice($request,$url);
+    	    
     	    $resultset=$this->getResultbybikespricecal($result,$leftDays,$hours);
     	   
     	    $em->flush();
@@ -1546,6 +1590,7 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
             
         }else{
             
+            
             $dql3 = "SELECT b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,b.location
         from TripSiteManagementBundle:bikes b
          where b.active=1 and b.id=$url";
@@ -1553,6 +1598,7 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
             $em = $this->getDoctrine()->getManager();
             $query = $em->createQuery($dql3);
             $result = $query->getResult();
+            
             
         }
         

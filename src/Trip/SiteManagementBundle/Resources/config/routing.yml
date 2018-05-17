@@ -78,10 +78,12 @@ trip_site_management_bikes_list:
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikesList }
 trip_site_management_add_bike:
     path:     /add-bike
-    defaults: { _controller: TripSiteManagementBundle:SiteManagement:addBike }    
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:addBike }  
+      
 trip_site_management_bike_packages:
     path:     /bikepackages
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikepackages }
+
 trip_site_management_bike_package_result:
     path:     /bikepackageresult
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikepackageresult }
@@ -89,14 +91,23 @@ trip_site_management_bike_packages_tpt:
     path:     /tirupathi/bike-packages-in-tirupati
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikepackagesBasedonlocation }
 trip_site_management_bike_packages_blr:
-    path:     /bangaluru/bike-packages-in-bangalore
+    path:     /bengaluru/bike-packages-in-bangalore
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikepackagesBasedonlocation }
+    
+trip_site_management_bikes_packageurl:
+    path:     /{cityid}/packages/{packageurl}
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikepackagesBasedonlocation }
 trip_site_management_bikes_on_rent_tpt:
     path:     /tirupathi/bikes-on-rent-in-tirupati
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikesonRentBasedonlocation }
 trip_site_management_bikes_on_rent_blr:
-    path:     /bangaluru/bikes-on-rent-in-bangalore
+    path:     /bengaluru/bikes-on-rent-in-bengaluru
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikesonRentBasedonlocation }
+    
+trip_site_management_bikes_city:
+    path:     /{cityid}/bikes/{url}
+    defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikesonRentBasedonlocation }
+
 trip_site_management_edit_bikes_maincity:
     path:     /edit/{id}/bikes-maincity
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:editBikesmaincity }

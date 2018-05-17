@@ -54,6 +54,8 @@ class EditBikeMainCityType extends AbstractType
         ->add('metaKeywords')
         ->add('metaDescription')
         ->add('url')
+        ->add('suburl')
+        ->add('packageurl')
         ->add('active', 'choice', array(
             'expanded' => false,
             'multiple' => false,

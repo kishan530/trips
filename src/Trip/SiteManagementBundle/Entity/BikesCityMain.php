@@ -51,6 +51,24 @@ class BikesCityMain
      */
     private $url;
     /**
+     * @var string
+     *
+     * @ORM\Column(name="url", type="string", length=100,nullable=true)
+     */
+    private $suburl;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="package_url", type="string", length=100,nullable=true)
+     */
+    private $packageurl;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="img", type="string", length=100,nullable=true)
+     */
+    private $img;
+    /**
      * @var boolean
      *
      * @ORM\Column(name="active", type="boolean")
@@ -169,6 +187,54 @@ class BikesCityMain
     {
         $this->active = $active;
     }
+    /**
+     * @return string
+     */
+    public function getSuburl()
+    {
+        return $this->suburl;
+    }
+
+    /**
+     * @param string $suburl
+     */
+    public function setSuburl($suburl)
+    {
+        $this->suburl = $suburl;
+    }
+    /**
+     * @return string
+     */
+    public function getImg()
+    {
+        return $this->img;
+    }
+
+    /**
+     * @param string $img
+     */
+    public function setImg($img)
+    {
+        $this->img = $img;
+    }
+    /**
+     * @return string
+     */
+    public function getPackageurl()
+    {
+        return $this->packageurl;
+    }
+
+    /**
+     * @param string $packageurl
+     */
+    public function setPackageurl($packageurl)
+    {
+        $this->packageurl = $packageurl;
+    }
+
+
+
 
 
 }

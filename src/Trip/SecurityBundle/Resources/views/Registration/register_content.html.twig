@@ -1,7 +1,7 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
 		<div class="row">
-			<h4 class="classic-title"><span>{% trans %}Create a new account{% endtrans %}</span></h4>
+			{#}<h4 class="classic-title"><span>{% trans %}Create a new account{% endtrans %}</span></h4>{#}
 		  	
 			  <div class="col-lg-12 col-sm-12 reg top-buffer3">
         
@@ -10,7 +10,7 @@
 				{{ form_widget(form._token) }}
 					
 						<div class="row form-group {% if form.email.vars.errors|length %}has-error{% endif %}">
-							<div class="row">
+							<div class="row reg-input">
 								{{ form_widget(form.email,{ 'attr': {'placeholder': 'Enter your email Id'}}) }}
 							</div>
 							<div class="row">
@@ -36,13 +36,13 @@
 						</div>
 						
                         <div class="row form-group">
-							<div class="row">
+							<div class="row reg-terms-con">
 								<input type="checkbox" required="required" name="cb" class="remove_margin">  {% trans %} I agree to the JustTrip {% endtrans%} <a target="_blank" href="{{ path('trip_site_management_terms') }}">{% trans %} Terms of Service{% endtrans%}</a>
 							</div>
 						</div>
 						<div class="row">
 						<div class="row top-buffer1">
-							<input type="submit" value="{{ 'registration.submit'|trans }}" class="btn btn-primary"/>
+							<input type="submit" value="{{ 'registration.submit'|trans }}" class="btn btn-primary login-button"/>
 						</div>
 						</div>
 				 </form>

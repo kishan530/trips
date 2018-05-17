@@ -76,7 +76,7 @@
                     <!-- START CONTENT -->
                     <div class="row">
                         <div id="content" class="col-md-12 col-sm-12 col-xs-12">
-
+							
                             <div class="price-range text-center clearfix row">
                                 <div class="col-md-11">
 									<ul class="nav nav-pills nav-justified setup-panel">
@@ -130,7 +130,7 @@
                                     
                                     
                                 
-                                <div class="col-sm-12 booking-price-details-border price-details clearfix">
+                                <div class="col-sm-12 booking-price-details-border price-details clearfix" style="display: none;">
                                          {% block form %}
                                         <div class="row">
                                         <div class="hotel-title price-details">
@@ -141,7 +141,7 @@
                                             {{ form_errors(form, { 'global_errors': true }) }}
                                         
                                         <div class="row booking-price-details">
-                                        	<div class="col-md-6">
+                                        	{#}<div class="col-md-6">
                                         		<div class="col-md-12 col-sm-12 col-xs-12">
                                         		<p class="bikes-form-labels">Name*</p>
                                                 {{ form_widget(form.name,{'attr':{'class':'make-margin bikes-form','placeholder':'','pattern':'[a-zA-Z]+','title':'Enter Valid Name'}}) }}
@@ -162,7 +162,7 @@
                                            		 </div>
                                            		 
                                         	</div>
-                                        
+                                        {#}
                                             
                                             
                                             

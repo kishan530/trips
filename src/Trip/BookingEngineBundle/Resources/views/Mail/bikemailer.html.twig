@@ -1,0 +1,204 @@
+<div style="width: 600px;margin: 0 auto;border: 1px solid #e0e0e0;">
+	<table width="100%" style="background:#666;padding-left: 19px;font-size:16px;">
+		<tbody>
+		<tr>
+			<td>
+				<img src="http://www.justtrip.in/images/web-just-trip.png" alt="Trips" style="width:178px;height:74px;">
+			</td>
+			<td style="text-align:center">
+				<h1 style="float: left;font-family: Berlin Sans FB;font-size:24px;text-transform: uppercase;color:#fff;">BOOKING CONFIRMED!</h1>				
+			</td>
+			<td>
+			</td>
+		</tr>
+		<tr>
+			<td style="text-align:center">
+								
+			</td>
+			<td style="float:right;">
+					<strong style="font-family: calibri;color:#fff;">+91-9951343444</strong>			
+			</td>
+		</tr>
+		</tbody>
+	</table>
+	{% for bikesbooking in bikesbookings %}
+            {% if booking.id==bikesbooking.bikebookingid %}
+            	<table width="100%">
+            		<tbody>
+            		<tr>
+            			<td>
+            				
+            			</td>
+            			<td>
+            			{% for bike in bikes %}
+            				{% if bikesbooking.bikeId==bike.id %}
+            				<div style="margin: 0 auto;width: 240px;">
+            					<img src="http://www.justtrip.in/images/bikes/{{ bike.imgPath }}" alt="Trips" style="width:229px;height:132px;">
+            					<p style="text-align: center;font-size: 13px;font-family: calibri;color:#c1c1c1">Booking ID<br><span style="color:#F34F4F;font-size:18px;">{{ booking.bookingId }}</span></p>
+            				</div>
+            				{% endif %}
+            			{% endfor %}
+            			</td>
+            			<td>
+            					
+            			</td>
+            		</tr>
+            		
+            		</tbody>
+            	</table>
+            	<table  style="padding-left: 19px;width: 100%;">
+            		<tbody>
+                		<tr>
+                			<td>
+                				<p style="font-size:13px;color:#000;text-align:center;">{{ bikesbooking.bikename }} <br><span style="color:#c1c1c1;font-size:11px;text-transform: capitalize;">{{ bikesbooking.bikearea }},{{ bikesbooking.bikelocation }}</span></p>
+                			</td>
+                			<td>
+    				            <p style="font-size:13px;color:#000;text-align:center;">{{ bikesbooking.pdate }} <br><span style="color:#c1c1c1;font-size:11px;text-transform: capitalize;">Start Date</span></p>
+    						</td>
+    						<td>
+    				            <p style="font-size:13px;color:#000;text-align:center;">{{ bikesbooking.rdate }} <br><span style="color:#c1c1c1;font-size:11px;text-transform: capitalize;">End Date</span></p>
+    						</td>
+                		</tr>
+            		</tbody>
+            	</table>
+            	<table style="padding: 19px;width: 100%;">
+            		<tbody>
+            				<tr>
+            					<table>
+                    				<tbody>
+                    					<tr>
+                    						<td align="left" style="font-size:13px;font-family:Arial,sans-serif;text-align:left;vertical-align:top;background-color:#ffffff;font-weight:600;color:#828282;letter-spacing:1px">ORDER SUMMARY</td>
+                    					</tr>
+                    				</tbody>
+                				</table>
+            				</tr>
+            				<tr>
+            					<table style="width: 100%;padding: 5px 25px 0px 25px;
+    border: 2px solid #f1f1f1;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-family: Arial,sans-serif;
+    margin: 0 auto;">
+                    				<tbody>
+                    					<tr>
+                                          <td align="left" style="width:50%;font-size:14px;font-family:Arial,sans-serif;text-align:left;vertical-align:top;background-color:#ffffff;color:#3f474e">
+                                            <p style="margin:0;padding:0 0 12px 0">
+                                              <strong>PRICE</strong>
+                                            </p>
+                                           
+                                          </td>
+                                          <td align="right" style="width:50%;font-size:15px;font-family:Arial,sans-serif;text-align:right;vertical-align:top;background-color:#ffffff;color:#3c3c3c">
+                                            <p style="margin:0;padding:0 0 12px 0">Rs.{{ booking.totalPrice }}</p>
+                                           
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                        
+                                          <td align="left" style="padding-top: 15px;border-top: 2px dashed #f1f1f1;width:50%;font-size:14px;font-family:Arial,sans-serif;text-align:left;vertical-align:top;background-color:#ffffff;color:#3f474e">
+                                            <p style="color:#828282;font-size:13px;margin:0;padding:0 0 4px 0">CGST</p>
+                                            <p style="color:#828282;font-size:13px;margin:0;padding:0 0 4px 0">SGST</p>
+                                           
+                                          </td>
+                                          <td align="right" style="padding-top: 15px;border-top: 2px dashed #f1f1f1;width:50%;font-size:15px;font-family:Arial,sans-serif;text-align:right;vertical-align:top;background-color:#ffffff;color:#3c3c3c">
+                                            <p style="margin:0;padding:0 0 4px 0">Rs. {{ booking.swachBharthCess }}</p>
+                                            <p style="color:#828282;font-size:13px;margin:0;padding:0 0 4px 0">Rs. {{ booking.krishiKalyanCess }}</p>
+                                          </td>
+                                             
+                                        </tr>
+                                        <tr>
+                                        
+                                          <td align="left" style="border-top: 2px dashed #f1f1f1;padding-top: 15px;width:50%;font-size:14px;font-family:Arial,sans-serif;text-align:left;vertical-align:top;background-color:#ffffff;color:#3f474e">
+                                            <p style="margin:0;padding:0 0 12px 0">
+                                              <strong>AMOUNT PAID</strong>
+                                            </p>
+                                            <p style="margin:0;padding:0 0 12px 0">
+                                              <strong>Booking Status</strong>
+                                            </p>
+                                            
+                                          </td>
+                                          <td align="right" style="border-top: 2px dashed #f1f1f1;padding-top: 15px;width:50%;font-size:15px;font-family:Arial,sans-serif;text-align:right;vertical-align:top;background-color:#ffffff;color:#3c3c3c">
+                                            <p style="margin:0;padding:0 0 12px 0">Rs. {{ booking.amountPaid }} </p>
+                                            <p style="margin:0;padding:0 0 12px 0"> {{ booking.status }} </p>
+                                          </td>
+                                             
+                                        </tr>
+                    				</tbody>
+                				</table>
+            				</tr>
+            				<tr>
+            					<table style="width: 100%;padding: 5px 25px 0px 0px;
+    font-family: Arial,sans-serif;
+    margin: 0 auto;">
+                    				<tbody>
+                    					<tr>
+                    						<td>IMPORTANT INSTRUCTIONS</td>
+                    						
+                    					</tr>
+                    					<tr>
+                    						<td><p style="font-size: 12px;font-family: calibri;color: #000;">12 kilometres are included in the rent charged for the duration of the booking. 
+    				Any extra kilometres will be charged at Rs. 3 per K.M. Please note that fuel is not 
+    				included in the rental.</p>
+    											<h4 style="padding:0px;margin: 8px 0px -10px 0px;color:#666;font-size:14px;margin-top: -24px;">Documents required</h4>
+					<p style="font-size: 12px;font-family: calibri;color: #000;">Valid driver's license to ride a motor-vehicle with or without gear, in India. 
+					(For international visitors, a valid driving license from their home country with 
+					International Driving Permit is necessary along with a valid Visa. Original to be brought,
+					 copy will be retained for record.) </p>
+					 							<p style="font-size: 12px;font-family: calibri;color: #000;">1. A copy of your Passport (OR) Original Aadhar Card (OR) A test mail from your corporate e-mail ID.</p>
+					 							<p style="font-size: 12px;font-family: calibri;color: #000;">2. 1 Rupee swipe with either your debit or credit card (not mandatory if condition (1) is satisfied.) </p>
+					 							<p style="font-size: 12px;font-family: calibri;color: #000;">If you're a student, following are the documents to be submitted, in addition to a valid Driver's license- </p>
+					<p style="font-size: 12px;font-family: calibri;color: #000;">1. Original College ID</p>
+					<p style="font-size: 12px;font-family: calibri;color: #000;"><strong>Note:</strong> Justtrip reserves the right to hold back the booking if the documents 
+					submitted are not satisfactory.</p>
+    										</td>
+                    						
+                    					</tr>
+                    				</tbody>
+                				</table>
+            				</tr>
+            				<tr>
+            					<table style="width: 100%;border-top: 2px dashed #f1f1f1;padding: 5px 25px 0px 0px;
+    font-family: Arial,sans-serif;
+    margin: 0 auto;">
+                    				<tbody>
+                    					
+                    					</tr>
+                    				</tbody>
+                				</table>
+            				</tr>
+            		</tbody>
+            	</table>
+       {% endif %}
+    {% endfor %}
+    <table style="width:100%">
+    	<tbody>
+    		<tr>
+    			<td></td>
+    			
+    			<td></td>
+    		</tr>
+    	</tbody>
+    </table>
+    <table style="background-color:#f1f1f1;width:100%">
+    	<tbody>
+    		<tr>
+    			<td>
+    				<p style="text-align: center;font-family: calibri;">For Further Assistance:  
+    				<span><a href="mailto:info@justtrip.in" style="text-decoration:none;
+    				color:#4d90fe;display:inline-block" target="_blank">info@justtrip.in</a>
+    				</span>
+    				| <span>+91-9951343444</span>
+    				</p>
+    			</td>
+    			<td>
+    				<img src="http://www.justtrip.in/images/facebook.png" alt="Trips">
+    			</td>
+    			<td>
+                	<img src="http://www.justtrip.in/images/facebook.png" alt="Trips">
+                </td>
+                <td>
+                	<img src="http://www.justtrip.in/images/facebook.png" alt="Trips">
+                </td>
+    		</tr>
+    	</tbody>
+    </table>
+</div

@@ -350,13 +350,9 @@ $('.vehicle-icon').click(function(e){
 												<input type="hidden" name="countadd" class="form-control" value="1"> 
 												<input type="hidden" name="count" class="form-control" value="{{ result.count }}"> 
 												
-												{% if (result.count <= 0) %}
-                                          			<a class="btn btn-book-now view-bike" disabled>
-                                                      Sold Out
-                                                    </a>   
-                                          	{% else %}
+												
                                                 <button type="submit" class="btn aligncenter view-bike">Rent Now</button>
-                                            {% endif %}
+                                            
 											</form>
                                          </div>
                                          <div class="col-md-3" >

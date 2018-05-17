@@ -175,7 +175,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 	 	<div class="container">
             			<div class="row">
                    				<div class="col-md-12">
-                   					<div class="row">
+                   					<div class="row" style="padding: 20px 0px 0px 0px;">
                    						<div class="col-md-2">
                    						<h3 class="review-modifiy">Modify Search</h3>
                    						</div>
@@ -183,24 +183,24 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                          <div class="col-md-2 bikes-form-font" style="text-align:center;">
             					<label class="filter-details2">Location</label><br>
             					    <input type="text" name="location" class="black3 datetime2" value="{{ location }}"/>
-            							<hr class="hr-nomargin hr-border-color">
+            							
             							</div>
             		    	<div class="col-md-2 bikes-form-font" style="text-align:center;">
             					<label class="filter-details2">Pickup date & Time</label><br>
             						<input class="black3 datetime2" id="datetime2" format="" type="text" name="preferdate" value="{{ preferdate }}">
-            							<hr class="hr-nomargin hr-border-color">
+            							
             							</div>
             							<div class="col-md-2 bikes-form-font" style="text-align:center;">
             					<label class="filter-details2">Dropoff date & Time</label><br>
             					    <input class="black3 datetime3" id="datetime3" format="" type="text" name="returndate" value="{{ returndate }}">
-            							<hr class="hr-nomargin hr-border-color">
+            							
             							</div>
             						<input class="resultpage" id="vehicleIndex{{ bike.id }}" type="hidden" name="id" value="{{ id }}">
             						<input type="hidden" name="packagename" class="form-control" value="{{ packagetitle }}"/>
             						<input type="hidden" name="title" required="required" value="{{ title }}" class="bike-popupform">
             						<input type="hidden" name="packageoffer" required="required" value="{{ packageoffer }}" class="bike-popupform">
-            						<div class="col-md-2 bikes-form-font" style="text-align:center;">
-            						<button type="submit" class="btn btn-book-now view-bike1" value="Search" style="width:70%;height:30px;margin-bottom:10px;">Search
+            						<div class="col-md-2" style="text-align:center;">
+            						<button id="reviewsubmit" type="submit" class="btn btn-book-now view-bike1" value="Search" >Search
                                 	</button>
                                        </div>       										
     					                <div class="col-md-2" style="text-align:center;">
@@ -274,13 +274,9 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 											<input type="hidden" name="hours" class="form-control" value="{{ hours }}"> 
 											<input type="hidden" name="countadd" class="form-control" value="1"> 
 											<input type="hidden" name="count" class="form-control" value="{{ suggestedbikes.count }}"> 
-                                            {% if (suggestedbikes.count <= 0) %}
-                                          			<a class="btn btn-book-now view-bike3" style="background-color: #e0e0e0;opacity:1;" disabled>
-                                                      Sold Out
-                                                    </a>   
-                                          	{% else %}
+                                            
                                                 <button type="submit" class="btn aligncenter view-bike2">Rent Now</button>
-                                            {% endif %}
+                                           
                                             </div>
                                             </div>
                         			   </form>
@@ -350,13 +346,9 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 											<input type="hidden" name="hours" class="form-control" value="{{ hours }}"> 
 											<input type="hidden" name="countadd" class="form-control" value="1"> 
 											<input type="hidden" name="count" class="form-control" value="{{ suggestedbikes.count }}"> 
-                                            {% if (suggestedbikes.count <= 0) %}
-                                          			<a class="btn btn-book-now view-bike3" style="background-color: #e0e0e0;opacity:1;" disabled>
-                                                      Sold Out
-                                                    </a>   
-                                          	{% else %}
+                                            
                                                 <button type="submit" class="btn aligncenter view-bike2">Rent Now</button>
-                                            {% endif %}
+                                            
                                             </div>
                                             </div>
                         			   </form>

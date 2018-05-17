@@ -13,7 +13,7 @@
         return this.href == a
     }).addClass("active"), e(window).load(function() {
         e("#loader").delay(600).fadeOut("slow"), e("#loader-container").delay(600).fadeOut("slow"), e("body").delay(600).css({
-            overflow: "visible"
+            overflow: ""
         })
     }), e(".header .dropdown").hover(function() {
         e(".dropdown-menu", this).stop(!0, !0).slideDown("fast"), e(this).toggleClass("open")

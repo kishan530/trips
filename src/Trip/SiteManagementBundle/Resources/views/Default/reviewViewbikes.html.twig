@@ -225,7 +225,7 @@
                                             					
                                             					</div>
                                             					<div class="col-md-6">
-                                            						<input type="submit" name="filtermainloc" value="bangaluru" class="bikes-search-popup-heading2 text-center resview-bikes-pop-loc">
+                                            						<input type="submit" name="filtermainloc" value="bengaluru" class="bikes-search-popup-heading2 text-center resview-bikes-pop-loc">
                                             					</div>
                                             					<div class="col-md-3">
                                             					
@@ -267,7 +267,7 @@
             		<div class="row"> 
                     	<div class="col-lg-12 col-sm-12 col-xs-12">
                             {% for result in resultset %} 
-                            
+                           
                                  <div class="col-md-4 disabled">
                                      <div class="bike-background">
                                             <h5 class="bike-grid-title">{{ result.title }}</h5>
@@ -312,18 +312,15 @@
                 												<input type="hidden" name="location" class="form-control" value="{{ location }}">
                 												<input type="hidden" name="countadd" class="form-control" value="1"> 
                 												<input type="hidden" name="count" class="form-control" value="{{ result.count }}"> 
-                												{% if (result.count <= 0) %}
-                                                          			<a class="btn btn-book-now view-bike-results" disabled>
-                                                                      Sold Out
-                                                                    </a>   
-                                                          	{% else %}
+                												
                                                                 <button type="submit" class="btn aligncenter view-bike-results">Rent Now</button>
-                                                            {% endif %}
+                                                           
                                          				</div>
                                          			</div>
                                          </form>
                                        </div>    
                                    </div>
+                                  
                              {% endfor %}
                          </div>
                      </div>   

@@ -6,7 +6,7 @@
     <meta name="keywords" content="{{ bikeslocbase.metaKeywords }}">
     <meta name="description" content="{{ bikeslocbase.metaDescription }}">  
 {% endblock %}
-{% block title %}Bikes On Rent In {{ locations[bikeslocbase.cityid].name }} | Justtrip.in {% endblock %}
+{% block title %}{{ bikeslocbase.metaTitle }} {% endblock %}
 {% block javascripts %}
 <script src="{{ asset('js/jquery.timepicker.min.js') }}"></script>
 <script type="text/javascript">
@@ -22,26 +22,23 @@
 			
 		});
 		
-	</script>
-<script>
-
-$('#datetime3').change(function() {
-    $('#datetime2').appendDtpicker({
-	    maxDate: $('#datetime3').val() // when the end time changes, update the maxDate on the start field
-    });
-});
-
-$('#datetime2').change(function() {
-    $('#datetime3').appendDtpicker({
-	    minDate: $('#datetime2').val() // when the start time changes, update the minDate on the end field
-    });
-});
-
-
-
-	
 </script>
-
+<script type="text/javascript">
+			/*$(function(){
+				$('#datetime2').change(function() {
+					var enddateval = $('#datetime2').val();
+					//var date= '21/01/2015';
+					var d=new Date(enddateval.split("/").reverse().join("-"));
+					var dd=d.getDate();
+					var mm=d.getMonth()+1;
+					var yy=d.getFullYear();
+					var newdate=mm+"-"+dd+"-"+yy;
+					alert(newdate);
+				    $('#datetime3').handleDtpicker('setMinDate',enddateval);
+				});
+			});
+			*/
+</script>
 <script>
 			$(document).ready(function(){
 				$("#datetime3").change(function(){
@@ -58,18 +55,6 @@ $('#datetime2').change(function() {
 				});
 			});
 </script>
-	<script>
-	 $(function() {
-		    var date = new Date();
-		    var currentMonth = date.getMonth();
-		    var currentDate = date.getDate();
-		    var currentYear = date.getFullYear();
-		    $('#datetime2').appendDtpicker({
-		    minDate: new Date(currentYear, currentMonth, currentDate)
-		    });
-		})
-		
-	</script>
 	<script>
 	
 	$( window ).load(function(){
@@ -93,7 +78,7 @@ $('#datetime2').change(function() {
                 <hr class="left">
             </div><!-- end hotel-title -->
                             {% for bike in bikes %} 
-                            
+                            {% if bike.active==1 %}
                             <div class="col-md-3">
                             <div class="bike-background">
                             <div>
@@ -103,10 +88,10 @@ $('#datetime2').change(function() {
                             	{% for bikecities in bike.bikescity %}
                                     {% if bikecities.cityid==bikeslocbase.cityid %} 
                                              {% if bikecities.cityid ==1 %}                 
-                                			<h4 style="text-align:center;color:#000"><a class="view-bikes-title" href="{{ path('trip_site_management_view_bikestpt',{ 'url':bikecities.url }) }}">{{ bike.title }}</a></h4>
+                                			<h4 style="text-align:center;color:#000;font-size: 16px;">{{ bike.title }}</h4>
                                 			 <p class="price-starts">Starts @{{ bike.statingPrice }}</p>
                                 			 {% else %}
-                                			 	<h4 style="text-align:center;color:#000"><a class="view-bikes-title" href="{{ path('trip_site_management_view_bikesblr',{ 'url':bikecities.url }) }}">{{ bike.title }}</a></h4>
+                                			 	<h4 style="text-align:center;color:#000;font-size: 16px;">{{ bike.title }}</h4>
                                 			 	<p class="price-starts">Starts @{{ bike.statingPrice }}</p>
                                 	 		{% endif %}
                                     {% endif %}
@@ -121,11 +106,7 @@ $('#datetime2').change(function() {
                                          	{% endfor %}
                                          </div>{#}
                                          <div class="col-md-12">
-                                         {% if (bike.count <= 0) %}
-                                          			<a class="btn btn-book-now view-bike" disabled>
-                                                      Sold Out
-                                                    </a>   
-                                          	{% else %}
+                                         
                                           		{% for bikecities in bike.bikescity %}
                                          		{% if bikecities.cityid==bikeslocbase.cityid %}
                                          			{% if bikecities.cityid ==1 %} 
@@ -139,7 +120,7 @@ $('#datetime2').change(function() {
                                                       {% endif %}
                                                 {% endif %}
                                          	{% endfor %}
-                                            {% endif %}
+                                            
         								{#<a class="btn aligncenter view-bike"   href="{{ path('trip_site_management_view_bikes',{'url':bike.locationUrl }) }}">Rent Now</a>#}
                                          </div>
                                          <div class="col-md-12" >
@@ -149,7 +130,7 @@ $('#datetime2').change(function() {
                               
                               </div>
                             </div>
-                           
+                           {% endif %}
                            {% endfor %}
                     </div>
                    
@@ -231,18 +212,16 @@ $('#datetime2').change(function() {
                     		<div class="row">
                     			<div class="col-md-1">
                     			</div>
+                    			{% for city in bikesmaincity %}
+                    			{% if city.active==1 %}
                     			<div class="col-md-5">
-                    				<a href="{{ path('trip_site_management_bikes_on_rent_blr')}}">
-                    				<img src="{{asset('images/justtrip-blr-bikes.png') }}" class="img-center">
-                    				<h4 class="bikes-search-popup-heading2">Bangalore</h4>
+                    				<a href="{{ path('trip_site_management_bikes_city',{ 'cityid':city.url,'url':city.suburl }) }}">
+                    				<img src="{{asset('images/'~city.img) }}" class="img-center">
+                    				<h4 class="bikes-search-popup-heading2">{{ city.url }}</h4>
                     				</a>
                     			</div>
-                    			<div class="col-md-5">
-                    				<a href="{{ path('trip_site_management_bikes_on_rent_tpt')}}">
-                    				<img src="{{asset('images/justtrip-tpt-bike.png') }}" class="img-center">
-                    				<h4 class="bikes-search-popup-heading2">Tirupati</h4>
-                    				</a>
-                    			</div>
+                    			{% endif %}
+                    			{% endfor %}
                     			<div class="col-md-1">
                     			</div>
                     		</div>
@@ -257,4 +236,35 @@ $('#datetime2').change(function() {
               </div>
             </div>
     </section>
+    <section class="section" data-img-width="1920" data-img-height="586" data-diff="10" style="background: #222;">
+        <div class="container">
+            <div class="row">
+            	
+            		{% for bike in bikes %} 
+                            {% if bike.active==1 %}
+                            	{% for bikecities in bike.bikescity %}
+                                     {% if bikecities.cityid==bikeslocbase.cityid %}
+                                     	{% if bikecities.cityid ==1 %} 
+                                     	<div class="col-md-4">
+                                             <p class="packages-link"><a href="{{ path('trip_site_management_view_bikestpt',{ 'url':bikecities.url }) }}">{{ bikecities.title }}</a></p>
+                                        </div>
+                                     	{% else %}
+                                     	<div class="col-md-4">
+                                             <p class="packages-link"><a href="{{ path('trip_site_management_view_bikesblr',{ 'url':bikecities.url }) }}"> {{ bikecities.title }}</a></p>
+                                        </div>
+                                     	{% endif %}
+                                     {% endif %}
+                                 {% endfor %}
+                            {% endif %}
+                    {% endfor %}
+            	
+            	<div class="col-md-4">
+            		
+            	</div>
+            	<div class="col-md-4">
+            		
+            	</div>
+            </div>
+        </div><!-- end container -->
+    </section><!-- end section -->
 {% endblock %}

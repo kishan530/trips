@@ -102,7 +102,7 @@ class BikeBooking
 	 * @return the integer
 	 */
 	public function getBikeId() {
-		return $this->hotelId;
+		return $this->bikeId;
 	}
 	
 	/**

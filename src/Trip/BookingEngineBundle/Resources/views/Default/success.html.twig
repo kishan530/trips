@@ -15,13 +15,127 @@
                         <span><span class="glyphicon glyphicon-chevron-right" style="padding:5px;"></span>Success</span>
                         </div>
                     </div>
-                    
                     <h3></h3>
 {% endblock %}
 
 {% block body %}
-
-    <section class="section clearfix">
+	<section class="section clearfix">
+        <div class="container">
+            <div class="row">
+                <div id="fullwidth" class="col-sm-12">
+					<div class="row">
+						<div class="col-md-2">
+						
+						</div>
+						<div class="col-md-8">
+							<div class="bike-background">
+        						<div class="row">
+        							<div class="col-md-12">
+        								<h1 style="text-align: center;font-family: Berlin Sans FB;font-size:34px;text-transform: uppercase;color:#F34F4F;">BOOKING CONFIRMED!</h1>
+        								<p style="font-family: calibri;margin: 0px;">Dear {{ customer.name }}, Your Booking has been Successfully completed. </p>			
+                    					<strong style="font-family: calibri;">Here are your booking details:</strong>
+        							</div>
+        						</div>
+        						{% for bikesbooking in bikesbookings %}
+                                {% if booking.id==bikesbooking.bikebookingid %}
+        						<div class="row">
+        						<hr>
+        							<div class="col-md-4">
+        								<p style="font-size: 12px;text-align:center;">Booking ID : <span style="color:#F34F4F;">{{ booking.bookingId }}</span></p>
+        							</div>
+        							<div class="col-md-4">
+        								<p style="font-size: 12px;text-align:center;">Booked On : <span>{{ booking.bookedOn|date('d/m/Y') }}</span></p>
+        							</div>
+        							<div class="col-md-4">
+        								<p style="font-size: 12px;text-align:center;text-transform: capitalize;">{{ bikesbooking.bikename }} <span>({{ bikesbooking.bikearea }}, {{ bikesbooking.bikelocation }})</span></p>
+        							</div>
+        						</div>
+        						<div class="row">
+        							<div class="col-md-4">
+        								<p style="font-size: 12px;text-align:center;">Start Date : <span>{{ bikesbooking.pdate }}</span></p>
+        							</div>
+        							<div class="col-md-4">
+        								<p style="font-size: 12px;text-align:center;">End Date : <span>{{ bikesbooking.rdate }}</span></p>
+        							</div>
+        							<div class="col-md-4">
+        								<p style="font-size: 12px;text-align:center;">{{ bikesbooking.leftdays }} Days {{ bikesbooking.hours }} Hours</p>
+        							</div>
+        						</div>
+        						<div class="row">
+        						<hr>
+        							<h4 style="padding:0px;margin: 0px 0px 0px 16px;color:#000;font-size:15px">Personal Details</h4>
+        							<div class="col-md-4">
+        								<p style="font-size: 12px;text-align:center;color: #F34F4F;">{{ customer.name }}</p>
+        							</div>
+        							<div class="col-md-4">
+        								<p style="font-size: 12px;text-align:center;color: #F34F4F;">{{ customer.mobile }}</p>
+        							</div>
+        							<div class="col-md-4">
+        								<p style="font-size: 12px;text-align:center;color: #F34F4F;">{{ customer.email }}</p>
+        							</div>
+        						</div>
+        						<div class="row">
+        								<h4 style="padding:0px;margin: 0px 0px 0px 16px;color:#000;font-size:15px">Fare Details</h4>
+        								<div class="col-md-3">
+        									<p style="text-align:center;">Price : <span style="font-size: 12px;font-weight: bold;color: #F34F4F;font-family: calibri;">Rs {{ booking.totalPrice }}</span></p>
+        								</div>
+        								<div class="col-md-3">
+        									<p style="text-align:center;">CGST : <span style="font-size: 12px;font-weight: bold;color: #F34F4F;font-family: calibri;">Rs {{ booking.swachBharthCess }}</span></p>
+        								</div>
+        								<div class="col-md-3">
+        									<p style="text-align:center;">SGST : <span style="font-size: 12px;font-weight: bold;color: #F34F4F;font-family: calibri;">Rs {{ booking.krishiKalyanCess }}</span></p>
+        								</div>
+        								<div class="col-md-3">
+        									<p style="text-align:center;">Amount Paid : <span style="font-size: 12px;font-weight: bold;color: #F34F4F;font-family: calibri;">Rs {{ booking.amountPaid }}</span></p>
+        								</div>
+        						</div>
+        						<div class="row">
+        							<div class="col-md-4">
+        								<p style="text-align:center;">Booking Status  : <span style="font-size: 12px;font-weight: bold;color: #F34F4F;font-family: calibri;">{{ booking.status }}</span></p>
+        							
+        							</div>
+        							<div class="col-md-4">
+        							
+        							</div>
+        							<div class="col-md-4"></div>
+        						</div>
+        						{% endif %}
+                            {% endfor %}
+							
+							<div class="row">
+							<hr>
+								<div class="col-md-12">
+										<p style="font-size: 12px;font-family: calibri;color: #000;">12 kilometres are included in the rent charged for the duration of the booking. 
+                        				Any extra kilometres will be charged at Rs. 3 per K.M. Please note that fuel is not 
+                        				included in the rental.</p>
+								</div>
+								<div class="col-md-12">
+									<h4 style="color:#666;font-size:15px;">Documents required</h4>
+                    					<p style="font-size: 12px;font-family: calibri;color: #000;">Valid driver's license to ride a motor-vehicle with or without gear, in India. 
+                    					(For international visitors, a valid driving license from their home country with 
+                    					International Driving Permit is necessary along with a valid Visa. Original to be brought,
+                    					 copy will be retained for record.) </p>
+                    					 <p style="font-size: 12px;font-family: calibri;color: #000;">1. A copy of your Passport (OR) Original Aadhar Card (OR) A test mail from your corporate e-mail ID.</p>
+                    					 <p style="font-size: 12px;font-family: calibri;color: #000;">2. 1 Rupee swipe with either your debit or credit card (not mandatory if condition (1) is satisfied.) </p>
+                    					 <p style="font-size: 12px;font-family: calibri;color: #000;">If you're a student, following are the documents to be submitted, in addition to a valid Driver's license- </p>
+                    					<p style="font-size: 12px;font-family: calibri;color: #000;">1. Original College ID</p>
+                    					<p style="font-size: 12px;font-family: calibri;color: #000;"><strong>Note:</strong> Justtrip reserves the right to hold back the booking if the documents 
+                    					submitted are not satisfactory.</p>
+								</div>
+							</div>
+							</div>
+						</div>
+						<div class="col-md-2">
+						
+						</div>
+					</div>
+					
+					
+                </div><!-- end fullwidth -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </section><!-- end section -->
+    {#}<section class="section clearfix">
         <div class="container">
             <div class="row">
                 <div id="fullwidth" class="col-sm-12">
@@ -34,9 +148,9 @@
                                     <img src="{{ asset('images/successful.png') }}" alt="">
                                 </div>
                                 <h6>Dear customer,</h6>
-                                <p>Thank you very much for ordering our product. You will be receiving an e-mail within next 72 hours, with the attachment or instructions to download.<br>
+                                <p>Thank you very much your booking has been successfully completed.<br>
                                 For any problems please <a href="mailto:info@justtrip.in">info@justtrip.in</a> </p>
-                                <a href="{{ path('trip_site_management_homepage') }}" class="btn btn-primary btn-normal btn-lg">CONTINUE SHOPPING</a>
+                                <a href="{{ path('trip_site_management_homepage') }}" class="btn btn-primary btn-normal btn-lg">Book Your Next Ride</a>
                             </div><!-- end post-wrapper -->
                         </div><!-- end col -->
                     </div><!-- end row -->
@@ -45,6 +159,6 @@
                 </div><!-- end fullwidth -->
             </div><!-- end row -->
         </div><!-- end container -->
-    </section><!-- end section -->
+    </section><!-- end section -->{#}
 
 {% endblock %}

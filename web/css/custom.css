@@ -295,7 +295,7 @@ p.brandtype {
     color: #adadad;
     font-size: 14px;
     font-family: calibri;
-    margin-top: 20px;
+    
 }
 filter-bikes
 {
@@ -1383,8 +1383,8 @@ h3.review-apply-filter {
 	border-color:#eee;
 }
 .filter-box {
-   /* box-shadow: 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12), 0 3px 5px -1px rgba(0,0,0,0.3);*/
-       box-shadow: 0 6px 1px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 5px -1px rgba(0,0,0,0.3);
+   /* box-shadow: 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12), 0 3px 5px -1px rgba(0,0,0,0.3);
+       box-shadow: 0 6px 1px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 5px -1px rgba(0,0,0,0.3);*/
     padding: 0px 2px 0px 13px;
     border-bottom: 2px solid #e0e0e0;
 }
@@ -1613,7 +1613,7 @@ input .search-location-infilters : focus-within
 .backsearch-results-view-bikes
 {
 	font-size: 13px;
-    color: #c1c1c1;
+    color: #F34F4F;
 }
 .backsearch-results-view-bikes-icon
 {
@@ -1660,7 +1660,7 @@ strong.terms-conditi-strong {
     font-size: 13px;
     font-family: calibri;
 }
-h2.bike-desc {
+h1.bike-desc {
     font-size: 14px;
     color: #888;
     margin-bottom: -5px;
@@ -1690,9 +1690,208 @@ section.nospace {
 .col-md-3.disabled {
     display: none;
 }
+.homebanner-padding{
+	padding:150px 0px;
+}
+
+/********FAQS Page**********/
+h4.faqtitles {
+    font-family: Berlin Sans FB;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: #F34F4F;
+}
+strong.faqs-strong {
+    font-family: calibri;
+}
+p.faqs-p {
+    margin: 0px;
+    font-size: 12px;
+    font-family: calibri;
+    line-height: 15px;
+}
+li.faqs-list {
+    font-size: 12px;
+    margin: 0px 0px -4px 31px;
+    font-family: calibri;
+}
+
+
+p.packages-link a:hover
+{
+	color:#F34F4F;
+}
+p.packages-link a
+{
+	color:#fff;
+}
+.well {
+    background-color: #666;
+}
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+   
+    border: none;
+    border-bottom: 1px solid #f8f8f8;
+}
+.nav-tabs > li.active > a:hover {
+   
+    border: none;
+    border-bottom: 1px solid #f8f8f8;
+    
+}
+.nav-tabs > li > a:hover
+{
+	background:transparent;
+	border:none;
+	border-bottom: 1px solid #f8f8f8;
+}
+.nav-tabs > li > a {
+    border:none;
+    color:#fff;
+    border-bottom: 1px solid #f8f8f8;
+}
+
+.home-portfolio{
+	color: #fff;
+    font-size: 16px;
+    background-color: #000;
+    padding: 10px;
+}
+
+
+.header-shawod{
+	background: #ffffff;
+    margin-bottom: 14px;
+	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
+}
+.bike-background.sign-page-card ul li a {
+    color: #000;
+    font-size: 18px;
+    font-family: calibri;
+    border-bottom: 1px solid;
+    text-transform: uppercase;
+}
+.bike-background.sign-page-card ul li a:hover {
+    color: #F34F4F;
+    background-color: transparent;
+    font-size: 18px;
+    font-family: calibri;
+    border-bottom: 1px solid;
+    
+}
+.bike-background.sign-page-card ul li a:focus{
+    color: #F34F4F;
+    cursor: default;
+    background-color: transparent;
+}
+.bike-background.sign-page-card li.active a {
+    color: #F34F4F;
+    border: none;
+    font-size: 18px;
+    font-family: calibri;
+    border-bottom: 1px solid;
+}
+input.login-page-inputs
+{
+	border:none;
+	border-bottom:1px solid #e0e0e0;
+}
+input.login-button {
+    color: #fff;
+    background-color: #F34F4F;
+    width: 100%;
+    padding: 10px;
+    font-family: Berlin Sans FB;
+    font-size: 20px;
+    box-shadow: 0 5px 6px 0 rgba(201,201,201,.5);
+    margin-bottom: 10px;
+}
+label.control-label.remember-me {
+    color: #000;
+    font-size: 15px;
+    font-family: calibri;
+}
+a.forgot {
+    font-size: 18px;
+    font-family: calibri;
+}
+input#fos_user_registration_form_email {
+    border: none;
+    border-bottom: 1px solid #e0e0e0;
+}
+input#fos_user_registration_form_plainPassword_first {
+	border: none;
+    border-bottom: 1px solid #e0e0e0;
+}
+input#fos_user_registration_form_plainPassword_second {
+	border: none;
+    border-bottom: 1px solid #e0e0e0;
+}
+.reg-terms-con
+{
+	color: #000;
+    font-size: 13px;
+    font-family: calibri;
+}
+h3.comming-soon {
+    margin-bottom: -52px;
+    color: #fff;
+    font-size: 44px;
+    padding: 10px;
+    position: absolute;
+}
+/*********End Faqs**********/
+
 /* End */
 /*********Media Query************/
-
+@media (max-width:450px)
+	{
+		.homebanner-padding{
+			padding: 20px 0px;
+		}
+		h2.sub-title-bikesonrent {
+    		font-size: 22px;
+   		}
+   		.col-md-3.bikes-form-font.sub-book3 {
+    		margin: 0px 0 10px 0px;
+    		width: 118%;
+		}
+		.home-banner-offer-p {
+   			 font-size: 25px;
+    		margin: -12px 0px 58px 0px;
+		}
+		p.berlin.have-question {
+   			 font-size: 40px;
+		}
+		.col-md-3.sub-book4 {
+    		width: 118%;
+		}
+		.bike-background {
+    		margin-top: 16px;
+		}
+}
+@media (max-width:760px)
+	{
+		.homebanner-padding{
+			padding: 20px 0px;
+		}
+		h2.sub-title-bikesonrent {
+    		font-size: 22px;
+   		}
+   		.col-md-3.bikes-form-font.sub-book3 {
+    		margin: 0px 0 10px 0px;
+		}
+		.home-banner-offer-p {
+   			 font-size: 25px;
+    		margin: -12px 0px 58px 0px;
+		}
+		p.berlin.have-question {
+   			 font-size: 40px;
+		}
+		.bike-background {
+    		margin-top: 16px;
+		}
+}
 /**********end***************/
 /****************************************jagadeesh*************************************************/
 span.black1 {

@@ -204,11 +204,59 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
     </div>
     
 </section>{#}
+<section class="section clearfix" style="margin-top: -51px;">
+    <div class="container">
+    	<div class="row">
+    		<div class="hotel-title">
+                <h3 class="berlin">Find Us In Your City</h3>
+                 <hr class="left">
+            </div><!-- end hotel-title -->
+    	</div>
+        <div class="row">
+        	<div class="col-md-6">
+        	<a href="
+        	        {% for city in bikesmaincity %}
+                        {% if city.cityid==48 %}
+                        	{{ path('trip_site_management_bikes_city',{ 'cityid':city.url,'url':city.suburl }) }}
+                        {% endif %}
+                    {% endfor %}
+             ">
+        		<img src="{{asset('images/blr-bikes-justtrip.jpg') }}" class="img-center img-responsive">
+        		<h3 class="home-portfolio">Bikes On Rent In Bangalore</h3>
+        	</a>
+        	</div>
+        	<div class="col-md-6">
+        	<a href="{% for city in bikesmaincity %}
+                        {% if city.cityid==1 %}
+                        	{{ path('trip_site_management_bikes_city',{ 'cityid':city.url,'url':city.suburl }) }}
+                        {% endif %}
+                    {% endfor %}
+        	
+        	">
+        		<img src="{{asset('images/1.jpg') }}" class="img-center img-responsive">
+        		<h3 class="home-portfolio">Bikes On Rent In Tirupati</h3>
+        	</a>
+        	</div>
+        </div>
+        <div class="row">
+        	<div class="col-md-6">
+        		<h3 class="comming-soon berlin">Coming Soon</h3>
+        		<img src="{{asset('images/11.jpg') }}" class="img-center img-responsive">
+        		<h3 class="home-portfolio">Bikes On Rent In Chennai</h3>
+        	</div>
+        	<div class="col-md-6">
+        		<h3 class="comming-soon berlin">Coming Soon</h3>
+        		<img src="{{asset('images/hyd-bikes-justtrip.jpg') }}" class="img-center img-responsive">
+        		<h3 class="home-portfolio">Bikes On Rent In Hyderabad</h3>
+        	</div>
+        </div>
+    </div>
+</section>
 <section class="space"></section>
 <section class="section clearfix">
     <div class="container">
         <div class="row">
-                        <div class="col-lg-12 col-sm-12 col-xs-12">
+                       {#} <div class="col-lg-12 col-sm-12 col-xs-12">
                         <a id="mylocationtpt" href="{{ path('trip_site_management_bikes_on_rent_tpt')}}"></a>
                         <a id="mylocationblr" href="{{ path('trip_site_management_bikes_on_rent_blr')}}"></a>
                         <input type="hidden" value="" id="lat">
@@ -239,7 +287,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                                   Rent Now
                                                 </a>
                                             {% endif %}
-        								{#<a class="btn aligncenter view-bike"   href="{{ path('trip_site_management_view_bikes',{'url':bike.locationUrl }) }}">Rent Now</a>#}
+        								<a class="btn aligncenter view-bike"   href="{{ path('trip_site_management_view_bikes',{'url':bike.locationUrl }) }}">Rent Now</a>
                                          </div>
                                          <div class="col-md-12" >
                                          </div>
@@ -248,7 +296,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                               </div>
                             </div>
                            {% endfor %}
-                    </div>
+                    </div>{#}
                     {#}
 					 <div class="col-lg-2 col-xs-12 text-center">
 					<img src="{{ asset('images/Sidebar.png') }}">
@@ -258,10 +306,64 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 		{#}
 					
           </div>
+          
+          
+          <div id="myModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+              <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="bike-search-modal-header">
+                  	<div class="row">
+                  		<div class="col-md-3">
+                  			<h4 class="bikes-search-locationspop">Looking To Rent A Bike</h4>
+                    	</div>
+                    	<div class="col-md-2">
+                    		<h4 class="bikes-search-locationspop2">Bike</h4>
+                    	</div>
+                    	<div class="col-md-7">
+                    		<button type="button" class="close" data-dismiss="modal">&times;</button>
+                    	</div>
+                  	</div>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+                    	<div class="col-md-1">
+                    	</div>
+                    	<div class="col-md-11">
+                    		<h4 class="bikes-search-popup-heading1">Find Us In Your City</h4>
+                    		<strong class="strong-city-popup">India</strong>
+                    		<div class="row">
+                    			<div class="col-md-1">
+                    			</div>
+                    			{% for city in bikesmaincity %}
+                    			{% if city.active==1 %}
+                    			<div class="col-md-5">
+                    				<a href="{{ path('trip_site_management_bikes_city',{ 'cityid':city.url,'url':city.suburl }) }}">
+                    				<img src="{{asset('images/'~city.img) }}" class="img-center">
+                    				<h4 class="bikes-search-popup-heading2">{{ city.url }}</h4>
+                    				</a>
+                    			</div>
+                    			{% endif %}
+                    			{% endfor %}
+                    			<div class="col-md-1">
+                    			</div>
+                    		</div>
+                    	</div>
+                    </div>
+                    <div class="row">
+                    	
+                    		<a href=""></a>
+                    	
+                    </div>
+                  </div>
+                  <div class="bike-search-modal-header text-center">
+                    <strong class="footer-cont">Select city to continue</strong>
+                  </div>
+                </div>
+            
+              </div>
+            </div>
     </div>
-   
-        
-        
 </section>
 <section class="section clearfix section-bottom fullscreen background parallax sec-bg">
 		<div class="container">
