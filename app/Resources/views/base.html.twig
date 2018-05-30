@@ -110,19 +110,30 @@ Date();a=s.createElement(o),
                     <nav id="navigation" class="navbar" role="navigation">
                         <div class="navbar-inner">
                         	<div class="row">
-                        		<div class="col-md-2">
+                        		<div class="col-md-4">
                         			<div class="navbar-header">
                                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" style="color:#888">
                                             <span class="sr-only">Toggle navigation</span>
                                             <i class="icon-menu27"></i>
                                         </button>
-        								{% if is_granted('ROLE_ADMIN') %}
-        									<a id="brand" class="clearfix navbar-brand" href="{{ path('trip_site_management_billing_list')}}">
-                                            <img src="{{ asset('images/web-just-trip.png') }}" alt="Trips" style="width: 180px;"></a>
-        								{% else %}
-                                        <a id="brand" class="clearfix navbar-brand-trans" href="{{ path('trip_site_management_homepage')}}" style="margin:0px;">
-                                            <img src="{{ asset('images/web-just-trip.png') }}" alt="Trips" style="width: 180px;"></a>
-        								{% endif %}
+                                        <div class="row">
+                                        	<div class="col-sm-7">
+                                        		{% if is_granted('ROLE_ADMIN') %}
+                									<a id="brand" class="clearfix navbar-brand" href="{{ path('trip_site_management_billing_list')}}">
+                                                    <img src="{{ asset('images/web-just-trip.png') }}" alt="Trips" style="width: 180px;"></a>
+                								{% else %}
+                                                <a id="brand" class="clearfix navbar-brand-trans" href="{{ path('trip_site_management_homepage')}}" style="margin:0px;">
+                                                    <img src="{{ asset('images/web-just-trip.png') }}" alt="Trips" style="width: 180px;"></a>
+                								{% endif %}
+                                        	</div>
+                                        	<div class="col-sm-5">
+                                        		<div class="select-city">
+                                        			<li class="dropdown selectcity-dropdown">
+                                        			{{ render(controller('TripSiteManagementBundle:SiteManagement:bikeslocmenu')) }}
+                                        			</li>  
+                                        		</div>
+                                        	</div>
+                                        </div>
                                     </div><!-- end navbar-header -->
                         		</div>
                         		
@@ -130,7 +141,7 @@ Date();a=s.createElement(o),
                                             <ul class="nav navbar-nav yamm bg-trans">
             									 {% if is_granted('ROLE_ADMIN') is same as(false) %}
                                                 
-                                              
+                                              		
                                                 	<li class="dropdown"><a href="{{ path('trip_site_management_bikes_on_rent') }}">Bikes</a>
                                                     	
             											{% if is_granted('ROLE_SUPER_ADMIN') %}
@@ -171,7 +182,9 @@ Date();a=s.createElement(o),
                                                     </ul>
                                                 </li>
                                                 {% endif %}
-                                                <li><a href="{{ path('trip_site_management_bike_packages') }}">Bike Packages</a></li>
+                                                {% set url="bengaluru" %}
+                                                {% set packageurl="bike-packages-in-bangalore" %}
+                                                <li><a href="{{ path('trip_site_management_bikes_packageurl',{ 'cityid':url,'packageurl':packageurl }) }}">Bike Packages</a></li>
                                                 <li><a href="{{ path('trip_site_management_about') }}">Why justtrip</a></li>
                                                  <li><a href="{{ path('trip_site_management_faq') }}">FAQS</a></li>
                                                  
@@ -192,7 +205,7 @@ Date();a=s.createElement(o),
                                                     <li><a href="{{ path('trip_security_sign_up')}}">Signup</a></li>
                                                         {% endif%}                                 
                                                 </li>
-                                                <li><a href="{{ path('trip_site_management_contact') }}">Contact</a></li>
+                                                {#}<li><a href="{{ path('trip_site_management_contact') }}">Contact</a></li>{#}
                                                {# <li class="sidebar-dropper"><a data-toggle="sidebar" data-target=".sidebar-right" class="noborder" href="#"><i class="icon-menu27"></i></a></li>#}
             									 {% endif %}
                                             </ul><!-- end navbar-right -->
@@ -204,9 +217,7 @@ Date();a=s.createElement(o),
                                 </div><!-- end left -->
                                         </div><!-- end navbar-callopse -->
                         		
-                        		<div class="col-md-2">
-                        			
-                        		</div>
+                        		
                         	</div>
                             
                             

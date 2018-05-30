@@ -654,7 +654,7 @@ class SiteManagementController extends Controller
             'locations' => $locations,
             'bikeslocbase' => $bikeslocbase,
             'bikesmaincity'=> $bikesmaincity,
-            
+            'geturl' => $geturl,
         ));
     }
     
@@ -672,6 +672,30 @@ class SiteManagementController extends Controller
             'locations' => $locations,
             'bikeslocbase' => $bikeslocbase,
             'bikemainloc' => $bikemainloc,
+        ));
+        
+        
+    }
+    public function bikeslocmenuAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        $cityid = $session->get('bikemainloc');
+        $bikesmaincity = $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findAll();
+        return $this->render('TripSiteManagementBundle:Default:bikeslocmenu.html.twig', array(
+            'bikesmaincity'=>$bikesmaincity,
+            'cityid' => $cityid,
+        ));
+        
+        
+    }
+    public function bikeslocpackagemenuAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        $cityid = $session->get('bikemainloc');
+        $bikesmaincity = $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findAll();
+        return $this->render('TripSiteManagementBundle:Default:bikeslocpackagemenu.html.twig', array(
+            'bikesmaincity'=>$bikesmaincity,
+            'cityid' => $cityid,
         ));
         
         

@@ -27,12 +27,15 @@
 			/*$(function(){
 				$('#datetime2').change(function() {
 					var enddateval = $('#datetime2').val();
+					//alert(enddateval);
 					//var date= '21/01/2015';
 					var d=new Date(enddateval.split("/").reverse().join("-"));
 					var dd=d.getDate();
 					var mm=d.getMonth()+1;
 					var yy=d.getFullYear();
-					var newdate=mm+"-"+dd+"-"+yy;
+					var hh=d.getHours();
+					var mm=d.getMinutes();
+					var newdate=mm+"-"+dd+"-"+yy hh":"mm;
 					alert(newdate);
 				    $('#datetime3').handleDtpicker('setMinDate',enddateval);
 				});
@@ -56,12 +59,12 @@
 			});
 </script>
 	<script>
-	
+	/*
 	$( window ).load(function(){
 		var locv=$('#txt_name1').val();
 		$('#trip_sitemanagementbundle_bikes_on_rent_location').val(locv);
 
-	});
+	});*/
 	</script>
 	
 	
@@ -236,7 +239,7 @@
               </div>
             </div>
     </section>
-    <section class="section" data-img-width="1920" data-img-height="586" data-diff="10" style="background: #222;">
+    {#}<section class="section" data-img-width="1920" data-img-height="586" data-diff="10" style="background: #222;">
         <div class="container">
             <div class="row">
             	
@@ -266,5 +269,99 @@
             	</div>
             </div>
         </div><!-- end container -->
-    </section><!-- end section -->
+    </section>{#}<!-- end section -->
+
+		{% if geturl=='tirupathi' %}
+	<section class="section" data-img-width="1920" data-img-height="586" data-diff="10" style="background: #222;">
+        <div class="container">
+            <div class="row">
+				<h1 class="seo-title">BIKE RENTAL IN TIRUPATI</h1>
+				<p class="seo-content">Tirupati is the holy place where daily 1000 of people will come to visit
+Lord Venkateshwara. You can find many Transport facility like bus, private
+taxi, free ttd bus to go to Tirumala from the tirupati airport, railway
+station and bus stops.</p>
+				<p class="seo-content">There are many alternative option all so available like Self driver bikes,
+bike rental service in tirupati for those who need to enjoy the city
+traveling on bike. Very Importantly bike ride from tirupati to Tirumala
+will be too good. Because bike rides can stop the bike at any point to
+enjoy the beauty of the 7 hills.</p>
+				<h1 class="seo-title">TWO WHEELER ON RENT IN TIRUPATI</h1>
+				<p class="seo-content">Two wheeler on rent in tirupati with Justtrip.in (A Bike rental Company)
+is very easy and simple to book. Use the website or download the Justtrip
+app to choose from wide range of two wheeler on rent in tirupati. Customer
+can choose from Gear Bike like Royal Enfield, Bajaj Plusar, Yamaha Fz and
+Non Gear Bike like Honda Active, Honda Duo, Yamaha Fashion on rent in
+tirupati. The bike will be ready and waiting at the hubs. You can track
+the nearest hub from the website or app. We offer all new model bike with
+full tank of petrol, and all spares necessary to cope with a minor
+roadside emergency. Or In that case call us @ +91-9951343444</p>
+			<h1 class="seo-title">BIKES ON RENT IN TIRUPATI</h1>
+			<p class="seo-content">If you love bikes, but hard to find one in tirupati. Now No more worries
+Justtrip (A Bike Rental Company) serves an interesting option to rent a
+bike in tirupati. The bike listed on our website comes with Permit, Road
+Side Assistance, Insurance and GPS tracking. Whether you need for couple
+hours  or require it over many days, week, months we have all kindly
+packages to suit the customer requirement at the very best price. We
+maintain all new model bike.</p>
+			<p class="seo-content">Rent a bike in tirupati make visiting nearby temple and tourist
+attractions easier. Tirupati to srikalahasti 40kms, kanipakam 65kms book a
+bike and access all the major  nearby temples. The main journey of
+tirupati to Tirumala can be made easily and beautiful. Use a Tirupati bike
+rental for a comfortable trip to meet the lord Venkateshwara.</p>
+			<h1 class="seo-title">ABOUT US</h1>
+			<p class="seo-content">Justtrip.in, A Bike Rental Company registered Under AAIRAH TECHNOLOGIES
+PRIVATE LIMTED. Justtrip operating across India. Justtrip has enable bike
+rental more convenience and hassle free through the just trip app or
+website for tech-enabled booking, tracking, hassle free and secure payment
+options.</p>
+			</div>
+		</div>
+	</section>
+	{% else %}
+	<section class="section" data-img-width="1920" data-img-height="586" data-diff="10" style="background: #222;">
+        <div class="container">
+            <div class="row">
+				<h1 class="seo-title">BIKES ON RENT IN BANGALORE</h1>
+				<p class="seo-content">Bangalore Silicon Valley of India. The city is called the IT City because
+of the major fact that it houses the head office of almost the entire
+world's leading IT Companies. Bangalore city is witnessing a shifting
+culture with a lot of youngsters increasing. Most of the IT people and
+students comes to Bangalore from various of part of the world. As a
+result, transportation is one of the major problem in the city with heavy
+traffic. Justtrip.in wants to give the city a more convenience and hassle
+free transportation option via Bikes on rent in Bangalore.</p>
+				<h1 class="seo-title">TWO WHEELER ON RENT IN BANGALORE</h1>
+				<p class="seo-content">Renting a two wheeler in Bangalore is very easy and simple now with a lot
+of two wheeler of rental coming in the city. Use our website
+www.justtrip.in or download the Justtrip app to choose from the wide range
+of two wheelers on rent in Bangalore. Justtrip also offers its users a
+choice of flexible options. Pick up a plan which suits your requirement to
+make the most of every booking. If you are looking for a bike to commute
+to work or college, JUST GO is the right plan for you. JUST GO user can
+pick the bike from one hub and drop at any hub of justtrip across
+Bangalore. Bikes plan if you looking a bike for a day or more go for BIKES
+ON RENT IN BANGALORE. If you're a IT guy and want to rent a bike for a
+week, or month go for BIKES PACKAGES ON RENT IN BANGALORE.</p>
+				<h1 class="seo-title">SELF DRIVE BIKES ON RENT IN BANGALORE</h1>
+				<p class="seo-content">Love bikes. And don't have one to ride on the Bangalore. Don't worry now
+www.justtrip.in can offer you a self-drive bike on rent in Bangalore. We
+make it possible for you to pick your bike based on the travelling needs. 
+www.justtrip.in listed with both non gear bike like HONDA ACTIVA, HONDA
+DIOS, SUZUKI ACCESS, YAMAHA FASCINO, TVS JUPITER and gear bikes like BAJAJ
+PULSAR, YAMAHA FZ, HONDA HORNENT, BAJAJ AVENGER, self-drive bikes on rent
+in Bangalore.</p>
+				<h1 class="seo-title">ABOUT JUSTTRIP</h1>
+				<p class="seo-content">Justtrip.in, A Bike Rental Company registered Under AAIRAH TECHNOLOGIES
+PRIVATE LIMTED operating across India. No more worries whether you have a
+bike or not. Justtrip has enabled bike rental more convenience for the
+rider around the city with more no of hub to pickup andn drop. Self-drive
+bike from Justtrip has given user more control, freedom and hassle free
+booking. Track the bike available near to you by visiting the website
+www.justtrip.in or Download the Justtrip app now. TRACK FIND BOOK RIDE
+WITH JUSTTRIP APP and feel at home wherever you go out.
+				</p>
+			</div>
+		</div>
+	</section>
+	{% endif %}
 {% endblock %}

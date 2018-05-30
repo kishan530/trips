@@ -1677,7 +1677,7 @@ ul.nav.navbar-nav.yamm.bg-trans {
 	background-color: #f8f8f8;
 }
 ul.dropdown-menu.submenu-margin{
-	margin-top: -15px;
+	/*margin-top: -15px;*/
 }
 section.nospace {
     margin-bottom: -67px;
@@ -1841,7 +1841,59 @@ h3.comming-soon {
     position: absolute;
 }
 /*********End Faqs**********/
-
+.select-city {
+    margin: 35px 0px 0px 28px;
+    font-size: 16px;
+    text-align: center;
+}
+.select-city li.dropdown a{
+    list-style: none;
+    text-align: center;
+}
+li.dropdown.selectcity-dropdown i {
+    color: #fff;
+}
+li.dropdown.selectcity-dropdown a{
+    color: #000;
+}
+li.dropdown.selectcity-dropdown span{
+    color: #fff;
+}
+li.dropdown.selectcity-dropdown {
+    list-style: none;
+}
+li.dropdown.selectcity-dropdown-white {
+    list-style: none;
+    margin: -19px 0px 3px -18px
+}
+ul.dropdown-menu.submenu-margin.select-city-submenu li {
+    border: none;
+}
+.select-city-icons {
+    padding: 26px;
+}
+li.dropdown.selectcity-dropdown a:hover{
+    color: #F34F4F;
+}
+li.dropdown.selectcity-dropdown-white a:hover{
+    color: #F34F4F;
+}
+.select-city-icons-position
+{
+	margin-top: 13px;
+    position: absolute;
+}
+.caps
+{
+	    text-transform: capitalize;
+}
+.bg-selectcity {
+    background: transparent;
+    border: 1px solid #F34F4F;
+    padding: 0 4px 0px 0px;
+    box-shadow: none;
+    color:#F34F4F;
+}
 /* End */
 /*********Media Query************/
 @media (max-width:450px)
@@ -1891,6 +1943,13 @@ h3.comming-soon {
 		.bike-background {
     		margin-top: 16px;
 		}
+}
+h1.seo-title {
+    color: #fff;
+    font-size: 18px;
+}
+p.seo-content {
+    color: #fff;
 }
 /**********end***************/
 /****************************************jagadeesh*************************************************/

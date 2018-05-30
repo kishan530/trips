@@ -1,0 +1,15 @@
+<div class="bg-selectcity">
+	<span class="caps">{% if cityid %}{{ cityid }}{% else %}Select City{% endif %} <i class="fa fa-angle-down"></i></span>
+	<ul class="dropdown-menu submenu-margin select-city-submenu" role="menu">
+		{% for city in bikesmaincity %}
+             {% if city.active==1 %}
+             	<li class="selectcity-dropdown-list">
+             		<img src="{{asset('images/'~city.img) }}">
+             		<span class="select-city-icons-position">
+             		<a href="{{ path('trip_site_management_bikes_packageurl',{ 'cityid':city.url,'packageurl':city.packageurl }) }}">
+             		{{ city.url }}</a></span>
+             	</li>
+             {% endif %}
+        {% endfor %}
+	</ul>
+</div>
