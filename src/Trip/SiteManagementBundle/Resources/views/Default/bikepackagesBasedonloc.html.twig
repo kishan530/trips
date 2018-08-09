@@ -242,6 +242,7 @@ $(function(){
         <div class="row">
                         <div class="col-lg-12 col-sm-12 col-xs-12">
                             {% for bike in bikes %} 
+                            {% if bike.active==1 %}
                             <div class="col-md-4" >
                             <div>
                             	<img src="{{asset('images/bikes/'~bike.imgPath) }}" style="width: 100%;">
@@ -252,7 +253,7 @@ $(function(){
                                     <ul class="nav nav-tabs">
                                         {% for index,package in bike.bikespackage %}
                                         {% if loop.index==1 %}
-                                        	<li class="col-md-4 active"><a href="#7days" data-toggle="tab">
+                                        	<li class="col-md-4 active"><a href="#7days{{ bike.id }}" data-toggle="tab">
                                             	<span>{{ package.packagename }}DAYS</span> </a>
                                             </li>
                                         {% elseif loop.index==2 %}
@@ -270,23 +271,23 @@ $(function(){
                                     	<div class="tab-content">
                                             {% for index,package in bike.bikespackage %}
                                             {% if loop.index==1 %}
-                                            	<div class="tab-pane fade in active" id="7days" style="font-size: 12px;">
+                                            	<div class="tab-pane fade in active" id="7days{{ bike.id }}" style="font-size: 12px;">
                                                 	<div class="row">
                         						    	<div class="col-md-6" style="text-align:left;">
                             								<p class="price">Price</p>
                             							    <span class="excess">Km limit</span><br>
                             								<span class="excess">Excess km</span>
-                            								<p class="price">Additional Usage</p>
+                            								{#}<p class="price">Additional Usage</p>
                             								<span class="excess">Additional price/hr</span>
-                            								<span class="excess">Additional km limit</span>
+                            								<span class="excess">Additional km limit</span>{#}
                         								</div>
                                                         <div class="col-md-6" style="text-align:right;">
-                                                        	<p class="pricevalue">{{ package.packageprice }}.0</p>
+                                                        	<p class="pricevalue"><i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageprice }}.0</p>
                                                         	<span class="excess">{{ package.packagekmlimit }}.0 km</span><br>
-                                                        	<span class="excess">{{ package.packageexcesskm }}.0/km</span><br>
-                                                        	<p class="price"></p><br>
-                                                        	<span class="excess">{{ package.packageadditionalpriceday }}.0/hr</span><br>
-                                                        	<span class="excess">{{ package.packageadditionalkmlimit }}.0 km/hr</span>
+                                                        	<span class="excess"><i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageexcesskm }}.0/km</span><br>
+                                                        	{#}<p class="price"></p><br>
+                                                        	<span class="excess"><i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageadditionalpriceday }}.0/hr</span><br>
+                                                        	<span class="excess">{{ package.packageadditionalkmlimit }}.0 km/hr</span>{#}
                                                         </div>
                         							</div>
                         							{#}<div class="row">
@@ -296,11 +297,7 @@ $(function(){
                         							</div>{#}
                         							<div class="row"> 
                                                     	<div class="col-md-12" >
-                                                            {% if (bike.count <= 0) %}
-                                                            	<button class="btn btn-book-now view-bike" disabled>
-                                                                	Sold Out
-                                                                </button>   
-                                                            {% else %}
+                                                           
                                                                 <button class="btn btn-book-now view-bike1 book-now" 
                                                                 bike-name="{{ bike.title }}" 
                                                                 package-name="{{ package.packagename }}" 
@@ -311,7 +308,7 @@ $(function(){
                                                                 	Rent Now
                                                                 </button>
                                                         
-                                                            {% endif %}
+                                                           
                                                             
                                                         </div>
                                          			</div>
@@ -323,17 +320,17 @@ $(function(){
                             								<p class="price">Price</p>
                             							    <span class="excess">Km limit</span><br>
                             								<span class="excess">Excess km</span>
-                            								<p class="price">Additional Usage</p>
+                            								{#}<p class="price">Additional Usage</p>
                             								<span class="excess">Additional price/hr</span>
-                            								<span class="excess">Additional km limit</span>
+                            								<span class="excess">Additional km limit</span>{#}
                         								</div>
                                                         <div class="col-md-6" style="text-align:right;">
-                                                        	<p class="pricevalue">{{ package.packageprice }}.0</p>
+                                                        	<p class="pricevalue"><i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageprice }}.0</p>
                                                         	<span class="excess">{{ package.packagekmlimit }}.0 km</span><br>
-                                                        	<span class="excess">{{ package.packageexcesskm }}.0/km</span><br>
-                                                        	<p class="price"></p><br>
-                                                        	<span class="excess">{{ package.packageadditionalpriceday }}.0/hr</span><br>
-                                                        	<span class="excess">{{ package.packageadditionalkmlimit }}.0 km/hr</span>
+                                                        	<span class="excess"><i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageexcesskm }}.0/km</span><br>
+                                                        	{#}<p class="price"></p><br>
+                                                        	<span class="excess"><i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageadditionalpriceday }}.0/hr</span><br>
+                                                        	<span class="excess"><i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageadditionalkmlimit }}.0 km/hr</span>{#}
                                                         </div>
                         							</div>
                         							{#}<div class="row">
@@ -343,11 +340,7 @@ $(function(){
                         							</div>{#}
                         							<div class="row"> 
                                                     	<div class="col-md-12" >
-                                                            {% if (bike.count <= 0) %}
-                                                            	<button class="btn btn-book-now view-bike" disabled>
-                                                                	Sold Out
-                                                                </button>   
-                                                            {% else %}
+                                                            
                                                                 <button class="btn btn-book-now view-bike1 book-now1" 
                                                                 bike-name="{{ bike.title }}" 
                                                                 package-name="{{ package.packagename }}" 
@@ -358,7 +351,6 @@ $(function(){
                                                                 	Rent Now
                                                                 </button>
                                                         
-                                                            {% endif %}
                                                         </div>
                                          			</div>
                                      			</div>
@@ -369,17 +361,17 @@ $(function(){
                             								<p class="price">Price</p>
                             							    <span class="excess">Km limit</span><br>
                             								<span class="excess">Excess km</span>
-                            								<p class="price">Additional Usage</p>
+                            								{#}<p class="price">Additional Usage</p>
                             								<span class="excess">Additional price/hr</span>
-                            								<span class="excess">Additional km limit</span>
+                            								<span class="excess">Additional km limit</span>{#}
                         								</div>
                                                         <div class="col-md-6" style="text-align:right;">
-                                                        	<p class="pricevalue">{{ package.packageprice }}.0</p>
+                                                        	<p class="pricevalue"><i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageprice }}.0</p>
                                                         	<span class="excess">{{ package.packagekmlimit }}.0 km</span><br>
-                                                        	<span class="excess">{{ package.packageexcesskm }}.0/km</span><br>
-                                                        	<p class="price"></p><br>
-                                                        	<span class="excess">{{ package.packageadditionalpriceday }}.0/hr</span><br>
-                                                        	<span class="excess">{{ package.packageadditionalkmlimit }}.0 km/hr</span>
+                                                        	<span class="excess"><i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageexcesskm }}.0/km</span><br>
+                                                        	{#}<p class="price"></p><br>
+                                                        	<span class="excess"><i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageadditionalpriceday }}.0/hr</span><br>
+                                                        	<span class="excess"><i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageadditionalkmlimit }}.0 km/hr</span>{#}
                                                         </div>
                         							</div>
                         							{#}<div class="row">
@@ -389,11 +381,7 @@ $(function(){
                         							</div>{#}
                                                     <div class="row"> 
                                                     	<div class="col-md-12" >
-                                                            {% if (bike.count <= 0) %}
-                                                            	<button class="btn btn-book-now view-bike" disabled>
-                                                                	Sold Out
-                                                                </button>   
-                                                            {% else %}
+                                                           
                                                                 <button class="btn btn-book-now view-bike1 book-now2" 
                                                                 bike-name="{{ bike.title }}" 
                                                                 package-name="{{ package.packagename }}" 
@@ -404,7 +392,6 @@ $(function(){
                                                                 	Rent Now
                                                                 </button>
                                                         
-                                                            {% endif %}
                                                         </div>
                                          			</div>
                                                 </div>
@@ -413,6 +400,7 @@ $(function(){
                                </div>
                            </div>
                         </div>
+                        {% endif %}
                      {% endfor %}
                      <div class="modal fade myModal7days" id="mymodel7days"  role="dialog">
                       <div class="modal-dialog">

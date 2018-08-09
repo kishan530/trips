@@ -37,6 +37,7 @@
 	<table id="" class="myListbikes" style="background-color:#F3F3F3;" border="0">
         <tbody>
 {% for bike in bike %}
+{% if bike.active==1 %}
 <tr>
                 <td style="background: #fff;">
 <input type="checkbox" name="check_list_bikes_package[]" value="{{ bike.id }}" onclick="this.form.submit()"
@@ -44,6 +45,7 @@
 <label for="">{{ bike.title }}</label><br>
 </td>
                </tr>
+               {% endif %}
             {% endfor %}
     	</tbody>
     </table>

@@ -50,11 +50,12 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface, Auth
         elseif ($this->security->isGranted('ROLE_USER'))
         {
             // redirect the user to where they were before the login process begun.
-          
-        	$selectedService = $session->get('selected');
+          die();
+          $url = $this->router->generate('trip_booking_engine_booking_bike');
+        	/*$selectedService = $session->get('selected');
         		if($selectedService)
         		{
-        			$url = $this->router->generate('trip_booking_engine_book');
+        			$url = $this->router->generate('trip_booking_engine_booking_bike');
         			
         		}
         		else{
@@ -65,7 +66,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface, Auth
 					} else {
 						$url = $referer;
 					}
-        		}
+        		}*/
 				
 
                   

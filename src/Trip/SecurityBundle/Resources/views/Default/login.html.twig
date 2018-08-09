@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block body %}
-
+{#}
     <section class="section clearfix">
 				<div class="container">
 					<div class="row sidebar-page">
@@ -22,8 +22,6 @@
 						</div>
 						<div class="col-md-4 page-content">
 						
-						
-							
 							<div id="login" class="login">
 							<div class="row">
 							<div class="hotel-title">
@@ -93,8 +91,66 @@
 					</div>
 				</div>
        
+</section>{#}
+<section class="section clearfix">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4"></div>
+			<div class="col-md-4">
+				<div class="bike-background sign-page-card">
+					<div class="tab" role="tabpanel">
+							<div class="row">
+								<div class="col-md-12">
+									 <!-- Nav tabs -->
+                                    <ul class="nav nav-tabs" role="tablist" style="border:none;">
+     
+                                    	 <li role="presentation" class="active"><a href="#Section1"  aria-controls="profile" role="tab" data-toggle="tab">Login</a></li>
+    									<li role="presentation" style="float: right;"><a href="#Section2" aria-controls="profile" role="tab" data-toggle="tab">SignUp</a></li>                                	
+                                      
+                                    </ul>
+                                    <!-- Tab panes -->
+								</div>
+							</div>
+                               
+                                <div class="tab-content tabs">
+                                	<div role="tabpanel" class="tab-pane fade in active" id="Section1" style="font-size: 12px;">
+                                      <div id="login" class="login">
+            							<div class="row">
+            								<div class="hotel-title">
+            							         {#}<h5 class="classic-title"><span>{% trans %}Login{% endtrans %}</span></h5>{#}
+            							     </div>
+            							</div>
+            							
+            							{% if app.session.get('loginfail')| length > 0 %}
+            								{% include "FOSUserBundle:Security:login.html.twig" %}
+            							{% else %}
+            									{{ render(controller('FOSUserBundle:Security:login')) }}			
+            							{% endif %} 
+            							 
+            							</div>
+                                     
+                                   </div>
+                                   <div role="tabpanel" class="tab-pane fade in" id="Section2" style="font-size: 12px; padding:10px">
+                                      
+                                      		<div id="reg" class="reg">
+                    							{% if app.session.get('regFail')| length > 0 %}
+                    									{% include "FOSUserBundle:Registration:register.html.twig" %}
+                    							{% else %}
+                    									 {{ render(controller('FOSUserBundle:Registration:register')) }} 			
+                    							{% endif %} 
+                    							 
+                    						</div>
+                                      
+                                   </div>
+                              </div>
+						</div>
+							
+				</div>
+			</div>
+			<div class="col-md-4"></div>
+		</div>
+	</div>
 </section>
-
 {% endblock %}
 
 

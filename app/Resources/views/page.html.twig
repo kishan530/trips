@@ -4,27 +4,40 @@
 {% endblock %}
  
  {% block banner %}
- <header class="header  " >
+ <header class="header header-shawod">
         <div class="menu-container">
             <div class="container" style="padding-right: 0px;padding-left: 0px;">
                 <div class="menu-wrapper">
                     <nav id="navigation" class="navbar" role="navigation">
                         <div class="navbar-inner">
                         	<div class="row">
-                        		<div class="col-md-2">
+                        		<div class="col-md-4">
                         			<div class="navbar-header">
                                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                                             <span class="sr-only">Toggle navigation</span>
                                             <i class="icon-menu27"></i>
                                         </button>
-        								{% if is_granted('ROLE_ADMIN') %}
-        									<a id="brand" class="clearfix navbar-brand" href="{{ path('trip_site_management_billing_list')}}">
-                                            <img src="{{ asset('images/Justtrip-web-white-bg.png') }}" alt="Trips"></a>
-        								{% else %}
-                                        <a id="brand" class="clearfix navbar-brand" href="{{ path('trip_site_management_homepage')}}">
-                                            <img src="{{ asset('images/Justtrip-web-white-bg.png') }}" alt="Trips"></a>
-        								{% endif %}
+                                        <div calss="row">
+                                        	<div class="col-sm-7">
+                                        		{% if is_granted('ROLE_ADMIN') %}
+                									<a id="brand" class="clearfix navbar-brand" href="{{ path('trip_site_management_billing_list')}}">
+                                                    <img src="{{ asset('images/Justtrip-web-white-bg.png') }}" alt="Trips" style="width:155px;height:63px;"></a>
+                								{% else %}
+                                                <a id="brand" class="clearfix navbar-brand" href="{{ path('trip_site_management_homepage')}}">
+                                                    <img src="{{ asset('images/Justtrip-web-white-bg.png') }}" alt="Trips" style="width:155px;height:63px;"></a>
+                								{% endif %}
+                                        	</div>
+                                        	<div class="col-sm-5">
+                                        		<div class="select-city">
+                                        			<li class="dropdown selectcity-dropdown-white">
+                                        			{{ render(controller('TripSiteManagementBundle:SiteManagement:bikeslocpackagemenu')) }}
+                                        			</li>
+                                        		</div>
+                                        	</div>
+                                        </div>
+        								
                                     </div><!-- end navbar-header -->
+                                    
                         		</div>
                         		<div class="col-md-8">
                         				<div id="navbar-collapse" class="navbar-right navbar-collapse collapse clearfix">
@@ -32,7 +45,7 @@
             									 {% if is_granted('ROLE_ADMIN') is same as(false) %}
                                                 
                                                
-                                                	<li class="dropdown"><a href="{{ path('trip_site_management_bikes_on_rent') }}" class="dropdown-toggle" data-toggle="dropdown">Bikes</a>
+                                                	<li class="dropdown"><a href="{{ path('trip_site_management_bikes_on_rent') }}">Bikes</a>
                                                     	
             											{% if is_granted('ROLE_SUPER_ADMIN') %}
             											<ul class="dropdown-menu" role="menu">
@@ -73,7 +86,9 @@
                                                     </ul>
                                                 </li>
                                                 {% endif %}
-                                                <li><a href="{{ path('trip_site_management_bike_packages') }}">Bike Packages</a></li>
+                                                {% set url="bengaluru" %}
+                                                {% set packageurl="bike-packages-in-bangalore" %}
+                                                <li><a href="{{ path('trip_site_management_bikes_packageurl',{ 'cityid':url,'packageurl':packageurl }) }}">Bike Packages</a></li>
                                                 <li><a href="{{ path('trip_site_management_about') }}">Why justtrip</a></li>
                                                  <li><a href="{{ path('trip_site_management_faq') }}">FAQS</a></li>
                                                  
@@ -98,15 +113,13 @@
                                                {# <li class="sidebar-dropper"><a data-toggle="sidebar" data-target=".sidebar-right" class="noborder" href="#"><i class="icon-menu27"></i></a></li>#}
             									 {% endif %}
                                             </ul><!-- end navbar-right -->
-                                        </div><!-- end navbar-callopse -->
-                        		</div>
-                        		<div class="col-md-2">
-                        			<div class="pull-right">
+                                            <div class="pull-right">
                         			<p class="new-header-mobile-reachus"><i class="icon-telephone5"></i> Reach Us</p>
                         			<p class="new-header-mobile"> +91-9663133008</p>
                         			
                                     
                                 </div><!-- end left -->
+                                        </div><!-- end navbar-callopse -->
                         		</div>
                         	</div>
                             

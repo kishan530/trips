@@ -1,5 +1,12 @@
-<div class="bike-book" style="padding:150px 0px;">
-		<h2 class="sub-title-bikesonrent"> Rent A Bike In {{ bikemainloc }}</h2>
+<div class="bike-book homebanner-padding">
+{% if bikemainloc %}
+		<h2 class="sub-title-bikesonrent"> 
+		Rent A Bike In 
+		    {{ bikemainloc }}
+		</h2>
+{% else %}
+		<h2 class="sub-title-bikesonrent"> Rent A Bike In Bengaluru</h2>
+{% endif %}
 		<input type="hidden" value="{{ bikemainloc }}" id="txt_name1">
         {#}<img src="{{asset('images/bikes/s2.jpg') }}" style="width: 100%;">{#}
         <div class="container bike-price-book1">
@@ -37,7 +44,11 @@
                              {{ form_errors(form.date) }}
                              {{ form_errors(form.returndate) }}
 								<div class="col-md-3 bikes-form-font sub-book3">
-                             	 <a type="button" class="btn btn-info btn-lg location-click-popup" data-toggle="modal" data-target="#myModal">{{ bikemainloc }}</a>
+								{% if bikemainloc %}
+                             	 <a type="button" class="btn btn-info btn-lg location-click-popup">{{ bikemainloc }}</a>
+                                {% else %}
+                                <a type="button" class="btn btn-info btn-lg location-click-popup">Bengaluru</a>
+                                {% endif %}
                                 </div>
                              	<div class="col-md-3 bikes-form-font sub-book3">
                                 {{ form_widget(form.date, {'id': 'datetime2'}) }}

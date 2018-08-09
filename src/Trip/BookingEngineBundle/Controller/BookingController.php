@@ -75,10 +75,10 @@ class BookingController extends Controller
     }
     public function footerAction(){
         $em = $this->getDoctrine()->getManager();
-        $bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
+        $bikesblr = $em->getRepository('TripSiteManagementBundle:BikesCity')->findAll();
         $cities = $em->getRepository('TripSiteManagementBundle:City')->findAll();
         return $this->render('TripBookingEngineBundle:Default:footerTabs.html.twig', array(
-            'bikes' => $bikes,
+            'bikesblr' => $bikesblr,
             'cities'=> $cities,
             
         ));
@@ -281,14 +281,15 @@ class BookingController extends Controller
             $bikesbookings = $em->getRepository('TripBookingEngineBundle:BikeBooking')->findAll();
             $mail = "Dear $name <br> Your Booking has been Successfully completed.Your Booking Id is $bookingId";
             $adminMail = "Dear Admin, $name <br> has Done Booking Successfully and Booking Id is $bookingId";
-            
+            $bikes =$em->getRepository('TripSiteManagementBundle:bikes')->findAll();
              $mail = $this->renderView(
-             'TripBookingEngineBundle:Mail:mailer.html.twig',
+             'TripBookingEngineBundle:Mail:bikemailer.html.twig',
              array(
              'customer'   => $customer,
              'booking'=>$booking,
-             'bikesbookings' => $bikesbookings
+             'bikesbookings' => $bikesbookings,
               //'service'=>$booking->getBikeBooking()[0],
+                 'bikes' => $bikes,
              )
              );
            
@@ -309,6 +310,10 @@ class BookingController extends Controller
             'service'=>$selectedService,
             'filter'=>$searchFilter,
             'status'=>$status,
+            'customer'   => $customer,
+            'booking'=>$booking,
+            'bikes' => $bikes,
+            'bikesbookings' => $bikesbookings
         ));
         
     }
@@ -554,8 +559,8 @@ class BookingController extends Controller
         $title = $request->get('title');
         $pDate = $request->get('pDate');
         $rDate = $request->get('rDate');
-       $price = $request->get('price');
-        //$price=5;
+      // $price = $request->get('price');
+        $price=1;
         $leftdays = $request->get('leftdays');
         $hours = $request->get('hours');
         $location = $request->get('location');

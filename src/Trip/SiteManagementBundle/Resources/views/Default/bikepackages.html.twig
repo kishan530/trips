@@ -207,13 +207,13 @@ $(function(){
 </script>
 
 	<script type="text/javascript">
-	$(window).load(function(){        
+	/*$(window).load(function(){        
    $('#myModal').modal('show');
    $("#myModal").modal({
        backdrop: 'static',
        keyboard: false
    });
-    }); 
+    });*/
 	</script>
 {% endblock %}
 
@@ -533,7 +533,7 @@ $(function(){
                   <div class="bike-search-modal-header">
                   	<div class="row">
                   		<div class="col-md-3">
-                  			<h4 class="bikes-search-locationspop">I want to rent a</h4>
+                  			<h4 class="bikes-search-locationspop">Looking To Rent A Bike</h4>
                     	</div>
                     	<div class="col-md-2">
                     		<h4 class="bikes-search-locationspop2">Bike</h4>
@@ -548,23 +548,22 @@ $(function(){
                     	<div class="col-md-1">
                     	</div>
                     	<div class="col-md-11">
-                    		<h4 class="bikes-search-popup-heading1">Popular Cities</h4>
+                    		<h4 class="bikes-search-popup-heading1">Find Us In Your City</h4>
                     		<strong class="strong-city-popup">India</strong>
                     		<div class="row">
                     			<div class="col-md-1">
                     			</div>
+                    			{% for city in bikesmaincity %}
+                    			{% if city.active==1 %}
                     			<div class="col-md-5">
-                    				<a href="{{ path('trip_site_management_bike_packages_tpt')}}">
-                    				<img src="{{asset('images/justtrip-tpt-bike.png') }}" class="img-center">
-                    				<h4 class="bikes-search-popup-heading2">Tirupati</h4>
+                    				<a href="{{ path('trip_site_management_bikes_packageurl',{ 'cityid':city.url,'packageurl':city.packageurl }) }}">
+                    				<img src="{{asset('images/'~city.img) }}" class="img-center">
+                    				<h4 class="bikes-search-popup-heading2">{{ city.url }}</h4>
                     				</a>
                     			</div>
-                    			<div class="col-md-5">
-                    				<a href="{{ path('trip_site_management_bike_packages_blr')}}">
-                    				<img src="{{asset('images/justtrip-blr-bikes.png') }}" class="img-center">
-                    				<h4 class="bikes-search-popup-heading2">Bangalore</h4>
-                    				</a>
-                    			</div>
+                    			{% endif %}
+                    			{% endfor %}
+                    			
                     			<div class="col-md-1">
                     			</div>
                     		</div>
