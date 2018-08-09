@@ -15,9 +15,9 @@ class CustomerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            //->add('name')
-            //->add('email','email')
-           // ->add('mobile')
+        ->add('name')
+            ->add('email','email')
+            ->add('mobile')
             ->add('couponCode')
           ->add('haveCoupon', 'checkbox', array(
     				'label'     => 'I have an Coupon code?',

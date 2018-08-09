@@ -154,6 +154,12 @@ class bikes
      * @var string
      */
     private $packagelist;
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="sequence", type="integer")
+     */
+    private $sequence;
     
     public function __construct() {
         $this->bikespackage = new ArrayCollection();
@@ -478,21 +484,7 @@ class bikes
     {
         $this->bikescityarea = $bikescityarea;
     }
-    /**
-     * @return boolean
-     */
-    public function isActive()
-    {
-        return $this->active;
-    }
-
-    /**
-     * @param boolean $active
-     */
-    public function setActive($active)
-    {
-        $this->active = $active;
-    }
+    
     /**
      * @return integer
      */
@@ -508,7 +500,21 @@ class bikes
     {
         $this->packageoffer = $packageoffer;
     }
-
+    /**
+     * @return boolean
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }
+    
+    /**
+     * @param boolean $active
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+    }
     /**
      * @return integer
      */
@@ -540,8 +546,22 @@ class bikes
     {
         $this->excess = $excess;
     }
-
-
+    /**
+     * @return integer
+     */
+    public function getSequence()
+    {
+        return $this->sequence;
+    }
+    
+    /**
+     * @param integer $sequence
+     */
+    public function setSequence($sequence)
+    {
+        $this->sequence = $sequence;
+    }
+    
 
 
 

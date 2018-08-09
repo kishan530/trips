@@ -10,40 +10,6 @@
 {% block javascripts %}
 <script src="{{ asset('js/jquery.timepicker.min.js') }}"></script>
 <script>
-$('.preferTime').timepicker({ 'scrollDefault': 'now' });
-    
-         $('.adults').click(function(e){		
-			e.preventDefault(); //STOP default action 
-			 var id = $(this).attr('id');
-			 var value = parseInt($(this).attr('value'));
-             var numAdult = $(this).siblings("input[name=numAdult]");
-			 var adults =parseInt(numAdult.val());
-			 if (isNaN(adults)) { 
-				 adults= 0
-	            } 
-			 if(id=='decrement'){
-				 adults-=1;
-				 if(adults>=value) numAdult.val(adults); else exit();
-			  }else{
-				adults+=1;
-			    if(adults<=20)  numAdult.val(adults); else exit();
-				}	
-	    });
-    
-         $('.vehicle-icon').click(function(e){		
-			e.preventDefault(); //STOP default action 
-			 var id = $(this).attr('id');
-			 var price = $(this).attr('value');
-             var package = parseInt($(this).attr('title'));
-             $('.vehicle'+package).removeClass('active');
-             $(this).addClass('active');
-             $('#vehicleIndex'+package).val(id);
-             $('#price'+package).html(price);
-
-
-	       });
-         </script>
-<script>
          $(".book-now").click(function(e){
         	 e.preventDefault(); //STOP default action 
         	 var bikeName = $(this).attr('bike-name');

@@ -1,4 +1,11 @@
- {% extends 'TripBookingEngineBundle:Default:bookingBike.html.twig' %}
+{% extends 'page.html.twig' %}
+ {% block meta %}
+    <meta name="keywords" content="Justtrip.in">
+    <meta name="description" content="Complete the booking with justtrip now. Once the booking is done.
+Customer will receive a complete booking comfirmation mail and sms with
+all the selected details.">  
+{% endblock %}
+{% block title %} Reserve The Bike Now | Justtrip {% endblock %}
 {% block breadcrumb %}
                     <div class="c1 breadcrumb text-left">
                         <div><span class="glyphicon glyphicon-home" style="padding:5px;"></span><a href="{{ path('trip_site_management_homepage')}}">Home</a>
@@ -27,59 +34,280 @@
 {% endblock %}
  {% block details %}
 
-<li class="booking-price clearfix">
-       <div><span>Total Amount</span>
-       <span> <i class="fa fa-inr"></i> <em > {{ price }} </em></span></div>                                        
-</li> 
-<hr>
-{#}<li class="booking-price clearfix">
-	<div><span>You Have Been Selected {{ paymentMode }} % Payment Mode</span>
-       <span> <i class="fa fa-inr"></i> <em > {{ amountToPayadv }} Plus Taxes</em></span>       
-       </div>  
-</li>{#}
+{% block body %}
 
-<li class="booking-price clearfix">
-       <span>SGST (2.5%)</span>
-       <span>+ <i class="fa fa-inr"></i> <em > {{ booking.swachBharthCess }} </em></span>
-                                                        
-</li>  
+    <section class="section clearfix" style="padding-top:15px">
+        <div class="container">
+            <div class="row">
+                <div id="fullwidth" class="col-sm-12">
 
-<hr>
-<li class="booking-price clearfix">
-       <span>CGST (2.5%)</span>
-       <span>+ <i class="fa fa-inr"></i> <em > {{ booking.krishiKalyanCess }} </em></span>
-                                                        
-</li> 
-<hr>
-{#}<li class="booking-price clearfix">
-       <span>Total Amount</span>
-       <span> <i class="fa fa-inr"></i> <em > {{ finalPrice }} </em></span>
-                                                        
-</li> 
-<hr>{#}
-<li class="booking-price clearfix">
-	<span>Amount To Pay</span>
-   <span><em ><h5 class="bike-price"> RS. {{ amountToPay }}</h5></em></span>
-</li>
-<li>
-	<div class="col-md-12">
-		<div class="col-md-4">
-		</div>
-		<div class="col-md-4">
-			<form action="{{ paymentLink['action'] }}"  method="post">
+                    <!-- START CONTENT -->
+                    <div class="row">
+                        <div id="content" class="col-md-12 col-sm-12 col-xs-12">
 
-                    {% for key,option in paymentLink  %}
-                    
-                    <input type="hidden" name="{{ key }}" value="{{ option }}">
-                    {% endfor %}
-                    <input type="submit" class="btn btn-primary pull-right bike-booknow" style="" value="Pay Now" >
-     		   </form> 
-		
-		</div>
-		<div class="col-md-4">
-		</div>
-	</div>
+                            <div class="price-range text-center clearfix row">
+                                <div class="col-md-11">
+									{#}<ul class="nav nav-pills nav-justified setup-panel">
+									
+									<li class="disabled {% if step=='personal' %}active{% endif %}"><a href="#personal">
+										<span class="badge">1</span>
+										 <h4 class="list-group-item-heading">Review Your Booking</h4>
+									</a></li>
+                                       
+									<li class="disabled {% if step=='payment' %}active{% endif %}"><a href="#payment">
+										<span class="badge">2</span>
+										 <h4 class="list-group-item-heading">Payment</h4>
+									</a></li>
+									</ul>{#}
+                                  {#}  <img src="{{ asset('images/progress.png') }}" class="img-responsive" alt=""> {#}
+                                </div><!-- end price-range -->
+                            </div><!-- end price-range -->
+
+                            <div class="clearfix"></div>
+								<div class="row">
+                                    <div class="col-sm-8">
+                                    <div class="summary-bg"><p class="summary-text">SUMMARY</p></div>
+                                    <div class="col-sm-12 bike-background-new-profile price-details clearfix">
+										<div class="row">
+											<div class="col-sm-4">
+												<div class="height">
+												</div>
+												<img src="{{asset('images/bikes/'~package.imgPath) }}" style="width: 100%;display: block;margin: 0 auto;">
+												<h4 class="bold600 text-center booking-bike-name">{{ filter }}</h4>
+												<div class="height">
+												</div>
+											</div>
+											<div class="col-sm-8">
+												<div class="row">
+													<div class="col-sm-5">
+														
+														<h5 class="book-dates">{{ selected }}</h5>
+													</div>
+													<div class="col-sm-2">
+													 To
+													</div>
+													<div class="col-sm-5">
+														
+														<h5 class="book-dates">{{ locations }}</h5>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-sm-12">
+													<hr class="hr-nomargin">
+													</div>
+													<div class="col-sm-12">
+														<h6 class="locations-details">{{ location }} ({{ bikearea }})</h6>
+													</div>
+													<div class="col-sm-12">
+													<hr class="hr-nomargin">
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-12">
+                                                		
+                                                    	
+                                                   		  
+                                                	</div>
+												</div>
+											</div>
+										</div>
+									</div>
+                                    
+                                    
+                                
+                                <div class="col-sm-12  clearfix">
+                                       
+                                        
+                                        <div class="row booking-price-details no">
+                                        	
+                                            
+                                            
+											{#<div class="col-md-4 col-sm-4 col-xs-12">
+                                                <button type="submit" class="btn btn-primary btn-block btn-lg"> BOOK NOW</button>
+                                            </div>#}
+                                            
+                                            {# <input type="text" class="form-control make-margin" placeholder="Country of Passport">  #}
+                                           
+                                        </div>
+                                       
+                                    </div><!-- end col -->
+                                    
+                                  </div>  
+                                    
+                                <div class="col-sm-4">
+                                <div class="summary-bg"><p class="summary-text">Fare Details</p></div>
+                                <div class="bike-background-new-profile price-details clearfix">
+                                <div class="hotel-title">
+                                    <h5></h5>
+                                </div>
+                                <div class="row booking-price-details">
+                                    <div class="col-md-12">
+                                        
+                                        <div class="row">
+                                           
+                                            <div class="col-sm-12">
+                                               
+													<div class="col-sm-12">
+                                                       <div><span>Total Amount</span>
+      												   	<span class="bikepay-breakups"> <i class="fa fa-inr"></i> <em > {{ price }} </em></span>
+      												   </div>
+      												   <div>
+      												   	 <span>SGST (9.0%)</span>
+      													 <span class="bikepay-breakups">+ <i class="fa fa-inr"></i> <em > {{ booking.swachBharthCess }} </em></span>
+      												   </div>
+      												   <div>
+      												   	<span>CGST (9.0%)</span>
+       													<span class="bikepay-breakups">+ <i class="fa fa-inr"></i> <em > {{ booking.krishiKalyanCess }} </em></span>
+      												   </div>
+      													<div>
+      														
+      													</div>
+        												<div class="col-md-12">
+        												<hr>
+        												<h6 class="bike-price"><span class="amount-to-pay">Amount To Pay</span> RS. {{ amountToPay }}</h6>
+        												<h3 class="contactdeatils center">TERMS & CONDITIONS</h3>
+        													<ul>
+        														<li style="font-size: 13px;font-family: calibri;color:#888;">Toll/State tax, Parking fee, etc. excluded</li>
+        													</ul>
+        												<hr>
+        												
+        													{#}<div class="col-md-12 col-sm-12 col-xs-12">
+                                                   		  	<div class="bikes-accept-terms"></div>
+                                                            {{ form_label(form.paymentMode) }} 
+                                                            </div>
+                                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                {{ form_widget(form.paymentMode) }} 
+                                                            </div>{#}
+                                                            <div class="col-md-12 col-sm-12 col-xs-12 terms-list">
+                                                        	<div class="bikes-accept-terms"></div>
+                                                            <input type="checkbox" required="required" name="cb" class="remove_margin">  {% trans %} By clicking this button, I understand & agree with the {% endtrans%} <a target="_blank" href="{{ path('trip_site_management_bikes_terms') }}">{% trans %} Cancellation Policy, the Privacy Policy & Terms & Conditions{% endtrans%} </a> of this Justtrip Bike Rental service.
+                                                       		 </div>
+                                                       		 <form action="{{ paymentLink['action'] }}"  method="post">
+
+                                                            {% for key,option in paymentLink  %}
+                                                            
+                                                            <input type="hidden" name="{{ key }}" value="{{ option }}">
+                                                            {% endfor %}
+                                                            {#}<input type="submit" class="bike-booknow" style="" value="Pay With Pay U" >{#}
+                                             		   </form> 
+                                             		   <button class="bike-booknow" id="rzp-button1">Pay Now</button>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<form name='razorpayform' action="{{ path('trip_booking_engine_success') }}" method="POST">
+    <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
+     <input type="hidden" name="razorpay_order_id" id="razorpay_order_id" value="{{ razorData.order_id }}">
+    <input type="hidden" name="razorpay_signature"  id="razorpay_signature" >
 	
-</li>
+</form>
+ <input type="hidden" name="razorpay_options" value="{{ razorJson}}" id="razorpay_options" >
+<script>
+// Checkout details as a json
+//var options = document.getElementById('razorpay_options').value;
+var options = {{ razorJson|raw }}
+
+/**
+ * The entire list of Checkout fields is available at
+ * https://docs.razorpay.com/docs/checkout-form#checkout-fields
+ */
+options.handler = function (response){
+    document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+    document.getElementById('razorpay_signature').value = response.razorpay_signature;
+    document.razorpayform.submit();
+};
+
+// Boolean whether to show image inside a white frame. (default: true)
+options.theme.image_padding = false;
+
+options.modal = {
+    ondismiss: function() {
+        console.log("This code runs when the popup is closed");
+    },
+    // Boolean indicating whether pressing escape key 
+    // should close the checkout form. (default: true)
+    escape: true,
+    // Boolean indicating whether clicking translucent blank
+    // space outside checkout form should close the form. (default: false)
+    backdropclose: false
+};
+
+var rzp = new Razorpay(options);
+
+document.getElementById('rzp-button1').onclick = function(e){
+    rzp.open();
+    e.preventDefault();
+}
+</script>
+                                                        {#}<button type="submit" class="bike-booknow" value="" name="mode">BooK Now</button>{#}
+                                                        {#}<p class="dec-50">Or you may opt to</p>
+                                                      	<button type="submit" class="bike-booknow-50" value="50" name="mode">Pay 50% Now & Book</button>{#}
+        												</div>
+											
+                                            		</div><!-- end col -->
+											 
+                                    
+                                                <ul class="clearfix">
+                                                  
+                                                   
+                                                </ul>
+                                            </div><!-- end col -->
+											{#<div class="col-md-12">
+                                            <a class="sm-links" data-toggle="modal" data-target="#terms" href="#terms">View Fare Rules</a>
+                                            </div>#}
+                                        </div><!-- end row -->
+                                        
+                                            
+                                           
+                                       
+                                    </div><!-- end col -->
+
+                                    <div class="col-md-6">
+                                      
+                                    </div><!-- end col -->
+                                </div><!-- end row -->
+                            </div><!-- end pricing-details -->
+                                    </div>
+                                    
+                                    
+								
+
+
+                                    
+                                </div><!-- end row -->
+                           
+                        </div><!-- end col -->
+                    </div><!-- end row -->
+                    <!-- END CONTENT --> 
+                    
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+							 <div class="modal fade" id="terms" role="dialog">
+								    <div class="modal-dialog">
+								    
+								      <!-- Modal content-->
+								      <div class="modal-content">
+								        <div class="modal-header">
+								          <button type="button" class="close" data-dismiss="modal">&times;</button>
+								          <h4 class="modal-title">Terms and Conditions</h4>
+								        </div>
+								        <div class="modal-body">
+                                            <p> Toll , Parking, Food allowances and  State Permit extra</p>
+                                            <p>In ghat road A/C will not function.</p>
+                                            <p>Once the Journey is started, Tickets are not refundable and unchangeable.</p>
+                                            
+								             
+                                    
+                                    
+
+								        </div>
+								        
+								      </div>
+								      
+								    </div>
+								  </div>
+
+{% endblock %}
                                        
 {% endblock %}

@@ -1,4 +1,4 @@
-<div class="bike-book homebanner-padding">
+<div class="bike-book homebanner-padding clearfix">
 {% if bikemainloc %}
 		<h2 class="sub-title-bikesonrent"> 
 		Rent A Bike In 
@@ -44,11 +44,19 @@
                              {{ form_errors(form.date) }}
                              {{ form_errors(form.returndate) }}
 								<div class="col-md-3 bikes-form-font sub-book3">
-								{% if bikemainloc %}
-                             	 <a type="button" class="btn btn-info btn-lg location-click-popup">{{ bikemainloc }}</a>
-                                {% else %}
-                                <a type="button" class="btn btn-info btn-lg location-click-popup">Bengaluru</a>
-                                {% endif %}
+										<div class="dropdown shaow">
+                                                        <div class="select-city-height dropdown-toggle" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            {% if filtermainloc %}
+                                                             <span class="select-city caps">{{ filtermainloc }} <i class="fa fa-angle-down"></i></span>
+                                                            {% else %}
+                                                             <span class="select-city caps">Select City <i class="fa fa-angle-down"></i></span>
+                                                            {% endif %}
+                                                        </div> 
+                                                        <div class="dropdown-menu select-city-links" aria-labelledby="dropdownMenuLink">
+                                                             <a  href="{{ path('trip_site_management_bikes_city_sybmit') }}?city=1&name=tirupathi" class="caps bikes-search-popup-heading2 text-center resview-bikes-pop-loc">tirupathi</a>	<br>
+                                                             <a  href="{{ path('trip_site_management_bikes_city_sybmit') }}?city=2&name=bengaluru" class="caps bikes-search-popup-heading2 text-center resview-bikes-pop-loc">bengaluru</a>	<br>
+                                                         </div>
+                                                    </div>			
                                 </div>
                              	<div class="col-md-3 bikes-form-font sub-book3">
                                 {{ form_widget(form.date, {'id': 'datetime2'}) }}
@@ -67,7 +75,7 @@
        			</div>
        			{#}<h3 class="home-banner-offer">Just go</h3>{#}
        			<img src="{{ asset('images/Just-Go-web-dark-bg.png') }}" alt="Trips" style="width: 180px;">
-    			<p class="home-banner-offer-p">Minute basis at Rs 2/Km*</p>
+    			<p class="home-banner-offer-p">Rent A Bike @ Rs.3/Km*</p>
         </div>  
     </div>
     <div style="padding: 20px 0px;">

@@ -3,6 +3,7 @@
 namespace Trip\SiteManagementBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Trip\SiteManagementBundle\Entity\City;
 use Trip\SiteManagementBundle\Form\LocationType;
 use Trip\SiteManagementBundle\Entity\Contact;
@@ -293,7 +294,6 @@ class SiteManagementController extends Controller
 		$session = $request->getSession();
 		$session->remove('cancel_error');
 		$session->remove('vrify_error');
-
         $cancel = new Cancel();
         $form   = $this->createCancelForm($cancel);
 
@@ -560,18 +560,59 @@ class SiteManagementController extends Controller
      
    
 	 //************Bikes *******************//
-    public function bikescityAction(Request $request,$cityid){
+    public function bikescityAction(Request $request){
         $em = $this->getDoctrine()->getManager();
         $session = $request->getSession();
-        $session->set('geturl',$cityid);
-        echo $cityid;
-        die();
-        return $this->render('TripSiteManagementBundle:Default:bikesonRent.html.twig',array(
+        $cityId = $request->get('city');
+        $cityName = $request->get('name');
+        $cityView = $request->get('view');
+        $city = array('id'=>$cityId,'cityName'=>$cityName,'cityView'=>$cityView);
+        $session->set('selected-city',$city);
+        setcookie('city',json_encode($city));
+       // $_SESSION[$cityaction]; 
+        
+        $referer = $request->headers->get('referer');
+        //echo var_dump($referer);
+       // exit();
+        return new RedirectResponse($referer);
+       return $this->render('TripSiteManagementBundle:Default:bikesonRent.html.twig',array(
            
+        ));
+    }
+    
+    public function bikescitySelectAction(Request $request){
+        
+        
+        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        $cityaction = $request->get('filtermainloc');
+        //$session->set('geturl',$cityid);
+        setcookie($cityaction);
+        
+        //die();
+        return $this->render('TripSiteManagementBundle:Default:bikesonRent.html.twig',array(
+            
         ));
     }
     public function bikesonRentAction(Request $request){
     	$em = $this->getDoctrine()->getManager();
+    	$session = $request->getSession();
+    	$selectedCity = $session->get('selected-city');
+    	// echo var_dump($selectedCity);
+    	//exit();
+    	if(!is_null($selectedCity)){
+    	    $selectedCityName = $selectedCity['cityName'];
+    	    $selectedCityId = $selectedCity['id'];
+    	    
+    	    
+    	        $bikesmaincity = $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findBy(array('cityid'=>$selectedCityId));
+    	        $cityUrl = $bikesmaincity[0]->getSuburl();
+    	        $url = $this->generateUrl('trip_site_management_bikes_city',array('cityid'=>$selectedCityName,'url'=>$cityUrl));
+    	        
+    	        return new RedirectResponse($url);
+    	    
+    	}
+    	
     	$bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
 		$locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
 		$bikesmaincity = $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findAll();
@@ -616,13 +657,25 @@ class SiteManagementController extends Controller
     public function bikesonRentBasedonlocationAction(Request $request,$cityid){
         $em = $this->getDoctrine()->getManager();
         $session = $request->getSession();
-       /* $security = $this->container->get ( 'security.context' );
-        $uri_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        $uri_segments = explode('/', $uri_path);
-        $geturl=$uri_segments[4];
-        */
+       
         //$geturl= 'tirupathi';
         $geturl = $cityid;
+        $selectedCity = $session->get('selected-city');
+       // echo var_dump($selectedCity);
+        //exit();
+        if(!is_null($selectedCity)){
+        $selectedCityName = $selectedCity['cityName'];
+        $selectedCityId = $selectedCity['id'];
+       
+        if($selectedCityName!=$cityid){
+            $bikesmaincity = $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findBy(array('cityid'=>$selectedCityId));
+            $cityUrl = $bikesmaincity[0]->getSuburl();
+            $url = $this->generateUrl('trip_site_management_bikes_city',array('cityid'=>$selectedCityName,'url'=>$cityUrl));
+            
+           return new RedirectResponse($url);
+        }
+        }
+        
         $session->set('geturl',$geturl);
         $bikeslocbase= $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findBy(array('url' => $geturl));
         if($bikeslocbase){
@@ -661,7 +714,10 @@ class SiteManagementController extends Controller
     public function homebannersearchAction(Request $request){
         $em = $this->getDoctrine()->getManager();
         $session = $request->getSession();
+        $selectedCity = $session->get('selected-city');
+        $filtermainloc = $selectedCity['cityName'];
         $locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
+        $bikesmaincity = $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findAll();
         $locations = $this->getLocationsByIndex($locations);
         $bikeslocbase = $session->get('bikeslocbase');
         $bikemainloc = $session->get('bikemainloc');
@@ -672,6 +728,8 @@ class SiteManagementController extends Controller
             'locations' => $locations,
             'bikeslocbase' => $bikeslocbase,
             'bikemainloc' => $bikemainloc,
+            'bikesmaincity' => $bikesmaincity,
+            'filtermainloc' => $filtermainloc,
         ));
         
         
@@ -679,11 +737,29 @@ class SiteManagementController extends Controller
     public function bikeslocmenuAction(Request $request){
         $em = $this->getDoctrine()->getManager();
         $session = $request->getSession();
-        $cityid = $session->get('bikemainloc');
+        $selectedCity = $session->get('selected-city');
+        $cookies = $request->cookies;
+        $cityJson = $cookies->get('city');
+        if(!is_null($selectedCity)){
+        $cityid = $selectedCity['id'];
+        $cityName = $selectedCity['cityName'];
+        
+        }elseif(!is_null($cityJson)){
+            //$cityJson = $_COOKIE['city'];
+            
+            $selectedCity = json_decode($cityJson);
+            $session->set('selected-city',$selectedCity);
+        }else {
+            $selectedCity = '';
+        }
+       // echo $cityaction;
+        //echo var_dump($_SESSION);
+        //die();
+       // die();
         $bikesmaincity = $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findAll();
         return $this->render('TripSiteManagementBundle:Default:bikeslocmenu.html.twig', array(
             'bikesmaincity'=>$bikesmaincity,
-            'cityid' => $cityid,
+            'selectedCity' => $selectedCity,
         ));
         
         
@@ -703,53 +779,23 @@ class SiteManagementController extends Controller
    
     public function bikepackagesAction(Request $request){
         $em = $this->getDoctrine()->getManager();
-        $bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
-        //$bikespackage = $em->getRepository('TripSiteManagementBundle:bikespackage')->findAll();
-        $locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
-        $bikesmaincity = $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findAll();
-        $locations = $this->getLocationsByIndex($locations);
-        
-        
-        $sysdate= new \DateTime('Asia/Kolkata');
-        
         $session = $request->getSession();
-        $session->set('resultSet',$bikes);
-        //$session->set('resultSet',$bikespackage);
-        $entity= new Biketime();
-        $entity->setId($entity->getId());
-        $entity->setDate($entity->getDate());
-        $entity->setReturndate($entity->getReturndate());
-        //$entity->setDate(new \DateTime());
-        $form   = $this->createbikepackageForm($entity);
-        $form->handleRequest($request);
-        if ($form->isValid()) {
-            $entity->setDate($entity->getDate());
-            $entity->setReturndate($entity->getReturndate());
-            $em->persist($entity);
-            $em->flush();
-            return $this->redirect($this->generateUrl('trip_site_management_bike_package_result',array('id'=>$entity->getId())));
-        }
-        return $this->render('TripSiteManagementBundle:Default:bikepackages.html.twig',array(
-            'bikes' => $bikes,
-            //'bikepackage'=>$bikespackage,
-            //'bookrdate'=> $bookrdate,
-            'form'   => $form->createView(),
-            'locations' => $locations,
-            'bikesmaincity' => $bikesmaincity,
+        $geturl = 'bengaluru';
+        $selectedCity = $session->get('selected-city');
+        // echo var_dump($selectedCity);
+        //exit();
+        if(!is_null($selectedCity)){
+            $selectedCityName = $selectedCity['cityName'];
+            $selectedCityId = $selectedCity['id'];
             
-        ));
-    }
-    
-    
-    public function bikepackagesBasedonlocationAction(Request $request,$cityid){
-        $em = $this->getDoctrine()->getManager();
-        $session = $request->getSession();
-       /* $security = $this->container->get ( 'security.context' );
-        $uri_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        $uri_segments = explode('/', $uri_path);
-        $geturl=$uri_segments[4];*/
-        
-        $geturl = $cityid;
+            
+                $bikesmaincity = $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findBy(array('cityid'=>$selectedCityId));
+                $cityUrl = $bikesmaincity[0]->getPackageurl();
+                $url = $this->generateUrl('trip_site_management_bikes_packageurl',array('cityid'=>$selectedCityName,'packageurl'=>$cityUrl));
+                
+                return new RedirectResponse($url);
+           
+        }
         $bikeslocbase= $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findBy(array('url' => $geturl));
         
         if($bikeslocbase){
@@ -780,6 +826,61 @@ class SiteManagementController extends Controller
             'locations' => $locations,
             'bikeslocbase' => $bikeslocbase,
             'geturl' => $geturl,
+        ));
+    }
+    
+    
+    public function bikepackagesBasedonlocationAction(Request $request,$cityid){
+        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        $geturl = $cityid;
+        $selectedCity = $session->get('selected-city');
+        // echo var_dump($selectedCity);
+        //exit();
+        $filtermainloc = $selectedCity['cityName'];;
+        if(!is_null($selectedCity)){
+            $selectedCityName = $selectedCity['cityName'];
+            $selectedCityId = $selectedCity['id'];
+            
+            if($selectedCityName!=$cityid){
+                $bikesmaincity = $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findBy(array('cityid'=>$selectedCityId));
+                $cityUrl = $bikesmaincity[0]->getSuburl();
+                $url = $this->generateUrl('trip_site_management_bikes_packageurl',array('cityid'=>$selectedCityName,'packageurl'=>$cityUrl));
+                
+                return new RedirectResponse($url);
+            }
+        }
+        $bikeslocbase= $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findBy(array('url' => $geturl));
+        
+        if($bikeslocbase){
+            $bikeslocbase= $bikeslocbase[0];
+            $bikeslocbased = $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findAll(array('url' => $geturl));
+        }else{
+            
+        }
+        $session->set('bikemainloc',$geturl);
+        
+        $bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
+        $locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
+        $locations = $this->getLocationsByIndex($locations);
+        $id='22/01/2018 05:00 PM';
+        
+        $dql3 = "SELECT b.id from TripBookingEngineBundle:BikeBooking b where b.rdate= '$id' ";
+        $query = $em->createQuery($dql3);
+        $query -> execute();
+        $brdate = $query->getResult();
+        $sysdate= new \DateTime('Asia/Kolkata');
+        $session = $request->getSession();
+        $session->set('resultSet',$bikes);
+        $entity= new Biketime();
+        $form   = $this->createviewbikesForm($entity);
+        return $this->render('TripSiteManagementBundle:Default:bikepackagesBasedonloc.html.twig',array(
+            'bikes' => $bikes,
+            'form'   => $form->createView(),
+            'locations' => $locations,
+            'bikeslocbase' => $bikeslocbase,
+            'geturl' => $geturl,
+            'filtermainloc'=> $filtermainloc,
         ));
     }
     
@@ -816,12 +917,13 @@ class SiteManagementController extends Controller
         
         
         $session = $request->getSession();
-        $packagebikemainloc = $session->get('bikemainloc');
+        //$packagebikemainloc = $session->get('bikemainloc');
         $packagefilterloc=$request->get('check_list_loc_package');
         $session->set('filterloc',$packagefilterloc);
         $packagefilterbikes=$request->get('check_list_bikes_package');
         $session->set('filterbikes',$packagefilterbikes);
-        
+        $selectedCity = $session->get('selected-city');
+        $packagebikemainloc = $selectedCity['cityName'];
         $bikeslocbase= $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findBy(array('url' => $packagebikemainloc));
         
         if($bikeslocbase){
@@ -858,7 +960,7 @@ class SiteManagementController extends Controller
         
         $result=$this->getPackageResultbybikespackage();
         $resultset1=$this->getPackageResultbybikescal($request,$result,$leftDays,$hours);
-        
+       
         return $this->render('TripSiteManagementBundle:Default:bikepackageresult.html.twig',array(
             
             'bike'=>$bike,
@@ -882,6 +984,7 @@ class SiteManagementController extends Controller
             'resultset1' => $resultset1,
             'resultset' => $resultset,
             'suggestedbikes' => $suggestedbikes,
+            'filtermainloc' => $packagebikemainloc,
         ));
         
     }
@@ -1194,35 +1297,43 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
         return $form;
     }
  
-    public function viewBikesAction(Request $request,$url){
+    public function viewBikesAction(Request $request,$url,$cityid){
     	$em = $this->getDoctrine()->getManager();
 		$session = $request->getSession();
-		$bikemainloc = $session->get('bikemainloc');
-		//$bikeslocbase = $session->get('bikeslocbase');
-		$uri_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-		$uri_segments = explode('/', $uri_path);
-		$geturl=$uri_segments[4];
 		
-		if ($geturl=='tirupati'){
-		    $urlloc='tirupathi';
-		}elseif($geturl=='bangalore'){
-		    $urlloc='bengaluru';
-		}
-		//$geturl= 'tirupathi';
-		$bikeslocbase= $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findBy(array('url' => $urlloc));
-		if($bikeslocbase){
-		    $bikeslocbase= $bikeslocbase[0];
-		    $bikeslocbased = $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findAll(array('url' => $urlloc));
-		}else{
+		$selectedCity = $session->get('selected-city');
+		$filtermainloc = $selectedCity['cityName'];
+		if(!is_null($selectedCity)){
+		    $selectedCityName = $selectedCity['cityName'];
+		    $selectedCityId = $selectedCity['id'];
 		    
+		    if($selectedCityName!=$cityid){
+		       
+		        $bikesmaincity = $em->getRepository('TripSiteManagementBundle:BikesCity')->findBy(array('cityid'=>$selectedCityId));
+		        
+		        $cityUrl = $bikesmaincity[0]->getUrl();
+		       
+		        $url1 = $this->generateUrl('trip_site_management_view_bikes',array('cityid'=>$selectedCityName,'url'=>$url));
+		        
+		        return new RedirectResponse($url1);
+		    }
 		}
-		
+		$geturl = $filtermainloc;
+		//die();
+		    $bikeslocbase= $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findBy(array('url' => $geturl));
+		    if($bikeslocbase){
+		        $bikeslocbase= $bikeslocbase[0];
+		        $bikeslocbased = $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findAll(array('url' => $geturl));
+		    }else{
+		        
+		    }
 		
 		$bikecity = $em->getRepository('TripSiteManagementBundle:BikesCity')->findBy(array('url' => $url));
 		if($bikecity){
 		    $bikecity = $bikecity[0];
 		    $id= $bikecity->getBikes();
 		    $bike = $em->getRepository('TripSiteManagementBundle:bikes')->findBy(array('id' => $id));
+		   
 		    $bikeurl = $em->getRepository('TripSiteManagementBundle:BikesCity')->findBy(array('bikeid' => $id));
 		    if($bike){
 		        $bike= $bike[0];
@@ -1234,24 +1345,27 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
 		    
 		}
 		
+		
 		$locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
 		$locations = $this->getLocationsByIndex($locations);
 		$session->set('bikeurl',$bike);
 		$entity= new Biketime();
 		$form   = $this->createpriceviewbikesForm($entity,$url);
 		$bikeall = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
-    	 return $this->render('TripSiteManagementBundle:Default:viewBikes.html.twig',array(
-    			
-    			'bike'=>$bike,
-    			'bikes'=>$bikes,
-    	 		'form'   => $form->createView(),
-    	     'bikecity' => $bikecity,
-    	     'locations' => $locations,
-    	     'bikemainloc' => $bikemainloc,
-    	     'bikeslocbase' => $bikeslocbase,
-    	     'bikeurl' => $bikeurl,
-    	     'bikeall' => $bikeall,
-    	));
+		return $this->render('TripSiteManagementBundle:Default:viewBikes.html.twig',array(
+		    
+		    'bike'=>$bike,
+		    'bikes'=>$bikes,
+		    'form'   => $form->createView(),
+		    'bikecity' => $bikecity,
+		    'locations' => $locations,
+		    'bikemainloc' => $geturl,
+		    'bikeslocbase' => $bikeslocbase,
+		    'bikeurl' => $bikeurl,
+		    'bikeall' => $bikeall,
+		    'filtermainloc' => $filtermainloc,
+		    'url' => $url,
+		));
     	 
     }
     private function createviewbikesForm($entity)
@@ -1274,10 +1388,11 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
 	   $session->set('filterloc',$filterloc);
 	   $filterbikes=$request->get('check_list_bikes');
 	   
-	   
 	   $session->set('filterbikes',$filterbikes);
-
-	   $filtermainloc=$request->get('filtermainloc');
+	   $selectedCity = $session->get('selected-city');
+	   $filtermainloc = $selectedCity['cityName'];
+	   
+	   
 	   
 	   if(!is_null($filtermainloc))
 	   {
@@ -1292,7 +1407,8 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
 	       
 	   }else{
 	       
-	       $bikemainloc = $session->get('bikemainloc');
+	       //$bikemainloc = $session->get('bikemainloc');
+	       $bikemainloc = $request->get('bikemainloc');
 	       $bikeslocbase= $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findBy(array('url' => $bikemainloc));
 	       if($bikeslocbase){
 	           $bikeslocbase= $bikeslocbase[0];
@@ -1301,6 +1417,8 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
 	           
 	       }
 	   }
+	   
+	   
 
 	   
 		$bikes = $em->getRepository('TripSiteManagementBundle:bikes')->findAll();
@@ -1317,7 +1435,7 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
     	    $difference=date_diff($picdate,$returndate);
     	    $leftDays = $difference->days;
     	    $hours = $difference->h;
-    	   
+    	    
     	    if(!is_null($filterbikes))
     	    {
     	        
@@ -1340,9 +1458,10 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
     		    'leftDays' => $leftDays,
     		    'hours' => $hours,
     		    'resultset' => $resultset,
-    		    'location' => $bikemainloc,
+    		    'mainlocation' => $bikemainloc,
     		    'bikeslocbase' => $bikeslocbase,
     		    'filterloc' => $filterloc,
+    		    'filtermainloc' => $filtermainloc,
     		    
     		    //'bike' =>$bike,
     		));
@@ -1501,10 +1620,12 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
 		$session->set('pricefilterloc',$pricefilterloc);
 		$pricefilterbikes=$request->get('price_check_list_bikes');
 		$session->set('pricefilterbikes',$pricefilterbikes);
-		$filtermainloc=$request->get('filtermainloc');
-		
+		//$filtermainloc=$request->get('filtermainloc');
+		$selectedCity = $session->get('selected-city');
+		$filtermainloc = $selectedCity['cityName'];
 		if(!is_null($filtermainloc))
 		{
+		    
 		    $bikemainloc = $filtermainloc;
 		    $bikeslocbase= $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findBy(array('url' => $bikemainloc));
 		    if($bikeslocbase){
@@ -1518,7 +1639,6 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
 		}else
 		{
 		    $bikemainloc = $request->get('bikemainloc');
-		   
 		    $bikeslocbase= $em->getRepository('TripSiteManagementBundle:BikesCityMain')->findBy(array('url' => $bikemainloc));
 		    if($bikeslocbase){
 		        $bikeslocbase= $bikeslocbase[0];
@@ -1570,6 +1690,7 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
     	        'url' => $url,
     	        'bike'=>$bike,
     	        'bikeslocbase' => $bikeslocbase,
+    	        'filtermainloc' => $filtermainloc,
     	    ));
     	    
     	}
@@ -1760,9 +1881,12 @@ b.id,b.dayrent,b.kmlimit,b.statingPrice,b.imgPath,b.locationUrl,b.title,b.count,
 		 $query = $em->createQuery($dql3);
 		 $query -> execute();
 		 */
-		return $this->redirect($this->generateUrl('trip_booking_engine_booking_bike',array('id'=>$id,'title'=>$title,'pDate'=>$pDate,'rDate'=>$rDate,'price'=>$price,'leftdays'=>$leftdays,'hours'=>$hours,'location'=>$location,'countinsert'=>$countinsert,'bikearea'=>$bikearea)));
+		return $this->redirect($this->generateUrl('trip_booking_engine_book_bike_submit',array('id'=>$id,'title'=>$title,'pDate'=>$pDate,'rDate'=>$rDate,'price'=>$price,'leftdays'=>$leftdays,'hours'=>$hours,'location'=>$location,'countinsert'=>$countinsert,'bikearea'=>$bikearea)));
 			
     }
+    
+    /**************** end Bikes *******************/
+    /***************Bikes DhasBord******************/
    
     public function editBikesAction(Request $request,$id){
         $em = $this->getDoctrine()->getManager();

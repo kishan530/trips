@@ -1,0 +1,111 @@
+{% extends 'page.html.twig' %}
+{% block javascripts %}
+
+<script>
+    $("#result").on('click', '.jobStatus', function (e) {
+	 e.preventDefault(); //STOP default action
+	 var id = $(this).attr('href');
+  var status = $(this).attr('value');
+  var link = $(this);
+	   $.ajax({
+	       url: "{{ path('trip_site_management_change_status') }}",
+	       type: "GET",
+	       data: { 'id': id,'status':status },
+	       success: function(data) {
+			if(data=='true'){
+			var newStatus = 'Open';
+			if(status=='Open')
+			 newStatus = 'Close';
+			link.attr('value',newStatus);
+			link.html(newStatus);
+			alert('Done');
+			}else{
+			alert('Error');
+			}
+	       },
+	       error: function(XMLHttpRequest, textStatus, errorThrown)
+	       {
+	           alert('Error: ' +  errorThrown);
+	       }
+	   });
+});
+</script>
+
+{% endblock %}
+{% block body %}
+<section class="section clearfix">
+        <div class="container">
+            <div class="row">
+                <div id="fullwidth" class="col-sm-12">
+                
+                 	<div class="row">
+   						<div class="form_details col-lg-12 col-sm-12 bottom-buffer1">
+   						 	<div class="post-title clearfix">
+                                    <h5>My Orders</h5>
+                            </div><!-- end ost-title -->
+   							<table id="result" class="table table-bordered col-lg-12 col-sm-12">
+   								<tbody>
+   									{% if bookings|length>0 %}	
+                                      <tr class="blue">
+                                            <th>Booking Id #</th>
+                                            <th>Booked On </th>
+                                            <th>Total Price</th>
+                                            <th>Discount</th>
+                                            <th>CGST</th>
+                                             <th>SGST</th>
+                                            <th>Final Price</th>
+                                            <th> Amount Paid </th>
+                                            <th> Payment Id </th>
+                                            <th> Status </th>
+                                            <th> action </th>
+            							</tr>	
+            							
+            					{% endif %}			
+   								
+           							{% for customer in customers %}
+           							    {% for booking in bookings %}
+           							    	{% if customer.id==booking.customerId %}
+           							    	<tr>
+           							    		<td>{{ booking.bookingId }}</td> 
+           							    		 
+                                                <td>{{ booking.bookedOn|date('d/m/Y') }}</td>
+                                                <td>{{ booking.totalPrice }}</td>
+                                                <td>{{ booking.discount }}</td>
+                                                <td>{{ booking.swachBharthCess }}</td>
+                                                <td>{{ booking.krishiKalyanCess }}</td>
+                                                <td>{{ booking.finalPrice }}</td>
+                                                <td>{{ booking.amountPaid }}</td>
+                                                <td>{{ booking.paymentId }}</td>
+                                                <td>{{ booking.status }}</td>
+                                                <td><a href="{{ booking.id }}" class="jobStatus" value="{% if booking.jobStatus=='Open' %}Close{% else %}Open{% endif %}">
+                                                    {% if booking.jobStatus=='Open' %} Close {% else %} Open {% endif %}
+                                                    </a> </td>
+                                               </tr>
+                                               <tr class="wrap-text">
+                                               	 	{% for bikesbooking in bikesbookings %}
+                                                     	{% if booking.id==bikesbooking.bikebookingid %}
+                                                     	<td class="fafafa">{{ bikesbooking.bikename }}</td>
+                                                     	<td class="fafafa">{{ bikesbooking.price }}</td>
+                                                     	<td class="fafafa">{{ bikesbooking.pdate }}</td>
+                                                     	<td class="fafafa">{{ bikesbooking.rdate }}</td>
+                                                     	<td class="fafafa">{{ bikesbooking.leftdays }} Days</td>
+                                                     	<td class="fafafa">{{ bikesbooking.hours }} Hours</td>
+                                                     	<td class="fafafa">{{ bikesbooking.bikelocation }}</td>
+                                                     	<td class="fafafa">{{ bikesbooking.bikearea }}</td>
+                                                     	{% endif %}
+                                                	 {% endfor %}
+                                                    </td>
+                                                </tr>
+           							    	{% endif %}
+           								{% endfor %}
+           							{% endfor %}
+   								
+   							</tbody>
+   							</table>
+						</div>
+                	</div>
+           	 	</div>
+        	</div>
+        </div>
+</section>
+{% endblock %}

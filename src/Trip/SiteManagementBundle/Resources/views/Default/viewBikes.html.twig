@@ -11,56 +11,45 @@
 {% block javascripts %}
 <script src="{{ asset('js/jquery.timepicker.min.js') }}"></script>
 <script>
-    
-
-$('.preferTime').timepicker({ 'scrollDefault': 'now' });
-    
-         $('.adults').click(function(e){		
-			e.preventDefault(); //STOP default action 
-			 var id = $(this).attr('id');
-			 var value = parseInt($(this).attr('value'));
-             var numAdult = $(this).siblings("input[name=numAdult]");
-			 var adults =parseInt(numAdult.val());
-			 if (isNaN(adults)) { 
-				 adults= 0
-	            } 
-			 if(id=='decrement'){
-				 adults-=1;
-				 if(adults>=value) numAdult.val(adults); else exit();
-			  }else{
-				adults+=1;
-			    if(adults<=20)  numAdult.val(adults); else exit();
-				}	
-	    });
-    
-         $('.vehicle-icon').click(function(e){		
-			e.preventDefault(); //STOP default action 
-			 var id = $(this).attr('id');
-			 var price = $(this).attr('value');
-             var package = parseInt($(this).attr('title'));
-             $('.vehicle'+package).removeClass('active');
-             $(this).addClass('active');
-             $('#vehicleIndex'+package).val(id);
-             $('#price'+package).html(price);
-
-
-	       });
-        
-</script>
+	jQuery(function(){
+		 jQuery('#datetime2').datetimepicker({
+		  format:'d-m-Y H:i',
+		  closeOnDateSelect:'true',
+		  minDateTime: 0,
+		  onShow:function( ct ){
+		   this.setOptions({
+		    maxDate:jQuery('#datetime3').val()?jQuery('#datetime3').val():false
+		   })
+		  },
+		 
+		 });
+		 jQuery('#datetime3').datetimepicker({
+		  format:'d-m-Y H:i',
+		  closeOnDateSelect:'true',
+		  onShow:function( ct ){
+		   this.setOptions({
+		    minDate:jQuery('#datetime2').val()?jQuery('#datetime2').val():false
+		   })
+		  },
+		  
+		 });
+		});
+	 
+	</script>
 <script type="text/javascript">
-		$(function(){
+		/*$(function(){
 			$('#datetime2').appendDtpicker();
 		});
-		
+		*/
 	</script>
 	<script type="text/javascript">
-		$(function(){
+		/*$(function(){
 			$('#datetime3').appendDtpicker();
 		});
-		
+		*/
 	</script>
 	<script>
-			$(document).ready(function(){
+			/*$(document).ready(function(){
 				$("#datetime3").change(function(){
 					var first=$("#datetime2").val();
 					var second=$("#datetime3").val();
@@ -73,7 +62,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 						//return;
 					}
 				});
-			});
+			});*/
 		</script>
 		<script>
 	$( window ).load(function(){
@@ -124,7 +113,36 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                 								<div class="col-md-3">
                 								<div class="bikes-form-font"> 
                 								<p class="bikes-search-result-p-form"><span class="glyphicon glyphicon-map-marker"></span>  Selected City</p>
-                                             	<a type="button" class="btn btn-info btn-lg location-click-popup" data-toggle="modal" data-target="#myModal">{{ locations[bikecity.cityid].name }}</a>
+                								{#}<select>
+                									<option>{{ locations[bikecity.cityid].name }}</option>
+                									<option>
+                										{% for url in bikeurl %}
+                                            			    {% if url.cityid==48 %}
+                                            				<a href="{{ path('trip_site_management_view_bikesblr',{ 'url':url.url }) }}">
+                                            				<img src="{{asset('images/justtrip-blr-bikes.png') }}" class="img-center">
+                                            				<h4 class="bikes-search-popup-heading2">Bangalore</h4>
+                                            				</a>
+                                            				{% endif %}
+                                            			{% endfor %}
+                									</option>
+                								</select>{#}
+                								<div class="dropdown shaow">
+                                                        <div class="select-city-height dropdown-toggle" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            {% if filtermainloc %}
+                                                             <span class="select-city caps">{{ filtermainloc }} <i class="fa fa-angle-down"></i></span>
+                                                            {% else %}
+                                                             <span class="select-city caps">Select City <i class="fa fa-angle-down"></i></span>
+                                                            {% endif %}
+                                                        </div> 
+                                                        <div class="dropdown-menu select-city-links" aria-labelledby="dropdownMenuLink">
+                                                        		{% for bikecities in bike.bikescity %}
+                                                             		<a  href="{{ path('trip_site_management_bikes_city_sybmit') }}?city={{ bikecities.cityid }}&name={{ locations[bikecities.cityid].name }}&view={{ bikecities.url }}"
+                                                             		 class="caps bikes-search-popup-heading2 text-center resview-bikes-pop-loc">{{ locations[bikecities.cityid].name }}</a>	<br>
+                                                             	{% endfor %}
+                                                          
+                                                         </div>
+                                                    </div>		
+                                             	{#}<a type="button" class="btn btn-info btn-lg location-click-popup" data-toggle="modal" data-target="#myModal">{{ locations[bikecity.cityid].name }}</a>{#}
                                                 <input type="hidden" name="bikemainloc" value="{{ bikemainloc }}" >
                                                 </div>
                                                 </div>
@@ -328,7 +346,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 <section class="space"></section>
 
 <section>
-<div id="myModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+{#}<div id="myModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
               <div class="modal-dialog">
                 <!-- Modal content-->
                 <div class="modal-content">
@@ -387,76 +405,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                 </div>
             
               </div>
-            </div>
+            </div>{#}
 </section>
-<section>
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="row">
-					<div class="hotel-title">
-                        <h3 class="berlin">Suggested Bikes</h3>
-                        <hr class="left">
-                    </div>
-				
-					{% for bike in bikeall %} 
-                            {% if bike.active==1 %}
-                            <div class="col-md-3">
-                            <div class="bike-background">
-                            <div>
-                            <img src="{{asset('images/bikes/'~bike.imgPath) }}" style="width: 100%;">
-                            </div>
-                                     
-                            	{% for bikecities in bike.bikescity %}
-                                    {% if bikecities.cityid==bikeslocbase.cityid %} 
-                                             {% if bikecities.cityid ==1 %}                 
-                                			<h4 style="text-align:center;color:#000;font-size: 16px;">{{ bike.title }}</h4>
-                                			 <p class="price-starts">Starts @{{ bike.statingPrice }}</p>
-                                			 {% else %}
-                                			 	<h4 style="text-align:center;color:#000;font-size: 16px;">{{ bike.title }}</h4>
-                                			 	<p class="price-starts">Starts @{{ bike.statingPrice }}</p>
-                                	 		{% endif %}
-                                    {% endif %}
-                                {% endfor %}
-                               
-                                 <div class="row">
-                                        {#} <div class="col-md-12" >
-                                         	{% for bikearea in bike.bikescityarea %}
-                                         		{% if bikearea.cityid==bikeslocbase.cityid %}
-                                         		<p>{{ bikearea.area }}</p>
-                                         		{% endif %}
-                                         	{% endfor %}
-                                         </div>{#}
-                                         <div class="col-md-12">
-                                         
-                                          		{% for bikecities in bike.bikescity %}
-                                         		{% if bikecities.cityid==bikeslocbase.cityid %}
-                                         			{% if bikecities.cityid ==1 %} 
-                                                        <a class="btn btn-book-now view-bike" href="{{ path('trip_site_management_view_bikestpt',{ 'url':bikecities.url }) }}">
-                                                          Rent Now
-                                                        </a>
-                                                        {% else %}
-                                                        <a class="btn btn-book-now view-bike" href="{{ path('trip_site_management_view_bikesblr',{ 'url':bikecities.url }) }}">
-                                                          Rent Now
-                                                        </a>
-                                                      {% endif %}
-                                                {% endif %}
-                                         	{% endfor %}
-                                            
-        								{#<a class="btn aligncenter view-bike"   href="{{ path('trip_site_management_view_bikes',{'url':bike.locationUrl }) }}">Rent Now</a>#}
-                                         </div>
-                                         <div class="col-md-12" >
-                                         	
-                                         </div>
-                                 </div>
-                              
-                              </div>
-                            </div>
-                           {% endif %}
-                           {% endfor %}
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
+
 {% endblock %}

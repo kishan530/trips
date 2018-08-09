@@ -57,6 +57,7 @@ class PriceviewbikesType extends AbstractType
         				'data-date-format'=>'yyyy-MM-dd HH:mm:ss',
         				//'data-date-format'=>'dd/mm/yyyy HH:mm:ss',
         		    'placeholder'=>'START TRIP',
+        		    'autocomplete'=>'off',
         		    'class'=>'bikepreferDate'
         				//'class'=>'date',
         				//'name' => 'date',
@@ -84,6 +85,7 @@ class PriceviewbikesType extends AbstractType
         				'data-date-format'=>'yyyy-MM-dd HH:mm:ss',
         				//'data-date-format'=>'dd/mm/yyyy',
         		    'placeholder'=>'END TRIP',
+        		    'autocomplete'=>'off',
         		    'class'=>'bikepreferDate'
         		),
         		

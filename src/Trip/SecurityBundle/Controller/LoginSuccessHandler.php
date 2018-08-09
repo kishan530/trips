@@ -37,6 +37,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface, Auth
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)
     {
     	$session = $request->getSession ();
+    	
         if ($this->security->isGranted('ROLE_SUPER_ADMIN'))
         {
         	
@@ -50,12 +51,22 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface, Auth
         elseif ($this->security->isGranted('ROLE_USER'))
         {
             // redirect the user to where they were before the login process begun.
-          die();
-          $url = $this->router->generate('trip_booking_engine_booking_bike');
-        	/*$selectedService = $session->get('selected');
-        		if($selectedService)
+          //die();
+         // $url = $this->router->generate('trip_booking_engine_booking_bike');
+            $id = $session->get('id');
+            $title = $session->get('title');
+            $pDate = $session->get('pDate');
+            $rDate = $session->get('rDate');
+            $price = $session->get('price');
+            $leftdays = $session->get('leftdays');
+            $hours = $session->get('hours');
+            $location = $session->get('location');
+            $bikearea = $session->get('bikearea');
+            $countinsert = $session->get('countinsert');
+        	//$selectedService = $session->get('selected');
+            if($id)
         		{
-        			$url = $this->router->generate('trip_booking_engine_booking_bike');
+        			$url = $this->router->generate('trip_booking_engine_book_bike_submit',array('id'=>$id,'title'=>$title,'pDate'=>$pDate,'rDate'=>$rDate,'price'=>$price,'leftdays'=>$leftdays,'hours'=>$hours,'location'=>$location,'countinsert'=>$countinsert,'bikearea'=>$bikearea));
         			
         		}
         		else{
@@ -66,7 +77,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface, Auth
 					} else {
 						$url = $referer;
 					}
-        		}*/
+        		}
 				
 
                   

@@ -1,5 +1,4 @@
-
-	<span class="caps">{% if cityid %}{{ cityid }}{% else %}Select City{% endif %} <i class="fa fa-angle-down"></i></span>
+{#}	<span class="caps">{% if cityid %}{{ cityid }}{% else %}Select City{% endif %} <i class="fa fa-angle-down"></i></span>
 	<ul class="dropdown-menu submenu-margin select-city-submenu" role="menu">
 		{% for city in bikesmaincity %}
              {% if city.active==1 %}
@@ -8,4 +7,30 @@
              	</li>
              {% endif %}
         {% endfor %}
+	</ul>
+{#}
+
+
+{#}<div class="dropdown shaow">
+    <div class="select-city-height dropdown-toggle" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {% if selectedCity %}
+         <span class="select-city caps">{{ selectedCity.cityName }} <i class="fa fa-angle-down"></i></span>
+        {% else %}
+         <span class="select-city caps">Select City <i class="fa fa-angle-down"></i></span>
+        {% endif %}
+    </div> 
+    <div class="dropdown-menu select-city-links" aria-labelledby="dropdownMenuLink">
+         <a  href="{{ path('trip_site_management_bikes_city_sybmit') }}?city=1&name=tirupathi" class="caps bikes-search-popup-heading2 text-center resview-bikes-pop-loc">tirupathi</a>	<br>
+         <a  href="{{ path('trip_site_management_bikes_city_sybmit') }}?city=2&name=bengaluru" class="caps bikes-search-popup-heading2 text-center resview-bikes-pop-loc">bengaluru</a>	<br>
+     </div>
+</div>{#}
+{% if selectedCity %}
+         <li  class="dropdown"><a href="#">{{ selectedCity.cityName }} <i class="fa fa-angle-down fff" aria-hidden="true"></i></a>
+        {% else %}
+        <li  class="dropdown"><a href="#">Select City <i class="fa fa-angle-down fff" aria-hidden="true"></i></a>
+{% endif %}
+
+	<ul class="dropdown-menu submenu-margin" role="menu">
+		<li><a href="{{ path('trip_site_management_bikes_city_sybmit') }}?city=1&name=tirupathi">Tirupati</a></li>
+       	<li><a href="{{ path('trip_site_management_bikes_city_sybmit') }}?city=2&name=bengaluru">Bengaluru</a></li>
 	</ul>

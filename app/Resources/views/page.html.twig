@@ -4,51 +4,51 @@
 {% endblock %}
  
  {% block banner %}
- <header class="header header-shawod">
+ 	 <header class="header  " style="/*background-color:#f9f9f9;*/background-repeat: no-repeat;padding: 0px 73px 0px 21px;background-image:url({{ asset('images/bike-main-banner.jpg') }});/*background-attachment: fixed;*/background-size: 100% 684.712px;background-position: 51% -60px;">
         <div class="menu-container">
-            <div class="container" style="padding-right: 0px;padding-left: 0px;">
+            <div class="" style="padding-right: 0px;padding-left: 0px;">
                 <div class="menu-wrapper">
                     <nav id="navigation" class="navbar" role="navigation">
                         <div class="navbar-inner">
                         	<div class="row">
-                        		<div class="col-md-4">
+                        		<div class="col-md-2">
                         			<div class="navbar-header">
-                                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                                            <span class="sr-only">Toggle navigation</span>
-                                            <i class="icon-menu27"></i>
-                                        </button>
-                                        <div calss="row">
+                                        <div class="row">
                                         	<div class="col-sm-7">
+                                        		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" style="color:#888">
+                                                    <span class="sr-only">Toggle navigation</span>
+                                                    <i class="icon-menu27"></i>
+                                                </button>
                                         		{% if is_granted('ROLE_ADMIN') %}
                 									<a id="brand" class="clearfix navbar-brand" href="{{ path('trip_site_management_billing_list')}}">
-                                                    <img src="{{ asset('images/Justtrip-web-white-bg.png') }}" alt="Trips" style="width:155px;height:63px;"></a>
+                                                    <img src="{{ asset('images/web-just-trip.png') }}" alt="Trips" style="width: 139px;"></a>
                 								{% else %}
-                                                <a id="brand" class="clearfix navbar-brand" href="{{ path('trip_site_management_homepage')}}">
-                                                    <img src="{{ asset('images/Justtrip-web-white-bg.png') }}" alt="Trips" style="width:155px;height:63px;"></a>
+                                                <a id="brand" class="clearfix navbar-brand-trans" href="{{ path('trip_site_management_homepage')}}" style="margin:0px;">
+                                                    <img src="{{ asset('images/web-just-trip.png') }}" alt="Trips" style="width: 139px;"></a>
                 								{% endif %}
                                         	</div>
                                         	<div class="col-sm-5">
                                         		<div class="select-city">
-                                        			<li class="dropdown selectcity-dropdown-white">
+                                        			{#}<li class="dropdown selectcity-dropdown">
                                         			{{ render(controller('TripSiteManagementBundle:SiteManagement:bikeslocpackagemenu')) }}
-                                        			</li>
+                                        			</li>  {#}
                                         		</div>
                                         	</div>
                                         </div>
-        								
                                     </div><!-- end navbar-header -->
-                                    
                         		</div>
                         		<div class="col-md-8">
                         				<div id="navbar-collapse" class="navbar-right navbar-collapse collapse clearfix">
-                                            <ul class="nav navbar-nav yamm">
+                                            <ul class="nav navbar-nav yamm bg-trans">
             									 {% if is_granted('ROLE_ADMIN') is same as(false) %}
                                                 
-                                               
+                                              		<li class="dropdown selectcity-dropdown">
+                                        			{{ render(controller('TripSiteManagementBundle:SiteManagement:bikeslocmenu')) }}
+                                        			</li> 
                                                 	<li class="dropdown"><a href="{{ path('trip_site_management_bikes_on_rent') }}">Bikes</a>
                                                     	
             											{% if is_granted('ROLE_SUPER_ADMIN') %}
-            											<ul class="dropdown-menu" role="menu">
+            											<ul class="dropdown-menu submenu-margin" role="menu">
             											  <li><a href="{{ path('trip_site_management_bikes_list') }}">Bikes List</a></li>
             											  <li><a href="{{ path('trip_site_management_add_bike') }}">Add bike</a></li>
                                                         </ul>
@@ -71,14 +71,13 @@
                                                
                                                 {% if is_granted('ROLE_SUPER_ADMIN') %}
                                                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin</a>
-                                                    <ul class="dropdown-menu" role="menu">
+                                                    <ul class="dropdown-menu submenu-margin" role="menu">
                                                         <li><a href="{{ path('trip_site_management_add_locations') }}">Add Locations</a></li>
             											
-                                                        
                                                     </ul>
                                                 </li>
                                                  <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Dashbord</a>
-                                                    <ul class="dropdown-menu" role="menu">
+                                                    <ul class="dropdown-menu submenu-margin" role="menu">
                                                         <li><a href="{{ path('trip_site_management_booking_search') }}">Bookings</a></li>
                                                         <li><a href="{{ path('trip_site_management_users') }}">Users</a></li>
                                                         <li><a href="{{ path('trip_site_management_contactList') }}">Contact List</a></li>
@@ -86,16 +85,19 @@
                                                     </ul>
                                                 </li>
                                                 {% endif %}
-                                                {% set url="bengaluru" %}
-                                                {% set packageurl="bike-packages-in-bangalore" %}
-                                                <li><a href="{{ path('trip_site_management_bikes_packageurl',{ 'cityid':url,'packageurl':packageurl }) }}">Bike Packages</a></li>
+                                                <li><a href="{{ path('trip_site_management_bike_packages') }}">Bike Packages</a></li>
+                                                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                                
+                                                {% else %}
                                                 <li><a href="{{ path('trip_site_management_about') }}">Why justtrip</a></li>
-                                                 <li><a href="{{ path('trip_site_management_faq') }}">FAQS</a></li>
-                                                 
+                                                <li><a href="{{ path('trip_site_management_faq') }}">FAQS</a></li>
+                                                {% endif %}
             									 {% if is_granted('ROLE_ADMIN') is same as(false) %}
-                                                 <li  class="dropdown"><a href="{{ path('trip_security_sign_up')}}">My Account</a>
-                                                    <ul class="dropdown-menu" role="menu">
+                                                 <li  class="dropdown"><a href="#">Login/Signup <i class="fa fa-angle-down fff" aria-hidden="true"></i></a>
+                                                    <ul class="dropdown-menu submenu-margin" role="menu">
                                                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}  
+                                                        	<li><a href="{{ path('trip_booking_engine_profile') }}">My Profile</a></li>
+                                                        	<li><a href="{{ path('trip_booking_engine_myorder') }}">My Orders</a></li>
                                                             <li><a href="{{ path('fos_user_security_logout') }}"><b>{% trans%}Logout{% endtrans %}</b></a> </li>
             										    {% else %}
                                                             <li><a href="{{ path('trip_security_sign_up')}}">Login</a></li>
@@ -106,24 +108,25 @@
                                                         
                                                         
                                                     </ul>   
-                                                    <li><a href="{{ path('trip_security_sign_up')}}">Signup</a></li>
-                                                        {% endif%}                                 
+                                                    {#}<li><a href="{{ path('trip_security_sign_up')}}">Signup</a></li>{#}
+                                                        {% endif%}    
+                                                                            
                                                 </li>
-                                                <li><a href="{{ path('trip_site_management_contact') }}">Contact</a></li>
+                                                	
+                                                {#}<li><a href="{{ path('trip_site_management_contact') }}">Contact</a></li>{#}
                                                {# <li class="sidebar-dropper"><a data-toggle="sidebar" data-target=".sidebar-right" class="noborder" href="#"><i class="icon-menu27"></i></a></li>#}
             									 {% endif %}
+            									    
                                             </ul><!-- end navbar-right -->
-                                            <div class="pull-right">
-                        			<p class="new-header-mobile-reachus"><i class="icon-telephone5"></i> Reach Us</p>
-                        			<p class="new-header-mobile"> +91-9663133008</p>
-                        			
-                                    
-                                </div><!-- end left -->
-                                        </div><!-- end navbar-callopse -->
-                        		</div>
+                                 
                         	</div>
-                            
-                            
+                            </div>
+                            <div class="col-sm-2">
+                            	<div class="pull-right" style="margin-left: 19px;">
+                                      <p class="new-header-mobile-reachus-trans"><i class="icon-telephone5"></i> Reach Us</p>
+                                      <p class="new-header-mobile-trans"> +91-9663133008</p>
+                                </div><!-- end left -->
+                            </div>
                         </div><!-- end navbar-inner -->
                     </nav><!-- end navigation -->
                 </div><!-- menu wrapper -->
@@ -143,7 +146,8 @@
                 </ul>
             </div>
         </div><!-- end sidebar menu -->
-    </header><!-- end header --> 
+     
+     </header><!-- end header --> 
     {#}<section id="page-header" class="section background">
         <div class="container">
             <div class="row">

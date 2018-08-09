@@ -12,7 +12,7 @@
                                 	<div role="tabpanel" class="tab-pane fade in active" id="Section1" style="font-size: 12px;">
                                        {% for bikeblr in bikesblr %} 
                                        {% if bikeblr.cityid==48 %}
-                                        <a href="{{ path('trip_site_management_view_bikesblr',{ 'url':bikeblr.url }) }}"">
+                                        <a href="{{ path('trip_site_management_view_bikes',{ 'cityid':locations[bikeblr.cityid].name,'url':bikeblr.url }) }}"">
                                        <span class="packages-link">{{ bikeblr.title }}</span>
                                        </a>|
                                        {% endif %}
@@ -22,7 +22,7 @@
                                    <div role="tabpanel" class="tab-pane fade in" id="Section2" style="font-size: 12px;">
                                        {% for bikeblr in bikesblr %} 
                                        {% if bikeblr.cityid==1 %}
-                                        <a href="{{ path('trip_site_management_view_bikestpt',{ 'url':bikeblr.url }) }}"">
+                                        <a href="{{ path('trip_site_management_view_bikes',{ 'cityid':locations[bikeblr.cityid].name,'url':bikeblr.url }) }}"">
                                        <span class="packages-link">{{ bikeblr.title }}</span>
                                        </a>|
                                        {% endif %}

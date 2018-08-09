@@ -56,11 +56,25 @@ class RegistrationController extends BaseController
                 $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
 
                 $userManager->updateUser($user);
-
-
-
                 if (null === $response = $event->getResponse()) {
-                    $url = $this->container->get('router')->generate('fos_user_registration_confirmed');
+                    $id = $session->get('id');
+                    $title = $session->get('title');
+                    $pDate = $session->get('pDate');
+                    $rDate = $session->get('rDate');
+                    $price = $session->get('price');
+                    $leftdays = $session->get('leftdays');
+                    $hours = $session->get('hours');
+                    $location = $session->get('location');
+                    $bikearea = $session->get('bikearea');
+                    $countinsert = $session->get('countinsert');
+                    if(null !== $id){
+                        
+                        $url = $this->container->get('router')->generate('trip_booking_engine_book_bike_submit',array('id'=>$id,'title'=>$title,'pDate'=>$pDate,'rDate'=>$rDate,'price'=>$price,'leftdays'=>$leftdays,'hours'=>$hours,'location'=>$location,'countinsert'=>$countinsert,'bikearea'=>$bikearea));
+                    }    
+                    else{
+                        $url = $this->container->get('router')->generate('trip_site_management_homepage');
+                    }
+                   // $url = $this->container->get('router')->generate('trip_site_management_homepage');
                     $response = new RedirectResponse($url);
                 }
 

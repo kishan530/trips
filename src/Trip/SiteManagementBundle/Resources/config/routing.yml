@@ -50,13 +50,13 @@ trip_site_management_bikes_on_rent:
     path:     / 
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikesonRent }
 trip_site_management_view_bikes:
-    path:     /bikes/{url}
+    path:     /{cityid}/bike/{url}
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:viewBikes }
 trip_site_management_view_bikestpt:
-    path:     /tirupati/{url}
+    path:     /tirupathi/{url}
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:viewBikes }
 trip_site_management_view_bikesblr:
-    path:     /bangalore/{url}
+    path:     /bengaluru/{url}
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:viewBikes }
 trip_site_management_review_viewbikes:
     path:     /search-bikes
@@ -107,7 +107,9 @@ trip_site_management_bikes_on_rent_blr:
 trip_site_management_bikes_city:
     path:     /{cityid}/bikes/{url}
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:bikesonRentBasedonlocation }
-
+trip_site_management_bikes_city_sybmit:
+    path:     /citysubmit/
+    defaults: { _controller:TripSiteManagementBundle:SiteManagement:bikescity }
 trip_site_management_edit_bikes_maincity:
     path:     /edit/{id}/bikes-maincity
     defaults: { _controller: TripSiteManagementBundle:SiteManagement:editBikesmaincity }

@@ -1,4 +1,11 @@
 {% extends 'page.html.twig' %}
+{% block meta %}
+    <meta name="keywords" content="Justtrip.in">
+    <meta name="description" content="Make sure your review your booking before you complete the
+reservation with justtrip. Look the selected bike, location,pickup and
+drop timing.">  
+{% endblock %}
+{% block title %} Review Your Booking | Justtrip {% endblock %}
 {% block javascripts %}
 <script>
     //$("#couponCode").hide();
@@ -76,10 +83,10 @@
                     <!-- START CONTENT -->
                     <div class="row">
                         <div id="content" class="col-md-12 col-sm-12 col-xs-12">
-							
+
                             <div class="price-range text-center clearfix row">
                                 <div class="col-md-11">
-									<ul class="nav nav-pills nav-justified setup-panel">
+									{#}<ul class="nav nav-pills nav-justified setup-panel">
 									
 									<li class="disabled {% if step=='personal' %}active{% endif %}"><a href="#personal">
 										<span class="badge">1</span>
@@ -90,7 +97,7 @@
 										<span class="badge">2</span>
 										 <h4 class="list-group-item-heading">Payment</h4>
 									</a></li>
-									</ul>
+									</ul>{#}
                                   {#}  <img src="{{ asset('images/progress.png') }}" class="img-responsive" alt=""> {#}
                                 </div><!-- end price-range -->
                             </div><!-- end price-range -->
@@ -98,71 +105,110 @@
                             <div class="clearfix"></div>
 								<div class="row">
                                     <div class="col-sm-8">
-                                    <div class="col-sm-12 booking-price-details-border price-details clearfix">
-									<div class="row">
-                                            <div class="col-md-12">
-                                                <h5 style="font-family: calibri;font-size: 19px;color: #F34F4F;"><span style="color: #000;">Selected</span> {{ filter }}</h5>
-                                            </div>
-                                            </div>
-											<div class="col-md-3">
-												<p class="bikestitle">City</p>
-												
-												<h5 class="book-dates" style="font-size:14px;">{{ location }} <br>({{ bikearea }})</h5>
+                                    <div class="summary-bg"><p class="summary-text">SUMMARY</p></div>
+                                    <div class="col-sm-12 bike-background-new-profile price-details clearfix">
+										<div class="row">
+											<div class="col-sm-4">
+												<div class="height">
+												</div>
+												<img src="{{asset('images/bikes/'~package.imgPath) }}" style="width: 100%;display: block;margin: 0 auto;">
+												<h4 class="bold600 text-center booking-bike-name">{{ filter }}</h4>
+												<div class="height">
+												</div>
 											</div>
-											<div class="col-md-3">
-												<p class="bikestitle">Pickup DateTime</p>
-												
-												<h5 class="book-dates" style="font-size:14px;">{{ selected }}</h5>
+											<div class="col-sm-8">
+												<div class="row">
+													<div class="col-sm-5">
+														
+														<h5 class="book-dates">{{ selected }}</h5>
+													</div>
+													<div class="col-sm-2">
+													 To
+													</div>
+													<div class="col-sm-5">
+														
+														<h5 class="book-dates">{{ locations }}</h5>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-sm-12">
+													<hr class="hr-nomargin">
+													</div>
+													<div class="col-sm-12">
+														<h6 class="locations-details">{{ location }} ({{ bikearea }})</h6>
+													</div>
+													<div class="col-sm-12">
+													<hr class="hr-nomargin">
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-12">
+                                                		<div class="col-md-12 col-sm-12 col-xs-12">
+                                                		<div class="hotel-title price-details">
+                                                            <h5>Offers</h5>
+                                                        </div>
+                                                          {% block form %}
+                                                          {#}  <div class="row">
+                                                            <div class="hotel-title price-details">
+                                                                <h5>Traveler Details</h5>
+                                                            </div>
+                                                            </div>{#}
+                                                                {{ form_start(form) }}
+                                                                {{ form_errors(form, { 'global_errors': true }) }}
+                                                        <div class="input-group" style="margin-bottom: 22px;">
+                                                         {{ form_widget(form.haveCoupon) }} {{ form_label(form.haveCoupon) }}
+                                                        </div>
+                                                    	</div>
+                                                    	<div class="col-md-12 col-sm-12 col-xs-12">
+                                                        <div class="input-group" id="couponCode" style="border-bottom: 1px solid #e0e0e0;">
+                                                        {{ form_widget(form.couponCode,{'attr':{'class':'bikes-form','placeholder':'Enter a Coupon code'}}) }}
+                                                        	
+                                                            <a class="input-group-addon" id="apply" href="#">Apply</a>
+                                                        
+                                                        </div>
+                                                        <div class="row form-group has-error">
+                                                            <ul class="errors help-block">
+                                                                <li id="coupon-error" style="display:none">Invalid Coupon</li>
+                                                            </ul>
+                                                        </div>
+                                                    	</div>
+                                                    	
+                                                   		  
+                                                	</div>
+												</div>
 											</div>
-											<div class="col-md-3">
-											<p class="bikestitle">Return DateTime</p>
-											
-												<h5 class="book-dates" style="font-size:14px;">{{ locations }}</h5>
-											</div>
-											<div class="col-md-3">
-											<p class="bikestitle">Total Days & Hours</p>
-											
-												<h5 class="book-dates" style="font-size:14px;">{{ leftdays }} Days {{ hours }} Hours</h5>
-											</div>
-										    
-											
+										</div>
 									</div>
                                     
                                     
                                 
-                                <div class="col-sm-12 booking-price-details-border price-details clearfix" style="display: none;">
-                                         {% block form %}
-                                        <div class="row">
-                                        <div class="hotel-title price-details">
-                                            <h5>Traveler Details</h5>
-                                        </div>
-                                        </div>
-                                            {{ form_start(form) }}
-                                            {{ form_errors(form, { 'global_errors': true }) }}
+                                <div class="col-sm-12  clearfix">
+                                       
                                         
-                                        <div class="row booking-price-details">
-                                        	{#}<div class="col-md-6">
+                                        <div class="row booking-price-details no">
+                                        	<div class="col-md-6">
                                         		<div class="col-md-12 col-sm-12 col-xs-12">
                                         		<p class="bikes-form-labels">Name*</p>
-                                                {{ form_widget(form.name,{'attr':{'class':'make-margin bikes-form','placeholder':'','pattern':'[a-zA-Z]+','title':'Enter Valid Name'}}) }}
+                                               {{ form_widget(form.name,{'attr':{'class':'make-margin bikes-form','placeholder':'','pattern':'[a-zA-Z]+','title':'Enter Valid Name'}}) }}
                                                 <div class="bikes-form-border"></div>
                                             </div>
                                             
                                             <div class="col-md-12 col-sm-12 col-xs-12">
                                             <p class="bikes-form-labels">10 Digit Mobile No*</p>
-                                            {{ form_widget(form.mobile,{'attr':{'class':'make-margin bikes-form','placeholder':'','pattern':'[0-9]{10}','title':'Enter Valid 10 Digit mobile number'}}) }} 
+                                            {{ form_widget(form.mobile,{'attr':{'class':'make-margin bikes-form','placeholder':'','pattern':'[0-9]{10}','title':'Enter Valid 10 Digit mobile number'}}) }}
                                             <div class="bikes-form-border"></div>
                                             </div>
                                         	</div>
                                         	<div class="col-md-6">
                                         		<div class="col-md-12 col-sm-12 col-xs-12">
                                            		 <p class="bikes-form-labels">Email*</p>
+                                           		 
                                                {{ form_widget(form.email,{'attr':{'class':'make-margin bikes-form','placeholder':'','pattern':'[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{1,63}$','title':'Enter Valid Email Address'}}) }}
                                                <div class="bikes-form-border"></div>
                                            		 </div>
                                            		 
                                         	</div>
-                                        {#}
+                                        
                                             
                                             
                                             
@@ -175,45 +221,14 @@
                                         </div>
                                        
                                     </div><!-- end col -->
-                                    <div class="col-sm-12 booking-price-details-border price-details clearfix">
-                                         
-                                        <div class="row">
-                                            <div class="hotel-title price-details">
-                                                <h5>Offers</h5>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                        	<div class="col-md-6">
-                                        		<div class="col-md-12 col-sm-12 col-xs-12">
-                                        		
-                                                <div class="input-group" style="margin-bottom: 22px;">
-                                                 {{ form_widget(form.haveCoupon) }} {{ form_label(form.haveCoupon) }}
-                                                </div>
-                                            	</div>
-                                            	<div class="col-md-12 col-sm-12 col-xs-12">
-                                                <div class="input-group" id="couponCode" style="border-bottom: 1px solid #e0e0e0;">
-                                                {{ form_widget(form.couponCode,{'attr':{'class':'bikes-form','placeholder':'Enter a Coupon code'}}) }}
-                                                	
-                                                    <a class="input-group-addon" id="apply" href="#">Apply</a>
-                                                
-                                                </div>
-                                                <div class="row form-group has-error">
-                                                    <ul class="errors help-block">
-                                                        <li id="coupon-error" style="display:none">Invalid Coupon</li>
-                                                    </ul>
-                                                </div>
-                                            	</div>
-                                            	
-                                           		  
-                                        	</div>
-                                        </div>
-                                    </div>
+                                    
                                   </div>  
                                     
                                 <div class="col-sm-4">
-                                <div class="booking-price-details-border price-details clearfix">
+                                <div class="summary-bg"><p class="summary-text">Fare Details</p></div>
+                                <div class="bike-background-new-profile price-details clearfix">
                                 <div class="hotel-title">
-                                    <h5>Fare Details</h5>
+                                    <h5></h5>
                                 </div>
                                 <div class="row booking-price-details">
                                     <div class="col-md-12">
@@ -223,7 +238,7 @@
                                             <div class="col-sm-12">
                                                
 													<div class="col-sm-12">
-                                                       <h5 class="bike-price">RS. {{ price }}</h5>
+                                                       <h6 class="bike-price">RS. {{ price }}</h6>
         											   
         												<div class="col-md-12">
         												<hr>

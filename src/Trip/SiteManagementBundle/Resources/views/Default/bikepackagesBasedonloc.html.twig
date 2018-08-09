@@ -10,39 +10,8 @@
 {% block javascripts %}
 <script src="{{ asset('js/jquery.timepicker.min.js') }}"></script>
 <script>
-$('.preferTime').timepicker({ 'scrollDefault': 'now' });
-    
-         $('.adults').click(function(e){		
-			e.preventDefault(); //STOP default action 
-			 var id = $(this).attr('id');
-			 var value = parseInt($(this).attr('value'));
-             var numAdult = $(this).siblings("input[name=numAdult]");
-			 var adults =parseInt(numAdult.val());
-			 if (isNaN(adults)) { 
-				 adults= 0
-	            } 
-			 if(id=='decrement'){
-				 adults-=1;
-				 if(adults>=value) numAdult.val(adults); else exit();
-			  }else{
-				adults+=1;
-			    if(adults<=20)  numAdult.val(adults); else exit();
-				}	
-	    });
-    
-         $('.vehicle-icon').click(function(e){		
-			e.preventDefault(); //STOP default action 
-			 var id = $(this).attr('id');
-			 var price = $(this).attr('value');
-             var package = parseInt($(this).attr('title'));
-             $('.vehicle'+package).removeClass('active');
-             $(this).addClass('active');
-             $('#vehicleIndex'+package).val(id);
-             $('#price'+package).html(price);
 
-
-	       });
-         </script>
+</script>
 <script>
          $(".book-now").click(function(e){
         	 e.preventDefault(); //STOP default action 
@@ -57,10 +26,10 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
              $(".model-bike-name").val(bikeName);
              $(".model-package-name").html(packageName);
              $(".model-bike-name").html(bikeName);
-             $("#model-bike-id").val(bikeid);
-               $("#model-package-price").val(packageprice);
-               $("#model-package-offerprice").val(offerprice);
-               $("#model-package-Kmlimit").val(Kmlimit);
+             $(".model-bike-id").val(bikeid);
+               $(".model-package-price").val(packageprice);
+               $(".model-package-offerprice").val(offerprice);
+               $(".model-package-Kmlimit").val(Kmlimit);
                
                $("#mymodel7days").modal('show');
 
@@ -77,14 +46,14 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
         	 var offerprice = $(this).attr('offer-price');
         	 var  Kmlimit = $(this).attr(' Km-limit');
         	 
-             $(".model-package-name1").val(packageName);
-             $(".model-bike-name1").val(bikeName);
-             $(".model-package-name1").html(packageName);
-             $(".model-bike-name1").html(bikeName);
-             $("#model-bike-id1").val(bikeid);
-               $("#model-package-price1").val(packageprice);
-               $("#model-package-offerprice1").val(offerprice);
-               $("#model-package-Kmlimit1").val(Kmlimit);
+        	 $(".model-package-name").val(packageName);
+             $(".model-bike-name").val(bikeName);
+             $(".model-package-name").html(packageName);
+             $(".model-bike-name").html(bikeName);
+             $(".model-bike-id").val(bikeid);
+               $(".model-package-price").val(packageprice);
+               $(".model-package-offerprice").val(offerprice);
+               $(".model-package-Kmlimit").val(Kmlimit);
                
                $("#mymodel15days").modal('show');
 
@@ -102,14 +71,14 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
         	 var  Kmlimit = $(this).attr(' Km-limit');
         	
         	 
-        	 $(".model-package-name2").val(packageName);
-             $(".model-bike-name2").val(bikeName);
-        	 $(".model-package-name2").html(packageName);
-             $(".model-bike-name2").html(bikeName);
-             $("#model-bike-id2").val(bikeid);
-               $("#model-package-price2").val(packageprice);
-               $("#model-package-offerprice2").val(offerprice);
-               $("#model-package-Kmlimit2").val(Kmlimit);
+        	 $(".model-package-name").val(packageName);
+             $(".model-bike-name").val(bikeName);
+             $(".model-package-name").html(packageName);
+             $(".model-bike-name").html(bikeName);
+             $(".model-bike-id").val(bikeid);
+               $(".model-package-price").val(packageprice);
+               $(".model-package-offerprice").val(offerprice);
+               $(".model-package-Kmlimit").val(Kmlimit);
                
                $("#mymodel30days").modal('show');
             
@@ -118,93 +87,109 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 </script>
 
 <script type="text/javascript">
-
-$(function(){
- 	var d = new Date();
-	var month = parseInt(d.getMonth()) +1;
-	$('#datetime6_prefer_date').val(d.getDate() + '-' + month + '-' + d.getFullYear()+ ' ' +d.getHours()+ ':' +d.getMinutes());
-	d.setDate(d.getDate() + 7);
-	var month = parseInt(d.getMonth()) +1; 
-	$('#datetime7_returnDate').change(function() {
-	    $('#datetime6_prefer_date').appendDtpicker({
-	    });
-	});
-	$('#datetime6_prefer_date').change(function() {
-	var from = $("#datetime6_prefer_date").val().split("-");
-	var year = from[2].split(" ");
-	var from2 = year[0]+'.'+from[1]+'.'+from[0];
-	//alert(from);
-	var t = new Date(from2);
-	t.setDate(t.getDate() + 7);
-	$('#datetime7_returnDate').appendDtpicker({
-	    });
-	$('#datetime7_returnDate').handleDtpicker('setMinDate', t);
-	$('#datetime7_returnDate').trigger('change');
-	});
-	$('#datetime7_returnDate').trigger('change');
-	$('#datetime6_prefer_date').trigger('change');
+$('.disabled').hide();
+$('.package-price-btn').click(function(){
+	$('.disabled').show();
+	$(window).scrollTop(0);
+	var packageName = $("#ifcon").val();
+	if(packageName==7){
+		$(function(){
+		 	var d = new Date();
+			var month = parseInt(d.getMonth()) +1;
+			$('#datetime6_prefer_date').val(d.getDate() + '-' + month + '-' + d.getFullYear()+ ' ' +d.getHours()+ ':' +d.getMinutes());
+			d.setDate(d.getDate() + 7);
+			var month = parseInt(d.getMonth()) +1; 
+			$('#datetime7_returnDate').change(function() {
+			    $('#datetime6_prefer_date').datetimepicker({
+			    });
+			});
+			$('#datetime6_prefer_date').change(function() {
+			var from = $("#datetime6_prefer_date").val().split("-");
+			var year = from[2].split(" ");
+			var from2 = year[0]+'.'+from[1]+'.'+from[0];
+			var t = new Date(from2);
+			//alert(t.getDate());
+			t.setDate(t.getDate() + 7);
+			$('#datetime7_returnDate').datetimepicker({
+				minDate: t,
+			    });
+			
+			
+			//$('#datetime7_returnDate').handleDtpicker('setMinDate', t);
+			//$("#datetime7_returnDate").datetimepicker('option', 'minDate', t);
+			$('#datetime7_returnDate').trigger('change');
+			});
+			$('#datetime7_returnDate').trigger('change');
+			$('#datetime6_prefer_date').trigger('change');
+		});
+		
+	}else if(packageName==15){
+		$(function(){
+		 	var d = new Date();
+			var month = parseInt(d.getMonth()) +1;
+			$('#datetime6_prefer_date').val(d.getDate() + '-' + month + '-' + d.getFullYear()+ ' ' +d.getHours()+ ':' +d.getMinutes());
+			d.setDate(d.getDate() + 15);
+			var month = parseInt(d.getMonth()) +1; 
+			$('#datetime7_returnDate').change(function() {
+			    $('#datetime6_prefer_date').datetimepicker({
+			    });
+			});
+			$('#datetime6_prefer_date').change(function() {
+			var from = $("#datetime6_prefer_date").val().split("-");
+			var year = from[2].split(" ");
+			var from2 = year[0]+'.'+from[1]+'.'+from[0];
+			var t = new Date(from2);
+			t.setDate(t.getDate() + 15);
+			$('#datetime7_returnDate').datetimepicker({
+				minDate: t,
+			    });
+			
+			
+			//$('#datetime7_returnDate').handleDtpicker('setMinDate', t);
+			//$("#datetime7_returnDate").datetimepicker('option', 'minDate', t);
+			$('#datetime7_returnDate').trigger('change');
+			});
+			$('#datetime7_returnDate').trigger('change');
+			$('#datetime6_prefer_date').trigger('change');
+		});
+	}else
+		{
+		$(function(){
+		 	var d = new Date();
+			var month = parseInt(d.getMonth()) +1;
+			$('#datetime6_prefer_date').val(d.getDate() + '-' + month + '-' + d.getFullYear()+ ' ' +d.getHours()+ ':' +d.getMinutes());
+			d.setDate(d.getDate() + 30);
+			var month = parseInt(d.getMonth()) +1; 
+			$('#datetime7_returnDate').change(function() {
+			    $('#datetime6_prefer_date').datetimepicker({
+			    });
+			});
+			$('#datetime6_prefer_date').change(function() {
+			var from = $("#datetime6_prefer_date").val().split("-");
+			var year = from[2].split(" ");
+			var from2 = year[0]+'.'+from[1]+'.'+from[0];
+			var t = new Date(from2);
+			t.setDate(t.getDate() + 30);
+			$('#datetime7_returnDate').datetimepicker({
+				minDate: t,
+			    });
+			
+			
+			//$('#datetime7_returnDate').handleDtpicker('setMinDate', t);
+			//$("#datetime7_returnDate").datetimepicker('option', 'minDate', t);
+			$('#datetime7_returnDate').trigger('change');
+			});
+			$('#datetime7_returnDate').trigger('change');
+			$('#datetime6_prefer_date').trigger('change');
+		});
+	}
+	
+	
 });
+
 
 </script>
 
-<script type="text/javascript">
-
-$(function(){
- 	var d = new Date();
-	var month = parseInt(d.getMonth()) +1;
-	$('#datetime8_prefer_date').val(d.getDate() + '-' + month + '-' + d.getFullYear()+ ' ' +d.getHours()+ ':' +d.getMinutes());
-	d.setDate(d.getDate() + 15);
-	var month = parseInt(d.getMonth()) +1;
-	$('#datetime9_returnDate').change(function() {
-	    $('#datetime8_prefer_date').appendDtpicker({
-	    });
-	});
-	$('#datetime8_prefer_date').change(function() {
-	var from = $("#datetime8_prefer_date").val().split("-");
-	var year = from[2].split(" ");
-	var from2 = year[0]+'.'+from[1]+'.'+from[0];
-	//alert(from);
-	var t = new Date(from2);
-	t.setDate(t.getDate() + 15);
-	$('#datetime9_returnDate').appendDtpicker({
-	    });
-	$('#datetime9_returnDate').handleDtpicker('setMinDate', t);
-	$('#datetime9_returnDate').trigger('change');
-	});
-	$('#datetime9_returnDate').trigger('change');
-	$('#datetime8_prefer_date').trigger('change');
-});
-
-</script>
-
-<script type="text/javascript">
-$(function(){
- 	var d = new Date();
-	var month = parseInt(d.getMonth()) +1;
-	$('#datetime10_prefer_date').val(d.getDate() + '-' + month + '-' + d.getFullYear()+ ' ' +d.getHours()+ ':' +d.getMinutes());
-	d.setDate(d.getDate() + 30);
-	var month = parseInt(d.getMonth()) +1;
-	$('#datetime11_returnDate').change(function() {
-	    $('#datetime10_prefer_date').appendDtpicker({
-	    });
-	});
-	$('#datetime10_prefer_date').change(function() {
-	var from = $("#datetime10_prefer_date").val().split("-");
-	var year = from[2].split(" ");
-	var from2 = year[0]+'.'+from[1]+'.'+from[0];
-	//alert(from);
-	var t = new Date(from2);
-	t.setDate(t.getDate() + 30);
-	$('#datetime11_returnDate').appendDtpicker({
-	    });
-	$('#datetime11_returnDate').handleDtpicker('setMinDate', t);
-	$('#datetime11_returnDate').trigger('change');
-	});
-	$('#datetime11_returnDate').trigger('change');
-	$('#datetime10_prefer_date').trigger('change');
-});
-
-</script>
 
 {% endblock %}
 
@@ -218,7 +203,7 @@ $(function(){
 
 {% block body %}
 
-<section class="section clearfix bike-packages-title-bg">
+{#}<section class="section clearfix bike-packages-title-bg">
 	<div class="container bike-book hotel-title">
 		<div class="row">
 			<div class="col-md-4">
@@ -233,175 +218,243 @@ $(function(){
 			</div>
 		</div>
 		<input type="hidden" value="{{ locations[bikeslocbase.cityid].name }}" id="txt_name1">
-        {#}<img src="{{asset('images/bikes/s2.jpg') }}" style="width: 100%;">{#}
+        <img src="{{asset('images/bikes/s2.jpg') }}" style="width: 100%;">
     </div>
 </section>
-
+{#}
+<section class="section clearfix filter-box" style="background-color:#fff;">
+	 	<div class="">
+            <div class="row">
+                 <div class="col-md-12">
+                 	<div class="row disabled" style="margin: 8px;">
+                   		<div class="col-md-10">
+                   			<div class="row">
+                                 <form name="bike_package" action="{{ path('trip_site_management_bike_package_result') }}" method="get">
+                                        	<input class="model-bike-id" type="hidden" name="id" required="required" value="" class="bike-popupform"/>
+                                        	<input class="model-package-Kmlimit" type="hidden" name="Kmlimit" required="required" value="" class="bike-popupform"/>
+                                        	<input class="model-bike-name" type="hidden" name="title" required="required" value="" class="bike-popupform"/>
+                                        	<input class="model-package-name" type="hidden" name="packagename" required="required" value="" class="bike-popupform"/>
+                                        	<input class="model-package-offerprice" type="hidden" name="packageoffer" required="required" value="" class="bike-popupform"/>
+                                        	<input class="model-package-price" type="hidden" name="packageprice" required="required" value="" class="bike-popupform"/>
+                       				<div class="col-md-3">
+                						<div class="bikes-form-font disabled"> 
+                							<p class="bikes-search-result-p-form"><span class="glyphicon glyphicon-map-marker"></span>  Selected City</p>
+                                            {#}<a type="button" class="btn btn-info btn-lg review-resulst-popup" data-toggle="modal" data-target="#myModal">{{ geturl }}</a>{#}
+                                            {#}<input class="bikes-package-nopadding bike-popupform review-resulst-popup" type="text" name="location" value="{{ geturl }}" readonly="readonly" required>{#}
+                                            <div class="dropdown shaow">
+                                                        <div class="select-city-height dropdown-toggle" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            {% if filtermainloc %}
+                                                             <span class="select-city caps">{{ filtermainloc }} <i class="fa fa-angle-down"></i></span>
+                                                            {% else %}
+                                                             <span class="select-city caps">Select City <i class="fa fa-angle-down"></i></span>
+                                                            {% endif %}
+                                                        </div> 
+                                                        <div class="dropdown-menu select-city-links" aria-labelledby="dropdownMenuLink">
+                                                             <a  href="{{ path('trip_site_management_bikes_city_sybmit') }}?city=1&name=tirupathi" class="caps bikes-search-popup-heading2 text-center resview-bikes-pop-loc">tirupathi</a>	<br>
+                                                             <a  href="{{ path('trip_site_management_bikes_city_sybmit') }}?city=2&name=bengaluru" class="caps bikes-search-popup-heading2 text-center resview-bikes-pop-loc">bengaluru</a>	<br>
+                                                         </div>
+                                                    </div>		
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                         <div class="bikes-form-font"> 
+                                           	<p class="bikes-search-result-p-form"><span class="bikes-searchresults-icons"><i class="fa fa-calendar"></i></span>  Start date and time</p>
+                                            <input type="datetime" class="bikes-package-nopadding review-resulst-popup bike-popupform" id="datetime6_prefer_date" name="preferdate" required="required"  placeholder="Pickup Date" autocomplete="off"  required />
+                                         </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                    	 <div class="bikes-form-font"> 
+                                           	<p class="bikes-search-result-p-form"><span class="bikes-searchresults-icons"><i class="fa fa-calendar"></i></span>  End date and time</p>
+                                            <input type="datetime" class="bikes-package-nopadding review-resulst-popup bike-popupform" id ="datetime7_returnDate" name="returndate" required="required"  placeholder="Return Date" autocomplete="off" data-value=""  required />
+                                         </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                    		<button type="submit" class="new-button-bikes-onrent btn btn-primary" value="Search" id="reviewsubmit">Ride now
+                                         </button>
+                                    </div>
+                               
+                   			</div>
+                   		</div>
+                   		<div class="col-md-2">
+                   			<p class="brandtype p-nomargin">Bike name > <span class="model-bike-name"></span>
+                   			<input type="hidden" value="30" class="model-package-name" id="ifcon"></p>
+                   			<p class="brandtype p-nomargin bikepackage-marigin-header">Package > <span class="model-package-name"></span> <span class="theme-color">Days</span></p>
+                   		</div>
+                 </div>
+            </div>
+       </div>
+</section>
 <section class="section clearfix" style="background-color:#fff;">
     <div class="container">
         <div class="row">
-                        <div class="col-lg-12 col-sm-12 col-xs-12">
-                            {% for bike in bikes %} 
-                            {% if bike.active==1 %}
-                            <div class="col-md-4" >
-                            <div>
-                            	<img src="{{asset('images/bikes/'~bike.imgPath) }}" style="width: 100%;">
-                            </div>
-                            	<div class="bike-background">
-                            		<h6 class="title">{{ bike.title }}</h6>
-                                    <!-- Nav tabs -->
-                                    <ul class="nav nav-tabs">
-                                        {% for index,package in bike.bikespackage %}
-                                        {% if loop.index==1 %}
-                                        	<li class="col-md-4 active"><a href="#7days{{ bike.id }}" data-toggle="tab">
-                                            	<span>{{ package.packagename }}DAYS</span> </a>
-                                            </li>
-                                        {% elseif loop.index==2 %}
-                                            <li class="col-md-4"><a href="#15days{{ bike.id }}" data-toggle="tab">
-                                            	<span>{{ package.packagename }}DAYS</span></a>
-                                            </li>
-                                        {% else %}
-                                            <li class="col-md-4"><a href="#30days{{ bike.id }}" data-toggle="tab">
-                                                <span>{{ package.packagename }}DAYS</span></a>
-                                            </li>
-                                        {% endif %}
-                                        {% endfor %} 
-                                    </ul>
-                                    <!-- Tab panes -->
-                                    	<div class="tab-content">
-                                            {% for index,package in bike.bikespackage %}
+            <div class="col-lg-12 col-sm-12 col-xs-12">
+                 {% for bike in bikes %} 
+                    {% if bike.active==1 %}
+                    	<div class="col-md-4" >
+                    		<div class="bike-background-new">
+                    			<img src="{{asset('images/bikes/'~bike.imgPath) }}" style="width: 70%;display: block;margin: 0 auto;">
+                    			<h6 class="title">{{ bike.title }}</h6>
+                    			<div class="row">
+                    					{% for index,package in bike.bikespackage %}
+                    						<div class="col-sm-4 bikepackages-border-grid {% if loop.last is same as(true) %}bikepackages-noborder-grid{% endif %}">
+                            					<p class="p-nomargin text-center">{{ package.packagename }}Days</p>
+                            				</div>
+                            			{% endfor %}
+                    			</div>
+                    			<p class="excess p-nomargin">Excess km</p>
+                    			<div class="row">
+                    				{% for index,package in bike.bikespackage %}
+                        				<div class="col-sm-4 text-center bikepackages-border-grid {% if loop.last is same as(true) %}bikepackages-noborder-grid{% endif %}">
+                        					<span class="excess"><i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageexcesskm }}.0/km</span>
+                        				</div>
+                    				{% endfor %}
+                    			</div>
+                    			<p class="excess p-nomargin">Km limit</p>
+                    			<div class="row">
+                    				{% for index,package in bike.bikespackage %}
+                        				<div class="col-sm-4 text-center bikepackages-border-grid {% if loop.last is same as(true) %}bikepackages-noborder-grid{% endif %}">
+                        					<span class="excess"><i class="fa fa-inr" aria-hidden="true"></i> {{ package.packagekmlimit }}.0 km</span>
+                        				</div>
+                    				{% endfor %}
+                    			</div>
+                    			<div class="row">
+                    				{% for index,package in bike.bikespackage %}
+                    					{% if bike.id==2 %}
                                             {% if loop.index==1 %}
-                                            	<div class="tab-pane fade in active" id="7days{{ bike.id }}" style="font-size: 12px;">
-                                                	<div class="row">
-                        						    	<div class="col-md-6" style="text-align:left;">
-                            								<p class="price">Price</p>
-                            							    <span class="excess">Km limit</span><br>
-                            								<span class="excess">Excess km</span>
-                            								{#}<p class="price">Additional Usage</p>
-                            								<span class="excess">Additional price/hr</span>
-                            								<span class="excess">Additional km limit</span>{#}
-                        								</div>
-                                                        <div class="col-md-6" style="text-align:right;">
-                                                        	<p class="pricevalue"><i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageprice }}.0</p>
-                                                        	<span class="excess">{{ package.packagekmlimit }}.0 km</span><br>
-                                                        	<span class="excess"><i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageexcesskm }}.0/km</span><br>
-                                                        	{#}<p class="price"></p><br>
-                                                        	<span class="excess"><i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageadditionalpriceday }}.0/hr</span><br>
-                                                        	<span class="excess">{{ package.packageadditionalkmlimit }}.0 km/hr</span>{#}
-                                                        </div>
-                        							</div>
-                        							{#}<div class="row">
-                        								<div class="col-md-12">
-                        									<h6 class="package-offer">{{ package.packageoffer }}% Offer Available</h6>
-                        								</div>
-                        							</div>{#}
-                        							<div class="row"> 
-                                                    	<div class="col-md-12" >
-                                                           
-                                                                <button class="btn btn-book-now view-bike1 book-now" 
+                    				<div class="col-sm-4">
+                    					<button class="btn btn-book-now book-now package-price-btn" 
                                                                 bike-name="{{ bike.title }}" 
                                                                 package-name="{{ package.packagename }}" 
                                                                 bike-id="{{ bike.id }}" 
                                                                 package-price="{{ package.packageprice }}"
                                                                 Km-limit="{{ package.packagekmlimit }}"
                                                                 offer-price="{{ package.packageoffer }}">
-                                                                	Rent Now
+                                                                	
+                                                                	<i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageprice }}
                                                                 </button>
-                                                        
-                                                           
-                                                            
-                                                        </div>
-                                         			</div>
-                                                 </div>
-                                            {% elseif loop.index==2 %}
-                                            	<div class="tab-pane fade" id="15days{{ bike.id }}"  style="font-size: 12px;">
-                                                	<div class="row">
-                        						    	<div class="col-md-6" style="text-align:left;">
-                            								<p class="price">Price</p>
-                            							    <span class="excess">Km limit</span><br>
-                            								<span class="excess">Excess km</span>
-                            								{#}<p class="price">Additional Usage</p>
-                            								<span class="excess">Additional price/hr</span>
-                            								<span class="excess">Additional km limit</span>{#}
-                        								</div>
-                                                        <div class="col-md-6" style="text-align:right;">
-                                                        	<p class="pricevalue"><i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageprice }}.0</p>
-                                                        	<span class="excess">{{ package.packagekmlimit }}.0 km</span><br>
-                                                        	<span class="excess"><i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageexcesskm }}.0/km</span><br>
-                                                        	{#}<p class="price"></p><br>
-                                                        	<span class="excess"><i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageadditionalpriceday }}.0/hr</span><br>
-                                                        	<span class="excess"><i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageadditionalkmlimit }}.0 km/hr</span>{#}
-                                                        </div>
-                        							</div>
-                        							{#}<div class="row">
-                        								<div class="col-md-12">
-                        									<h6 class="package-offer">{{ package.packageoffer }}% Offer Available</h6>
-                        								</div>
-                        							</div>{#}
-                        							<div class="row"> 
-                                                    	<div class="col-md-12" >
-                                                            
-                                                                <button class="btn btn-book-now view-bike1 book-now1" 
+                    				</div>
+                    				{% elseif loop.index==2 %}
+                    				<div class="col-sm-4">
+                    					 <button class="btn btn-book-now book-now1 package-price-btn" 
                                                                 bike-name="{{ bike.title }}" 
                                                                 package-name="{{ package.packagename }}" 
                                                                 bike-id="{{ bike.id }}" 
                                                                 package-price="{{ package.packageprice }}"
                                                                 Km-limit="{{ package.packagekmlimit }}"
                                                                 offer-price="{{ package.packageoffer }}">
-                                                                	Rent Now
+																	
+                                                                	<i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageprice }}
                                                                 </button>
-                                                        
-                                                        </div>
-                                         			</div>
-                                     			</div>
-                                             {% else %}
-                                                <div class="tab-pane fade" id="30days{{ bike.id }}" style="font-size: 12px;">
-                                                    <div class="row">
-                        						    	<div class="col-md-6" style="text-align:left;">
-                            								<p class="price">Price</p>
-                            							    <span class="excess">Km limit</span><br>
-                            								<span class="excess">Excess km</span>
-                            								{#}<p class="price">Additional Usage</p>
-                            								<span class="excess">Additional price/hr</span>
-                            								<span class="excess">Additional km limit</span>{#}
-                        								</div>
-                                                        <div class="col-md-6" style="text-align:right;">
-                                                        	<p class="pricevalue"><i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageprice }}.0</p>
-                                                        	<span class="excess">{{ package.packagekmlimit }}.0 km</span><br>
-                                                        	<span class="excess"><i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageexcesskm }}.0/km</span><br>
-                                                        	{#}<p class="price"></p><br>
-                                                        	<span class="excess"><i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageadditionalpriceday }}.0/hr</span><br>
-                                                        	<span class="excess"><i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageadditionalkmlimit }}.0 km/hr</span>{#}
-                                                        </div>
-                        							</div>
-                        							{#}<div class="row">
-                        								<div class="col-md-12">
-                        									<h6 class="package-offer">{{ package.packageoffer }}% Offer Available</h6>
-                        								</div>
-                        							</div>{#}
-                                                    <div class="row"> 
-                                                    	<div class="col-md-12" >
-                                                           
-                                                                <button class="btn btn-book-now view-bike1 book-now2" 
+                    				</div>
+                    				{% else %}
+                    				<div class="col-sm-4">
+                    					 <button class="btn btn-book-now book-now2 package-price-btn" 
                                                                 bike-name="{{ bike.title }}" 
                                                                 package-name="{{ package.packagename }}" 
                                                                 bike-id="{{ bike.id }}" 
                                                                 package-price="{{ package.packageprice }}"
                                                                 Km-limit="{{ package.packagekmlimit }}"
                                                                 offer-price="{{ package.packageoffer }}">
-                                                                	Rent Now
+																	
+                                                                	<i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageprice }}
                                                                 </button>
-                                                        
-                                                        </div>
-                                         			</div>
-                                                </div>
-                                             {% endif %}
-                                             {% endfor %}
-                               </div>
-                           </div>
-                        </div>
-                        {% endif %}
-                     {% endfor %}
+                    				</div>
+                        				{% endif %}
+                        				{% elseif geturl=='bengaluru' %}
+                        				{% if loop.index==1 %}
+                            				<div class="col-sm-4">
+                            					<button class="btn btn-book-now book-now package-price-btn" 
+                                                                        bike-name="{{ bike.title }}" 
+                                                                        package-name="{{ package.packagename }}" 
+                                                                        bike-id="{{ bike.id }}" 
+                                                                        package-price="{{ package.packageprice }}"
+                                                                        Km-limit="{{ package.packagekmlimit }}"
+                                                                        offer-price="{{ package.packageoffer }}">
+                                                                        	
+                                                                        	<i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageprice }}
+                                                                        </button>
+                            				</div>
+                            				{% elseif loop.index==2 %}
+                            				<div class="col-sm-4">
+                            					 <button class="btn btn-book-now book-now1 package-price-btn" 
+                                                                        bike-name="{{ bike.title }}" 
+                                                                        package-name="{{ package.packagename }}" 
+                                                                        bike-id="{{ bike.id }}" 
+                                                                        package-price="{{ package.packageprice }}"
+                                                                        Km-limit="{{ package.packagekmlimit }}"
+                                                                        offer-price="{{ package.packageoffer }}" >
+        																	
+                                                                        	<i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageprice }}
+                                                                        </button>
+                            				</div>
+                            				{% else %}
+                            				<div class="col-sm-4">
+                            					 <button class="btn btn-book-now book-now2 package-price-btn" 
+                                                                        bike-name="{{ bike.title }}" 
+                                                                        package-name="{{ package.packagename }}" 
+                                                                        bike-id="{{ bike.id }}" 
+                                                                        package-price="{{ package.packageprice }}"
+                                                                        Km-limit="{{ package.packagekmlimit }}"
+                                                                        offer-price="{{ package.packageoffer }}">
+        																	
+                                                                        	<i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageprice }}
+                                                                        </button>
+                            				</div>
+                            				{% endif %}
+                            			{% else %}
+                            				{% if loop.index==1 %}
+                    				<div class="col-sm-4">
+                    					<button class="btn btn-book-now book-now package-price-btn" 
+                                                                bike-name="{{ bike.title }}" 
+                                                                package-name="{{ package.packagename }}" 
+                                                                bike-id="{{ bike.id }}" 
+                                                                package-price="{{ package.packageprice }}"
+                                                                Km-limit="{{ package.packagekmlimit }}"
+                                                                offer-price="{{ package.packageoffer }}">
+                                                                	
+                                                                	<i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageprice }}
+                                                                </button>
+                    				</div>
+                    				{% elseif loop.index==2 %}
+                    				<div class="col-sm-4">
+                    					 <button class="btn btn-book-now book-now1 package-price-btn" 
+                                                                bike-name="{{ bike.title }}" 
+                                                                package-name="{{ package.packagename }}" 
+                                                                bike-id="{{ bike.id }}" 
+                                                                package-price="{{ package.packageprice }}"
+                                                                Km-limit="{{ package.packagekmlimit }}"
+                                                                offer-price="{{ package.packageoffer }}">
+																	
+                                                                	<i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageprice }}
+                                                                </button>
+                    				</div>
+                    				{% else %}
+                    				<div class="col-sm-4">
+                    					 <button class="btn btn-book-now book-now2 package-price-btn" 
+                                                                bike-name="{{ bike.title }}" 
+                                                                package-name="{{ package.packagename }}" 
+                                                                bike-id="{{ bike.id }}" 
+                                                                package-price="{{ package.packageprice }}"
+                                                                Km-limit="{{ package.packagekmlimit }}"
+                                                                offer-price="{{ package.packageoffer }}">
+																	
+                                                                	<i class="fa fa-inr" aria-hidden="true"></i> {{ package.packageprice }}
+                                                                </button>
+                    				</div>
+                        				{% endif %}
+                    				{% endif %}
+                                   {% endfor %}
+                    			</div>
+                    		</div>
+                    	</div>
+                    {% endif %}
+                 {% endfor %}
+                     
+                      </form>
+                     
+                     
+                   {#}  
+                     
                      <div class="modal fade myModal7days" id="mymodel7days"  role="dialog">
                       <div class="modal-dialog">
                        <div class="modal-content">
@@ -507,9 +560,14 @@ $(function(){
                        </div>
                       </div>
                      </div>
-                    </div>
-             </div>
-         </div>    
+                     
+                     
+                     {#}
+                     
+                     
+           </div>
+       </div>
+    </div>    
 </section>
 <section class="space"></section>
 {% endblock %}

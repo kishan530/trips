@@ -18,7 +18,8 @@ class RegistrationFormType extends BaseType
         parent::buildForm($builder, $options);
 
         // add your custom field
-       // $builder->add('name');
+        $builder->add('firstname');
+        $builder->add('mobile');
 	    $builder->remove('username');  // we use email as the username
        /*  $builder->add('captcha', 'captcha', array(
             'width' => 150,

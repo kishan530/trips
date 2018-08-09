@@ -10,13 +10,17 @@ use Trip\BookingEngineBundle\Entity\Booking;
 use Trip\BookingEngineBundle\Entity\BikeBooking;
 use Trip\BookingEngineBundle\Entity\Billing;
 use Trip\BookingEngineBundle\Form\CustomerType;
+use Trip\BookingEngineBundle\Form\DocuploadType;
 use Trip\BookingEngineBundle\Form\BillingType;
 use Trip\BookingEngineBundle\Form\EditCustomerType;
 use Trip\BookingEngineBundle\Form\GuestType;
 use Trip\SiteManagementBundle\Entity\Contact;
+use Trip\BookingEngineBundle\Entity\Docupload;
 use Trip\SiteManagementBundle\Form\ContactType;
 use Trip\SiteManagementBundle\Form\biketimerangeType;
 use Trip\BookingEngineBundle\DependencyInjection\Instamojo;
+use Trip\BookingEngineBundle\DependencyInjection\Razorpay;
+use Trip\BookingEngineBundle\DependencyInjection\src\Api;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Trip\SiteManagementBundle\Entity\BillingPlacesToVisit;
@@ -32,13 +36,107 @@ class BookingController extends Controller
      */
     private function createBookingForm(Customer $entity){
         $form = $this->createForm(new CustomerType(), $entity, array(
-            'action' => $this->generateUrl('trip_booking_engine_book_submit'),
+            'action' => $this->generateUrl('trip_booking_engine_book_bike_submit'),
             'method' => 'POST',
         ));
         
         return $form;
     }
     
+    public function myorderAction(){
+        $security = $this->container->get ( 'security.context' );
+        if (! $security->isGranted ( 'ROLE_USER' )) {
+            
+            return $this->redirect ( $this->generateUrl ('trip_booking_engine_myorder') );
+            
+        }
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        $username=$user->getFirstname();
+        $useremail=$user->getEmail();
+        $usermobile=$user->getMobile();
+        $em = $this->getDoctrine()->getManager();
+        $customers = $em->getRepository('TripBookingEngineBundle:Customer')->findBy(array('email' => $useremail));
+        
+        $bookings = $em->getRepository('TripBookingEngineBundle:Booking')->findBy(array(), array('id' => 'DESC'));
+        $locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
+        $bikesbookings = $em->getRepository('TripBookingEngineBundle:BikeBooking')->findAll();
+        $locations = $this->getLocationsByIndex($locations);
+       // $customers = $this->getCustomersByIndex($customers);
+        
+        return $this->render('TripBookingEngineBundle:Default:myorder.html.twig', array(
+            'bookings' => $bookings,
+            'locations' => $locations,
+            'customers' => $customers,
+            'bikesbookings' => $bikesbookings,
+           'useremail' => $useremail,
+            'usermobile' => $usermobile,
+        ));
+    }
+    public function profileAction(Request $request){
+        $security = $this->container->get ( 'security.context' );
+        $em = $this->getDoctrine()->getManager();
+        if (! $security->isGranted ( 'ROLE_USER' )) {
+            
+            return $this->redirect ( $this->generateUrl ('trip_booking_engine_profile') );
+            
+        }
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        $userid=$user->getId();
+        $username=$user->getFirstname();
+        
+        $useremail=$user->getEmail();
+        $usermobile=$user->getMobile();
+        
+        $docupload = new Docupload();
+        $form   = $this->createDocuploadForm($docupload);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            
+            $imgfront =$docupload->getImgfront();
+           
+            if (!is_null($imgfront)) {
+                $file_name = $imgfront->getClientOriginalName ();
+                $dir = 'images/userdoc/';
+                $imgfront->move ( $dir, $file_name );
+                $docupload->setImgfront ($file_name );
+                $docupload->setUserid($userid);
+            }
+            
+           
+            $docupload = $em->merge($docupload);
+            $em->flush();
+            return $this->redirect($this->generateUrl('trip_booking_engine_profile'));
+            
+        }
+        $userdoc = $em->getRepository('TripBookingEngineBundle:Docupload')->findBy(array('userid' => $userid));
+        return $this->render('TripBookingEngineBundle:Default:profile.html.twig', array(
+            'username' => $username,
+            'useremail' => $useremail,
+            'usermobile' => $usermobile,
+            'userdoc' => $userdoc,
+            'form'   => $form->createView(),
+        ));
+    }
+    private function createDocuploadForm($docupload){
+        $bookingService = $this->container->get( 'booking.services' );
+        $form = $this->createForm(new DocuploadType(), $docupload, array(
+            'action' => $this->generateUrl('trip_booking_engine_profile'),
+            'method' => 'POST',
+        ));
+        $form->add('submit', 'submit', array('label' => 'Upload'));
+        
+        return $form;
+    }
+    public function deletedocuploadAction(Request $request,$id){
+        $em = $this->getDoctrine()->getManager();
+        
+        $bikesContent = $em->getRepository('TripBookingEngineBundle:Docupload')->find($id);
+        
+        $em->remove ( $bikesContent );
+        $em->flush();
+        
+        return $this->redirect($this->generateUrl('trip_booking_engine_profile'));
+    }
     /**
      *
      */
@@ -55,7 +153,14 @@ class BookingController extends Controller
     
     
     public function dealsAction(){
+       /* $mailService = $this->container->get( 'mail.services' );
+        $mailService->mail('kishan.kish530@gmail.com','Just Trip:Booking Confirmation','this is test');
+        $mailService->mail('sreekanthrdy.mail@gmail.com','Just Trip:Booking Confirmation','this is test');
+        
+        echo 'mail test';
+        exit();*/
         return $this->getHome('TripSiteManagementBundle:Default:deals.html.twig');
+        
         
         //test
     }
@@ -77,10 +182,12 @@ class BookingController extends Controller
         $em = $this->getDoctrine()->getManager();
         $bikesblr = $em->getRepository('TripSiteManagementBundle:BikesCity')->findAll();
         $cities = $em->getRepository('TripSiteManagementBundle:City')->findAll();
+        $locations = $em->getRepository('TripSiteManagementBundle:City')->findAll();
+        $locations = $this->getLocationsByIndex($locations);
         return $this->render('TripBookingEngineBundle:Default:footerTabs.html.twig', array(
             'bikesblr' => $bikesblr,
             'cities'=> $cities,
-            
+            'locations'=>$locations,
         ));
         
         
@@ -249,6 +356,9 @@ class BookingController extends Controller
             //exit();
         }
         $paymentId = $request->get('payment_id');
+        $rozorPaymentId = $request->get('razorpay_payment_id');
+        $rozorOrderId = $request->get('razorpay_order_id');
+        $rozorPaySignature = $request->get('razorpay_signature');
         $status = $request->get('status');
         $resultSet = $session->get('resultSet');
         $searchFilter = $session->get('selectedData');
@@ -257,12 +367,58 @@ class BookingController extends Controller
         $customer = $session->get('customer');
         
         $booking = $session->get('bookingObj');
+        
         $amountToPay = $session->get('amountToPay');
         $em = $this->getDoctrine()->getManager();
         $countinsert = $session->get('countinsert');
         $id = $session->get('id');
+        
+        $keyId = 'rzp_test_HdICwqRSvDBYcc';
+        $keySecret = 'Dknu5UNo96OK5TuqbsO7otPH';
+        
+        /**********end**********/
+        $displayCurrency = 'INR';
+        
+        $bookingId = $booking->getBookingId();
+        
+        $txnid = 'RAZOR'.$bookingId;
         //echo var_dump($countinsert);
         //die();
+        
+        $success = true;
+        
+        $error = "Payment Failed";
+        
+        if (!is_null($rozorPaymentId))
+        {
+            $api = new Api($keyId, $keySecret);
+            
+            try
+            {
+                // Please note that the razorpay order ID must
+                // come from a trusted source (session here, but
+                // could be database or something else)
+                $attributes = array(
+                    'razorpay_order_id' => $rozorOrderId,
+                    'razorpay_payment_id' => $rozorPaymentId,
+                    'razorpay_signature' => $rozorPaySignature
+                );
+                
+                $api->utility->verifyPaymentSignature($attributes);
+                $status='success';
+                $paymentId = $rozorPaymentId;
+            }
+            catch(\Exeception $e)
+            {
+                $success = false;
+                $error = 'Razorpay Error : ' . $e->getMessage();
+            }
+        }
+        
+        
+        
+        $bikesbookings = $em->getRepository('TripBookingEngineBundle:BikeBooking')->findAll();
+        $bikes =$em->getRepository('TripSiteManagementBundle:bikes')->findAll();
         if($status=='success'){
             $booking->setStatus('booked');
             $paymentMode = $booking->getPaymentMode();
@@ -278,10 +434,10 @@ class BookingController extends Controller
             $name = $customer->getName();
             $mobile = $customer->getMobile();
             $bookingId = $booking->getBookingId();
-            $bikesbookings = $em->getRepository('TripBookingEngineBundle:BikeBooking')->findAll();
+            
             $mail = "Dear $name <br> Your Booking has been Successfully completed.Your Booking Id is $bookingId";
             $adminMail = "Dear Admin, $name <br> has Done Booking Successfully and Booking Id is $bookingId";
-            $bikes =$em->getRepository('TripSiteManagementBundle:bikes')->findAll();
+           
              $mail = $this->renderView(
              'TripBookingEngineBundle:Mail:bikemailer.html.twig',
              array(
@@ -312,7 +468,7 @@ class BookingController extends Controller
             'status'=>$status,
             'customer'   => $customer,
             'booking'=>$booking,
-            'bikes' => $bikes,
+           'bikes' => $bikes,
             'bikesbookings' => $bikesbookings
         ));
         
@@ -341,6 +497,74 @@ class BookingController extends Controller
      * payment
      * @param Request $request
      */
+    public function getRazorPayLink($request,$amountToPay,$customer,$booking){
+        //$keyId = 'rzp_live_EWiWqsst84NUm7';
+        //$keySecret = 'augsHcYhiDOVm3veYnzIq3D5';
+        
+        /******test**************/
+        $keyId = 'rzp_test_HdICwqRSvDBYcc';
+        $keySecret = 'Dknu5UNo96OK5TuqbsO7otPH';
+        
+        /**********end**********/
+        $displayCurrency = 'INR';
+        
+        $redirectUrl = $this->generateUrl ( 'trip_booking_engine_success' );
+        $bookingId = $booking->getBookingId();
+        
+        $txnid = 'RAZOR'.$bookingId;
+        $mobile = $customer->getMobile ();
+        $name = $customer->getName ();
+        $email = $customer->getEmail ();
+        $host = $request->getHost ();
+        
+        $sUrl = 'http://' . $host . $redirectUrl.'?payment_id='.$txnid.'&status=success';
+        $fUrl = 'http://' . $host . $redirectUrl.'?status=fail';
+        
+        $api = new Api($keyId, $keySecret);
+        $orderData = [
+            'receipt'         => $bookingId,
+            'amount'          => $amountToPay * 100, // 2000 rupees in paise
+            'currency'        => 'INR',
+            'payment_capture' => 1 // auto capture
+        ];
+        
+        $razorpayOrder = $api->order->create($orderData);
+        
+        $razorpayOrderId = $razorpayOrder['id'];
+        
+        //$_SESSION['razorpay_order_id'] = $razorpayOrderId;
+        
+        $displayAmount = $amount = $orderData['amount'];
+        
+        
+        
+        //$checkout = 'automatic';
+        
+        
+        
+        $data = [
+            "key"               => $keyId,
+            "amount"            => $amount,
+            "prefill"           => [
+                "name"              => $name,
+                "email"             => $email,
+                "contact"           => $mobile,
+            ],
+            "notes"             => [
+                "merchant_order_id" => $txnid,
+            ],
+            "theme"             => [
+                "color"             => "#F37254"
+            ],
+            "order_id"          => $razorpayOrderId,
+        ];
+        
+        
+        $json = json_encode($data);
+        
+        
+        return $json;
+    }
     
     public function getPaymentLink($request,$amountToPay,$customer,$booking){
         
@@ -545,74 +769,9 @@ class BookingController extends Controller
         
         
     }
+   
+   
     
-    public function bookingBikeAction(Request $request)
-    {
-        $session = $request->getSession();
-        $em = $this->getDoctrine()->getManager();
-        //$resultSet = $session->get('resultSet');
-        //$searchFilter = $session->get('selectedData');
-        //echo var_dump($session);
-        //exit();
-        // $session->set('guest',$customer);
-        $id = $request->get('id');
-        $title = $request->get('title');
-        $pDate = $request->get('pDate');
-        $rDate = $request->get('rDate');
-      // $price = $request->get('price');
-        $price=1;
-        $leftdays = $request->get('leftdays');
-        $hours = $request->get('hours');
-        $location = $request->get('location');
-        $countinsert = $request->get('countinsert');
-        $bikearea = $request->get('bikearea');
-        $package =$em->getRepository('TripSiteManagementBundle:bikes')->find($id);
-        $count = $package->getCount();
-        //echo var_dump($package);
-        //echo var_dump($count);
-        // exit();
-        
-        $session->set('id',$id);
-        $session->set('title',$title);
-        $session->set('pDate',$pDate);
-        $session->set('rDate',$rDate);
-        $session->set('price',$price);
-        $session->set('leftdays',$leftdays);
-        $session->set('hours',$hours);
-        $session->set('location',$location);
-        $session->set('count',$count);
-        $session->set('countinsert',$countinsert);
-        $session->set('bikearea',$bikearea);
-        $guest = $session->get('guest');
-        $customer = new Customer();
-        //$customer->setEmail($guest->getEmail());
-        //$customer->setMobile($guest->getMobile());
-        $form   = $this->createBikeBookingForm($customer);
-        
-        return $this->render('TripBookingEngineBundle:Default:bookingBike.html.twig', array(
-            'form'   => $form->createView(),
-            'service'=> $id,
-            'filter'=> $title,
-            'discount'=>0,
-            'selected'=> $pDate,
-            'locations' => $rDate,
-            'location' => $location,
-            'price'=> $price,
-            'leftdays' => $leftdays,
-            'hours' => $hours,
-            'bikearea' => $bikearea,
-            'step'=>'personal',
-        ));
-        
-    }
-    private function createBikeBookingForm(Customer $entity){
-        $form = $this->createForm(new CustomerType(), $entity, array(
-            'action' => $this->generateUrl('trip_booking_engine_book_bike_submit'),
-            'method' => 'POST',
-        ));
-        
-        return $form;
-    }
     public function bookbikeSubmitAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -622,30 +781,49 @@ class BookingController extends Controller
          $selectedService = $session->get('selected');
          $searchHotel = $session->get('searchHotel');
          $locations = $session->get('locations');*/
-        $id = $session->get('id');
-        $title = $session->get('title');
-        $pDate = $session->get('pDate');
-        $rDate = $session->get('rDate');
-        $price = $session->get('price');
-        $leftdays = $session->get('leftdays');
-        $hours = $session->get('hours');
-        $location = $session->get('location');
+       
+        
+        
+        $id = $request->get('id');
+        $title = $request->get('title');
+        $pDate = $request->get('pDate');
+        $rDate = $request->get('rDate');
+        $price = $request->get('price');
+        //$price=1;
+        $leftdays = $request->get('leftdays');
+        $hours = $request->get('hours');
+        $location = $request->get('location');
+        $countinsert = $request->get('countinsert');
+        $bikearea = $request->get('bikearea');
         $paymentMode = $request->get('mode');
-        $countinsert = $session->get('countinsert');
-        $bikearea = $session->get('bikearea');
+
+        //$countinsert = $session->get('countinsert');
+        //$bikearea = $session->get('bikearea');
         //$count = $session->get('count');
         //echo var_dump($countinsert);
-        
+        $package =$em->getRepository('TripSiteManagementBundle:bikes')->find($id);
+        $count = $package->getCount();
         //$newDate = date("Y-m-d H:i:s", $pDate);
         //echo var_dump($paymentMode);
          //exit();
-        $guest = $session->get('guest');
+       
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        $username=$user->getFirstname();
+        $useremail=$user->getEmail();
+        $usermobile=$user->getMobile();
+       // echo $username;
+       // die();
+
         $customer = new Customer();
+        $customer->setName($username);
+        $customer->setEmail($useremail);
+        $customer->setMobile($usermobile);
+        //$form   = $this->createBikeBookingForm($customer);
         //$customer->setEmail($guest->getEmail());
         //$customer->setMobile($guest->getMobile());
-        $form   = $this->createBookingForm($customer);
-        $form->handleRequest($request);
-        if ($form->isValid()) {
+       // $form   = $this->createBookingForm($customer);
+        //$form->handleRequest($request);
+        //if ($form->isValid()) {
             $couponApplyed = $customer->getHaveCoupon();
             $couponCode = $customer->getCouponCode();
             //$paymentMode = $customer->getPaymentMode();
@@ -708,10 +886,11 @@ class BookingController extends Controller
                 
             }*/
             $serviceTax = 0;
-            $swachBharthCess = round($finalPrice*(2.5/100),2);
+            $swachBharthCess = round($finalPrice*(9/100),2);
             //$swachBharthCess =0;
-            $krishiKalyanCess = round($finalPrice*(2.5/100),2);
+            $krishiKalyanCess = round($finalPrice*(9/100),2);
            // $krishiKalyanCess =0;
+           
             $totalTax = $serviceTax+$swachBharthCess+$krishiKalyanCess;
             $amountToPay = round($amountToPay+$totalTax);
             $finalPrice = $finalPrice+$totalTax;
@@ -729,6 +908,10 @@ class BookingController extends Controller
             $session->set('bookingObj',$booking);
             $session->set('amountToPay',$amountToPay);
             $paymentLink = $this->getPaymentLink($request,$amountToPay,$customer,$booking);
+            $razorPaymentLink = $this->getRazorPayLink($request,$amountToPay,$customer,$booking);
+            
+            $razorData = json_decode($razorPaymentLink);
+            
             //$paymentLink = "https://www.instamojo.com/Waseemsyed/tirupati-caars-services-cb8a4/";
             // $paymentLink.="?data_name=".$customer->getName()."&data_email=".$customer->getEmail()."&data_phone=".$customer->getMobile()."&embed=form";
             //  $paymentLink = '';
@@ -741,6 +924,9 @@ class BookingController extends Controller
            // var_dump($paymentLink);
             
              //exit();
+            
+            
+
             return $this->render('TripBookingEngineBundle:Default:paymentBike.html.twig', array(
                 'customer'   => $customer,
                 'booking'   => $booking,
@@ -764,24 +950,43 @@ class BookingController extends Controller
                 'bikearea' => $bikearea,
                 'paymentMode' => $paymentMode,
                 'finalPrice' => $finalPrice,
+                'package' => $package,
+                'razorJson' =>$razorPaymentLink,
+                'razorData'=>$razorData
+                //'json' => $json,
                // 'amountToPayadv' => $amountToPayadv,
             ));
-        }
+       // }
         
         
-        return $this->render('TripBookingEngineBundle:Default:bookingBike.html.twig', array(
+       /* return $this->render('TripBookingEngineBundle:Default:bookingBike.html.twig', array(
             'form'   => $form->createView(),
-            'service'=>$selectedService,
+            //'service'=>$selectedService,
+            'service'=> $id,
+            'filter'=> $title,
             'discount'=>0,
-            'filter'=>$searchFilter,
-            'locations' => $locations,
+            'selected'=> $pDate,
+            'locations' => $rDate,
+            'location' => $location,
+            'price'=> $price,
+            'leftdays' => $leftdays,
+            'hours' => $hours,
             'bikearea' => $bikearea,
+            'username' => $username,
+            'useremail'=> $useremail,
+            'usermobile' => $usermobile,
+            'package' => $package,
+           // 'discount'=>0,
+            //'filter'=>$searchFilter,
+            //'locations' => $locations,
+            //'bikearea' => $bikearea,
             'step'=>'personal',
-        ));
+        ));*/
         
         
     }
-
+    
+    
 
    
     //**************End************//

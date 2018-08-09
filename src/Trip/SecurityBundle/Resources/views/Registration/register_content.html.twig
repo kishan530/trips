@@ -8,13 +8,28 @@
 				<form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">
 				
 				{{ form_widget(form._token) }}
-					
+						<div class="row form-group {% if form.firstname.vars.errors|length %}has-error{% endif %}">
+							<div class="row reg-input">
+								{{ form_widget(form.firstname,{ 'attr': {'placeholder': 'Enter your name'}}) }}
+							</div>
+							<div class="row">
+								{{ form_errors(form.firstname) }}
+							</div>
+						</div>
 						<div class="row form-group {% if form.email.vars.errors|length %}has-error{% endif %}">
 							<div class="row reg-input">
 								{{ form_widget(form.email,{ 'attr': {'placeholder': 'Enter your email Id'}}) }}
 							</div>
 							<div class="row">
 								{{ form_errors(form.email) }}
+							</div>
+						</div>
+						<div class="row form-group {% if form.mobile.vars.errors|length %}has-error{% endif %}">
+							<div class="row reg-input">
+								{{ form_widget(form.mobile,{ 'attr': {'placeholder': 'Enter 10 digit mobile number'}}) }}
+							</div>
+							<div class="row">
+								{{ form_errors(form.mobile) }}
 							</div>
 						</div>
 						

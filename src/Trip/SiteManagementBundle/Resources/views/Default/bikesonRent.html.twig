@@ -3,63 +3,67 @@
 <link href="{{ asset('css/jquery.timepicker.css') }}" rel="stylesheet" media="screen">
 {% endblock %}
 {% block meta %}
-    <meta name="keywords" content="">
-    <meta name="description" content="">  
+    <meta name="keywords" content="Justtrip.in">
+    <meta name="description" content="Justtrip a government authorized bike rental company in india. we
+offer all kinds of gear and non gear bikes on rent at the lowest price.
+Book Online or Download the app now.">  
 {% endblock %}
-{% block title %}Bikes On Rent | Justtrip.in {% endblock %}
+{% block title %} Government Authorized Bike Rental Company | Justtrip {% endblock %}
 {% block javascripts %}
 <script src="{{ asset('js/jquery.timepicker.min.js') }}"></script>
 <script  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7Vdof1ZN2V7mooMEjTWOSp3uA40wBBWU"
   type="text/javascript"></script>
-<script>
-$('.preferTime').timepicker({ 'scrollDefault': 'now' });
-    
-         $('.adults').click(function(e){		
-			e.preventDefault(); //STOP default action 
-			 var id = $(this).attr('id');
-			 var value = parseInt($(this).attr('value'));
-             var numAdult = $(this).siblings("input[name=numAdult]");
-			 var adults =parseInt(numAdult.val());
-			 if (isNaN(adults)) { 
-				 adults= 0
-	            } 
-			 if(id=='decrement'){
-				 adults-=1;
-				 if(adults>=value) numAdult.val(adults); else exit();
-			  }else{
-				adults+=1;
-			    if(adults<=20)  numAdult.val(adults); else exit();
-				}	
-	    });
-    
-         $('.vehicle-icon').click(function(e){		
-			e.preventDefault(); //STOP default action 
-			 var id = $(this).attr('id');
-			 var price = $(this).attr('value');
-             var package = parseInt($(this).attr('title'));
-             $('.vehicle'+package).removeClass('active');
-             $(this).addClass('active');
-             $('#vehicleIndex'+package).val(id);
-             $('#price'+package).html(price);
-
-
-	       });
-</script>
+  <script>
+	jQuery(function(){
+		 jQuery('#datetime2').datetimepicker({
+		  format:'d-m-Y H:i',
+		  closeOnDateSelect:'true',
+		  minDate: 0,
+		  onShow:function( ct ){
+		   this.setOptions({
+		    maxDate:jQuery('#datetime3').val()?jQuery('#datetime3').val():false
+		   })
+		  },
+		 
+		 });
+		 jQuery('#datetime3').datetimepicker({
+		  format:'d-m-Y H:i',
+		  closeOnDateSelect:'true',
+		  onShow:function( ct ){
+		   this.setOptions({
+		    minDate:jQuery('#datetime2').val()?jQuery('#datetime2').val():false
+		   })
+		  },
+		  
+		 });
+		});
+	 
+	</script>
 <script type="text/javascript">
-		$(function(){
+		/*$(function(){
 			$('#datetime2').appendDtpicker();	
 		});
+		*/
+		//var x = document.cookie;
+		//$('#citycookie').val(x);
 		
 	</script>
 	<script type="text/javascript">
-		$(function(){
+		/*$(function(){
 			$('#datetime3').appendDtpicker();
 			
 		});
-		
+		*/
+			var allcookies = document.cookie;
+    		
+			
+			
 	</script>
 	<script>
-			$(document).ready(function(){
+        
+    </script>
+	<script>
+			/*$(document).ready(function(){
 				$("#datetime3").change(function(){
 					var first=$("#datetime2").val();
 					var second=$("#datetime3").val();
@@ -72,138 +76,24 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 						//return;
 					}
 				});
-			});
+			});*/
 		</script>
 	<script>
-	 $(function() {
-		    var date = new Date();
-		    var currentMonth = date.getMonth();
-		    var currentDate = date.getDate();
-		    var currentYear = date.getFullYear();
-		    $('#datetime2').appendDtpicker({
-		    minDate: new Date(currentYear, currentMonth, currentDate)
-		    });
-		})
+	
 		/*$(window).load(function(){        
    $('#myModal').modal('show');
    $("#myModal").modal({
        backdrop: 'static',
        keyboard: false
    });
-    }); */
+    });*/
 	</script>
-	<script>
-	$( window ).load(function getlocation(){
-		if(navigator.geolocation){
-			navigator.geolocation.getCurrentPosition(showPosition);
-			function showPosition(position){
-				//x.innerHTML = "latitude=" + position.coords.latitude;
-				//x.innerHTML += "<br />"
-				//x.innerHTML += "latitude=" + position.coords.longitude
-				
-				lat = position.coords.latitude;
-				lang = position.coords.longitude;
-				
-				$('#lat').val(lat);
-				$('#lang').val(lang);
-				var lat = parseFloat(document.getElementById("lat").value);
-	            var lng = parseFloat(document.getElementById("lang").value);
-	            var latlng = new google.maps.LatLng(lat, lng);
-	            var geocoder = geocoder = new google.maps.Geocoder();
-	            geocoder.geocode({ 'latLng': latlng }, function (results, status) {
-	                if (status == google.maps.GeocoderStatus.OK) {
-	                    if (results[1]) {
-	                        //alert("Location: " + results[1].formatted_address);
-	    					address = results[11].formatted_address;
-	                        $('#address').val(address);
-	                        if(address == 'Tirupati, Andhra Pradesh, India'){
-	                        	//document.forms['locationtraktpt'].submit();
-	                        	location.href = document.getElementById("mylocationtpt");
-	                        	$('#addresstpt').val(address);
-		                        }
-	                        else{
-	                        	//document.forms['locationtrakblr'].submit();
-	                        	location.href = document.getElementById("mylocationblr");
-	                        	$('#addressblr').val(address);
-		                        }
-	                    }
-	                }
-	            });
-			}
-		}else{
-			x.innerHTML = "Browser not Supporting";
-		}
-
-		
-	});
 	
-	var x =document.getElementById('output');
-	</script>
+	
 {% endblock %}
 
 {% block body %}
-{#}<section class="section clearfix" style="/*background-color:#f9f9f9;*/background-repeat: no-repeat;padding:30px;background-image:url({{ asset('images/jtp-bikes-4.png') }});padding: 73px 0px;/*background-attachment: fixed;*/background-size: 1600px 684.712px;background-position: 51% -60px;">
-	<div class="bike-book">
-		<h2 class="sub-title-bikesonrent"> Rent A Bike</h2>
-        <img src="{{asset('images/bikes/s2.jpg') }}" style="width: 100%;">
-        <div class="container bike-price-book1">
-        	<div class="row">
-       			<div class="col-md-2"></div>
-       				<div class="col-md-8 sub-book1">
-       					<div class="row">
-       					<div class="col-md-6">
-       						<table class="table">
-                   					<tbody>
-                   						<tr>
-                   							<td class="text-center" style="background: transparent;border:none"><a href="{{ path('trip_site_management_homepage')}}"  class="homebanner-color"> Cabs</a></td>
-                   							<td class="bikes-search-tabs" style="background: #F34F4F;">Bikes</td>
-                   							<td class="text-center" style="background: transparent;border:none"><a href="{{ path('trip_site_management_homepage_packages')}}"> Packages</a></td>
-                   							<td class="text-center" style="background: transparent;border:none"><a href="#tab_04" aria-controls="tab_04" role="tab" data-toggle="tab">Offers</a></td>
-                   							
-                   						</tr>
-                   					</tbody>
-                   				</table>
-       					</div>
-       					<div class="col-md-6">
-       					
-       					</div>
-                           	
-                         </div>
-       				</div>
-       				<div class="col-md-2"></div>   
-       			</div>
-       		<div class="row">
-       			<div class="col-md-2"></div>
-       				<div class="col-md-8">
-       					<div class="row">
-                             {{ form_start(form) }}
-                             {{ form_errors(form) }}
-                             {{ form_errors(form.date) }}
-                             {{ form_errors(form.returndate) }}
-								<div class="col-md-3 bikes-form-font sub-book1">
-                             	
-                                {{ form_widget(form.location) }}
-                                </div>
-                             	<div class="col-md-3 bikes-form-font sub-book3">
-                                {{ form_widget(form.date, {'id': 'datetime2'}) }}
-                                </div>
-                                <div class="col-md-3 bikes-form-font sub-book3">
-                                	{{ form_widget(form.returndate, {'id': 'datetime3'}) }}
-                                	
-                                </div>
-                                <div class="col-md-3 sub-book4">
-                                {{ form_label(form.submit) }} 
-                                {{ form_widget(form.submit) }}
-                                </div>
-                             {{ form_end(form) }}
-                         </div>
-       				</div>
-       				<div class="col-md-2"></div>   
-       			</div>
-        </div>  
-    </div>
-    
-</section>{#}
+
 <section class="section clearfix" style="margin-top: -51px;">
     <div class="container">
     	<div class="row">
@@ -215,22 +105,14 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
         <div class="row">
         	<div class="col-md-6">
         	<a href="
-        	        {% for city in bikesmaincity %}
-                        {% if city.cityid==48 %}
-                        	{{ path('trip_site_management_bikes_city',{ 'cityid':city.url,'url':city.suburl }) }}
-                        {% endif %}
-                    {% endfor %}
+        	        {{ path('trip_site_management_bikes_city_sybmit') }}?city=1&name=bengaluru
              ">
         		<img src="{{asset('images/blr-bikes-justtrip.jpg') }}" class="img-center img-responsive">
         		<h3 class="home-portfolio">Bikes On Rent In Bangalore</h3>
         	</a>
         	</div>
         	<div class="col-md-6">
-        	<a href="{% for city in bikesmaincity %}
-                        {% if city.cityid==1 %}
-                        	{{ path('trip_site_management_bikes_city',{ 'cityid':city.url,'url':city.suburl }) }}
-                        {% endif %}
-                    {% endfor %}
+        	<a href="{{ path('trip_site_management_bikes_city_sybmit') }}?city=2&name=tirupathi
         	
         	">
         		<img src="{{asset('images/1.jpg') }}" class="img-center img-responsive">
@@ -321,7 +203,7 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                     		<h4 class="bikes-search-locationspop2">Bike</h4>
                     	</div>
                     	<div class="col-md-7">
-                    		<button type="button" class="close" data-dismiss="modal">&times;</button>
+                    		{#}<button type="button" class="close" data-dismiss="modal">&times;</button>{#}
                     	</div>
                   	</div>
                   </div>

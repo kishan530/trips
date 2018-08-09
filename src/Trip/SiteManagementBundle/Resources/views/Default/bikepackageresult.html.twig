@@ -10,54 +10,40 @@
 {% block title %} Bikes On Rent | Justtrip.in {% endblock %}
 {% block javascripts %}
 <script src="{{ asset('js/jquery.timepicker.min.js') }}"></script>
-<script>
-    
+<script type="text/javascript">
+jQuery(function(){
+	 jQuery('#datetime2').datetimepicker({
+	  format:'d-m-Y H:i',
+	  closeOnDateSelect:'true',
+	  minDateTime: 0,
+	 
+	 
+	 });
+	 jQuery('#datetime3').datetimepicker({
+	  format:'d-m-Y H:i',
+	  closeOnDateSelect:'true',
+	  minDate: 0,
+	  onShow:function( ct ){
+		   this.setOptions({
+		    minDate:jQuery('#datetime2').val()?jQuery('#datetime2').val():false
+		   })
+		  },
+	  
+	 });
+	});
 
-$('.preferTime').timepicker({ 'scrollDefault': 'now' });
-    
-         $('.adults').click(function(e){		
-			e.preventDefault(); //STOP default action 
-			 var id = $(this).attr('id');
-			 var value = parseInt($(this).attr('value'));
-             var numAdult = $(this).siblings("input[name=numAdult]");
-			 var adults =parseInt(numAdult.val());
-			 if (isNaN(adults)) { 
-				 adults= 0
-	            } 
-			 if(id=='decrement'){
-				 adults-=1;
-				 if(adults>=value) numAdult.val(adults); else exit();
-			  }else{
-				adults+=1;
-			    if(adults<=20)  numAdult.val(adults); else exit();
-				}	
-	    });
-    
-         $('.vehicle-icon').click(function(e){		
-			e.preventDefault(); //STOP default action 
-			 var id = $(this).attr('id');
-			 var price = $(this).attr('value');
-             var package = parseInt($(this).attr('title'));
-             $('.vehicle'+package).removeClass('active');
-             $(this).addClass('active');
-             $('#vehicleIndex'+package).val(id);
-             $('#price'+package).html(price);
-
-
-	       });
-        
 </script>
 <script type="text/javascript">
-		$(function(){
+		/*$(function(){
 			$('#datetime2').appendDtpicker();
 		});
-		
+		*/
 	</script>
 	<script type="text/javascript">
-		$(function(){
+		/*$(function(){
 			$('#datetime3').appendDtpicker();
 		});
-		
+		*/
 	</script>
 	<script>
 	var s=$('.disabled');
@@ -182,8 +168,19 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
                                          <form>
                                          <div class="col-md-2 bikes-form-font" style="text-align:center;">
             					<label class="filter-details2">Location</label><br>
-            					    <input type="text" name="location" class="black3 datetime2" value="{{ location }}"/>
-            							
+            					    <div class="dropdown shaow">
+                                                        <div class="select-city-height dropdown-toggle" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            {% if filtermainloc %}
+                                                             <span class="select-city caps">{{ filtermainloc }} <i class="fa fa-angle-down"></i></span>
+                                                            {% else %}
+                                                             <span class="select-city caps">Select City <i class="fa fa-angle-down"></i></span>
+                                                            {% endif %}
+                                                        </div> 
+                                                        <div class="dropdown-menu select-city-links" aria-labelledby="dropdownMenuLink">
+                                                             <a  href="{{ path('trip_site_management_bikes_city_sybmit') }}?city=1&name=tirupathi" class="caps bikes-search-popup-heading2 text-center resview-bikes-pop-loc">tirupathi</a>	<br>
+                                                             <a  href="{{ path('trip_site_management_bikes_city_sybmit') }}?city=2&name=bengaluru" class="caps bikes-search-popup-heading2 text-center resview-bikes-pop-loc">bengaluru</a>	<br>
+                                                         </div>
+                                                    </div>
             							</div>
             		    	<div class="col-md-2 bikes-form-font" style="text-align:center;">
             					<label class="filter-details2">Pickup date & Time</label><br>
@@ -213,55 +210,77 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 	 		</div>
 	 </section>
 <section class="section clearfix" style="padding:20px 0px 0px 0px;">
-	<div class="container">
+	<div class="">
 		<div class="row">
 			<div class="col-md-3">
 			<div class="row">
-    			<div class="bike-background1">
+    			<div class="bike-background-new margin-filterspkg">
     				<h3 class="review-apply-filter text-center">Apply Filters</h3>
             		{{ render(controller('TripSiteManagementBundle:SiteManagement:packagebikesFilters', { 'active': 1, 'cityid': bikeslocbase.cityid })) }}
             		</form>
     			</div>
     		 </div>
 		</div>
-		<div class="col-md-9">
-			<div class="row">
-                	<div class="col-lg-12 col-sm-12 col-xs-12">
-                	{% for suggestedbikes in resultset %} 
-                	  <div class="col-md-4 disabled">
-                		<div class="bike-background">
-                		<div>
-                            	<img src="{{asset('images/bikes/'~suggestedbikes.imgPath) }}" style="width: 100%;">
-                            </div>
-                            <form action="{{ path('trip_booking_engine_booking_bike') }}" method="get">
-                            	<h5 class="bike-grid-title1">{{ suggestedbikes.title }}</h5>
-                            	<div class="row bikes-loc">
-                            			<div class="col-md-12">
-                            				<p class="text-center selectarea-label">Available at</p>
-                            					{{ render(controller('TripSiteManagementBundle:SiteManagement:reviewbikesSelectoptions', { 'id': suggestedbikes.id, 'active': 1, 'cityid': bikeslocbase.cityid })) }}
-											<hr class="hr-nomargin" style="padding-bottom:10px;border-color: #787878;">
-                            			</div>
-									</div>
-                            	<div class="row bikes">
-                            	
-                            	<div class="col-md-5 text-center" style="padding-right: -1px;">
-                                	<span class="black1">{{ preferdate|date("d/m/Y h:i A") }}</span>
-                                </div>
-                                <div class="col-md-2 text-center" >
-                                	<label class="valign">To</label>
-                                </div>
-                                <div class="col-md-5 text-center" style="padding-right: 0px;">
-                                	<span class="black1">{{ returndate|date("d/m/Y h:i A") }}</span>
-                                </div>
-                            	</div>
-                            	<div class="row-rentnow">
-                            	
-                            	<div class="col-md-6" >
-                            	<h6 class="price""><i class="fa fa-inr" aria-hidden="true"></i> {{ suggestedbikes.price }}</h6>
-                            	<span class="limit">({{ suggestedbikes.kmlimit }} km/day)</span>
-                            	</div>
-                            	<div class="col-md-6" >
-                            	{% set startdate = preferdate|date("d/m/Y h:i A") %}
+				<div class="col-md-9">
+					<div class="row">
+                    	<div class="col-lg-12 col-sm-12 col-xs-12">
+                    	    {% for suggestedbikes in resultset %} 
+                        	  <div class="col-md-4 disabled">
+                        		<div class="bike-background-new">
+                        			<div class="row">
+                                            	<div class="col-sm-7">
+                                            	
+                                            	</div>
+                                            	<div class="col-sm-5">
+                                            		
+                                            	</div>
+                                           </div>
+                        			<img src="{{asset('images/bikes/'~suggestedbikes.imgPath) }}" style="width: 70%;display: block;margin: 0 auto;">
+                                	{#}<form action="{{ path('trip_booking_engine_booking_bike') }}" method="get">{#}
+                                	{% if is_granted('ROLE_USER') %}
+                                            <form action="{{ path('trip_booking_engine_book_bike_submit') }}" method="get">
+                                            {% else %}
+                                            <form action="{{ path('trip_security_sign_up') }}" method="get">
+                                            {% endif %}
+                                	<div class="row">
+                                         <div class="col-sm-8">
+                                              <h5 class="bike-grid-title text-center">{{ suggestedbikes.title }}</h5>
+                                              {{ render(controller('TripSiteManagementBundle:SiteManagement:reviewbikesSelectoptions', { 'id': suggestedbikes.id, 'active': 1, 'cityid': bikeslocbase.cityid })) }}
+                                               <hr class="hr-nomargin-forbikeresults" style="padding-bottom:3px;border-color: #e0e0e0;">
+                                         </div>
+                                         <div class="col-sm-4">
+                                         		{% if suggestedbikes.id==2 %}
+                                           		<button type="submit" class="btn aligncenter search-results-gird-btn"><i class="fa fa-inr" aria-hidden="true"></i> {{ suggestedbikes.price }} </button>
+                                           		<span class="limit">({{ suggestedbikes.kmlimit }} km/day)</span>
+                                              	{% elseif location=='tirupathi' %}
+                                              		<button type="submit" class="btn aligncenter search-results-gird-btn"><i class="fa fa-inr" aria-hidden="true"></i> {{ suggestedbikes.price }} </button>
+                                              		<span class="limit">({{ suggestedbikes.kmlimit }} km/day)</span>
+                                              	{% else %}
+                                              		<button type="submit" class="btn aligncenter search-results-gird-btn"><i class="fa fa-inr" aria-hidden="true"></i> {{ suggestedbikes.price }} </button>
+                                              		<span class="limit">({{ suggestedbikes.kmlimit }} km/day)</span>
+                                              	{% endif %}
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                    	<div class="col-sm-3">
+                                    	
+                                    	</div>
+                                         <div class="col-sm-6">
+                                               
+                                         </div>
+                                         <div class="col-sm-3">
+                                    	
+                                    	</div>
+                                   </div>
+                                   <div class="row">
+                                        <div class="col-sm-6">
+                                         	<p class="black1">{{ preferdate|date("d/m/Y h:i A") }}</p>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <p class="black1">{{ returndate|date("d/m/Y h:i A") }}</p>
+                                        </div>
+                                  </div>
+                                  {% set startdate = preferdate|date("d/m/Y h:i A") %}
 						        {% set enddate = returndate|date("d/m/Y h:i A") %}
                             				<input type="hidden" name="packagetitle" class="form-control" value="{{ packagetitle }}">
                                             <input type="hidden" name="price" class="form-control" value="{{ suggestedbikes.price }}">
@@ -274,18 +293,22 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 											<input type="hidden" name="hours" class="form-control" value="{{ hours }}"> 
 											<input type="hidden" name="countadd" class="form-control" value="1"> 
 											<input type="hidden" name="count" class="form-control" value="{{ suggestedbikes.count }}"> 
-                                            
-                                                <button type="submit" class="btn aligncenter view-bike2">Rent Now</button>
-                                           
-                                            </div>
-                                            </div>
-                        			   </form>
-                            	   </div>
-				                </div>
-				                {% endfor %}
-                            </div>
-                            
-                            </div>
+									<div class="row">
+                                         <div class="col-sm-2">
+                                          </div>
+                                          <div class="col-sm-8">
+                                          
+                                          </div>
+                                          <div class="col-sm-2">
+                                           					
+                                          </div>
+                                   </div>
+                                  </form>
+                                </div>
+        				      </div>
+    				         {% endfor %}
+                         </div>
+                       </div>
                 	</div>
                 </div>
             </div>   
@@ -300,45 +323,62 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 			<div class="col-md-12">
 			<div class="row">
                 	<div class="col-lg-12 col-sm-12 col-xs-12">
-                	{% for suggestedbikes in resultset1 %} 
-                	  <div class="col-md-3 disabled">
-                		<div class="bike-background">
-                			<div>
-                            	<img src="{{asset('images/bikes/'~suggestedbikes.imgPath) }}" style="width: 100%;">
-                            </div>
-                            <form action="{{ path('trip_booking_engine_booking_bike') }}" method="get">
-                            	<h5 class="bike-grid-title1">{{ suggestedbikes.title }}</h5>
-                            	<div class="row bikes-loc">
-                            			<div class="col-md-12">
-                            				<p class="text-center selectarea-label">Available at</p>
-                            					{{ render(controller('TripSiteManagementBundle:SiteManagement:reviewbikesSelectoptions', { 'id': suggestedbikes.id, 'active': 1, 'cityid': bikeslocbase.cityid })) }}
-											<hr class="hr-nomargin" style="padding-bottom:10px;border-color: #787878;">
-                            			</div>
-									</div>
-                            	<div class="row bikes">
-                            	
-                            	<div class="col-md-5 text-center" style="padding-right: -1px;">
-                                	<span class="black1">{{ preferdate|date("d/m/Y h:i A") }}</span>
-                                </div>
-                                <div class="col-md-2 text-center" >
-                                	<label class="valign">To</label>
-                                </div>
-                                <div class="col-md-5 text-center" style="padding-right: 0px;">
-                                	<span class="black1">{{ returndate|date("d/m/Y h:i A") }}</span>
-                                </div>
-                            	</div>
-                            	<div class="row-rentnow">
-                            	<div class="col-md-6" >
-                            	<h6 class="price"><i class="fa fa-inr" aria-hidden="true"></i> {{ suggestedbikes.price }}</h6>
-                            	<span class="limit">({{ suggestedbikes.kmlimit }} km/day)</span>
-                            	</div>
-                            	<div class="col-md-6" >
-                            	{% set startdate = preferdate|date("d/m/Y h:i A") %}
+                    	{% for suggestedbikes in resultset1 %} 
+                    	  <div class="col-md-3">
+                    		<div class="bike-background-new">
+                        			<div class="row">
+                                            	<div class="col-sm-7">
+                                            	
+                                            	</div>
+                                            	<div class="col-sm-5">
+                                            		{% if suggestedbikes.id==2 %}
+                                           						
+                                                    {% elseif location=='tirupathi' %}
+                                                   	
+                                                   	{% else %}
+                                                   			{#}<img src="{{asset('images/justtripcommingsoon.png') }}" style="display: block;margin: 0 auto;">{#}
+                                                   			<p class="commingsoon-bikes p-nomargin theme">Coming Soon</p>		
+                                                    {% endif %}
+                                            	</div>
+                                           </div>
+                        			<img src="{{asset('images/bikes/'~suggestedbikes.imgPath) }}" style="width: 70%;display: block;margin: 0 auto;">
+                                	{#}<form action="{{ path('trip_booking_engine_booking_bike') }}" method="get">{#}
+                                	{% if is_granted('ROLE_USER') %}
+                                            <form action="{{ path('trip_booking_engine_book_bike_submit') }}" method="get">
+                                            {% else %}
+                                            <form action="{{ path('trip_security_sign_up') }}" method="get">
+                                            {% endif %}
+                                	<div class="row">
+                                         <div class="col-sm-12">
+                                              <h5 class="bike-grid-title text-center">{{ suggestedbikes.title }}</h5>
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                    	<div class="col-sm-3">
+                                    	
+                                    	</div>
+                                         <div class="col-sm-6">
+                                               {{ render(controller('TripSiteManagementBundle:SiteManagement:reviewbikesSelectoptions', { 'id': suggestedbikes.id, 'active': 1, 'cityid': bikeslocbase.cityid })) }}
+                                               <hr class="hr-nomargin" style="padding-bottom:3px;border-color: #e0e0e0;">
+                                         </div>
+                                         <div class="col-sm-3">
+                                    	
+                                    	</div>
+                                   </div>
+                                   <div class="row">
+                                        <div class="col-sm-6">
+                                         	<p class="black1">{{ preferdate|date("d/m/Y h:i A") }}</p>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <p class="black1">{{ returndate|date("d/m/Y h:i A") }}</p>
+                                        </div>
+                                  </div>
+                                  {% set startdate = preferdate|date("d/m/Y h:i A") %}
 						        {% set enddate = returndate|date("d/m/Y h:i A") %}
-                        					<input type="hidden" name="packagetitle" class="form-control" value="{{ packagetitle }}">
+                            				<input type="hidden" name="packagetitle" class="form-control" value="{{ packagetitle }}">
                                             <input type="hidden" name="price" class="form-control" value="{{ suggestedbikes.price }}">
                                             <input type="hidden" name="id" class="form-control" value="{{ id }}">
-                                            <input type="hidden" name="title" class="form-control" value="{{ title }}">
+                                            <input type="hidden" name="title" class="form-control" value="{{ suggestedbikes.title }}">
                                             <input type="hidden" name="location" class="form-control" value="{{ location }}" >
                                             <input type="hidden" name="pDate" class="form-control" value="{{ startdate }}">
                                             <input type="hidden" name="rDate" class="form-control" value="{{ enddate }}">
@@ -346,19 +386,30 @@ $('.preferTime').timepicker({ 'scrollDefault': 'now' });
 											<input type="hidden" name="hours" class="form-control" value="{{ hours }}"> 
 											<input type="hidden" name="countadd" class="form-control" value="1"> 
 											<input type="hidden" name="count" class="form-control" value="{{ suggestedbikes.count }}"> 
-                                            
-                                                <button type="submit" class="btn aligncenter view-bike2">Rent Now</button>
-                                            
-                                            </div>
-                                            </div>
-                        			   </form>
-                            	   </div>
-				                </div>
-				                {% endfor %}
-                            </div>
+									<div class="row">
+                                         <div class="col-sm-2">
+                                          </div>
+                                          <div class="col-sm-8">
+                                          	{% if suggestedbikes.id==2 %}
+                                           		<button type="submit" class="btn aligncenter search-results-gird-btn"><i class="fa fa-inr" aria-hidden="true"></i> {{ suggestedbikes.price }} <span class="limit">({{ suggestedbikes.kmlimit }} km/day)</span></button>
+                                          	{% elseif location=='tirupathi' %}
+                                          		<button type="submit" class="btn aligncenter search-results-gird-btn"><i class="fa fa-inr" aria-hidden="true"></i> {{ suggestedbikes.price }} <span class="limit">({{ suggestedbikes.kmlimit }} km/day)</span></button>
+                                          	{% else %}
+                                          		<button type="submit" class="btn aligncenter search-results-gird-btn" disabled><i class="fa fa-inr" aria-hidden="true"></i> {{ suggestedbikes.price }} <span class="limit">({{ suggestedbikes.kmlimit }} km/day)</span></button>
+                                          	{% endif %}
+                                          </div>
+                                          <div class="col-sm-2">
+                                           					
+                                          </div>
+                                   </div>
+                                  </form>
+                                </div>
+    				      </div>
+    				    {% endfor %}
+                    </div>
                             
-                            </div>
-                       </div>
+           	</div>
+        </div>
 		</div>
 	</div>
 </section>		

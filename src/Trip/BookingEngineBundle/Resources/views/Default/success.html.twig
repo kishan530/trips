@@ -31,8 +31,9 @@
 							<div class="bike-background">
         						<div class="row">
         							<div class="col-md-12">
-        								<h1 style="text-align: center;font-family: Berlin Sans FB;font-size:34px;text-transform: uppercase;color:#F34F4F;">BOOKING CONFIRMED!</h1>
+        								{#}<h1 style="text-align: center;font-family: Berlin Sans FB;font-size:34px;text-transform: uppercase;color:#F34F4F;">BOOKING CONFIRMED!</h1>
         								<p style="font-family: calibri;margin: 0px;">Dear {{ customer.name }}, Your Booking has been Successfully completed. </p>			
+                    					{#}
                     					<strong style="font-family: calibri;">Here are your booking details:</strong>
         							</div>
         						</div>
@@ -91,7 +92,7 @@
         						</div>
         						<div class="row">
         							<div class="col-md-4">
-        								<p style="text-align:center;">Booking Status  : <span style="font-size: 12px;font-weight: bold;color: #F34F4F;font-family: calibri;">{{ booking.status }}</span></p>
+        								<p style="text-align:center;">Booking Status  : <span style="font-size: 18px;font-weight: normal;color: #F34F4F;font-family: calibri;">{{ booking.status }}</span></p>
         							
         							</div>
         							<div class="col-md-4">

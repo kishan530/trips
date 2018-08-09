@@ -58,6 +58,17 @@ class User extends BaseUser
      */
 
     protected $lastname;
+    /**
+    
+    * @var string
+    
+    *
+    
+    * @ORM\Column(name="mobile", type="string", length=255, nullable=true)
+    
+    */
+    
+    protected $mobile;
 
 
 
@@ -258,5 +269,21 @@ public function serialize()
         }
 
     }
+    /**
+     * @return string
+     */
+    public function getMobile()
+    {
+        return $this->mobile;
+    }
+
+    /**
+     * @param string $mobile
+     */
+    public function setMobile($mobile)
+    {
+        $this->mobile = $mobile;
+    }
+
 
 }
