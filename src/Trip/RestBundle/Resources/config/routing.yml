@@ -48,11 +48,33 @@ trip_rest_management_packagebookingsubmit:
 trip_rest_management_Loginuserdetails:
     path:     /api/get-logindetail
     defaults: { _controller: TripRestBundle:Rest:userLogin }
- 
 trip_rest_management_registeruser:
     path:     /api/user-register
     defaults: { _controller: TripRestBundle:Rest:register }
-    
+trip_rest_management_edit_profile:
+    path:     /api/edit-profile
+    defaults: { _controller: TripRestBundle:Rest:editProfile } 
+trip_rest_management_user_bookings:
+    path:     /api/user-bookings
+    defaults: { _controller: TripRestBundle:Rest:userBookings }
+trip_rest_management_user_documents:
+    path:     /api/user-documents
+    defaults: { _controller: TripRestBundle:Rest:userDocuments }
+trip_rest_management_upload_documents:
+    path:     /api/upload-documents
+    defaults: { _controller: TripRestBundle:Rest:uploadDocuments }
+trip_rest_management_uploaded_documents:
+    path:     /api/uploaded-documents
+    defaults: { _controller: TripRestBundle:Rest:uploadedDocuments } 	
 trip_rest_management_homepage_rentbikes:
     path:     /api/get-bikes
     defaults: { _controller: TripRestBundle:Restbikes:bikesonRent}
+trip_rest_management_homepage_rentbikes_price_change:
+    path:     /api/bike-price-on-change
+    defaults: { _controller: TripRestBundle:Restbikes:priceOnChange}
+trip_rest_management_homepage_rentbikesbookingdetails:
+    path:     /api/get-bikebookingsubmit
+    defaults: { _controller: TripRestBundle:Restbikes:bikebookingsubmit}
+trip_rest_management_support:
+    path:     /api/support
+    defaults: { _controller: TripRestBundle:Rest:support } 

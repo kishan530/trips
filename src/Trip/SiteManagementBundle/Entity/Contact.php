@@ -5,12 +5,7 @@ namespace Trip\SiteManagementBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 /**
- * This is a Entity to hold the data of Contact in
- * Drivekool application.
- *
- * @author 4th Dymension Teknocrats
- * @copyright   <a> 4th Dymension Teknocrats India LLP - 2014</a>
- *
+
  * Contact
  * @ORM\Table(name="contact_us")
  * @ORM\Entity

@@ -58,6 +58,25 @@ class User extends BaseUser
      */
 
     protected $lastname;
+	    /**
+     * @var string
+     *
+     * @ORM\Column(name="profile_pic", type="string", length=100)
+     */
+    private $profilePic;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="mobile", type="string", length=100)
+     */
+    private $mobile;
+	    /**
+     * @var string
+     *
+     * @ORM\Column(name="dob", type="date")
+     */
+    private $dob;
 
 
 
@@ -163,6 +182,75 @@ public function serialize()
 
         $this->lastname = $lastname;
 
+    }
+	
+	 /**
+     * Set profilePic
+     *
+     * @param string $profilePic
+     * @return Customer
+     */
+    public function setProfilePic($profilePic)
+    {
+        $this->profilePic = $profilePic;
+
+        return $this;
+    }
+
+    /**
+     * Get profilePic
+     *
+     * @return string 
+     */
+    public function getProfilePic()
+    {
+        return $this->profilePic;
+    }
+
+    /**
+     * Set mobile
+     *
+     * @param string $mobile
+     * @return Customer
+     */
+    public function setMobile($mobile)
+    {
+        $this->mobile = $mobile;
+
+        return $this;
+    }
+
+    /**
+     * Get mobile
+     *
+     * @return string 
+     */
+    public function getMobile()
+    {
+        return $this->mobile;
+    }
+	
+	  /**
+     * Set dob
+     *
+     * @param string $dob
+     * @return Customer
+     */
+    public function setDob($dob)
+    {
+        $this->dob = $dob;
+
+        return $this;
+    }
+
+    /**
+     * Get dob
+     *
+     * @return string 
+     */
+    public function getDob()
+    {
+        return $this->dob;
     }
 
 

@@ -113,6 +113,12 @@ class bikes
      * @ORM\Column(name="kmlimit", type="integer")
      */
     private $kmlimit;
+	 /**
+     * @var integer
+     *
+     * @ORM\Column(name="sequence", type="integer")
+     */
+    private $sequence;
     
     /**
      * @ORM\OneToMany(targetEntity="Trip\SiteManagementBundle\Entity\bikespackage", mappedBy="bikes", cascade={"all"},  fetch="EAGER")
@@ -539,6 +545,21 @@ class bikes
     public function setExcess($excess)
     {
         $this->excess = $excess;
+    }
+	 /**
+     * @return integer
+     */
+    public function getSequence()
+    {
+        return $this->sequence;
+    }
+
+    /**
+     * @param integer $sequence
+     */
+    public function setSequence($sequence)
+    {
+        $this->sequence = $sequence;
     }
 
 
