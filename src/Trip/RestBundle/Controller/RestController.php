@@ -27,11 +27,12 @@ use Trip\BookingEngineBundle\Form\GuestType;
 use Trip\BookingEngineBundle\Form\CustomPackageType;
 use Trip\SiteManagementBundle\Entity\Contact;
 use Trip\SiteManagementBundle\Entity\City;
+use Trip\SecurityBundle\Entity\UserDocuments;
 use Trip\SiteManagementBundle\Form\ContactType;
 use Trip\BookingEngineBundle\DependencyInjection\Instamojo;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class RestController extends Controller
 {
@@ -158,7 +159,7 @@ class RestController extends Controller
     			{
     				$id =  $result['id'];
     				
-    				$imgPath =  'http://test.justtrip.in/images/cars/'.$result['imgPath'];
+    				$imgPath =  'http://www.justtrip.in/images/cars/'.$result['imgPath'];
     			
     				$model = $result['model'];
     				$capcity = $result['capcity'];
@@ -1011,17 +1012,12 @@ class RestController extends Controller
     public function userLoginAction(Request $request){
     	
     	header("Access-Control-Allow-Origin: *");
-    	//$username = $request->request->get('username');
-    	//$password = $request->request->get('password');
     	$username = $request->get('username');
     	$password = $request->get('password');
     	 
-    	//$paramList = $this->getRequest()->request->all();
-    	//$username = $paramList['username'];
     	$user_manager = $this->get('fos_user.user_manager');
     	$factory = $this->get('security.encoder_factory');
-    	// 	$username = '8880541921';
-    	//	$password = 'DK3647';
+
     	$user = $user_manager->findUserByUsername($username);
     	
     	//echo var_dump($user);
@@ -1030,52 +1026,68 @@ class RestController extends Controller
     	if (null === $user)
     	$user = $user_manager->findUserByEmail ( $username );
     	 
-   		
-    	
-    	$encoder = $factory->getEncoder($user);
-    	
-    	
-//     	$customerId = $user->getCustomerId();
-//     	$customerGroupId = $user->getCustomerGroupId();
-//     	$customerType = $user->getCustomerType();
-//     	$schoolDao = $this->container->get ( 'drive.school.services' );
-//     	$customerDao = $this->container->get ( 'drive.customer.services' );
-//     	if($customerType=='vendor' || $customerType=='school')
-//     		$customerDetails = $schoolDao->getEmployee($customerId);
-//     	else
-//     		$customerDetails = $customerDao->getCustomer($customerId);
-    	 
-//     	$customerMobile=$customerDetails->getUserMob();
-//     	$customerEmail=$customerDetails->getUserEmail();
     	 
     	
     	$data['success']= false;
     	$extras['msg']=1;
+		if (null === $user){
+			$extras['msg']='Invalid Username';
+		}else{
+		$encoder = $factory->getEncoder($user);
     	$bool = ($encoder->isPasswordValid($user->getPassword(),$password,$user->getSalt())) ? true : false;
     	if($bool){
     		$data['success']=true;
     		//$profile['id']= $customerId;
-    		$profile['userName']= $user->getUserName();
+    		$profile['name']= $user->getFirstname();
+			$profile['email']= $user->getEmail();
+			$profile['mobile']= $user->getMobile();
+			$profile['dob']= $user->getDob();
+			$profile['dob']= '';
     		$profile['id']= $user->getId();
-    		//$profile['type']= $customerType;
-    		//$profile['groupId']= $customerGroupId;
-    		//$profile['mobile']= $customerMobile;
-    		//$profile['email']= $customerEmail;
     		$extras['userProfileModel']=$profile;
-    		//echo var_dump($profile);
-    		//exit();
-//     		if($customerType=='school')
-//     			$extras['sessionId']='SCH'.$customerId;
-//     		else
-//     			$extras['sessionId']='CSR'.$customerId;
     		$extras['msg']='success';
-    	}
+    	}else{
+			$extras['msg']='Invalid Password';
+		}
+		}
+    	$data['extras']=$extras;
     	 
+    	return new Response (json_encode($data));
+    	
+    }
+	
+	 public function editProfileAction(Request $request){
+    	
+    	header("Access-Control-Allow-Origin: *");
+    	$name = $request->get('name');
+    	$email = $request->get('email');
+    	$mobile = $request->request->get('mobile');
+		$dob = $request->request->get('dob');
+    	$password = $request->get('password');
+    	 
+    	$userManager = $this->get('fos_user.user_manager');
+    	$factory = $this->get('security.encoder_factory');
+    	$user = $userManager->findUserByEmail ( $email );
+    	 
+    	$user->setFirstname ( $name );
+				$user->setMobile ( $mobile );
+				//$user->setDob ( $dob );
+		//$user->setPlainPassword ( $password );    
+			$userManager->updateUser ( $user );	
+    	
+		 
+    	
     	$data['success']=true;
-    	//$extras['msg']='';
-    	//$extras['searchList'] = $searchList;
-    	//$data['extras']=$extras;
-    	//return new Response (json_encode($data));
+    		//$profile['id']= $customerId;
+    		$profile['name']= $user->getFirstname();
+			$profile['email']= $user->getEmail();
+			$profile['mobile']= $user->getMobile();
+			$profile['dob']= $user->getDob();
+			$profile['dob']= '';
+    		$profile['id']= $user->getId();
+    		$extras['userProfileModel']=$profile;
+    		$extras['msg']='success';
+			
     	$data['extras']=$extras;
     	 
     	return new Response (json_encode($data));
@@ -1086,75 +1098,251 @@ class RestController extends Controller
     {
     	header("Access-Control-Allow-Origin: *");
     	$name = $request->get('name');
-    	$email = $request->get('username');
-    	//$mobile = $request->request->get('mobile');
+    	$email = $request->get('email');
+    	$mobile = $request->request->get('mobile');
+		$dob = $request->request->get('dob');
     	$password = $request->get('password');
-    
-    	//$this->sendEmail ( $name, $email,$mobile, $password );
-    
-    	//$user = $this->createUser($name,$email,$mobile,$password);
-    	$user = $this->createUser($name,$email,$password);
+    	$user = $this->createUser($name,$email,$mobile,$dob,$password);
     	$data['success']=true;
-    	//$extras['userProfileModel']=$user->getCustomerName();
-    	$extras['userProfileModel']= $name;
-    	$extras['userProfileModel']= $email;
-    	//$extras['userProfileModel']= $id;    	
-    	$extras['sessionId']='sessionId';
+		$profile['name']= $user->getFirstname();
+			$profile['email']= $user->getEmail();
+			$profile['mobile']= $user->getMobile();
+			$profile['dob']= $user->getDob();
+			$profile['dob']= '';
+    		$profile['id']= $user->getId();
+    	$extras['userProfileModel']= $profile;
+    	$extras['msg']='success';
+    	$data['extras']=$extras;
+    
+    	return new Response (json_encode($data));
+    }
+	
+	public function userBookingsAction(Request $request)
+    {
+    	header("Access-Control-Allow-Origin: *");
+    	
+    	$bookingList = array();
+		$email = $request->get('email');
+	
+		
+		
+		$bookings =$this->getUserBookings($email);
+		
+		foreach($bookings as $bookingObj){
+			$bookingId = $bookingObj->getBookingId();
+			$bikeBooking = $bookingObj->getBikeBooking();
+			if($bikeBooking){
+			$booking = array();
+			$booking['id'] = $bookingObj->getId();
+			$booking['bookingId'] = $bookingObj->getBookingId();
+			$booking['totalPrice'] = $bookingObj->getTotalPrice();
+			$booking['discount'] = $bookingObj->getDiscount();
+			$booking['gst'] = $bookingObj->getServiceTax();
+			$booking['finalPrice'] = $bookingObj->getFinalPrice();			
+			$booking['amountPaid'] = $bookingObj->getAmountPaid();
+			$booking['paymentId'] = $bookingObj->getPaymentId();
+			$booking['status'] = $bookingObj->getStatus();
+			
+			$booking['bikeId'] = $bikeBooking->getBikeId();
+			$booking['bikeName'] = $bikeBooking->getBikeName();
+			$booking['pickUp'] = $bikeBooking->getPdate();
+			$booking['return'] = $bikeBooking->getRdate();
+			$booking['days'] = $bikeBooking->getLeftdays();
+			$booking['hours'] = $bikeBooking->getHours();
+			$booking['city'] = $bikeBooking->getBikelocation();
+			$booking['location'] = $bikeBooking->getBikearea();
+			
+				
+    		$bookingList[]=$booking;
+			}
+    
+    	}
+    	
+    	$data['success']=true;
+    	$extras['msg']='';
+    	$extras['bookingList'] = $bookingList;
+    	
+    	$data['extras']=$extras;
+    	return new Response (json_encode($data));
+    	    	
+    }
+	
+	public function userDocumentsAction(Request $request)
+    {
+    	header("Access-Control-Allow-Origin: *");
+    	
+    	$documentList = array();
+		$userId = $request->get('userId');
+	
+		
+		
+		$documentList =$this->getUserDocuments($userId);
+
+		
+		$data['success']=true;
+    	$extras['msg']='';
+    	$extras['documentList'] = $documentList;
+    	
+    	$data['extras']=$extras;
+    	return new Response (json_encode($data));
+		
+    	    	
+    }
+	public function uploadedDocumentsAction(Request $request)
+    {
+    	header("Access-Control-Allow-Origin: *");
+    	
+    	$documentList = array();
+		$userId = $request->get('userId');
+		$documentId = $request->get('documentId');
+	
+		
+		
+		$documentList =$this->getUpoloadedDocuments($userId,$documentId);
+
+		$tempList = array();
+		 foreach ($documentList as $document) {
+			$fileName = $document['fileName'];
+			$filePath =  'http://www.justtrip.in/documents/'.$fileName;
+			$document['filePath'] = $filePath;
+			$tempList[] = $document;
+		 }
+		$data['success']=true;
+    	$extras['msg']='';
+    	$extras['documentList'] = $tempList;
+    	
+    	$data['extras']=$extras;
+    	return new Response (json_encode($data));
+		
+    	    	
+    }
+	 /**
+     *
+     * @param Request $request
+     */
+    public function uploadDocumentsAction(Request $request)
+    {
+    	
+    	$documentId = $request->get('documentId');
+    	$userId = $request->get('userId');
+  //  $bookingId = 15773;
+    
+    foreach ($_FILES as $file) {
+    		$uploadedFile = new UploadedFile(
+    				$file['tmp_name'],
+    				$file['name'], $file['type'],
+    				$file['size'], $file['error'],
+    				$test = false);
+    	}
+    	
+     	$file_name = $userId.'-'.$uploadedFile->getClientOriginalName ();
+    	$file_name = urldecode($file_name);
+    	//$file_name = $uploadedfile->getClientOriginalName ();
+    	$dir = '../../documents/';
+    	$uploadedFile->move ( $dir, $file_name );
+    	$data['success']=true;
     	$extras['msg']=5;
+    	$data['extras']=$extras; 
+    	
+		
+		$userDocuments= new UserDocuments();
+    		$userDocuments->setUserId($userId);
+    		$userDocuments->setDocumentId($documentId);
+			$userDocuments->setFileName($file_name);
+			
+		$em = $this->getDoctrine()->getManager();
+    	$em->persist($userDocuments);
+    	$em->flush();
+
+    	    	
+    	return new Response (json_encode($data));
+    }
+	
+	 public function supportAction(Request $request)
+    {
+    	header("Access-Control-Allow-Origin: *");
+    	$name = $request->get('name');
+    	$email = $request->get('email');
+    	$mobile = $request->request->get('mobile');
+		$comments = $request->request->get('comments');
+    	
+		$contact= new Contact();
+			$contact->setFirstName($name);
+    		$contact->setEmail($email);
+    		$contact->setPhoneNumber($mobile);
+			$contact->setMessage($comments);
+			
+		$em = $this->getDoctrine()->getManager();
+    	$em->persist($contact);
+    	$em->flush();
+		
+    	$data['success']=true;
+		$profile['name']= $contact->getFirstname();
+			$profile['email']= $contact->getEmail();
+			$profile['mobile']= $contact->getPhoneNumber();
+			$profile['comments']= $contact->getMessage();
+    		$profile['id']= $contact->getId();
+    	$extras['userProfileModel']= $profile;
+    	$extras['msg']='success';
     	$data['extras']=$extras;
     
     	return new Response (json_encode($data));
     }
     
-    public function createUser($name,$email,$password){
+    public function createUser($name,$email,$mobile,$dob,$password){
     	$userManager = $this->get('fos_user.user_manager');
-    	//$customerDao = $this->container->get ( 'drive.customer.services' );
-    	// Do a check for existing user with userManager->findByUsername
-    	//$user = $userManager->findUserByEmail ( $email );
-    	//echo var_dump($email);
-    	//exit();
-    	if (!is_null($email)) {
+		$dob = 
+		new \DateTime();
+		$user =null;
+    	if (!is_null($email)){
     		$user = $userManager->findUserByEmail ( $email );
-//     		if (null === $user)
-//     			$user = $userManager->findUserByUsername ( $mobile );
-    	}
-//     	else {
-//     		$user = $userManager->findUserByUsername ( $mobile );
-//     	}
     	 
     	if (null === $user) {
     		 
     		// User with email not found. Do whatever you want here
     		$user = $userManager->createUser ();
     		if (!is_null($email))
-    			$user->setEmail ( $email );
+    			$user->setFirstname ( $name );
+				$user->setEmail ( $email );
+				$user->setMobile ( $mobile );
+				$user->setDob ( $dob );
     	}
     	//$user->setUsername ( $mobile );
     	$user->setEnabled ( true );
     	$user->setPlainPassword ( $password );
     
-//     	$customerId = $user->getCustomerId();
-//     	if(is_null($customerId)){
-//     		$customer = $customerDao->getOneCustomerByMob($mobile);
-//     		if(!$customer){
-//     			$customer = new CustomerEntity();
-//     			$customer->setFirstName($name);
-//     			$customer->setUserMob($mobile);
-//     			$customer->setUserEmail($email);
-//     			$customer->setSmsAlerts(1);
-//     			$customer->setEmailAlerts(1);
-//     			$customer->setStatus(1);
-    
-//     			$customer = $customerDao->saveCustomer($customer);
-//     		}
-//     		$user->setCustomerId($customer->getId ());
-//     		$user->setCustomerName($customer->getFirstName ());
-//     		$user->setCustomerType('customer');
-//     	}
     	$userManager->updateUser ( $user );
+		}
     	 
     	return $user;
     }
+	
+	public function getUserBookings($email){
+        $em = $this->getDoctrine()->getManager();
+        $dql3 = "SELECT b
+        from TripBookingEngineBundle:Booking b,TripBookingEngineBundle:Customer c where c.id=b.customerId and c.email='$email'";       
+        $query = $em->createQuery($dql3);
+        $result = $query->getResult();        
+        return $result;
+    }
+	
+	public function getUserDocuments($userId){
+        $em = $this->getDoctrine()->getManager();
+        $dql3 = "SELECT d.id,d.name,count(u.id) noOfFiles
+        from TripSiteManagementBundle:MasterDocuments d left join TripSecurityBundle:UserDocuments u with u.documentId=d.id and u.userId='$userId' group by d.id";       
+        $query = $em->createQuery($dql3);
+        $result = $query->getResult();        
+        return $result;
+    }
+	public function getUpoloadedDocuments($userId,$documentId){
+        $em = $this->getDoctrine()->getManager();
+        $dql3 = "SELECT d.id,d.name,u.fileName
+        from TripSiteManagementBundle:MasterDocuments d,TripSecurityBundle:UserDocuments u where u.documentId=d.id and u.userId='$userId' AND d.id=$documentId";       
+        $query = $em->createQuery($dql3);
+        $result = $query->getResult();        
+        return $result;
+    }
+	
     
     
 }
